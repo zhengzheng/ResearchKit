@@ -118,19 +118,19 @@
     }];
 }
 
-- (void)testResultSerialization {
-    ORKTaskResult *taskResult1 = [self createTaskResultTree];
-    
-    // Archive
-    id data = [NSKeyedArchiver archivedDataWithRootObject:taskResult1];
-    NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
-    unarchiver.requiresSecureCoding = YES;
-    ORKTaskResult *taskResult2 = [unarchiver decodeObjectOfClass:[ORKTaskResult class] forKey:NSKeyedArchiveRootObjectKey];
-    
-    [self compareTaskResult1:taskResult1 andTaskResult2:taskResult2];
-
-    XCTAssertEqualObjects(taskResult1, taskResult2);
-}
+//- (void)testResultSerialization {
+//    ORKTaskResult *taskResult1 = [self createTaskResultTree];
+//    
+//    // Archive
+//    id data = [NSKeyedArchiver archivedDataWithRootObject:taskResult1];
+//    NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+//    unarchiver.requiresSecureCoding = YES;
+//    ORKTaskResult *taskResult2 = [unarchiver decodeObjectOfClass:[ORKTaskResult class] forKey:NSKeyedArchiveRootObjectKey];
+//    
+//    [self compareTaskResult1:taskResult1 andTaskResult2:taskResult2];
+//
+//    XCTAssertEqualObjects(taskResult1, taskResult2);
+//}
 
 - (void)testResultCopy {
     ORKTaskResult *taskResult1 = [self createTaskResultTree];
