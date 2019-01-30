@@ -32,6 +32,7 @@
 @import XCTest;
 @import ResearchKit.Private;
 
+#import "ORKHelpers_Internal.h"
 
 @interface ORKDataLoggerTests : XCTestCase <ORKDataLoggerDelegate> {
     NSURL *_directory;
@@ -275,7 +276,7 @@
     {
         NSDictionary *attribs = [[NSFileManager defaultManager] attributesOfItemAtPath:[[_dataLogger currentLogFileURL] path] error:&error];
         XCTAssertNil(error);
-        XCTAssertEqualObjects(attribs[NSFileProtectionKey], ORKFileProtectionFromMode(_dataLogger.fileProtectionMode));
+        XCTAssertTrue([attribs[NSFileProtectionKey] isEqualToString:ORKFileProtectionFromMode(_dataLogger.fileProtectionMode)]);
     }
     {
         NSDictionary *attribs = [[NSFileManager defaultManager] attributesOfItemAtPath:[(NSURL *)logs[0] path] error:&error];
