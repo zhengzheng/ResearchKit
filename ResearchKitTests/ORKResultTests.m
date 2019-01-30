@@ -58,7 +58,7 @@
     
     ORKTaskResult *taskResult1 = [[ORKTaskResult alloc] initWithTaskIdentifier:@"taskIdetifier"
                                                                    taskRunUUID:[NSUUID UUID]
-                                                               outputDirectory: [NSURL fileURLWithPath:NSTemporaryDirectory()]];
+                                                               outputDirectory: [NSURL fileURLWithPath:@"Test"]];
     taskResult1.results = @[stepResult1];
     
     return taskResult1;
@@ -67,6 +67,8 @@
 - (void)compareTaskResult1:(ORKTaskResult *)taskResult1 andTaskResult2:(ORKTaskResult *)taskResult2 {
     // Compare
     XCTAssert([taskResult1.taskRunUUID isEqual:taskResult2.taskRunUUID], @"");
+    NSLog(@"TaskResult1: %@", taskResult1.outputDirectory.absoluteString);
+    NSLog(@"TaskResult2: %@", taskResult2.outputDirectory.absoluteString);
     XCTAssert([taskResult1.outputDirectory.absoluteString isEqual:taskResult2.outputDirectory.absoluteString], @"");
     XCTAssert([taskResult1.identifier isEqualToString:taskResult2.identifier], @"");
     
