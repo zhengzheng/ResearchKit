@@ -43,6 +43,7 @@
 - (ORKTaskResult *)createTaskResultTree {
     // Construction
     ORKFileResult *fileResult1 = [[ORKFileResult alloc] init];
+    fileResult1.identifier = @"fid";
     fileResult1.fileURL = [NSURL fileURLWithPath:NSTemporaryDirectory()];
     fileResult1.contentType = @"file";
     
@@ -56,9 +57,9 @@
     
     ORKStepResult *stepResult1 = [[ORKStepResult alloc] initWithStepIdentifier:@"StepIdentifier" results:@[fileResult1, questionResult1, consentResult1]];
     
-    ORKTaskResult *taskResult1 = [[ORKTaskResult alloc] initWithTaskIdentifier:@"taskIdetifier"
+    ORKTaskResult *taskResult1 = [[ORKTaskResult alloc] initWithTaskIdentifier:@"TaskIdentifier"
                                                                    taskRunUUID:[NSUUID UUID]
-                                                               outputDirectory: [NSURL fileURLWithPath:@"Test"]];
+                                                               outputDirectory: [NSURL fileURLWithPath:@"TestingFolder"]];
     taskResult1.results = @[stepResult1];
     
     return taskResult1;
@@ -69,7 +70,7 @@
     XCTAssert([taskResult1.taskRunUUID isEqual:taskResult2.taskRunUUID], @"");
     NSLog(@"TaskResult1: %@", taskResult1.outputDirectory.absoluteString);
     NSLog(@"TaskResult2: %@", taskResult2.outputDirectory.absoluteString);
-    XCTAssert([taskResult1.outputDirectory.absoluteString isEqual:taskResult2.outputDirectory.absoluteString], @"");
+    XCTAssert([taskResult1.outputDirectory.absoluteString isEqualToString:taskResult2.outputDirectory.absoluteString]);
     XCTAssert([taskResult1.identifier isEqualToString:taskResult2.identifier], @"");
     
     XCTAssert(taskResult1 != taskResult2, @"");
@@ -130,7 +131,6 @@
     ORKTaskResult *taskResult2 = [unarchiver decodeObjectOfClass:[ORKTaskResult class] forKey:NSKeyedArchiveRootObjectKey];
     
     [self compareTaskResult1:taskResult1 andTaskResult2:taskResult2];
-
     XCTAssertEqualObjects(taskResult1, taskResult2);
 }
 
