@@ -44,7 +44,10 @@
     // Construction
     ORKFileResult *fileResult1 = [[ORKFileResult alloc] init];
     fileResult1.identifier = @"fid";
-    fileResult1.fileURL = [NSURL fileURLWithPath:NSTemporaryDirectory()];
+    
+    NSURL *baseURL = [NSURL fileURLWithPath:NSHomeDirectory()];
+    NSURL *standardizedBaseURL = [baseURL URLByStandardizingPath];
+    fileResult1.fileURL = [NSURL fileURLWithPath:@"ResultFile" relativeToURL:standardizedBaseURL];
     fileResult1.contentType = @"file";
     
     ORKTextQuestionResult *questionResult1 = [[ORKTextQuestionResult alloc] init];
@@ -59,9 +62,8 @@
     
     ORKTaskResult *taskResult1 = [[ORKTaskResult alloc] initWithTaskIdentifier:@"TaskIdentifier"
                                                                    taskRunUUID:[NSUUID UUID]
-                                                               outputDirectory: [NSURL fileURLWithPath:@"TestingFolder"]];
+                                                               outputDirectory: [NSURL fileURLWithPath:@"OutputFile" relativeToURL:standardizedBaseURL]];
     taskResult1.results = @[stepResult1];
-    
     return taskResult1;
 }
 
