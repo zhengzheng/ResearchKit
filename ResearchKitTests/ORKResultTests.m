@@ -43,7 +43,6 @@
 - (ORKTaskResult *)createTaskResultTree {
     // Construction
     ORKFileResult *fileResult1 = [[ORKFileResult alloc] init];
-    fileResult1.identifier = @"fid";
     
     NSURL *baseURL = [NSURL fileURLWithPath:NSHomeDirectory()];
     NSURL *standardizedBaseURL = [baseURL URLByStandardizingPath];
@@ -70,8 +69,6 @@
 - (void)compareTaskResult1:(ORKTaskResult *)taskResult1 andTaskResult2:(ORKTaskResult *)taskResult2 {
     // Compare
     XCTAssert([taskResult1.taskRunUUID isEqual:taskResult2.taskRunUUID], @"");
-    NSLog(@"TaskResult1: %@", taskResult1.outputDirectory.absoluteString);
-    NSLog(@"TaskResult2: %@", taskResult2.outputDirectory.absoluteString);
     XCTAssert([taskResult1.outputDirectory.absoluteString isEqualToString:taskResult2.outputDirectory.absoluteString]);
     XCTAssert([taskResult1.identifier isEqualToString:taskResult2.identifier], @"");
     
