@@ -206,4 +206,67 @@
     
 }
 
+- (void)testContinuousScaleAnswerFormat{
+    
+    XCTAssertThrowsSpecificNamed([ORKAnswerFormat continuousScaleAnswerFormatWithMaximumValue:10
+                                                                                 minimumValue:100
+                                                                                 defaultValue:10
+                                                                        maximumFractionDigits:10
+                                                                                     vertical:YES
+                                                                      maximumValueDescription:NULL
+                                                                      minimumValueDescription:NULL], NSException, NSInvalidArgumentException, @"Shoud throw NSInvalidArgumentException since max < min");
+    
+    XCTAssertThrowsSpecificNamed([ORKAnswerFormat continuousScaleAnswerFormatWithMaximumValue:10001
+                                                                                 minimumValue:100
+                                                                                 defaultValue:10
+                                                                        maximumFractionDigits:10
+                                                                                     vertical:YES
+                                                                      maximumValueDescription:NULL
+                                                                      minimumValueDescription:NULL], NSException, NSInvalidArgumentException, @"Shoud throw NSInvalidArgumentException since max > effectiveUpperBound");
+    
+    XCTAssertThrowsSpecificNamed([ORKAnswerFormat continuousScaleAnswerFormatWithMaximumValue:100
+                                                                                 minimumValue:-10001
+                                                                                 defaultValue:10
+                                                                        maximumFractionDigits:10
+                                                                                     vertical:YES
+                                                                      maximumValueDescription:NULL
+                                                                      minimumValueDescription:NULL], NSException, NSInvalidArgumentException, @"Shoud throw NSInvalidArgumentException since min < effectiveLowerBound");
+    
+    XCTAssertThrowsSpecificNamed([ORKAnswerFormat continuousScaleAnswerFormatWithMaximumValue:10
+                                                                                 minimumValue:100
+                                                                                 defaultValue:10
+                                                                        maximumFractionDigits:10
+                                                                                     vertical:YES
+                                                                      maximumValueDescription:NULL
+                                                                      minimumValueDescription:NULL], NSException, NSInvalidArgumentException, @"Shoud throw NSInvalidArgumentException since max < min");
+    
+    
+    ORKContinuousScaleAnswerFormat *answerFormat = [ORKAnswerFormat continuousScaleAnswerFormatWithMaximumValue:1
+                                                                                                   minimumValue:0
+                                                                                                   defaultValue:10
+                                                                                          maximumFractionDigits:10
+                                                                                                       vertical:YES
+                                                                                        maximumValueDescription:NULL
+                                                                                        minimumValueDescription:NULL];
+    
+    XCTAssertEqual([answerFormat maximum], 1);
+    XCTAssertEqual([answerFormat minimum], 0);
+    XCTAssertEqual([answerFormat defaultValue], 10);
+    XCTAssertEqual([answerFormat maximumFractionDigits], 4, @"Should return 4 since the maximumFractionDigits needs to 0 <= maximumFractionDigits <= 4");
+    XCTAssertEqual([answerFormat isVertical], YES);
+    XCTAssertEqual([answerFormat maximumValueDescription], NULL);
+    XCTAssertEqual([answerFormat minimumValueDescription], NULL);
+    
+     ORKContinuousScaleAnswerFormat *answerFormatTwo = [ORKAnswerFormat continuousScaleAnswerFormatWithMaximumValue:1
+                                                                                                       minimumValue:0
+                                                                                                       defaultValue:10
+                                                                                              maximumFractionDigits:-1
+                                                                                                           vertical:YES
+                                                                                            maximumValueDescription:NULL
+                                                                                            minimumValueDescription:NULL];
+    
+    XCTAssertEqual([answerFormatTwo maximumFractionDigits], 0, @"Should return 0 since the maximumFractionDigits needs to 0 <= maximumFractionDigits <= 4");
+    
+}
+
 @end
