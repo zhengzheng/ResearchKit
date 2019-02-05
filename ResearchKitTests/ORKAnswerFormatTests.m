@@ -206,7 +206,16 @@
     
 }
 
-- (void)testScaleFormat{
+- (void)testScaleAnswerFormat{
+    
+    XCTAssertNoThrow([ORKAnswerFormat scaleAnswerFormatWithMaximumValue:100
+                                                           minimumValue:0
+                                                           defaultValue:10
+                                                                   step:10
+                                                               vertical:YES
+                                                maximumValueDescription:@"MAX"
+                                                minimumValueDescription:@"MIN"],
+                     @"Should not throw any exception");
     
     XCTAssertThrowsSpecificNamed([ORKAnswerFormat scaleAnswerFormatWithMaximumValue:25
                                                                        minimumValue:50
@@ -216,7 +225,7 @@
                                                             maximumValueDescription:NULL
                                                             minimumValueDescription:NULL],
                                  NSException, NSInvalidArgumentException,
-                                 @"Should trow NSInvalidArgumentException since max < min");
+                                 @"Should throw NSInvalidArgumentException since max < min");
     
     XCTAssertThrowsSpecificNamed([ORKAnswerFormat scaleAnswerFormatWithMaximumValue:100
                                                                                  minimumValue:10
@@ -226,7 +235,7 @@
                                                                       maximumValueDescription:NULL
                                                                       minimumValueDescription:NULL],
                                  NSException, NSInvalidArgumentException,
-                                 @"Should trow NSInvalidArgumentException since step < 1");
+                                 @"Should throw NSInvalidArgumentException since step < 1");
 
     XCTAssertThrowsSpecificNamed([ORKAnswerFormat scaleAnswerFormatWithMaximumValue:100
                                                                        minimumValue:0
@@ -236,7 +245,7 @@
                                                             maximumValueDescription:NULL
                                                             minimumValueDescription:NULL],
                                  NSException, NSInvalidArgumentException,
-                                 @"Should trow NSInvalidArgumentException since step is not divisible by the difference of max and min");
+                                 @"Should throw NSInvalidArgumentException since step is not divisible by the difference of max and min");
     
     XCTAssertThrowsSpecificNamed([ORKAnswerFormat scaleAnswerFormatWithMaximumValue:25
                                                                        minimumValue:-20000
@@ -246,7 +255,7 @@
                                                             maximumValueDescription:NULL
                                                             minimumValueDescription:NULL],
                                  NSException, NSInvalidArgumentException,
-                                 @"Should trow NSInvalidArgumentException since min < -10000");
+                                 @"Should throw NSInvalidArgumentException since min < -10000");
     
     XCTAssertThrowsSpecificNamed([ORKAnswerFormat scaleAnswerFormatWithMaximumValue:20000
                                                                        minimumValue:0
@@ -256,7 +265,7 @@
                                                             maximumValueDescription:NULL
                                                             minimumValueDescription:NULL],
                                  NSException, NSInvalidArgumentException,
-                                 @"Should trow NSInvalidArgumentException since max > 10000");
+                                 @"Should throw NSInvalidArgumentException since max > 10000");
     
     XCTAssertThrowsSpecificNamed([ORKAnswerFormat scaleAnswerFormatWithMaximumValue:100
                                                                        minimumValue:0
@@ -266,7 +275,7 @@
                                                             maximumValueDescription:NULL
                                                             minimumValueDescription:NULL],
                                  NSException, NSInvalidArgumentException,
-                                 @"Should trow NSInvalidArgumentException since step Count > 13");
+                                 @"Should throw NSInvalidArgumentException since step count > 13");
     
     XCTAssertThrowsSpecificNamed([ORKAnswerFormat scaleAnswerFormatWithMaximumValue:100
                                                                        minimumValue:100
@@ -276,7 +285,7 @@
                                                             maximumValueDescription:NULL
                                                             minimumValueDescription:NULL],
                                  NSException, NSInvalidArgumentException,
-                                 @"Should trow NSInvalidArgumentException since step count < 1");
+                                 @"Should throw NSInvalidArgumentException since step count < 1");
 
 }
 
