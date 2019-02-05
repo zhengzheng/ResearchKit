@@ -50,14 +50,9 @@
 - (void)setUp {
     [super setUp];
     NSURL *baseURL = [NSURL fileURLWithPath:NSHomeDirectory()];
-    NSLog(@"Base: %@", baseURL);
-    
     NSURL *standardizedBaseURL = [baseURL URLByStandardizingPath];
-    NSLog(@"StandardizedBase: %@", standardizedBaseURL);
     
     _directory = [NSURL fileURLWithPath:[NSUUID UUID].UUIDString isDirectory:YES relativeToURL:standardizedBaseURL];
-    NSLog(@"Directory: %@",_directory);
-    //_directory = [NSURL fileURLWithPath:[NSHomeDirectory() stringByAppendingPathComponent:[NSUUID UUID].UUIDString] isDirectory:YES];
     
     BOOL success = [[NSFileManager defaultManager] createDirectoryAtURL:_directory withIntermediateDirectories:YES attributes:nil error:nil];
     XCTAssertTrue(success, @"Create log directory");
@@ -109,8 +104,6 @@
     [self logJsonObject:jsonObject];
     
     NSURL *url = [_dataLogger currentLogFileURL];
-    NSLog(@"ROLLOVER URL: %@", url);
-    NSLog(@"PATH URL: %@", [url path]);
     XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:[url path]]);
     
     [_dataLogger finishCurrentLog];
@@ -245,11 +238,11 @@
         
         NSArray *needUpload = [self logsUploaded:NO withError:&error];
         NSURL *needUploadedURLOne = [needUpload objectAtIndex:0];
-        NSString *needUploadStringOne = [needUploadedURLOne absoluteString];
+        NSString *needUploadStringOne = [[needUploadedURLOne lastPathComponent] stringByDeletingPathExtension];
         NSLog(@"Need Upload One: %@", needUploadStringOne);
         
         NSURL *needUploadURLTwo = [needUpload objectAtIndex:1];
-        NSString *needUploadSTringTwo = [needUploadURLTwo absoluteString];
+        NSString *needUploadSTringTwo = [[needUploadURLTwo lastPathComponent] stringByDeletingPathExtension];
         NSLog(@"Need Upload Two: %@", needUploadSTringTwo);
         
         XCTAssertNil(error);
@@ -266,27 +259,27 @@
         XCTAssertEqual(uploaded.count, 1);
         
         NSURL *uploadedURL = [uploaded objectAtIndex:0];
-        NSString *uploadedAbsoluteString = [uploadedURL absoluteString];
-        NSLog(@"Uploaded: %@", uploadedAbsoluteString);
+        NSString *uploadedFileName = [[uploadedURL lastPathComponent] stringByDeletingPathExtension];
+        NSLog(@"Uploaded: %@", uploadedFileName);
         
         NSURL *finishedURL = [_finishedLogFiles objectAtIndex:0];
-        NSString *finishedAbsoluteString = [finishedURL absoluteString];
-        NSLog(@"Finished: %@", finishedAbsoluteString);
+        NSString *finishedFileName = [[finishedURL lastPathComponent] stringByDeletingPathExtension];
+        NSLog(@"Finished: %@", finishedFileName);
         
-        XCTAssert([uploadedAbsoluteString isEqualToString: finishedAbsoluteString]);
+        XCTAssert([uploadedFileName isEqualToString: finishedFileName]);
         
         NSArray *needUpload = [self logsUploaded:NO withError:&error];
         XCTAssertNil(error);
         
         NSURL *needUploadedURL = [needUpload objectAtIndex:0];
-        NSString *needUploadAbsoluteString = [needUploadedURL absoluteString];
-        NSLog(@"Needs Upload: %@", needUploadAbsoluteString);
+        NSString *needUploadedFileName = [[needUploadedURL lastPathComponent] stringByDeletingPathExtension];
+        NSLog(@"Needs Upload: %@", needUploadedFileName);
         
         NSURL *notFinishedURL = [_finishedLogFiles objectAtIndex:1];
-        NSString *notFishedAbsoluteString = [notFinishedURL absoluteString];
-        NSLog(@"Not Finished: %@", notFishedAbsoluteString);
+        NSString *notFinishedFileName = [[notFinishedURL lastPathComponent] stringByDeletingPathExtension];
+        NSLog(@"Not Finished: %@", notFinishedFileName);
         
-        XCTAssert([needUploadAbsoluteString isEqualToString:notFishedAbsoluteString]);
+        XCTAssert([needUploadedFileName isEqualToString:notFinishedFileName]);
     }
 }
 
