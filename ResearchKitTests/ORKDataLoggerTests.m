@@ -109,6 +109,8 @@
     [self logJsonObject:jsonObject];
     
     NSURL *url = [_dataLogger currentLogFileURL];
+    NSLog(@"ROLLOVER URL: %@", url);
+    NSLog(@"PATH URL: %@", [url path]);
     XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:[url path]]);
     
     [_dataLogger finishCurrentLog];
@@ -242,6 +244,14 @@
         XCTAssertEqual(uploaded.count, 0);
         
         NSArray *needUpload = [self logsUploaded:NO withError:&error];
+        NSURL *needUploadedURLOne = [needUpload objectAtIndex:0];
+        NSString *needUploadStringOne = [needUploadedURLOne absoluteString];
+        NSLog(@"Need Upload One: %@", needUploadStringOne);
+        
+        NSURL *needUploadURLTwo = [needUpload objectAtIndex:1];
+        NSString *needUploadSTringTwo = [needUploadURLTwo absoluteString];
+        NSLog(@"Need Upload Two: %@", needUploadSTringTwo);
+        
         XCTAssertNil(error);
         XCTAssertEqual(needUpload.count, 2);
     }
@@ -257,24 +267,25 @@
         
         NSURL *uploadedURL = [uploaded objectAtIndex:0];
         NSString *uploadedAbsoluteString = [uploadedURL absoluteString];
+        NSLog(@"Uploaded: %@", uploadedAbsoluteString);
         
         NSURL *finishedURL = [_finishedLogFiles objectAtIndex:0];
         NSString *finishedAbsoluteString = [finishedURL absoluteString];
-        
-        
-        NSLog(@"Uploaded: %@", uploadedAbsoluteString);
         NSLog(@"Finished: %@", finishedAbsoluteString);
+        
         XCTAssert([uploadedAbsoluteString isEqualToString: finishedAbsoluteString]);
         
         NSArray *needUpload = [self logsUploaded:NO withError:&error];
         XCTAssertNil(error);
         
-        
         NSURL *needUploadedURL = [needUpload objectAtIndex:0];
         NSString *needUploadAbsoluteString = [needUploadedURL absoluteString];
+        NSLog(@"Needs Upload: %@", needUploadAbsoluteString);
         
         NSURL *notFinishedURL = [_finishedLogFiles objectAtIndex:1];
         NSString *notFishedAbsoluteString = [notFinishedURL absoluteString];
+        NSLog(@"Not Finished: %@", notFishedAbsoluteString);
+        
         XCTAssert([needUploadAbsoluteString isEqualToString:notFishedAbsoluteString]);
     }
 }
