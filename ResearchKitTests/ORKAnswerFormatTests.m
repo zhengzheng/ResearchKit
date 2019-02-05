@@ -208,14 +208,21 @@
 
 - (void)testScaleAnswerFormat{
     
-    XCTAssertNoThrow([ORKAnswerFormat scaleAnswerFormatWithMaximumValue:100
-                                                           minimumValue:0
-                                                           defaultValue:10
-                                                                   step:10
-                                                               vertical:YES
-                                                maximumValueDescription:@"MAX"
-                                                minimumValueDescription:@"MIN"],
-                     @"Should not throw any exception");
+    ORKScaleAnswerFormat *answerFormat = [ORKAnswerFormat scaleAnswerFormatWithMaximumValue:100
+                                                                               minimumValue:0
+                                                                               defaultValue:10
+                                                                                       step:10
+                                                                                   vertical:YES
+                                                                    maximumValueDescription:@"MAX"
+                                                                    minimumValueDescription:@"MIN"];
+    
+    XCTAssertEqual([answerFormat maximum], 100);
+    XCTAssertEqual([answerFormat minimum], 0);
+    XCTAssertEqual([answerFormat defaultValue], 10);
+    XCTAssertEqual([answerFormat step], 10);
+    XCTAssertEqual([answerFormat isVertical], YES);
+    XCTAssertEqual([answerFormat maximumValueDescription], @"MAX");
+    XCTAssertEqual([answerFormat minimumValueDescription], @"MIN");
     
     XCTAssertThrowsSpecificNamed([ORKAnswerFormat scaleAnswerFormatWithMaximumValue:25
                                                                        minimumValue:50
