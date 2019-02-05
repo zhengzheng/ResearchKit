@@ -239,11 +239,9 @@
         NSArray *needUpload = [self logsUploaded:NO withError:&error];
         NSURL *needUploadedURLOne = [needUpload objectAtIndex:0];
         NSString *needUploadStringOne = [[needUploadedURLOne lastPathComponent] stringByDeletingPathExtension];
-        NSLog(@"Need Upload One: %@", needUploadStringOne);
         
         NSURL *needUploadURLTwo = [needUpload objectAtIndex:1];
         NSString *needUploadSTringTwo = [[needUploadURLTwo lastPathComponent] stringByDeletingPathExtension];
-        NSLog(@"Need Upload Two: %@", needUploadSTringTwo);
         
         XCTAssertNil(error);
         XCTAssertEqual(needUpload.count, 2);
@@ -260,11 +258,9 @@
         
         NSURL *uploadedURL = [uploaded objectAtIndex:0];
         NSString *uploadedFileName = [[uploadedURL lastPathComponent] stringByDeletingPathExtension];
-        NSLog(@"Uploaded: %@", uploadedFileName);
         
         NSURL *finishedURL = [_finishedLogFiles objectAtIndex:0];
         NSString *finishedFileName = [[finishedURL lastPathComponent] stringByDeletingPathExtension];
-        NSLog(@"Finished: %@", finishedFileName);
         
         XCTAssert([uploadedFileName isEqualToString: finishedFileName]);
         
@@ -273,11 +269,9 @@
         
         NSURL *needUploadedURL = [needUpload objectAtIndex:0];
         NSString *needUploadedFileName = [[needUploadedURL lastPathComponent] stringByDeletingPathExtension];
-        NSLog(@"Needs Upload: %@", needUploadedFileName);
         
         NSURL *notFinishedURL = [_finishedLogFiles objectAtIndex:1];
         NSString *notFinishedFileName = [[notFinishedURL lastPathComponent] stringByDeletingPathExtension];
-        NSLog(@"Not Finished: %@", notFinishedFileName);
         
         XCTAssert([needUploadedFileName isEqualToString:notFinishedFileName]);
     }
