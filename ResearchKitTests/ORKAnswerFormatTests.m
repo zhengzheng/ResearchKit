@@ -359,19 +359,23 @@
     
 }
 
-- (void) testValuePickerAnswerFormat{
+- (void) testMultipleValuePickerAnswerFormat{
     ORKTextChoice *choiceOne = [ORKTextChoice choiceWithText:@"Choice One" value: [NSNumber numberWithInteger:1]];
     ORKTextChoice *choiceTwo = [ORKTextChoice choiceWithText:@"Choice Two" value: [NSNumber numberWithInteger:2]];
+    ORKTextChoice *choiceThree = [ORKTextChoice choiceWithText:@"Choice Two" value: [NSNumber numberWithInteger:3]];
+    ORKTextChoice *choiceFour = [ORKTextChoice choiceWithText:@"Choice Two" value: [NSNumber numberWithInteger:4]];
     
-    NSArray *choices = [NSArray arrayWithObjects:choiceOne, choiceTwo, nil];
-    ORKValuePickerAnswerFormat *answerFormat = [ORKAnswerFormat valuePickerAnswerFormatWithTextChoices:choices];
+    NSArray *firstChoices = [NSArray arrayWithObjects:choiceOne, choiceTwo, nil];
+    NSArray *secondChoices = [NSArray arrayWithObjects:choiceThree, choiceFour, nil];
     
-    XCTAssertEqual([[[answerFormat textChoices] objectAtIndex:0] value], [NSNumber numberWithInteger:1]);
-    XCTAssertEqual([[[answerFormat textChoices] objectAtIndex:1] value], [NSNumber numberWithInteger:2]);
+    ORKValuePickerAnswerFormat *valuePickerOne = [ORKAnswerFormat valuePickerAnswerFormatWithTextChoices:firstChoices];
+    ORKValuePickerAnswerFormat *valuePickerTwo = [ORKAnswerFormat valuePickerAnswerFormatWithTextChoices:secondChoices];
     
-    NSArray *wrongChoices = [NSArray arrayWithObjects:@"Wrong Choice One", @"Wrong Choice Two", nil];
-    XCTAssertThrows([ORKAnswerFormat valuePickerAnswerFormatWithTextChoices:wrongChoices]);
+    NSArray *valuePickerFormats = [NSArray arrayWithObjects:valuePickerOne, valuePickerTwo, nil];
+    ORKMultipleValuePickerAnswerFormat *multiplePickerAnswerFormat = [ORKAnswerFormat multipleValuePickerAnswerFormatWithValuePickers:valuePickerFormats];
     
+    XCTAssertEqualObjects([valuePickerFormats objectAtIndex:0], valuePickerOne);
+    XCTAssertEqualObjects([valuePickerFormats objectAtIndex:1], valuePickerTwo);
 }
 
 @end
