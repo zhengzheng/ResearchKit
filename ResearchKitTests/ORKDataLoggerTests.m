@@ -49,8 +49,15 @@
 
 - (void)setUp {
     [super setUp];
+    NSURL *baseURL = [NSURL fileURLWithPath:NSHomeDirectory()];
+    NSLog(@"Base: %@", baseURL);
     
-    _directory = [NSURL fileURLWithPath:[NSHomeDirectory() stringByAppendingPathComponent:[NSUUID UUID].UUIDString] isDirectory:YES];
+    NSURL *standardizedBaseURL = [baseURL URLByStandardizingPath];
+    NSLog(@"StandardizedBase: %@", standardizedBaseURL);
+    
+    _directory = [NSURL fileURLWithPath:[NSUUID UUID].UUIDString isDirectory:YES relativeToURL:standardizedBaseURL];
+    NSLog(@"Directory: %@",_directory);
+    //_directory = [NSURL fileURLWithPath:[NSHomeDirectory() stringByAppendingPathComponent:[NSUUID UUID].UUIDString] isDirectory:YES];
     
     BOOL success = [[NSFileManager defaultManager] createDirectoryAtURL:_directory withIntermediateDirectories:YES attributes:nil error:nil];
     XCTAssertTrue(success, @"Create log directory");
@@ -247,11 +254,28 @@
         NSArray *uploaded = [self logsUploaded:YES withError:&error];
         XCTAssertNil(error);
         XCTAssertEqual(uploaded.count, 1);
-        XCTAssertEqualObjects(uploaded, @[_finishedLogFiles[0]]);
+        
+        NSURL *uploadedURL = [uploaded objectAtIndex:0];
+        NSString *uploadedAbsoluteString = [uploadedURL absoluteString];
+        
+        NSURL *finishedURL = [_finishedLogFiles objectAtIndex:0];
+        NSString *finishedAbsoluteString = [finishedURL absoluteString];
+        
+        
+        NSLog(@"Uploaded: %@", uploadedAbsoluteString);
+        NSLog(@"Finished: %@", finishedAbsoluteString);
+        XCTAssert([uploadedAbsoluteString isEqualToString: finishedAbsoluteString]);
         
         NSArray *needUpload = [self logsUploaded:NO withError:&error];
         XCTAssertNil(error);
-        XCTAssertEqualObjects(needUpload, @[_finishedLogFiles[1]]);
+        
+        
+        NSURL *needUploadedURL = [needUpload objectAtIndex:0];
+        NSString *needUploadAbsoluteString = [needUploadedURL absoluteString];
+        
+        NSURL *notFinishedURL = [_finishedLogFiles objectAtIndex:1];
+        NSString *notFishedAbsoluteString = [notFinishedURL absoluteString];
+        XCTAssert([needUploadAbsoluteString isEqualToString:notFishedAbsoluteString]);
     }
 }
 
