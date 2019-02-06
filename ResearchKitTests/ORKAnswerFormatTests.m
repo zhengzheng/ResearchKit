@@ -359,4 +359,20 @@
     
 }
 
+- (void) testTextScaleAnswerFormat{
+
+    ORKTextChoice *choiceOne = [ORKTextChoice choiceWithText:@"Choice One" value:[NSNumber numberWithInteger:1]];
+    ORKTextChoice *choiceTwo = [ORKTextChoice choiceWithText:@"Choice Two" value:[NSNumber numberWithInteger:2]];
+    NSArray *choices = [NSArray arrayWithObjects:choiceOne, choiceTwo, nil];
+    ORKTextScaleAnswerFormat *answerFormat = [ORKAnswerFormat textScaleAnswerFormatWithTextChoices:choices defaultIndex:0 vertical:YES];
+    
+    XCTAssertEqual([[[answerFormat textChoices] objectAtIndex:0] value],[NSNumber numberWithInteger:1]);
+    XCTAssertEqual([[[answerFormat textChoices] objectAtIndex:1] value],[NSNumber numberWithInteger:2]);
+    XCTAssertEqual([[[answerFormat textChoices] objectAtIndex:0] text], @"Choice One");
+    XCTAssertEqual([[[answerFormat textChoices] objectAtIndex:1] text], @"Choice Two");
+    XCTAssertEqual([answerFormat defaultIndex], 0);
+    XCTAssertEqual([answerFormat isVertical], YES);
+    
+}
+
 @end
