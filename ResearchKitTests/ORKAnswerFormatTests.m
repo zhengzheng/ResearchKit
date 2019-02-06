@@ -359,4 +359,23 @@
     
 }
 
+- (void) testImageChoiceAnswerFormat{
+    
+    UIImage *imageOne = [UIImage imageNamed:@"ResearchKit⁩/Artwork.xcassets⁩/Active⁩/heart-fitness.imageset⁩/heart-fitness@2x.png"];
+    UIImage *imageTwo = [UIImage imageNamed:@"ResearchKit⁩/Artwork.xcassets⁩/Active⁩/heart-fitness.imageset⁩/heart-fitness@3x.png"];
+    
+    ORKImageChoice *choiceOne = [ORKImageChoice choiceWithNormalImage:imageOne selectedImage:imageOne text:@"Heart 2x" value:@"ImageTwo"];
+    ORKImageChoice *choiceTwo = [ORKImageChoice choiceWithNormalImage:imageTwo selectedImage:imageTwo text:@"Heart 3X" value:@"ImageOne"];
+    
+    NSArray *choices = [NSArray arrayWithObjects:choiceOne, choiceTwo, nil];
+    ORKImageChoiceAnswerFormat *answerChoice = [ORKAnswerFormat choiceAnswerFormatWithImageChoices:choices];
+    
+    XCTAssertEqual([[answerChoice imageChoices] objectAtIndex:0], choiceOne);
+    XCTAssertEqual([[answerChoice imageChoices] objectAtIndex:1], choiceTwo);
+    
+    NSArray *wrongChoices = [NSArray arrayWithObjects:@"Wrong Choice One", @"Wrong Choice Two", nil];
+    
+    XCTAssertThrowsSpecificNamed([ORKAnswerFormat choiceAnswerFormatWithImageChoices:wrongChoices], NSException, NSInvalidArgumentException, "Should throw NSInvalidArgumentException since choices were not ORKImageChoice objects");
+}
+
 @end
