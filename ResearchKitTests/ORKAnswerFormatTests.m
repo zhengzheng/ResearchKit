@@ -375,4 +375,13 @@
     
 }
 
+- (void) testBooleanAnswerFormat{
+    ORKBooleanAnswerFormat *answerFormat = [ORKAnswerFormat booleanAnswerFormatWithYesString:@"YES" noString:@"NO"];
+    
+    XCTAssertEqual([answerFormat yes], @"YES");
+    XCTAssertEqual([answerFormat no], @"NO");
+    
+    
+}
+
 @end
