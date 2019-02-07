@@ -375,4 +375,32 @@
     
 }
 
+- (void) testNumericAnswerFormat{
+    
+    
+    ORKNumericAnswerFormat *answerFormatWithIntegerStyle = [[ORKNumericAnswerFormat alloc] initWithStyle:ORKNumericAnswerStyleInteger
+                                                                                    unit:@"IDK"
+                                                                                 minimum:@(0)
+                                                                                 maximum:@(100)
+                                                                   maximumFractionDigits:@(0)];
+    
+    XCTAssertEqual([answerFormatWithIntegerStyle style], ORKNumericAnswerStyleInteger);
+    XCTAssertEqual([answerFormatWithIntegerStyle unit], @"IDK");
+    XCTAssertEqual([answerFormatWithIntegerStyle minimum], @(0));
+    XCTAssertEqual([answerFormatWithIntegerStyle maximum], @(100));
+    XCTAssertEqual([answerFormatWithIntegerStyle maximumFractionDigits], @(0));
+    
+    
+    ORKNumericAnswerFormat *answerFormatWithDecimalStyle = [[ORKNumericAnswerFormat alloc] initWithStyle:ORKNumericAnswerStyleDecimal];
+    XCTAssertEqual([answerFormatWithDecimalStyle style ], ORKNumericAnswerStyleDecimal);
+    
+    XCTAssertThrowsSpecificNamed([[ORKNumericAnswerFormat alloc] initWithStyle:ORKNumericAnswerStyleInteger
+                                                                          unit:@"Meters"
+                                                                       minimum:@(50)
+                                                                       maximum:@(25)], NSException, NSInvalidArgumentException, @"Should throw NSInvalidArgumentException since max < min");
+    
+
+    
+}
+
 @end
