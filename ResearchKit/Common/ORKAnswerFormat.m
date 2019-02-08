@@ -1502,17 +1502,17 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
         _maximum = [maximum copy];
         _maximumFractionDigits = [maximumFractionDigits copy];
         
-        [self validateParameters];
+        
     }
+    
+    if ([_maximum compare: _minimum] == NSOrderedAscending) {
+        @throw [NSException exceptionWithName:NSInvalidArgumentException reason:[NSString stringWithFormat:@"Expect maximumValue larger than minimumValue"] userInfo:nil];
+    }
+    
     return self;
 }
 
 - (void)validateParameters {
-    [super validateParameters];
-    
-    if (_maximum < _minimum) {
-        @throw [NSException exceptionWithName:NSInvalidArgumentException reason:[NSString stringWithFormat:@"Expect maximumValue larger than minimumValue"] userInfo:nil];
-    }
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {

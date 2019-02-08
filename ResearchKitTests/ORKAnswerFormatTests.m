@@ -379,15 +379,15 @@
     
     
     ORKNumericAnswerFormat *answerFormatWithIntegerStyle = [[ORKNumericAnswerFormat alloc] initWithStyle:ORKNumericAnswerStyleInteger
-                                                                                    unit:@"IDK"
-                                                                                 minimum:@(0)
-                                                                                 maximum:@(100)
+                                                                                    unit:@"Units"
+                                                                                 minimum:[NSNumber numberWithInteger:0]
+                                                                                 maximum:[NSNumber numberWithInteger:100]
                                                                    maximumFractionDigits:@(0)];
     
     XCTAssertEqual([answerFormatWithIntegerStyle style], ORKNumericAnswerStyleInteger);
-    XCTAssertEqual([answerFormatWithIntegerStyle unit], @"IDK");
-    XCTAssertEqual([answerFormatWithIntegerStyle minimum], @(0));
-    XCTAssertEqual([answerFormatWithIntegerStyle maximum], @(100));
+    XCTAssertEqual([answerFormatWithIntegerStyle unit], @"Units");
+    XCTAssertEqual([answerFormatWithIntegerStyle minimum], [NSNumber numberWithInteger:0]);
+    XCTAssertEqual([answerFormatWithIntegerStyle maximum], [NSNumber numberWithInteger:100]);
     XCTAssertEqual([answerFormatWithIntegerStyle maximumFractionDigits], @(0));
     
     
@@ -395,11 +395,15 @@
     XCTAssertEqual([answerFormatWithDecimalStyle style ], ORKNumericAnswerStyleDecimal);
     
     XCTAssertThrowsSpecificNamed([[ORKNumericAnswerFormat alloc] initWithStyle:ORKNumericAnswerStyleInteger
-                                                                          unit:@"Meters"
-                                                                       minimum:@(50)
-                                                                       maximum:@(25)], NSException, NSInvalidArgumentException, @"Should throw NSInvalidArgumentException since max < min");
+                                                                          unit:@"Integers"
+                                                                       minimum:[NSNumber numberWithInteger:100]
+                                                                       maximum:[NSNumber numberWithInteger:0]], NSException, NSInvalidArgumentException, @"Should throw NSInvalidArgumentException since max < min");
     
-
+    
+    XCTAssertThrowsSpecificNamed([[ORKNumericAnswerFormat alloc] initWithStyle:ORKNumericAnswerStyleDecimal
+                                                                          unit:@"Doubles"
+                                                                       minimum:[NSNumber numberWithDouble:10.2]
+                                                                       maximum:[NSNumber numberWithDouble:10]], NSException, NSInvalidArgumentException, @"Should throw NSInvalidArgumentException since max < min");
     
 }
 
