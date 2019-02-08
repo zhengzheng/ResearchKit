@@ -375,6 +375,20 @@
     
 }
 
+- (void) testTimeOfDayAnswerFormat{
+    NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+    dateComponents.month = 01;
+    dateComponents.day = 24;
+    dateComponents.year = 1984;
+    
+    ORKTimeOfDayAnswerFormat *answerFormat = [ORKAnswerFormat timeOfDayAnswerFormatWithDefaultComponents:dateComponents];
+    
+    XCTAssertEqual([[answerFormat defaultComponents] month], 01);
+    XCTAssertEqual([[answerFormat defaultComponents] day], 24);
+    XCTAssertEqual([[answerFormat defaultComponents] year], 1984);
+    
+}
+
 - (void) testBooleanAnswerFormat{
     ORKBooleanAnswerFormat *answerFormat = [ORKAnswerFormat booleanAnswerFormatWithYesString:@"YES" noString:@"NO"];
     XCTAssertEqual([answerFormat yes], @"YES");
