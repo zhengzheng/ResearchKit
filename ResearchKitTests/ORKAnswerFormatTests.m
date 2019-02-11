@@ -206,7 +206,7 @@
     
 }
 
-- (void)testContinuousScaleAnswerFormat{
+- (void)testContinuousScaleAnswerFormat {
     
     XCTAssertThrowsSpecificNamed([ORKAnswerFormat continuousScaleAnswerFormatWithMaximumValue:10
                                                                                  minimumValue:100
@@ -269,7 +269,7 @@
     
 }
 
-- (void)testScaleAnswerFormat{
+- (void)testScaleAnswerFormat {
     
     ORKScaleAnswerFormat *answerFormat = [ORKAnswerFormat scaleAnswerFormatWithMaximumValue:100
                                                                                minimumValue:0
@@ -359,7 +359,7 @@
     
 }
 
-- (void) testTextScaleAnswerFormat{
+- (void)testTextScaleAnswerFormat {
 
     ORKTextChoice *choiceOne = [ORKTextChoice choiceWithText:@"Choice One" value:[NSNumber numberWithInteger:1]];
     ORKTextChoice *choiceTwo = [ORKTextChoice choiceWithText:@"Choice Two" value:[NSNumber numberWithInteger:2]];
@@ -375,7 +375,7 @@
     
 }
 
-- (void) testTimeOfDayAnswerFormat{
+- (void)testTimeOfDayAnswerFormat {
     NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
     dateComponents.month = 01;
     dateComponents.day = 24;
@@ -389,7 +389,7 @@
     
 }
 
-- (void) testBooleanAnswerFormat{
+- (void)testBooleanAnswerFormat {
     ORKBooleanAnswerFormat *answerFormat = [ORKAnswerFormat booleanAnswerFormatWithYesString:@"YES" noString:@"NO"];
     XCTAssertEqual([answerFormat yes], @"YES");
     XCTAssertEqual([answerFormat no], @"NO");
