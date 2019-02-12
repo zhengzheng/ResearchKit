@@ -388,7 +388,7 @@
     XCTAssertEqual([[answerFormat defaultComponents] year], 1984);
 }
 
-- (void) testNumericAnswerFormat{
+- (void)testNumericAnswerFormat {
     
     ORKNumericAnswerFormat *answerFormatWithIntegerStyle = [[ORKNumericAnswerFormat alloc] initWithStyle:ORKNumericAnswerStyleInteger
                                                                                     unit:@"Units"
