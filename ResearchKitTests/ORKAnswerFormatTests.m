@@ -395,4 +395,25 @@
     XCTAssertEqual([answerFormat no], @"NO");
 }
 
+- (void)testWeightAnswerFormat {
+    ORKWeightAnswerFormat *answerFormat = [ORKAnswerFormat weightAnswerFormatWithMeasurementSystem:ORKMeasurementSystemMetric
+                                                                                  numericPrecision:ORKNumericPrecisionHigh
+                                                                                      minimumValue:0
+                                                                                      maximumValue:300
+                                                                                      defaultValue: 150];
+    
+    
+//    if ((defaultValue != ORKDoubleDefaultValue) && ((defaultValue < minimumValue) || (defaultValue > maximumValue)))
+    
+    XCTAssertThrowsSpecificNamed([ORKAnswerFormat weightAnswerFormatWithMeasurementSystem:ORKMeasurementSystemMetric
+                                                                         numericPrecision:ORKNumericPrecisionHigh
+                                                                             minimumValue:100
+                                                                             maximumValue:50
+                                                                             defaultValue:25],
+                                 NSException,
+                                 NSInvalidArgumentException,
+                                 @"Should throw NSInvalidArgumentException since min > max");
+    
+}
+
 @end
