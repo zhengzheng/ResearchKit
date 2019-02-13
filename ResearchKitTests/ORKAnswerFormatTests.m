@@ -395,4 +395,59 @@
     XCTAssertEqual([answerFormat no], @"NO");
 }
 
+- (void)testDateAnswerFornat {
+    
+    NSDateComponents *earlierDateComponents = [[NSDateComponents alloc] init];
+    [earlierDateComponents setDay: 24];
+    [earlierDateComponents setMonth: 1];
+    [earlierDateComponents setYear: 1984];
+    NSDate *earlierDate = [[NSCalendar currentCalendar] dateFromComponents: earlierDateComponents];
+    
+    NSDate *middleDate = [NSDate date];
+    
+    NSDateComponents *laterDateComponents = [[NSDateComponents alloc] init];
+    [laterDateComponents setDay: 01];
+    [laterDateComponents setMonth: 01];
+    [laterDateComponents setYear: 3000];
+    NSDate *laterDate = [[NSCalendar currentCalendar] dateFromComponents: laterDateComponents];
+    
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    
+    ORKDateAnswerFormat *answerFormat = [ORKAnswerFormat dateAnswerFormatWithDefaultDate:middleDate
+                                                                             minimumDate:earlierDate
+                                                                             maximumDate:laterDate
+                                                                                calendar:calendar];
+    
+    XCTAssertEqual([answerFormat minimumDate], earlierDate);
+    XCTAssertEqual([answerFormat defaultDate], middleDate);
+    XCTAssertEqual([answerFormat maximumDate], laterDate);
+    
+    XCTAssertThrowsSpecificNamed([ORKAnswerFormat dateAnswerFormatWithDefaultDate:middleDate
+                                                                      minimumDate:laterDate
+                                                                      maximumDate:earlierDate
+                                                                         calendar:calendar],
+                                 NSException,
+                                 NSInvalidArgumentException,
+                                 @"Should throw NSInvalidArgumentException since maximum date is less than minimum date");
+    
+    XCTAssertThrowsSpecificNamed([ORKAnswerFormat dateAnswerFormatWithDefaultDate:laterDate
+                                                                      minimumDate:earlierDate
+                                                                      maximumDate:middleDate
+                                                                         calendar:calendar],
+                                 NSException,
+                                 NSInvalidArgumentException,
+                                 @"Should throw NSInvalidArgumentException since default date is more than maximum date");
+    
+    XCTAssertThrowsSpecificNamed([ORKAnswerFormat dateAnswerFormatWithDefaultDate:earlierDate
+                                                                      minimumDate:middleDate
+                                                                      maximumDate:laterDate
+                                                                         calendar:calendar],
+                                 NSException,
+                                 NSInvalidArgumentException,
+                                 @"Should throw NSInvalidArgumentException since default date is less than minimum date");
+    
+}
+
+
+
 @end

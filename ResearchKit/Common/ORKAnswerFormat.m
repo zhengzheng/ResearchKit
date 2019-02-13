@@ -1352,8 +1352,25 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
         _maximumDate = [maximum copy];
         _calendar = [calendar copy];
         _minuteInterval = 1;
+        [self validateParameters];
     }
     return self;
+}
+
+- (void)validateParameters {
+    if([_minimumDate compare:_maximumDate] == NSOrderedDescending){
+        @throw [NSException exceptionWithName:NSInvalidArgumentException
+                                       reason:[NSString stringWithFormat:@"Minimum date should be before the maximum date"]
+                                     userInfo:nil];
+    }else if([_defaultDate compare:_minimumDate] == NSOrderedAscending){
+        @throw [NSException exceptionWithName:NSInvalidArgumentException
+                                       reason:[NSString stringWithFormat:@"Default date should not be less than the minumum date"]
+                                     userInfo:nil];
+    }else if([_defaultDate compare:_maximumDate] == NSOrderedDescending){
+        @throw [NSException exceptionWithName:NSInvalidArgumentException
+                                       reason:[NSString stringWithFormat:@"Default date should not be more than the maximum date"]
+                                     userInfo:nil];
+    }
 }
 
 - (BOOL)isEqual:(id)object {
