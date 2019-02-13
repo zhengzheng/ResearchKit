@@ -395,4 +395,9 @@
     XCTAssertEqual([answerFormat no], @"NO");
 }
 
+- (void)testHeightAnswerFormat {
+    ORKHeightAnswerFormat *answerFormat = [ORKAnswerFormat heightAnswerFormatWithMeasurementSystem:ORKMeasurementSystemMetric];
+    XCTAssert([answerFormat measurementSystem] == ORKMeasurementSystemMetric);
+}
+
 @end
