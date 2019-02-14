@@ -395,6 +395,31 @@
     XCTAssertEqual([answerFormat no], @"NO");
 }
 
+- (void)testHeightAnswerFormat {
+    ORKHeightAnswerFormat *answerFormat = [ORKAnswerFormat heightAnswerFormatWithMeasurementSystem:ORKMeasurementSystemMetric];
+    XCTAssert([answerFormat measurementSystem] == ORKMeasurementSystemMetric);
+}
+
+- (void)testTimeIntervalAnswerFormat {
+    NSTimeInterval defaultTimeInterval = 40;
+    
+    ORKTimeIntervalAnswerFormat *answerFormat = [ORKAnswerFormat timeIntervalAnswerFormatWithDefaultInterval:defaultTimeInterval
+                                                                                                        step:1];
+    
+    XCTAssertEqual([answerFormat defaultInterval], defaultTimeInterval);
+    XCTAssertEqual([answerFormat step], 1);
+    
+    XCTAssertThrowsSpecificNamed([ORKAnswerFormat timeIntervalAnswerFormatWithDefaultInterval:defaultTimeInterval step:-1],
+                                 NSException,
+                                 NSInvalidArgumentException,
+                                 @"Should throw NSInvalidArgumentException since step is lower than the recommended minimuim: 0");
+    
+    XCTAssertThrowsSpecificNamed([ORKAnswerFormat timeIntervalAnswerFormatWithDefaultInterval:defaultTimeInterval step:31],
+                                 NSException,
+                                 NSInvalidArgumentException,
+                                 @"Should throw NSInvalidArgumentException since step is lower than the recommended maximum: 30");
+}
+
 - (void)testDateAnswerFornat {
     
     NSDateComponents *earlierDateComponents = [[NSDateComponents alloc] init];
@@ -447,7 +472,5 @@
                                  @"Should throw NSInvalidArgumentException since default date is less than minimum date");
     
 }
-
-
 
 @end
