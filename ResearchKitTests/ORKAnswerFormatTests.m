@@ -416,6 +416,13 @@
                                                                           unit:@"Doubles"
                                                                        minimum:[NSNumber numberWithDouble:10.2]
                                                                        maximum:[NSNumber numberWithDouble:10]], NSException, NSInvalidArgumentException, @"Should throw NSInvalidArgumentException since max < min");
+    
+    XCTAssertNoThrowSpecificNamed([[ORKNumericAnswerFormat alloc] initWithStyle:ORKNumericAnswerStyleInteger
+                                                                           unit:@"Integers"
+                                                                        minimum:NULL
+                                                                        maximum:NULL],
+                                  NSException, NSInvalidArgumentException,
+                                  @"Should not throw exception for null values");
 }
 
 - (void)testBooleanAnswerFormat {
