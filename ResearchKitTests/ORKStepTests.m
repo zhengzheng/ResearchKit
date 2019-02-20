@@ -161,6 +161,25 @@
     XCTAssertEqualObjects([pageStep stepWithIdentifier:@"step3"], step3);
 }
 
+- (void)testInstructionStep {
+    ORKInstructionStep *step = [[ORKInstructionStep alloc] initWithIdentifier:@"step"];
+    
+    [step setDetailText:@"DETAILS"];
+    NSAttributedString *attributeString = [[NSAttributedString alloc] initWithString:@"ATTRIBUTE"];
+    [step setAttributedDetailText:attributeString];
+    [step setFootnote:@"FOOTNOTE"];
+    [step setImage:NULL];
+    [step setAuxiliaryImage:NULL];
+    [step setIconImage:NULL];
+    
+    XCTAssert([step.detailText isEqualToString:@"DETAILS"]);
+    XCTAssertEqual(step.attributedDetailText, attributeString);
+    XCTAssert([step.footnote isEqualToString:@"FOOTNOTE"]);
+    XCTAssertNil(step.image);
+    XCTAssertNil(step.auxiliaryImage);
+    XCTAssertNil(step.iconImage);
+}
+
 @end
 
 
