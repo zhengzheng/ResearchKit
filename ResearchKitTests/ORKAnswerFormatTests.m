@@ -395,4 +395,12 @@
     XCTAssertEqual([answerFormat no], @"NO");
 }
 
+- (void)testTextAnswerFormat {
+    ORKTextAnswerFormat *answerFormat = [ORKAnswerFormat textAnswerFormatWithMaximumLength:10];
+    XCTAssertEqual(answerFormat.maximumLength, 10);
+    
+    ORKTextAnswerFormat *noMaxAnswerFormat = [ORKAnswerFormat textAnswerFormat];
+    XCTAssertEqual(noMaxAnswerFormat.maximumLength, 0);
+}
+
 @end
