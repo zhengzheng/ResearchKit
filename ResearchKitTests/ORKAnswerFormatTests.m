@@ -402,8 +402,11 @@
                                                                                       maximumValue:300
                                                                                       defaultValue: 150];
     
-    
-//    if ((defaultValue != ORKDoubleDefaultValue) && ((defaultValue < minimumValue) || (defaultValue > maximumValue)))
+    XCTAssertEqual(answerFormat.measurementSystem, ORKMeasurementSystemMetric);
+    XCTAssertEqual(answerFormat.numericPrecision, ORKNumericPrecisionHigh);
+    XCTAssertEqual(answerFormat.minimumValue, 0);
+    XCTAssertEqual(answerFormat.maximumValue, 300);
+    XCTAssertEqual(answerFormat.defaultValue, 150);
     
     XCTAssertThrowsSpecificNamed([ORKAnswerFormat weightAnswerFormatWithMeasurementSystem:ORKMeasurementSystemMetric
                                                                          numericPrecision:ORKNumericPrecisionHigh
