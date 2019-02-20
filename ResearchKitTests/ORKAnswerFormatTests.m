@@ -364,6 +364,7 @@
     ORKTextChoice *choiceOne = [ORKTextChoice choiceWithText:@"Choice One" value:[NSNumber numberWithInteger:1]];
     ORKTextChoice *choiceTwo = [ORKTextChoice choiceWithText:@"Choice Two" value:[NSNumber numberWithInteger:2]];
 
+    NSArray *choices = @[choiceOne, choiceTwo];
     ORKTextScaleAnswerFormat *answerFormat = [ORKAnswerFormat textScaleAnswerFormatWithTextChoices:choices defaultIndex:0 vertical:YES];
     
     XCTAssertEqual([[[answerFormat textChoices] objectAtIndex:0] value],[NSNumber numberWithInteger:1]);
@@ -419,7 +420,7 @@
                                  NSInvalidArgumentException,
                                  @"Should throw NSInvalidArgumentException since step is lower than the recommended maximum: 30");
 }
-- (void) testImageChoiceAnswerFormat{
+- (void)testImageChoiceAnswerFormat {
     
     UIImage *imageOne = [UIImage imageNamed:@"ResearchKit⁩/Artwork.xcassets⁩/Active⁩/heart-fitness.imageset⁩/heart-fitness@2x.png"];
     UIImage *imageTwo = [UIImage imageNamed:@"ResearchKit⁩/Artwork.xcassets⁩/Active⁩/heart-fitness.imageset⁩/heart-fitness@3x.png"];
