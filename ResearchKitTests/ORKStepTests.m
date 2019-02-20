@@ -161,6 +161,13 @@
     XCTAssertEqualObjects([pageStep stepWithIdentifier:@"step3"], step3);
 }
 
+- (void)testStep {
+    ORKStep *step = [[ORKStep alloc] initWithIdentifier:@"STEP"];
+    XCTAssert([step.identifier isEqualToString:@"STEP"]);
+    
+    XCTAssertThrowsSpecificNamed([[ORKStep alloc] initWithIdentifier:NULL], NSException, NSInvalidArgumentException);
+}
+
 @end
 
 
