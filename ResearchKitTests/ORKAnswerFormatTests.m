@@ -206,7 +206,7 @@
     
 }
 
-- (void)testContinuousScaleAnswerFormat{
+- (void)testContinuousScaleAnswerFormat {
     
     XCTAssertThrowsSpecificNamed([ORKAnswerFormat continuousScaleAnswerFormatWithMaximumValue:10
                                                                                  minimumValue:100
@@ -269,7 +269,7 @@
     
 }
 
-- (void)testScaleAnswerFormat{
+- (void)testScaleAnswerFormat {
     
     ORKScaleAnswerFormat *answerFormat = [ORKAnswerFormat scaleAnswerFormatWithMaximumValue:100
                                                                                minimumValue:0
@@ -359,7 +359,7 @@
     
 }
 
-- (void) testTextScaleAnswerFormat{
+- (void)testTextScaleAnswerFormat {
 
     ORKTextChoice *choiceOne = [ORKTextChoice choiceWithText:@"Choice One" value:[NSNumber numberWithInteger:1]];
     ORKTextChoice *choiceTwo = [ORKTextChoice choiceWithText:@"Choice Two" value:[NSNumber numberWithInteger:2]];
@@ -375,6 +375,50 @@
     
 }
 
+- (void)testTimeOfDayAnswerFormat {
+    NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+    dateComponents.month = 01;
+    dateComponents.day = 24;
+    dateComponents.year = 1984;
+    
+    ORKTimeOfDayAnswerFormat *answerFormat = [ORKAnswerFormat timeOfDayAnswerFormatWithDefaultComponents:dateComponents];
+    
+    XCTAssertEqual([[answerFormat defaultComponents] month], 01);
+    XCTAssertEqual([[answerFormat defaultComponents] day], 24);
+    XCTAssertEqual([[answerFormat defaultComponents] year], 1984);
+    
+}
+
+- (void)testBooleanAnswerFormat {
+    ORKBooleanAnswerFormat *answerFormat = [ORKAnswerFormat booleanAnswerFormatWithYesString:@"YES" noString:@"NO"];
+    XCTAssertEqual([answerFormat yes], @"YES");
+    XCTAssertEqual([answerFormat no], @"NO");
+}
+
+- (void)testHeightAnswerFormat {
+    ORKHeightAnswerFormat *answerFormat = [ORKAnswerFormat heightAnswerFormatWithMeasurementSystem:ORKMeasurementSystemMetric];
+    XCTAssert([answerFormat measurementSystem] == ORKMeasurementSystemMetric);
+}
+
+- (void)testTimeIntervalAnswerFormat {
+    NSTimeInterval defaultTimeInterval = 40;
+    
+    ORKTimeIntervalAnswerFormat *answerFormat = [ORKAnswerFormat timeIntervalAnswerFormatWithDefaultInterval:defaultTimeInterval
+                                                                                                        step:1];
+    
+    XCTAssertEqual([answerFormat defaultInterval], defaultTimeInterval);
+    XCTAssertEqual([answerFormat step], 1);
+    
+    XCTAssertThrowsSpecificNamed([ORKAnswerFormat timeIntervalAnswerFormatWithDefaultInterval:defaultTimeInterval step:-1],
+                                 NSException,
+                                 NSInvalidArgumentException,
+                                 @"Should throw NSInvalidArgumentException since step is lower than the recommended minimuim: 0");
+    
+    XCTAssertThrowsSpecificNamed([ORKAnswerFormat timeIntervalAnswerFormatWithDefaultInterval:defaultTimeInterval step:31],
+                                 NSException,
+                                 NSInvalidArgumentException,
+                                 @"Should throw NSInvalidArgumentException since step is lower than the recommended maximum: 30");
+}
 - (void) testImageChoiceAnswerFormat{
     
     UIImage *imageOne = [UIImage imageNamed:@"ResearchKit⁩/Artwork.xcassets⁩/Active⁩/heart-fitness.imageset⁩/heart-fitness@2x.png"];
