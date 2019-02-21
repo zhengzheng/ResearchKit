@@ -479,7 +479,9 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
                                               @"ORKOrderedTask.progressLabelColor",
                                               @"ORKRegistrationStep.passcodeRules",
                                               @"ORKSpeechRecognitonResult.transcription", // SFTranscription
-                                              @"ORKAmslerGridResult.image"
+                                              @"ORKAmslerGridResult.image",
+                                              @"ORKTextChoice.detailTextAttributedString",
+                                              @"ORKTextChoice.primaryTextAttributedString"
                                               ];
     NSArray *allowedUnTouchedKeys = @[@"_class"];
     
