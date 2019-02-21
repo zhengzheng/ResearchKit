@@ -359,7 +359,7 @@
     
 }
 
-- (void) testValuePickerAnswerFormat{
+- (void)testValuePickerAnswerFormat {
     
     ORKTextChoice *choiceOne, *choiceTwo;
     
