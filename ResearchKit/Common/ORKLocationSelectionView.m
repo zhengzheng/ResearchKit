@@ -177,7 +177,7 @@ static const NSString *FormattedAddressLines = @"FormattedAddressLines";
     annotation.coordinate = touchMapCoordinate;
     [_mapView addAnnotation:annotation];
     
-    ORKLocation *pinLocation = [[ORKLocation alloc] initWithCoordinate:touchMapCoordinate region:nil userInput:nil addressDictionary:nil];
+    ORKLocation *pinLocation = [[ORKLocation alloc] initWithCoordinate:touchMapCoordinate region:nil userInput:nil postalAddress:nil];
     [self setAnswer:pinLocation];
 }
 
@@ -355,7 +355,7 @@ static const NSString *FormattedAddressLines = @"FormattedAddressLines";
     
     if (location) {
         
-        if (!location.userInput || !location.region |!location.addressDictionary) {
+        if (!location.userInput || !location.region |!location.postalAddress) {
             // redo geo decoding if any of them is missing
             [self reverseGeocodeAndDisplay:location];
             return;
@@ -377,7 +377,7 @@ static const NSString *FormattedAddressLines = @"FormattedAddressLines";
 
 - (void)updateMapWithLocation:(ORKLocation *)location {
     
-    MKPlacemark *placemark = location ? [[MKPlacemark alloc] initWithCoordinate:location.coordinate addressDictionary:location.addressDictionary] : nil;
+    MKPlacemark *placemark = location ? [[MKPlacemark alloc] initWithCoordinate:location.coordinate postalAddress:location.postalAddress] : nil;
     
     [_mapView removeAnnotations:_mapView.annotations];
     
@@ -446,7 +446,7 @@ static const NSString *FormattedAddressLines = @"FormattedAddressLines";
         [self reverseGeocodeAndDisplay:[[ORKLocation alloc] initWithCoordinate:userLocation.location.coordinate
                                                                         region:nil
                                                                      userInput:nil
-                                                             addressDictionary:@{}]];
+                                                                 postalAddress:nil]];
         _userLocationNeedsUpdate = NO;
     }
 }
