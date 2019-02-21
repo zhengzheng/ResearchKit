@@ -441,7 +441,26 @@
                                  NSException,
                                  NSInvalidArgumentException,
                                  @"Should throw NSInvalidArgumentException since min > max");
+
+}
+
+- (void)testMultipleValuePickerAnswerFormat {
+    ORKTextChoice *choiceOne = [ORKTextChoice choiceWithText:@"Choice One" value: [NSNumber numberWithInteger:1]];
+    ORKTextChoice *choiceTwo = [ORKTextChoice choiceWithText:@"Choice Two" value: [NSNumber numberWithInteger:2]];
+    ORKTextChoice *choiceThree = [ORKTextChoice choiceWithText:@"Choice Two" value: [NSNumber numberWithInteger:3]];
+    ORKTextChoice *choiceFour = [ORKTextChoice choiceWithText:@"Choice Two" value: [NSNumber numberWithInteger:4]];
     
+    NSArray *firstChoices = [NSArray arrayWithObjects:choiceOne, choiceTwo, nil];
+    NSArray *secondChoices = [NSArray arrayWithObjects:choiceThree, choiceFour, nil];
+    
+    ORKValuePickerAnswerFormat *valuePickerOne = [ORKAnswerFormat valuePickerAnswerFormatWithTextChoices:firstChoices];
+    ORKValuePickerAnswerFormat *valuePickerTwo = [ORKAnswerFormat valuePickerAnswerFormatWithTextChoices:secondChoices];
+    
+    NSArray *valuePickerFormats = [NSArray arrayWithObjects:valuePickerOne, valuePickerTwo, nil];
+    ORKMultipleValuePickerAnswerFormat *multiplePickerAnswerFormat = [[ORKMultipleValuePickerAnswerFormat alloc] initWithValuePickers:valuePickerFormats separator:@"S"];
+    
+    XCTAssertEqualObjects(multiplePickerAnswerFormat.valuePickers, valuePickerFormats);
+    XCTAssert([multiplePickerAnswerFormat.separator isEqualToString:@"S"]);
 }
 
 - (void)testValuePickerAnswerFormat {
