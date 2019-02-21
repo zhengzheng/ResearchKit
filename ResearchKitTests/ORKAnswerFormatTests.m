@@ -206,7 +206,7 @@
     
 }
 
-- (void)testContinuousScaleAnswerFormat{
+- (void)testContinuousScaleAnswerFormat {
     
     XCTAssertThrowsSpecificNamed([ORKAnswerFormat continuousScaleAnswerFormatWithMaximumValue:10
                                                                                  minimumValue:100
@@ -269,7 +269,7 @@
     
 }
 
-- (void)testScaleAnswerFormat{
+- (void)testScaleAnswerFormat {
     
     ORKScaleAnswerFormat *answerFormat = [ORKAnswerFormat scaleAnswerFormatWithMaximumValue:100
                                                                                minimumValue:0
@@ -357,6 +357,91 @@
                                  NSException, NSInvalidArgumentException,
                                  @"Should throw NSInvalidArgumentException since step count < 1");
     
+}
+
+- (void)testTextScaleAnswerFormat {
+
+    ORKTextChoice *choiceOne = [ORKTextChoice choiceWithText:@"Choice One" value:[NSNumber numberWithInteger:1]];
+    ORKTextChoice *choiceTwo = [ORKTextChoice choiceWithText:@"Choice Two" value:[NSNumber numberWithInteger:2]];
+    NSArray *choices = [NSArray arrayWithObjects:choiceOne, choiceTwo, nil];
+    ORKTextScaleAnswerFormat *answerFormat = [ORKAnswerFormat textScaleAnswerFormatWithTextChoices:choices defaultIndex:0 vertical:YES];
+    
+    XCTAssertEqual([[[answerFormat textChoices] objectAtIndex:0] value],[NSNumber numberWithInteger:1]);
+    XCTAssertEqual([[[answerFormat textChoices] objectAtIndex:1] value],[NSNumber numberWithInteger:2]);
+    XCTAssertEqual([[[answerFormat textChoices] objectAtIndex:0] text], @"Choice One");
+    XCTAssertEqual([[[answerFormat textChoices] objectAtIndex:1] text], @"Choice Two");
+    XCTAssertEqual([answerFormat defaultIndex], 0);
+    XCTAssertEqual([answerFormat isVertical], YES);
+    
+}
+
+- (void)testTimeOfDayAnswerFormat {
+    NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+    dateComponents.month = 01;
+    dateComponents.day = 24;
+    dateComponents.year = 1984;
+    
+    ORKTimeOfDayAnswerFormat *answerFormat = [ORKAnswerFormat timeOfDayAnswerFormatWithDefaultComponents:dateComponents];
+    
+    XCTAssertEqual([[answerFormat defaultComponents] month], 01);
+    XCTAssertEqual([[answerFormat defaultComponents] day], 24);
+    XCTAssertEqual([[answerFormat defaultComponents] year], 1984);
+    
+}
+
+- (void)testBooleanAnswerFormat {
+    ORKBooleanAnswerFormat *answerFormat = [ORKAnswerFormat booleanAnswerFormatWithYesString:@"YES" noString:@"NO"];
+    XCTAssertEqual([answerFormat yes], @"YES");
+    XCTAssertEqual([answerFormat no], @"NO");
+}
+
+- (void)testHeightAnswerFormat {
+    ORKHeightAnswerFormat *answerFormat = [ORKAnswerFormat heightAnswerFormatWithMeasurementSystem:ORKMeasurementSystemMetric];
+    XCTAssert([answerFormat measurementSystem] == ORKMeasurementSystemMetric);
+}
+
+- (void)testTimeIntervalAnswerFormat {
+    NSTimeInterval defaultTimeInterval = 40;
+    
+    ORKTimeIntervalAnswerFormat *answerFormat = [ORKAnswerFormat timeIntervalAnswerFormatWithDefaultInterval:defaultTimeInterval
+                                                                                                        step:1];
+    
+    XCTAssertEqual([answerFormat defaultInterval], defaultTimeInterval);
+    XCTAssertEqual([answerFormat step], 1);
+    
+    XCTAssertThrowsSpecificNamed([ORKAnswerFormat timeIntervalAnswerFormatWithDefaultInterval:defaultTimeInterval step:-1],
+                                 NSException,
+                                 NSInvalidArgumentException,
+                                 @"Should throw NSInvalidArgumentException since step is lower than the recommended minimuim: 0");
+    
+    XCTAssertThrowsSpecificNamed([ORKAnswerFormat timeIntervalAnswerFormatWithDefaultInterval:defaultTimeInterval step:31],
+                                 NSException,
+                                 NSInvalidArgumentException,
+                                 @"Should throw NSInvalidArgumentException since step is lower than the recommended maximum: 30");
+}
+
+- (void)testWeightAnswerFormat {
+    ORKWeightAnswerFormat *answerFormat = [ORKAnswerFormat weightAnswerFormatWithMeasurementSystem:ORKMeasurementSystemMetric
+                                                                                  numericPrecision:ORKNumericPrecisionHigh
+                                                                                      minimumValue:0
+                                                                                      maximumValue:300
+                                                                                      defaultValue: 150];
+    
+    XCTAssertEqual(answerFormat.measurementSystem, ORKMeasurementSystemMetric);
+    XCTAssertEqual(answerFormat.numericPrecision, ORKNumericPrecisionHigh);
+    XCTAssertEqual(answerFormat.minimumValue, 0);
+    XCTAssertEqual(answerFormat.maximumValue, 300);
+    XCTAssertEqual(answerFormat.defaultValue, 150);
+    
+    XCTAssertThrowsSpecificNamed([ORKAnswerFormat weightAnswerFormatWithMeasurementSystem:ORKMeasurementSystemMetric
+                                                                         numericPrecision:ORKNumericPrecisionHigh
+                                                                             minimumValue:100
+                                                                             maximumValue:50
+                                                                             defaultValue:25],
+                                 NSException,
+                                 NSInvalidArgumentException,
+                                 @"Should throw NSInvalidArgumentException since min > max");
+
 }
 
 - (void) testMultipleValuePickerAnswerFormat{
