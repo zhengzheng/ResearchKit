@@ -280,8 +280,8 @@ static const CGFloat LabelTopBottomMargin = 20.0;
 
 - (void)updateSelectedItem {
     if (_immediateNavigation == NO) {
-        self.accessoryView.hidden = _selectedItem ? NO : YES;
-        if (_selectedItem) {
+        self.accessoryView.hidden = _isSelected ? NO : YES;
+        if (_isSelected) {
             self.primaryLabel.textColor = [self tintColor];
             self.detailLabel.textColor = [[self tintColor] colorWithAlphaComponent:192.0 / 255.0];
         }
@@ -297,8 +297,8 @@ static const CGFloat LabelTopBottomMargin = 20.0;
     }
 }
 
-- (void)setSelectedItem:(BOOL)selectedItem {
-    _selectedItem = selectedItem;
+- (void)setIsSelected:(BOOL)isSelected {
+    _isSelected = isSelected;
     [self updateSelectedItem];
 }
 
@@ -358,7 +358,7 @@ static const CGFloat LabelTopBottomMargin = 20.0;
 }
 
 - (UIAccessibilityTraits)accessibilityTraits {
-    return UIAccessibilityTraitButton | (self.selectedItem ? UIAccessibilityTraitSelected : 0);
+    return UIAccessibilityTraitButton | (self.isSelected ? UIAccessibilityTraitSelected : 0);
 }
 
 @end

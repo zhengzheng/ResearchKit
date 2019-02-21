@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign, getter=isImmediateNavigation) BOOL immediateNavigation;
 
-@property (nonatomic, assign, getter=isSelectedItem) BOOL selectedItem;
+@property (nonatomic, assign) BOOL isSelected;
 
 @property (nonatomic) bool useCardView;
 

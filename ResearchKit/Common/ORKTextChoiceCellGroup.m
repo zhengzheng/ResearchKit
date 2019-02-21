@@ -110,21 +110,21 @@
     ORKChoiceViewCell *touchedCell = [self cellAtIndex:index withReuseIdentifier:nil];
         
     if (_singleChoice) {
-        touchedCell.selectedItem = YES;
+        touchedCell.isSelected = YES;
         for (ORKChoiceViewCell *cell in _cells.allValues) {
             if (cell != touchedCell) {
-                cell.selectedItem = NO;
+                cell.isSelected = NO;
             }
         }
     } else {
-        touchedCell.selectedItem = !touchedCell.selectedItem;
-        if (touchedCell.selectedItem) {
+        touchedCell.isSelected = !touchedCell.isSelected;
+        if (touchedCell.isSelected) {
             ORKTextChoice *touchedChoice = [_helper textChoiceAtIndex:index];
             for (NSNumber *num in _cells.allKeys) {
                 ORKChoiceViewCell *cell = _cells[num];
                 ORKTextChoice *choice = [_helper textChoiceAtIndex:num.unsignedIntegerValue];
-                if (cell != touchedCell && (touchedChoice.exclusive || (cell.selectedItem && choice.exclusive))) {
-                    cell.selectedItem = NO;
+                if (cell != touchedCell && (touchedChoice.exclusive || (cell.isSelected && choice.exclusive))) {
+                    cell.isSelected = NO;
                 }
             }
         }
@@ -155,11 +155,11 @@
         if (selected) {
             // In case the cell has not been created, need to create cell
             ORKChoiceViewCell *cell = [self cellAtIndex:index withReuseIdentifier:nil];
-            cell.selectedItem = YES;
+            cell.isSelected = YES;
         } else {
             // It is ok to not create the cell at here
             ORKChoiceViewCell *cell = _cells[@(index)];
-            cell.selectedItem = NO;
+            cell.isSelected = NO;
         }
     }
 }
@@ -169,7 +169,7 @@
     
     for (NSUInteger index = 0; index < self.size; index++ ) {
         ORKChoiceViewCell *cell = _cells[@(index)];
-        if (cell.selectedItem) {
+        if (cell.isSelected) {
             [indexes addObject:@(index)];
         }
     }
