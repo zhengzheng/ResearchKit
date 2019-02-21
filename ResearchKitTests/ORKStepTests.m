@@ -161,6 +161,14 @@
     XCTAssertEqualObjects([pageStep stepWithIdentifier:@"step3"], step3);
 }
 
+- (void)testPasscodeStep {
+    
+    ORKPasscodeStep *step = [ORKPasscodeStep passcodeStepWithIdentifier:@"STEP" passcodeFlow:ORKPasscodeFlowAuthenticate];
+    XCTAssert([step.identifier isEqualToString:@"STEP"]);
+    XCTAssertEqual(step.passcodeFlow, ORKPasscodeFlowAuthenticate);
+    XCTAssertEqual(step.passcodeType, ORKPasscodeType4Digit);
+}
+
 @end
 
 
