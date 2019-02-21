@@ -106,8 +106,11 @@
         }
         
         id<ORKAnswerOption> choice = _choices[index];
-        id value = choice.value;
-        
+        ORKTextChoiceOther *otherTextChoice;
+        if ([choice isKindOfClass: [ORKTextChoiceOther class]]) {
+            otherTextChoice = (ORKTextChoiceOther *)choice;
+        }
+        id value = otherTextChoice.textViewText ? : choice.value;
         if (value == nil) {
             value = _isValuePicker ? @(index - 1) : @(index);
         }
@@ -141,7 +144,14 @@
         for (id answerValue in (NSArray *)answer) {
             id<ORKAnswerOption> matchedChoice = nil;
             for ( id<ORKAnswerOption> choice in _choices) {
-                if ([choice.value isEqual:answerValue]) {
+                if ([choice isKindOfClass:[ORKTextChoiceOther class]]) {
+                    ORKTextChoiceOther *choiceOther = (ORKTextChoiceOther *)choice;
+                    if ([choiceOther.textViewText isEqual:answerValue]) {
+                        matchedChoice = choice;
+                        break;
+                    }
+                }
+                else if ([choice.value isEqual:answerValue]) {
                     matchedChoice = choice;
                     break;
                 }

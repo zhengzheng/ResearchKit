@@ -1011,6 +1011,51 @@ ORK_CLASS_AVAILABLE
 
 
 /**
+ The `ORKTextChoiceOther` class defines the `ORKTextChoice` option to describe an answer not
+ included in provided choices.
+ 
+ The `ORKTextChoiceOther` provides an optional text view of type `ORKAnswerTextView` to provide an alternative answer.
+ */
+ORK_CLASS_AVAILABLE
+@interface ORKTextChoiceOther : ORKTextChoice
+
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+
+/**
+ Returns an initialized text choice object using the specified primary text or text with string attributes, detail text or text with string attributes, and exclusivity.
+ 
+ This method is the designated initializer.
+ 
+ @param text                         The primary text that describes the choice in a localized string.
+ @param primaryTextAttributedString  The primary text that describes the choice in an attributed string. Setting this will override `text`.
+ @param detailText                   The detail text to display below the primary text, in a localized string.
+ @param detailTextAttributedString   The detail text to display below the primary text, in an attributed string. Setting this will override `detailText`.
+ @param value                        The value to record in a result object when this item is selected.
+ @param exclusive                    Whether this choice is to be considered exclusive within the set of choices.
+ 
+ @return An initialized text choice.
+ */
+- (instancetype)initWithText:(nullable NSString *)text
+ primaryTextAttributedString:(nullable NSAttributedString *)primaryTextAttributedString
+                  detailText:(nullable NSString *)detailText
+  detailTextAttributedString:(nullable NSAttributedString *)detailTextAttributedString
+                       value:(id<NSCopying, NSCoding, NSObject>)value
+                   exclusive:(BOOL)exclusive
+                 placeholder:(NSString *)placeholder
+              isTextoptional:(BOOL)isTextOptional
+      textViewShouldCollapse:(BOOL)textViewShouldCollapse;
+
+@property (nonatomic, copy) NSString *placeholder;
+
+@property (readonly) BOOL isTextOptional;
+
+@property (readonly) BOOL textViewShouldCollapse;
+
+@end
+
+
+/**
  The `ORKImageChoice` class defines a choice that can
  be included in an `ORKImageChoiceAnswerFormat` object.
  

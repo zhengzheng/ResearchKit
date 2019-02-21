@@ -1090,6 +1090,82 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
 @end
 
 
+#pragma mark - ORKTextChoiceOther
+
+@implementation ORKTextChoiceOther {
+    NSString *_text;
+    NSString *_detailtext;
+    NSAttributedString *_primaryTextAttributedString;
+    NSAttributedString *_detailTextAttributedString;
+    id<NSCopying, NSCoding, NSObject> _value;
+}
+
++ (instancetype)new {
+    ORKThrowMethodUnavailableException();
+}
+
+- (instancetype)init {
+    ORKThrowMethodUnavailableException();
+}
+
+- (instancetype)initWithText:(NSString *)text
+ primaryTextAttributedString:(NSAttributedString *)primaryTextAttributedString
+                  detailText:(NSString *)detailText
+  detailTextAttributedString:(NSAttributedString *)detailTextAttributedString
+                       value:(id<NSCopying,NSCoding,NSObject>)value
+                   exclusive:(BOOL)exclusive
+                 placeholder:(NSString *)placeholder
+              isTextoptional:(BOOL)isTextOptional
+      textViewShouldCollapse:(BOOL)textViewShouldCollapse {
+    
+    self = [super initWithText:text
+   primaryTextAttributedString:primaryTextAttributedString
+                    detailText:detailText
+    detailTextAttributedString:detailTextAttributedString
+                         value:value
+                     exclusive:exclusive];
+    
+    if (self) {
+        _placeholder = placeholder;
+        _isTextOptional = isTextOptional;
+        _textViewShouldCollapse = textViewShouldCollapse;
+    }
+    return self;
+}
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
+- (instancetype)copyWithZone:(NSZone *)zone {
+    return self;
+}
+
+- (BOOL)isEqual:(id)object {
+    if ([self class] != [object class]) {
+        return NO;
+    }
+    
+    // Ignore the task reference - it's not part of the content of the step
+    __typeof(self) castObject = object;
+    return (ORKEqualObjects(self.text, castObject.text)
+            && ORKEqualObjects(self.primaryTextAttributedString, castObject.primaryTextAttributedString)
+            && ORKEqualObjects(self.detailText, castObject.detailText)
+            && ORKEqualObjects(self.detailTextAttributedString, castObject.detailTextAttributedString)
+            && ORKEqualObjects(self.value, castObject.value)
+            && self.exclusive == castObject.exclusive)
+    && ORKEqualObjects(self.placeholder, castObject.placeholder)
+    && self.isTextOptional == castObject.isTextOptional
+    && self.textViewShouldCollapse == castObject.textViewShouldCollapse;
+}
+
+- (NSUInteger)hash {
+    return _placeholder.hash;
+}
+
+@end
+
+
 #pragma mark - ORKImageChoice
 
 @implementation ORKImageChoice {
