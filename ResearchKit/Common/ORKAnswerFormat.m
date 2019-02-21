@@ -3054,7 +3054,7 @@ static NSString *const formattedAddressLinesKey = @"FormattedAddressLines";
         ORKLocation *location = answer;
     
         answerString = [CNPostalAddressFormatter stringFromPostalAddress:location.postalAddress
-                                                                                        style:CNPostalAddressFormatterStyleMailingAddress];
+                                                                   style:CNPostalAddressFormatterStyleMailingAddress];
     }
     return answerString;
 }

@@ -72,7 +72,8 @@ static const NSString *FormattedAddressLines = @"FormattedAddressLines";
 @implementation CLPlacemark (ork_addressLine)
 
 - (NSString *)ork_addressLine {
-     return [self.addressDictionary[FormattedAddressLines] componentsJoinedByString:@" "];
+    return [CNPostalAddressFormatter stringFromPostalAddress:self.postalAddress
+                                                        style:CNPostalAddressFormatterStyleMailingAddress];
 }
 
 @end
