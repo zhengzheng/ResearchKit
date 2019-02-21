@@ -174,7 +174,7 @@
     NSArray *steps = [NSArray arrayWithObjects:stepOne, stepTwo, stepThree, stepFour, nil];
     ORKNavigableOrderedTask *task = [[ORKNavigableOrderedTask alloc] initWithIdentifier:@"task" steps:steps];
     
-    ORKBooleanQuestionResult *result = [[ORKBooleanQuestionResult alloc] initWithIdentifier:@"stepOne"];
+    ORKBooleanQuestionResult *result = [[ORKBooleanQuestionResult alloc] initWithIdentifier:@"stepOne.result"];
     result.booleanAnswer = @(YES);
     
     ORKStepResult *stepResult = [[ORKStepResult alloc] initWithStepIdentifier:@"stepOne" results:@[result]];
@@ -182,11 +182,11 @@
     taskResult.results = @[stepResult];
     
     // Creating predicates
-    ORKResultSelector *resultSelector = [ORKResultSelector selectorWithStepIdentifier:@"stepOne" resultIdentifier:@"stepOne"];
+    ORKResultSelector *resultSelector = [ORKResultSelector selectorWithStepIdentifier:@"stepOne" resultIdentifier:@"stepOne.result"];
     NSPredicate *stepOneYes = [ORKResultPredicate predicateForBooleanQuestionResultWithResultSelector:resultSelector expectedAnswer:YES];
     NSPredicate *stepOneNo = [ORKResultPredicate predicateForBooleanQuestionResultWithResultSelector:resultSelector expectedAnswer:NO];
     
-    // Creating navigation rule and seeting it to task
+    // Creating navigation rule and setting it to task
     ORKStepNavigationRule *navigationRule = [[ORKPredicateStepNavigationRule alloc] initWithResultPredicates:@[stepOneYes, stepOneNo]
                                                                                   destinationStepIdentifiers:@[@"stepTwo", @"stepThree"]
                                                                                        defaultStepIdentifier:@"stepFour"];
