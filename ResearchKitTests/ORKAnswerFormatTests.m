@@ -420,4 +420,28 @@
                                  @"Should throw NSInvalidArgumentException since step is lower than the recommended maximum: 30");
 }
 
+- (void)testWeightAnswerFormat {
+    ORKWeightAnswerFormat *answerFormat = [ORKAnswerFormat weightAnswerFormatWithMeasurementSystem:ORKMeasurementSystemMetric
+                                                                                  numericPrecision:ORKNumericPrecisionHigh
+                                                                                      minimumValue:0
+                                                                                      maximumValue:300
+                                                                                      defaultValue: 150];
+    
+    XCTAssertEqual(answerFormat.measurementSystem, ORKMeasurementSystemMetric);
+    XCTAssertEqual(answerFormat.numericPrecision, ORKNumericPrecisionHigh);
+    XCTAssertEqual(answerFormat.minimumValue, 0);
+    XCTAssertEqual(answerFormat.maximumValue, 300);
+    XCTAssertEqual(answerFormat.defaultValue, 150);
+    
+    XCTAssertThrowsSpecificNamed([ORKAnswerFormat weightAnswerFormatWithMeasurementSystem:ORKMeasurementSystemMetric
+                                                                         numericPrecision:ORKNumericPrecisionHigh
+                                                                             minimumValue:100
+                                                                             maximumValue:50
+                                                                             defaultValue:25],
+                                 NSException,
+                                 NSInvalidArgumentException,
+                                 @"Should throw NSInvalidArgumentException since min > max");
+    
+}
+
 @end
