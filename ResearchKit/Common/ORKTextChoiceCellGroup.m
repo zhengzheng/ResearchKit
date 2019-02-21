@@ -90,13 +90,13 @@
         cell = [[ORKChoiceViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         cell.immediateNavigation = _immediateNavigation;
         ORKTextChoice *textChoice = [_helper textChoiceAtIndex:index];
-        cell.shortLabel.text = textChoice.text;
-        cell.longLabel.text = textChoice.detailText;
+        [cell setPrimaryText:textChoice.text];
+        [cell setDetailText:textChoice.detailText];
         if (textChoice.primaryTextAttributedString) {
-            cell.shortLabel.attributedText = textChoice.primaryTextAttributedString;
+            [cell setPrimaryAttributedText:textChoice.primaryTextAttributedString];
         }
         if (textChoice.detailTextAttributedString) {
-            cell.longLabel.attributedText = textChoice.detailTextAttributedString;
+            [cell setDetailAttributedText:textChoice.detailTextAttributedString];
         }
         _cells[@(index)] = cell;
         
