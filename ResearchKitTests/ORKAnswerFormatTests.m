@@ -420,4 +420,10 @@
                                  @"Should throw NSInvalidArgumentException since step is lower than the recommended maximum: 30");
 }
 
+- (void)testLocationAnswerFormat {
+    ORKLocationAnswerFormat *answerFormat = [ORKAnswerFormat locationAnswerFormat];
+    [answerFormat setUseCurrentLocation:YES];
+    XCTAssertEqual(answerFormat.useCurrentLocation, YES);
+}
+
 @end
