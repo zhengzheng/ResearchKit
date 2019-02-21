@@ -444,4 +444,20 @@
     
 }
 
+- (void)testValuePickerAnswerFormat {
+    
+    ORKTextChoice *choiceOne, *choiceTwo;
+    
+    choiceOne = [ORKTextChoice choiceWithText:@"Choice One" value:[NSNumber numberWithInteger:1]];
+    choiceTwo = [ORKTextChoice choiceWithText:@"Choice Two" value:[NSNumber numberWithInteger:2]];
+    
+    NSArray *choices = [NSArray arrayWithObjects:choiceOne, choiceTwo, nil];
+    ORKValuePickerAnswerFormat *answerFormat = [ORKAnswerFormat valuePickerAnswerFormatWithTextChoices:choices];
+    
+    XCTAssertEqual([[[answerFormat textChoices] objectAtIndex:0] value], [NSNumber numberWithInteger:1]);
+    XCTAssertEqual([[[answerFormat textChoices] objectAtIndex:1] value], [NSNumber numberWithInteger:2]);
+    
+    XCTAssertThrows([ORKValuePickerAnswerFormat valuePickerAnswerFormatWithTextChoices:[NSNumber numberWithInteger:0]]);
+}
+
 @end
