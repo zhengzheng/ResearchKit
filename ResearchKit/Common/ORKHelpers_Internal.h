@@ -166,7 +166,6 @@ NSURL *ORKCreateRandomBaseURL(void);
 ORK_EXTERN NSString *ORKFileProtectionFromMode(ORKFileProtectionMode mode);
 
 CGFloat ORKExpectedLabelHeight(UILabel *label);
-void ORKAdjustHeightForLabel(UILabel *label);
 
 // build a image with color
 UIImage *ORKImageWithColor(UIColor *color);
