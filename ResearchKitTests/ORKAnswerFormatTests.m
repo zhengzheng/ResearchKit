@@ -444,7 +444,7 @@
 
 }
 
-- (void) testMultipleValuePickerAnswerFormat{
+- (void)testMultipleValuePickerAnswerFormat {
     ORKTextChoice *choiceOne = [ORKTextChoice choiceWithText:@"Choice One" value: [NSNumber numberWithInteger:1]];
     ORKTextChoice *choiceTwo = [ORKTextChoice choiceWithText:@"Choice Two" value: [NSNumber numberWithInteger:2]];
     ORKTextChoice *choiceThree = [ORKTextChoice choiceWithText:@"Choice Two" value: [NSNumber numberWithInteger:3]];
@@ -457,10 +457,10 @@
     ORKValuePickerAnswerFormat *valuePickerTwo = [ORKAnswerFormat valuePickerAnswerFormatWithTextChoices:secondChoices];
     
     NSArray *valuePickerFormats = [NSArray arrayWithObjects:valuePickerOne, valuePickerTwo, nil];
-    ORKMultipleValuePickerAnswerFormat *multiplePickerAnswerFormat = [ORKAnswerFormat multipleValuePickerAnswerFormatWithValuePickers:valuePickerFormats];
+    ORKMultipleValuePickerAnswerFormat *multiplePickerAnswerFormat = [[ORKMultipleValuePickerAnswerFormat alloc] initWithValuePickers:valuePickerFormats separator:@"S"];
     
-    XCTAssertEqualObjects([valuePickerFormats objectAtIndex:0], valuePickerOne);
-    XCTAssertEqualObjects([valuePickerFormats objectAtIndex:1], valuePickerTwo);
+    XCTAssertEqualObjects(multiplePickerAnswerFormat.valuePickers, valuePickerFormats);
+    XCTAssert([multiplePickerAnswerFormat.separator isEqualToString:@"S"]);
 }
 
 @end
