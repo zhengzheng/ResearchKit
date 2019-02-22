@@ -170,11 +170,6 @@
 
 - (void)captureOutput:(AVCapturePhotoOutput *)captureOutput didFinishProcessingPhoto:(AVCapturePhoto *)photo error:(nullable NSError *)error{
     
-    if ( error != nil ) {
-        NSLog( @"Error capturing photo: %@", error );
-        return;
-    }
-    
     // Obtain photodata to be stored
     NSData *capturedImageData = photo.fileDataRepresentation;
     
