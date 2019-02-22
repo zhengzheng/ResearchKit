@@ -46,7 +46,7 @@
 @import AVFoundation;
 
 
-@interface ORKImageCaptureStepViewController () <ORKImageCaptureViewDelegate>
+@interface ORKImageCaptureStepViewController () <ORKImageCaptureViewDelegate, AVCapturePhotoCaptureDelegate>
 
 @end
 
@@ -55,7 +55,7 @@
     ORKImageCaptureView *_imageCaptureView;
     dispatch_queue_t _sessionQueue;
     AVCaptureSession *_captureSession;
-    AVCaptureStillImageOutput *_stillImageOutput;
+    AVCapturePhotoOutput *_photoOutput;
     NSData *_capturedImageData;
     NSURL *_fileURL;
 }
@@ -160,22 +160,24 @@
 }
 
 - (void)capturePressed:(void (^)(BOOL))handler {
-    // Capture the image via the output
-    dispatch_async(_sessionQueue, ^{
-    	[_stillImageOutput captureStillImageAsynchronouslyFromConnection:[_stillImageOutput connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
-            [self queue_CaptureImageFromData:imageDataSampleBuffer handler:handler];
-    	}];
+    // Create settings for photo capture
+    AVCapturePhotoSettings *photoSettings = [AVCapturePhotoSettings photoSettingsWithFormat:@{AVVideoCodecKey: AVVideoCodecTypeJPEG}];
+    // Capture image
+    dispatch_async(_sessionQueue,^{
+        [_photoOutput capturePhotoWithSettings:photoSettings delegate:self];
     });
 }
 
-- (void)videoOrientationDidChange:(AVCaptureVideoOrientation)videoOrientation {
-    // Keep the output orientation in sync with the input orientation
-    ((AVCaptureConnection *)_stillImageOutput.connections[0]).videoOrientation = videoOrientation;
-}
-
-- (void)queue_CaptureImageFromData:(CMSampleBufferRef)imageDataSampleBuffer handler:(void (^)(BOOL))handler {
-    // Capture the JPEG image data, if available
-    NSData *capturedImageData = !imageDataSampleBuffer ? nil : [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
+- (void)captureOutput:(AVCapturePhotoOutput *)captureOutput didFinishProcessingPhoto:(AVCapturePhoto *)photo error:(nullable NSError *)error{
+    
+    if ( error != nil ) {
+        NSLog( @"Error capturing photo: %@", error );
+        return;
+    }
+    
+    // Obtain photodata to be stored
+    NSData *capturedImageData = photo.fileDataRepresentation;
+    
     // If something was captured, stop the capture session
     if (capturedImageData) {
         [_captureSession stopRunning];
@@ -185,10 +187,12 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         // Set this, even if there was an error and we got a nil buffer
         self.capturedImageData = capturedImageData;
-        if (handler) {
-            handler(capturedImageData != nil);
-        }
     });
+}
+
+- (void)videoOrientationDidChange:(AVCaptureVideoOrientation)videoOrientation {
+    // Keep the output orientation in sync with the input orientation
+    ((AVCaptureConnection *)_photoOutput.connections[0]).videoOrientation = videoOrientation;
 }
 
 - (void)viewDidLoad {
@@ -237,12 +241,12 @@
     if (device) {
         // Configure the input and output
         AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device error:nil];
-        AVCaptureStillImageOutput *stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
-        if ([_captureSession canAddInput:input] && [_captureSession canAddOutput:stillImageOutput]) {
+        AVCapturePhotoOutput *photoOutput = [[AVCapturePhotoOutput alloc] init];
+        if ([_captureSession canAddInput:input] && [_captureSession canAddOutput:photoOutput]) {
             [_captureSession addInput:input];
-            [stillImageOutput setOutputSettings:@{AVVideoCodecKey: AVVideoCodecTypeJPEG}];
-            [_captureSession addOutput:stillImageOutput];
-            _stillImageOutput = stillImageOutput;
+//            [stillImageOutput setOutputSettings:@{AVVideoCodecKey: AVVideoCodecTypeJPEG}];
+            [_captureSession addOutput:photoOutput];
+            _photoOutput = photoOutput;
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self handleError:[NSError errorWithDomain:NSCocoaErrorDomain code:NSFeatureUnsupportedError userInfo:@{NSLocalizedDescriptionKey:ORKLocalizedString(@"CAPTURE_ERROR_NO_PERMISSIONS", nil)}]];
@@ -273,7 +277,7 @@
     
     // Reset the state to before the capture session was setup.  Order here is important
     _captureSession = nil;
-    _stillImageOutput = nil;
+    _photoOutput = nil;
     _imageCaptureView.session = nil;
     _imageCaptureView.capturedImage = nil;
     _capturedImageData = nil;
