@@ -239,7 +239,6 @@
         AVCapturePhotoOutput *photoOutput = [[AVCapturePhotoOutput alloc] init];
         if ([_captureSession canAddInput:input] && [_captureSession canAddOutput:photoOutput]) {
             [_captureSession addInput:input];
-//            [stillImageOutput setOutputSettings:@{AVVideoCodecKey: AVVideoCodecTypeJPEG}];
             [_captureSession addOutput:photoOutput];
             _photoOutput = photoOutput;
         } else {
