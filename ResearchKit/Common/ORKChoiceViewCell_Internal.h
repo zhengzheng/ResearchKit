@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2015, Apple Inc. All rights reserved.
+ Copyright (c) 2019, Apple Inc. All rights reserved.
  
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
@@ -29,37 +29,23 @@
  */
 
 
-@import UIKit;
+#import "ORKChoiceViewCell.h"
 
 
-@class ORKAnswerTextView;
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ORKChoiceViewCell : UITableViewCell
+@protocol ORKChoiceOtherViewCellDelegate <NSObject>
 
-@property (nonatomic, assign, getter=isImmediateNavigation) BOOL immediateNavigation;
-
-@property (nonatomic, assign) BOOL isSelected;
-
-@property (nonatomic) bool useCardView;
-
-@property (nonatomic) bool isLastItem;
-
-@property (nonatomic) BOOL isFirstItemInSectionWithoutTitle;
-
-- (void)setPrimaryText:(NSString *)primaryText;
-- (void)setPrimaryAttributedText: (NSAttributedString *)primaryAttributedText;
-- (void)setDetailText:(NSString *)detailText;
-- (void)setDetailAttributedText:(NSAttributedString *)detailAttributedText;
+- (void)textChoiceOtherCellDidBecomeFirstResponder:(ORKChoiceOtherViewCell *)choiceOtherViewCell;
+- (void)textChoiceOtherCellDidResignFirstResponder:(ORKChoiceOtherViewCell *)choiceOtherViewCell;
+- (void)textChoiceOtherDidResignWithInvalidEntry:(ORKChoiceOtherViewCell *)choiceOtherViewCell;
 
 @end
 
-@interface ORKChoiceOtherViewCell : ORKChoiceViewCell <UITextViewDelegate>
 
-@property (nonatomic, strong, readonly) ORKAnswerTextView *otherAnswerTextView;
+@interface ORKChoiceOtherViewCell() <UITextViewDelegate>
 
-@property (nonatomic, assign, setter=hideTextView:) BOOL isTextViewHidden;
-
+@property (nonatomic, weak) id<ORKChoiceOtherViewCellDelegate> delegate;
 
 @end
 

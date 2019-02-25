@@ -29,23 +29,31 @@
  */
 
 
-#import "ORKChoiceViewCell.h"
+#import "ORKChoiceViewCell_Internal.h"
 
 #import "ORKSelectionTitleLabel.h"
 #import "ORKSelectionSubTitleLabel.h"
 
 #import "ORKAccessibility.h"
 #import "ORKHelpers_Internal.h"
+#import "ORKAnswerTextView.h"
 #import "ORKSkin.h"
 
 
 static const CGFloat LabelRightMargin = 44.0;
 static const CGFloat CardTopBottomMargin = 2.0;
 static const CGFloat LabelTopBottomMargin = 20.0;
+static const CGFloat TextViewTopMargin = 20.0;
+static const CGFloat TextViewHeight = 100.0;
+
 
 @interface ORKChoiceViewCell()
 
 @property (nonatomic) UIView *containerView;
+@property (nonatomic) ORKSelectionTitleLabel *primaryLabel;
+@property (nonatomic) ORKSelectionSubTitleLabel *detailLabel;
+@property (nonatomic) NSMutableArray<NSLayoutConstraint *> *containerConstraints;
+@property (nonatomic) CGFloat cellLeftMargin;
 
 @end
 
@@ -56,9 +64,6 @@ static const CGFloat LabelTopBottomMargin = 20.0;
     CAShapeLayer *_contentMaskLayer;
     
     UIImageView *_checkView;
-    ORKSelectionTitleLabel *_primaryLabel;
-    ORKSelectionSubTitleLabel *_detailLabel;
-    NSMutableArray<NSLayoutConstraint *> *_containerConstraints;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -139,31 +144,40 @@ static const CGFloat LabelTopBottomMargin = 20.0;
     }
 }
 
-
 - (void)setupContainerView {
     if (!_containerView) {
         _containerView = [UIView new];
     }
-    
     [self addSubview:_containerView];
 }
 
-- (void)setupConstraints {
-    
-    if (_containerConstraints) {
-        [NSLayoutConstraint deactivateConstraints:_containerConstraints];
-    }
-    CGFloat cellLeftMargin = self.separatorInset.left;
-    
-    _containerView.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    _containerConstraints = [NSMutableArray arrayWithArray:@[
-                                                             [NSLayoutConstraint constraintWithItem:_containerView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:0],
-                                                             [NSLayoutConstraint constraintWithItem:_containerView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1.0 constant:_leftRightMargin],
-                                                             [NSLayoutConstraint constraintWithItem:_containerView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1.0 constant:-_leftRightMargin],
-                                                             ]];
-    
-    
+- (void)addContainerViewToSelfConstraints {
+    [_containerConstraints addObjectsFromArray:@[
+                                                 [NSLayoutConstraint constraintWithItem:_containerView
+                                                                              attribute:NSLayoutAttributeTop
+                                                                              relatedBy:NSLayoutRelationEqual
+                                                                                 toItem:self
+                                                                              attribute:NSLayoutAttributeTop
+                                                                             multiplier:1.0
+                                                                               constant:0],
+                                                 [NSLayoutConstraint constraintWithItem:_containerView
+                                                                              attribute:NSLayoutAttributeLeft
+                                                                              relatedBy:NSLayoutRelationEqual
+                                                                                 toItem:self
+                                                                              attribute:NSLayoutAttributeLeft
+                                                                             multiplier:1.0
+                                                                               constant:_leftRightMargin],
+                                                 [NSLayoutConstraint constraintWithItem:_containerView
+                                                                              attribute:NSLayoutAttributeRight
+                                                                              relatedBy:NSLayoutRelationEqual
+                                                                                 toItem:self
+                                                                              attribute:NSLayoutAttributeRight
+                                                                             multiplier:1.0
+                                                                               constant:-_leftRightMargin]
+                                                                ]];
+}
+
+- (void)addPrimaryLabelToContainerViewConstraints {
     if (_primaryLabel) {
         
         [_containerConstraints addObjectsFromArray:@[
@@ -180,7 +194,7 @@ static const CGFloat LabelTopBottomMargin = 20.0;
                                                                                      toItem:_containerView
                                                                                   attribute:NSLayoutAttributeLeft
                                                                                  multiplier:1.0
-                                                                                   constant:cellLeftMargin],
+                                                                                   constant:_cellLeftMargin],
                                                      [NSLayoutConstraint constraintWithItem:_primaryLabel
                                                                                   attribute:NSLayoutAttributeRight
                                                                                   relatedBy:NSLayoutRelationEqual
@@ -190,7 +204,9 @@ static const CGFloat LabelTopBottomMargin = 20.0;
                                                                                    constant:-LabelRightMargin]
                                                      ]];
     }
-    
+}
+
+- (void)addDetailLabelConstraints {
     if (_detailLabel) {
         [_containerConstraints addObjectsFromArray:@[
                                                      [NSLayoutConstraint constraintWithItem:_detailLabel
@@ -206,7 +222,7 @@ static const CGFloat LabelTopBottomMargin = 20.0;
                                                                                      toItem:_containerView
                                                                                   attribute:NSLayoutAttributeLeft
                                                                                  multiplier:1.0
-                                                                                   constant:cellLeftMargin],
+                                                                                   constant:_cellLeftMargin],
                                                      [NSLayoutConstraint constraintWithItem:_detailLabel
                                                                                   attribute:NSLayoutAttributeRight
                                                                                   relatedBy:NSLayoutRelationEqual
@@ -216,23 +232,39 @@ static const CGFloat LabelTopBottomMargin = 20.0;
                                                                                    constant:-LabelRightMargin]
                                                      ]];
     }
+}
+
+- (void)addContainerViewBottomConstraint {
+    [_containerConstraints addObject:[NSLayoutConstraint constraintWithItem:_containerView
+                                                                  attribute:NSLayoutAttributeBottom
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:_detailLabel ? : _primaryLabel
+                                                                  attribute:NSLayoutAttributeBottom
+                                                                 multiplier:1.0
+                                                                   constant:LabelTopBottomMargin]];
+}
+
+
+- (void)setupConstraints {
     
-    [_containerConstraints addObjectsFromArray:@[
-                                                 [NSLayoutConstraint constraintWithItem:_containerView
-                                                                              attribute:NSLayoutAttributeBottom
-                                                                              relatedBy:NSLayoutRelationEqual
-                                                                                 toItem:_detailLabel ? : _primaryLabel
-                                                                              attribute:NSLayoutAttributeBottom
-                                                                             multiplier:1.0
-                                                                               constant:LabelTopBottomMargin],
-                                                 [NSLayoutConstraint constraintWithItem:self
-                                                                              attribute:NSLayoutAttributeBottom
-                                                                              relatedBy:NSLayoutRelationEqual
-                                                                                 toItem:_containerView
-                                                                              attribute:NSLayoutAttributeBottom
-                                                                             multiplier:1.0
-                                                                               constant:0.0]
-                                                 ]];
+    if (_containerConstraints) {
+        [NSLayoutConstraint deactivateConstraints:_containerConstraints];
+    }
+    _cellLeftMargin = self.separatorInset.left;
+    
+    _containerView.translatesAutoresizingMaskIntoConstraints = NO;
+    _containerConstraints = [[NSMutableArray alloc] init];
+    [self addContainerViewToSelfConstraints];
+    [self addPrimaryLabelToContainerViewConstraints];
+    [self addDetailLabelConstraints];
+    [self addContainerViewBottomConstraint];
+    [_containerConstraints addObject:[NSLayoutConstraint constraintWithItem:self
+                                                                  attribute:NSLayoutAttributeBottom
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:_containerView
+                                                                  attribute:NSLayoutAttributeBottom
+                                                                 multiplier:1.0
+                                                                   constant:0.0]];
     
     [NSLayoutConstraint activateConstraints:_containerConstraints];
 }
@@ -338,6 +370,110 @@ static const CGFloat LabelTopBottomMargin = 20.0;
 
 - (UIAccessibilityTraits)accessibilityTraits {
     return UIAccessibilityTraitButton | (self.isSelected ? UIAccessibilityTraitSelected : 0);
+}
+
+@end
+
+
+@implementation ORKChoiceOtherViewCell
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style
+              reuseIdentifier:(NSString *)reuseIdentifier {
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    _isTextViewHidden = NO;
+    [self setupAnswerTextView];
+    return self;
+}
+
+- (void)setupAnswerTextView {
+    if (!_otherAnswerTextView) {
+        _otherAnswerTextView = [[ORKAnswerTextView alloc] init];
+        _otherAnswerTextView.delegate = self;
+        _otherAnswerTextView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.containerView addSubview:_otherAnswerTextView];
+        [self updateTextView];
+    }
+}
+
+- (void)hideTextView:(BOOL)isTextViewHidden {
+    _isTextViewHidden = isTextViewHidden;
+    [self updateTextView];
+    [self setupConstraints];
+}
+
+- (void)updateTextView {
+    [self.otherAnswerTextView setHidden:_isTextViewHidden];
+}
+
+- (void)addOtherAnswerTextViewConstraints {
+    [self.containerConstraints addObjectsFromArray:@[
+                                                     [NSLayoutConstraint constraintWithItem:_otherAnswerTextView
+                                                                                  attribute:NSLayoutAttributeTop
+                                                                                  relatedBy:NSLayoutRelationEqual
+                                                                                     toItem:self.detailLabel ? : self.primaryLabel
+                                                                                  attribute:NSLayoutAttributeBottom
+                                                                                 multiplier:1.0
+                                                                                   constant:TextViewTopMargin],
+                                                     [NSLayoutConstraint constraintWithItem:_otherAnswerTextView
+                                                                                  attribute:NSLayoutAttributeLeft
+                                                                                  relatedBy:NSLayoutRelationEqual
+                                                                                     toItem:self.containerView
+                                                                                  attribute:NSLayoutAttributeLeft
+                                                                                 multiplier:1.0
+                                                                                   constant:self.cellLeftMargin],
+                                                     [NSLayoutConstraint constraintWithItem:_otherAnswerTextView
+                                                                                  attribute:NSLayoutAttributeRight
+                                                                                  relatedBy:NSLayoutRelationEqual
+                                                                                     toItem:self.containerView
+                                                                                  attribute:NSLayoutAttributeRight
+                                                                                 multiplier:1.0
+                                                                                   constant:-LabelRightMargin],
+                                                     [NSLayoutConstraint constraintWithItem:_otherAnswerTextView
+                                                                                  attribute:NSLayoutAttributeHeight
+                                                                                  relatedBy:NSLayoutRelationEqual
+                                                                                     toItem:nil
+                                                                                  attribute:NSLayoutAttributeNotAnAttribute
+                                                                                 multiplier:1.0
+                                                                                   constant:MAX(_otherAnswerTextView.font.pointSize, TextViewHeight)],
+                                                     [NSLayoutConstraint constraintWithItem:self.containerView
+                                                                                  attribute:NSLayoutAttributeBottom
+                                                                                  relatedBy:NSLayoutRelationEqual
+                                                                                     toItem:_otherAnswerTextView
+                                                                                  attribute:NSLayoutAttributeBottom
+                                                                                 multiplier:1.0
+                                                                                   constant:LabelTopBottomMargin]
+                                                     ]];
+}
+
+// Overriding ContainerView Bottom Constraints
+- (void)addContainerViewBottomConstraint {
+    if (_isTextViewHidden) {
+        [super addContainerViewBottomConstraint];
+    }
+    else {
+        [self addOtherAnswerTextViewConstraints];
+    }
+}
+
+- (void)setMaskLayers {
+    [super setMaskLayers];
+    _otherAnswerTextView.layer.borderWidth = 0.25;
+    [_otherAnswerTextView.layer setBorderColor:[UIColor lightGrayColor].CGColor];
+    _otherAnswerTextView.layer.cornerRadius = 10.0;
+}
+
+# pragma mark - UITextViewDelegate
+
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(textChoiceOtherCellDidBecomeFirstResponder:)]) {
+        [self.delegate textChoiceOtherCellDidBecomeFirstResponder:self];
+    }
+}
+
+- (void) textViewDidEndEditing:(UITextView *)textView {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(textChoiceOtherCellDidResignFirstResponder:)]) {
+        [self.delegate textChoiceOtherCellDidResignFirstResponder:self];
+    }
 }
 
 @end
