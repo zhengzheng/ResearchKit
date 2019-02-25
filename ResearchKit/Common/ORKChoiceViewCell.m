@@ -46,8 +46,6 @@ static const CGFloat LabelTopBottomMargin = 20.0;
 @interface ORKChoiceViewCell()
 
 @property (nonatomic) UIView *containerView;
-@property (nonatomic, strong, readonly) ORKSelectionTitleLabel *primaryLabel;
-@property (nonatomic, strong, readonly) ORKSelectionSubTitleLabel *detailLabel;
 
 @end
 
@@ -58,8 +56,8 @@ static const CGFloat LabelTopBottomMargin = 20.0;
     CAShapeLayer *_contentMaskLayer;
     
     UIImageView *_checkView;
-    ORKSelectionTitleLabel *_shortLabel;
-    ORKSelectionSubTitleLabel *_longLabel;
+    ORKSelectionTitleLabel *_primaryLabel;
+    ORKSelectionSubTitleLabel *_detailLabel;
     NSMutableArray<NSLayoutConstraint *> *_containerConstraints;
 }
 
@@ -254,25 +252,6 @@ static const CGFloat LabelTopBottomMargin = 20.0;
     [self setupConstraints];
 }
 
-- (ORKSelectionTitleLabel *)shortLabel {
-    if (_shortLabel == nil ) {
-        _shortLabel = [ORKSelectionTitleLabel new];
-        _shortLabel.numberOfLines = 0;
-        [self.containerView addSubview:_shortLabel];
-    }
-    return _shortLabel;
-}
-
-- (ORKSelectionSubTitleLabel *)longLabel {
-    if (_longLabel == nil) {
-        _longLabel = [ORKSelectionSubTitleLabel new];
-        _longLabel.numberOfLines = 0;
-        _longLabel.textColor = [UIColor ork_darkGrayColor];
-        [self.containerView addSubview:_longLabel];
-    }
-    return _longLabel;
-}
-
 - (void)tintColorDidChange {
     [super tintColorDidChange];
     [self updateSelectedItem];
@@ -282,8 +261,8 @@ static const CGFloat LabelTopBottomMargin = 20.0;
     if (_immediateNavigation == NO) {
         self.accessoryView.hidden = _isSelected ? NO : YES;
         if (_isSelected) {
-            self.primaryLabel.textColor = [self tintColor];
-            self.detailLabel.textColor = [[self tintColor] colorWithAlphaComponent:192.0 / 255.0];
+            _primaryLabel.textColor = [self tintColor];
+            _detailLabel.textColor = [[self tintColor] colorWithAlphaComponent:192.0 / 255.0];
         }
     }
 }
@@ -354,7 +333,7 @@ static const CGFloat LabelTopBottomMargin = 20.0;
 #pragma mark - Accessibility
 
 - (NSString *)accessibilityLabel {
-    return ORKAccessibilityStringForVariables(self.primaryLabel.accessibilityLabel, self.detailLabel.accessibilityLabel);
+    return ORKAccessibilityStringForVariables(_primaryLabel.accessibilityLabel, _detailLabel.accessibilityLabel);
 }
 
 - (UIAccessibilityTraits)accessibilityTraits {
