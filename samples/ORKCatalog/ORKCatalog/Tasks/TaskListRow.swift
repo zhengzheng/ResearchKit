@@ -1061,12 +1061,14 @@ enum TaskListRow: Int, CustomStringConvertible {
         let textChoiceOneText = NSLocalizedString("Choice 1", comment: "")
         let textChoiceTwoText = NSLocalizedString("Choice 2", comment: "")
         let textChoiceThreeText = NSLocalizedString("Choice 3", comment: "")
+        let textChoiceFourText = NSLocalizedString("Other", comment: "")
         
         // The text to display can be separate from the value coded for each choice:
         let textChoices = [
             ORKTextChoice(text: textChoiceOneText, value: "choice_1" as NSCoding & NSCopying & NSObjectProtocol),
             ORKTextChoice(text: textChoiceTwoText, value: "choice_2" as NSCoding & NSCopying & NSObjectProtocol),
-            ORKTextChoice(text: textChoiceThreeText, value: "choice_3" as NSCoding & NSCopying & NSObjectProtocol)
+            ORKTextChoice(text: textChoiceThreeText, value: "choice_3" as NSCoding & NSCopying & NSObjectProtocol),
+            ORKTextChoiceOther(text: textChoiceFourText, primaryTextAttributedString: nil, detailText: NSLocalizedString("Detail text", comment: ""), detailTextAttributedString: nil, value: "choice_Other" as NSCoding & NSCopying & NSObjectProtocol, exclusive: false, placeholder: NSLocalizedString("Please explain your choice", comment: ""), isTextoptional: true, textViewShouldCollapse: false)
         ]
         
         let answerFormat = ORKAnswerFormat.choiceAnswerFormat(with: .singleChoice, textChoices: textChoices)

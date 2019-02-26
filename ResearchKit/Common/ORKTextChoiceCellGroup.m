@@ -35,6 +35,7 @@
 #import "ORKSelectionSubTitleLabel.h"
 
 #import "ORKChoiceViewCell.h"
+#import "ORKAnswerTextView.h"
 
 #import "ORKAnswerFormat_Internal.h"
 #import "ORKChoiceAnswerFormatHelper.h"
@@ -87,9 +88,18 @@
     ORKChoiceViewCell *cell = _cells[@(index)];
     
     if (cell == nil) {
-        cell = [[ORKChoiceViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        cell.immediateNavigation = _immediateNavigation;
         ORKTextChoice *textChoice = [_helper textChoiceAtIndex:index];
+        if ([textChoice isKindOfClass:[ORKTextChoiceOther class]]) {
+            ORKChoiceOtherViewCell * choiceOtherViewCell = [[ORKChoiceOtherViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            ORKTextChoiceOther *textChoiceOther = (ORKTextChoiceOther *)textChoice;
+            choiceOtherViewCell.otherAnswerTextView.placeholder = textChoiceOther.placeholder;
+            choiceOtherViewCell.otherAnswerTextView.text = textChoiceOther.textViewText;
+            [choiceOtherViewCell hideTextView:textChoiceOther.textViewShouldCollapse];
+            cell = choiceOtherViewCell;
+        } else {
+            cell = [[ORKChoiceViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.immediateNavigation = _immediateNavigation;
         [cell setPrimaryText:textChoice.text];
         [cell setDetailText:textChoice.detailText];
         if (textChoice.primaryTextAttributedString) {
@@ -106,9 +116,47 @@
     return cell;
 }
 
-- (void)didSelectCellAtIndex:(NSUInteger)index {
+- (void)updateTextViewForChoiceOtherCell:(ORKChoiceOtherViewCell *)choiceCell withTextChoiceOther:(ORKTextChoiceOther *)choiceOther {
+    if (choiceOther.textViewShouldCollapse && choiceCell.otherAnswerTextView.text.length <= 0) {
+        [choiceCell hideTextView:!choiceCell.isTextViewHidden];
+        [self.delegate tableViewCellHeightUpdated];
+    }
+}
+
+- (void)textViewDidResignResponderForCellAtIndexPath:(NSIndexPath *)indexPath {
+    if ([self containsIndexPath:indexPath]== NO) {
+        return;
+    }
+    NSUInteger index = indexPath.row - _beginningIndexPath.row;
+    ORKChoiceOtherViewCell *touchedCell = (ORKChoiceOtherViewCell *) [self cellAtIndex:index withReuseIdentifier:nil];
+    ORKTextChoiceOther *textChoice = (ORKTextChoiceOther *) [_helper textChoiceAtIndex:index];
+    
+    if (textChoice.isTextOptional || !touchedCell.isSelected || (!textChoice.isTextOptional && touchedCell.otherAnswerTextView.text.length > 0)) {
+        textChoice.textViewText = touchedCell.otherAnswerTextView.text;
+        [self didSelectCellAtIndexPath:indexPath];
+    }
+    else {
+        touchedCell.otherAnswerTextView.text = textChoice.textViewText;
+    }
+}
+
+- (void)didSelectCellAtIndexPath:(NSIndexPath *)indexPath {
+    if ([self containsIndexPath:indexPath]== NO) {
+        return;
+    }
+    NSUInteger index = indexPath.row - _beginningIndexPath.row;
     ORKChoiceViewCell *touchedCell = [self cellAtIndex:index withReuseIdentifier:nil];
-        
+    ORKTextChoice *textChoice = [_helper textChoiceAtIndex:index];
+    
+    if ([textChoice isKindOfClass:[ORKTextChoiceOther class]] && [touchedCell isKindOfClass:[ORKChoiceOtherViewCell class]]) {
+        ORKTextChoiceOther *otherTextChoice = (ORKTextChoiceOther *)textChoice;
+        ORKChoiceOtherViewCell *touchedOtherCell = (ORKChoiceOtherViewCell *)touchedCell;
+        [self updateTextViewForChoiceOtherCell:touchedOtherCell withTextChoiceOther:otherTextChoice];
+        if (!otherTextChoice.isTextOptional && otherTextChoice.textViewText.length <= 0) {
+            return;
+        }
+    }
+    
     if (_singleChoice) {
         touchedCell.isSelected = YES;
         for (ORKChoiceViewCell *cell in _cells.allValues) {
@@ -131,13 +179,7 @@
     }
     
     _answer = [_helper answerForSelectedIndexes:[self selectedIndexes]];
-}
-
-- (void)didSelectCellAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self containsIndexPath:indexPath]== NO) {
-        return;
-    }
-    [self didSelectCellAtIndex:indexPath.row - _beginningIndexPath.row];
+    [self.delegate answerChangedForIndexPath:indexPath];
 }
 
 - (BOOL)containsIndexPath:(NSIndexPath *)indexPath {

@@ -580,7 +580,7 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
         if (![textObject isKindOfClass:[ORKTextChoice class]]) {
             @throw [NSException exceptionWithName:NSGenericException reason:@"The textChoices array should only containt objects of the ORKTextChoice kind." userInfo:@{@"nonConformingObject": textObject}];
         }
-        [choices addObject:textObject];
+        [choices addObject:[textObject copyWithZone:nil]];
     }
     return choices;
 }
@@ -941,6 +941,12 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
     ork_validateChoices(_textChoices);
 }
 
+- (instancetype)copyWithZone:(NSZone *)zone {
+    ORKTextChoiceAnswerFormat *answerFormat = [[[self class] allocWithZone:zone] initWithStyle:_style
+                                                                                   textChoices:[_textChoices copy]];
+    return answerFormat;
+}
+
 - (BOOL)isEqual:(id)object {
     BOOL isParentSame = [super isEqual:object];
     
@@ -1138,7 +1144,16 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
 }
 
 - (instancetype)copyWithZone:(NSZone *)zone {
-    return self;
+    ORKTextChoiceOther *other = [[ORKTextChoiceOther allocWithZone:zone] initWithText:[self.text copy]
+                                                          primaryTextAttributedString:[self.primaryTextAttributedString copy]
+                                                                           detailText:[self.detailText copy]
+                                                           detailTextAttributedString:[self.detailTextAttributedString copy]
+                                                                                value:[self.value copyWithZone:zone]
+                                                                            exclusive:self.exclusive
+                                                                          placeholder:[self.placeholder copy]
+                                                                       isTextoptional:self.isTextOptional
+                                                               textViewShouldCollapse:self.textViewShouldCollapse];
+    return other;
 }
 
 - (BOOL)isEqual:(id)object {

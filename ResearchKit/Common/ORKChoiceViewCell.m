@@ -76,6 +76,7 @@ static const CGFloat TextViewHeight = 100.0;
         self.accessoryView = _checkView;
         [self setupContainerView];
     }
+    _cellLeftMargin = self.separatorInset.left;
     return self;
 }
 
@@ -246,11 +247,13 @@ static const CGFloat TextViewHeight = 100.0;
 
 
 - (void)setupConstraints {
+    if (!_primaryLabel && !_detailLabel) {
+        return;
+    }
     
     if (_containerConstraints) {
         [NSLayoutConstraint deactivateConstraints:_containerConstraints];
     }
-    _cellLeftMargin = self.separatorInset.left;
     
     _containerView.translatesAutoresizingMaskIntoConstraints = NO;
     _containerConstraints = [[NSMutableArray alloc] init];
@@ -406,6 +409,16 @@ static const CGFloat TextViewHeight = 100.0;
 }
 
 - (void)addOtherAnswerTextViewConstraints {
+    
+    NSLayoutConstraint *textViewHeightConstraint = [NSLayoutConstraint constraintWithItem:_otherAnswerTextView
+                                                                                attribute:NSLayoutAttributeHeight
+                                                                                relatedBy:NSLayoutRelationEqual
+                                                                                   toItem:nil
+                                                                                attribute:NSLayoutAttributeNotAnAttribute
+                                                                               multiplier:1.0
+                                                                                 constant:MAX(_otherAnswerTextView.font.pointSize, TextViewHeight)];
+    textViewHeightConstraint.priority = UILayoutPriorityDefaultLow;
+    
     [self.containerConstraints addObjectsFromArray:@[
                                                      [NSLayoutConstraint constraintWithItem:_otherAnswerTextView
                                                                                   attribute:NSLayoutAttributeTop
@@ -428,13 +441,7 @@ static const CGFloat TextViewHeight = 100.0;
                                                                                   attribute:NSLayoutAttributeRight
                                                                                  multiplier:1.0
                                                                                    constant:-LabelRightMargin],
-                                                     [NSLayoutConstraint constraintWithItem:_otherAnswerTextView
-                                                                                  attribute:NSLayoutAttributeHeight
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:nil
-                                                                                  attribute:NSLayoutAttributeNotAnAttribute
-                                                                                 multiplier:1.0
-                                                                                   constant:MAX(_otherAnswerTextView.font.pointSize, TextViewHeight)],
+                                                     textViewHeightConstraint,
                                                      [NSLayoutConstraint constraintWithItem:self.containerView
                                                                                   attribute:NSLayoutAttributeBottom
                                                                                   relatedBy:NSLayoutRelationEqual
