@@ -160,16 +160,22 @@
 }
 
 - (void)capturePressed:(void (^)(BOOL))handler {
-    // Create settings for photo capture
-    AVCapturePhotoSettings *photoSettings = [AVCapturePhotoSettings photoSettingsWithFormat:@{AVVideoCodecKey: AVVideoCodecTypeJPEG}];
     // Capture image
     dispatch_async(_sessionQueue,^{
+        // Create settings for photo capture
+        AVCapturePhotoSettings *photoSettings = [AVCapturePhotoSettings photoSettingsWithFormat:@{AVVideoCodecKey: AVVideoCodecTypeJPEG}];
         [_photoOutput capturePhotoWithSettings:photoSettings delegate:self];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // Notify handler that we are done
+            if (handler) {
+                handler(_capturedImageData != nil);
+            }
+        });
     });
 }
 
 - (void)captureOutput:(AVCapturePhotoOutput *)captureOutput didFinishProcessingPhoto:(AVCapturePhoto *)photo error:(nullable NSError *)error{
-    
     // Obtain photodata to be stored
     NSData *capturedImageData = photo.fileDataRepresentation;
     
