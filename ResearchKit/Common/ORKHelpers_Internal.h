@@ -204,7 +204,7 @@ ORKMutableOrderedSetCopyObjects(NSOrderedSet *a) {
         return nil;
     }
     NSMutableOrderedSet *b = [NSMutableOrderedSet orderedSetWithCapacity:a.count];
-    [a enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    [a enumerateObjectsUsingBlock:^(id obj, __unused NSUInteger idx, __unused BOOL *stop) {
         [b addObject:[obj copy]];
     }];
     return b;
@@ -216,7 +216,7 @@ ORKMutableDictionaryCopyObjects(NSDictionary *a) {
         return nil;
     }
     NSMutableDictionary *b = [NSMutableDictionary dictionaryWithCapacity:a.count];
-    [a enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+    [a enumerateKeysAndObjectsUsingBlock:^(id key, id obj, __unused BOOL *stop) {
         b[key] = [obj copy];
     }];
     return b;
