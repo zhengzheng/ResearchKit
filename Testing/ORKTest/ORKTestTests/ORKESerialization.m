@@ -1731,6 +1731,16 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     })),
            
            } mutableCopy];
+        if (@available(iOS 12.0, *)) {
+            [internalEncodingTable addEntriesFromDictionary:@{ ENTRY(ORKHealthClinicalTypeRecorderConfiguration,
+                                                                     ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
+                                                                         return [[ORKHealthClinicalTypeRecorderConfiguration alloc] initWithIdentifier:GETPROP(dict, identifier) healthClinicalType:GETPROP(dict, healthClinicalType) healthFHIRResourceType:GETPROP(dict, healthFHIRResourceType)];
+                                                                     },
+                                                                     (@{
+                                                                        PROPERTY(healthClinicalType, HKClinicalType, NSObject, NO, nil, nil),
+                                                                        PROPERTY(healthFHIRResourceType, NSString, NSObject, NO, nil, nil),
+                                                                        })) }];
+        }
     });
     return internalEncodingTable;
 }
