@@ -1669,11 +1669,11 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                      return [[ORKLocation alloc] initWithCoordinate:coordinate
                                                              region:GETPROP(dict, region)
                                                           userInput:GETPROP(dict, userInput)
-                                                  addressDictionary:GETPROP(dict, addressDictionary)];
+                                                      postalAddress:GETPROP(dict, postalAddress)];
                  },
                  (@{
                     PROPERTY(userInput, NSString, NSObject, NO, nil, nil),
-                    PROPERTY(addressDictionary, NSString, NSDictionary, NO, nil, nil),
+                    PROPERTY(postalAddress, NSString, NSObject, NO, nil, nil),
                     PROPERTY(coordinate, NSValue, NSObject, NO,
                              ^id(id value) { return value ? dictionaryFromCoordinate(((NSValue *)value).MKCoordinateValue) : nil; },
                              ^id(id dict) { return [NSValue valueWithMKCoordinate:coordinateFromDictionary(dict)]; }),
