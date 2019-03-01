@@ -210,7 +210,15 @@
     taskResult.results = @[stepResult];
     nextStep = [pageStep stepAfterStepWithIdentifier:@"stepOne" withResult:taskResult];
     XCTAssert([nextStep.identifier isEqualToString:@"stepFour"]);
+
+}
+
+- (void)testPasscodeStep {
     
+    ORKPasscodeStep *step = [ORKPasscodeStep passcodeStepWithIdentifier:@"STEP" passcodeFlow:ORKPasscodeFlowAuthenticate];
+    XCTAssert([step.identifier isEqualToString:@"STEP"]);
+    XCTAssertEqual(step.passcodeFlow, ORKPasscodeFlowAuthenticate);
+    XCTAssertEqual(step.passcodeType, ORKPasscodeType4Digit);
 }
 
 @end
