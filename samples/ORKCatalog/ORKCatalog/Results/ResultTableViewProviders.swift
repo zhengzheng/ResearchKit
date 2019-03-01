@@ -590,8 +590,8 @@ class FileResultTableViewProvider: ResultTableViewProvider {
             // The URL of the generated file on disk.
             ResultRow(text: "fileURL", detail: questionResult.fileURL)
         ]
-        
-        if let fileURL = questionResult.fileURL, let contentType = questionResult.contentType , contentType.hasPrefix("image/") {
+
+        if let fileURL = questionResult.fileURL, let contentType = questionResult.contentType , contentType.hasPrefix("image/") , !contentType.hasSuffix(".dng"){
             
             if let image = UIImage.init(contentsOfFile: fileURL.path) {
                 return rows + [
