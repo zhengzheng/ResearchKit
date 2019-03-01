@@ -3046,15 +3046,15 @@ static NSString *const kSecureTextEntryEscapeString = @"*";
             _useCurrentLocation == castObject.useCurrentLocation);
 }
 
-static NSString *const formattedAddressLinesKey = @"FormattedAddressLines";
-
 - (NSString *)stringForAnswer:(id)answer {
     NSString *answerString = nil;
     if ([answer isKindOfClass:[ORKLocation class]]) {
         ORKLocation *location = answer;
-    
-        answerString = [CNPostalAddressFormatter stringFromPostalAddress:location.postalAddress
-                                                                   style:CNPostalAddressFormatterStyleMailingAddress];
+        
+        CNPostalAddress *postalAddress = location.postalAddress;
+        answerString = postalAddress ? [CNPostalAddressFormatter stringFromPostalAddress:postalAddress
+                                                                                   style:CNPostalAddressFormatterStyleMailingAddress] :
+        MKStringFromMapPoint(MKMapPointForCoordinate(location.coordinate));
     }
     return answerString;
 }
