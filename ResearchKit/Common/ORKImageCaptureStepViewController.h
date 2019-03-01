@@ -46,12 +46,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 ORK_CLASS_AVAILABLE
 @interface ORKImageCaptureStepViewController : ORKStepViewController
-
-/**
- ORKPhotoOutputFormat is used to determine what type of codec you would like your result to be in
- */
-typedef NSString *const ORKPhotoOutputFormat NS_TYPED_ENUM;
-
 @end
 
 NS_ASSUME_NONNULL_END

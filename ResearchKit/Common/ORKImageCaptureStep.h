@@ -36,6 +36,15 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
+ ORKPhotoOutputFormat is used to determine what type of codec you would like your result to be in
+ */
+typedef NSString *ORKPhotoOutputFormat NS_TYPED_ENUM;
+
+extern ORKPhotoOutputFormat const ORKPhotoOutputFormatHEVC;
+extern ORKPhotoOutputFormat const ORKPhotoOutputFormatRAW;
+extern ORKPhotoOutputFormat const ORKPhotoOutputFormatJPEG;
+
+/**
  The `ORKImageCaptureStep` class represents a step that captures an image through the device
  camera.  A template image can optionally be laid over the camera preview to assist in properly
  capturing the image.
@@ -87,6 +96,11 @@ ORK_CLASS_AVAILABLE
  The accessibility hint for the capture button.
  */
 @property (nonatomic, copy) NSString *accessibilityHint;
+
+/**
+ Format type that image will be captured with.
+ */
+@property (nonatomic, copy, nullable) ORKPhotoOutputFormat photoOutputFormat;
 
 @end
 
