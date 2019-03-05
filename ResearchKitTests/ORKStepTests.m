@@ -221,6 +221,18 @@
     XCTAssertEqual(step.passcodeType, ORKPasscodeType4Digit);
 }
 
+- (void)testPDFViewerStep {
+    NSString *identifier = @"STEP";
+    NSURL *url = [NSURL URLWithString:@"TESTINGURL"];
+    
+    ORKPDFViewerStep *step = [[ORKPDFViewerStep alloc] initWithIdentifier:identifier pdfURL:url];
+    step.actionBarOption = ORKPDFViewerActionBarOptionExcludeShare;
+    
+    XCTAssertEqual([step identifier], identifier);
+    XCTAssertEqual([step pdfURL], url);
+    XCTAssertEqual([step actionBarOption], ORKPDFViewerActionBarOptionExcludeShare);
+}
+
 @end
 
 
