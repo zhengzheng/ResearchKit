@@ -221,6 +221,26 @@
     XCTAssertEqual(step.passcodeType, ORKPasscodeType4Digit);
 }
 
+- (void)testQuestionStep {
+    NSString *identifier = @"Identifier";
+    NSString *title = @"Title";
+    NSString *question = @"How are you?";
+    NSString *errorMessage = @"ERROR";
+    
+    ORKTextAnswerFormat *answerFormat = [ORKAnswerFormat textAnswerFormatWithMaximumLength:100];
+    ORKConfirmTextAnswerFormat *incorrectAnswerFormat = [[ORKConfirmTextAnswerFormat alloc] initWithOriginalItemIdentifier:identifier errorMessage:errorMessage];
+    
+    ORKQuestionStep *step = [ORKQuestionStep questionStepWithIdentifier:identifier title:title question:question answer:answerFormat];
+    XCTAssertNoThrowSpecificNamed([step validateParameters], NSException, NSInvalidArgumentException, @"Should not throw exception");
+    XCTAssertEqual([step requestedHealthKitTypesForReading], nil);
+    XCTAssertEqual([step stepViewControllerClass], [ORKQuestionStepViewController class], @"Should return ORKQuestionStepViewController");
+    XCTAssert([step isEqual:step]);
+    XCTAssertEqual([step questionType], ORKQuestionTypeText, @"Should return ORKQuestionTypeText");
+    
+    ORKQuestionStep *incorrectStep = [ORKQuestionStep questionStepWithIdentifier:identifier title:title question:question answer:incorrectAnswerFormat];
+    XCTAssertThrowsSpecificNamed([incorrectStep validateParameters], NSException, NSInvalidArgumentException);
+}
+
 @end
 
 
