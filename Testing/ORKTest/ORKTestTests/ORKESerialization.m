@@ -278,9 +278,9 @@ static UITextInputPasswordRules *passwordRulesFromDictionary(NSDictionary *dict)
 }
 
 static NSMutableDictionary *ORKESerializationEncodingTable(void);
-static id propFromDict(NSDictionary *dict, NSString *propName);
+static id propFromDict(NSDictionary *dict, NSString *propName, ORKESerializationLocalizer *localizer);
 static NSArray *classEncodingsForClass(Class c) ;
-static id objectForJsonObject(id input, Class expectedClass, ORKESerializationJSONToObjectBlock converterBlock) ;
+static id objectForJsonObject(id input, Class expectedClass, ORKESerializationJSONToObjectBlock converterBlock, ORKESerializationLocalizer *localizer) ;
 
 __unused static NSInteger const SerializationVersion = 1; // Will be used moving forward as we get additional versions
 
@@ -369,7 +369,7 @@ __unused static NSInteger const SerializationVersion = 1; // Will be used moving
 
 static NSString *_ClassKey = @"_class";
 
-static id propFromDict(NSDictionary *dict, NSString *propName) {
+static id propFromDict(NSDictionary *dict, NSString *propName, ORKESerializationLocalizer *localizer) {
     NSArray *classEncodings = classEncodingsForClass(NSClassFromString(dict[_ClassKey]));
     ORKESerializableProperty *propertyEntry = nil;
     for (ORKESerializableTableEntry *classEncoding in classEncodings) {
@@ -392,7 +392,7 @@ static id propFromDict(NSDictionary *dict, NSString *propName) {
         if ([containerClass isSubclassOfClass:[NSArray class]]) {
             NSMutableArray *outputArray = [NSMutableArray array];
             for (id value in DYNAMICCAST(input, NSArray)) {
-                id convertedValue = objectForJsonObject(value, propertyClass, converterBlock);
+                id convertedValue = objectForJsonObject(value, propertyClass, converterBlock, localizer);
                 NSCAssert(convertedValue != nil, @"Could not convert to object of class %@", propertyClass);
                 [outputArray addObject:convertedValue];
             }
@@ -400,7 +400,7 @@ static id propFromDict(NSDictionary *dict, NSString *propName) {
         } else if ([containerClass isSubclassOfClass:[NSDictionary class]]) {
             NSMutableDictionary *outputDictionary = [NSMutableDictionary dictionary];
             for (NSString *key in [DYNAMICCAST(input, NSDictionary) allKeys]) {
-                id convertedValue = objectForJsonObject(DYNAMICCAST(input, NSDictionary)[key], propertyClass, converterBlock);
+                id convertedValue = objectForJsonObject(DYNAMICCAST(input, NSDictionary)[key], propertyClass, converterBlock, nil);
                 NSCAssert(convertedValue != nil, @"Could not convert to object of class %@", propertyClass);
                 outputDictionary[key] = convertedValue;
             }
@@ -408,11 +408,24 @@ static id propFromDict(NSDictionary *dict, NSString *propName) {
         } else {
             NSCAssert(containerClass == [NSObject class], @"Unexpected container class %@", containerClass);
             
-            output = objectForJsonObject(input, propertyClass, converterBlock);
+            output = objectForJsonObject(input, propertyClass, converterBlock, localizer);
         }
     }
     return output;
 }
+
+@implementation ORKESerializationLocalizer
+
+- (instancetype)initWithBundle:(NSBundle *)bundle tableName:(NSString *)tableName {
+    self = [super init];
+    if (self) {
+        self.bundle = bundle;
+        self.tableName = tableName;
+    }
+    return self;
+}
+
+@end
 
 
 #define NUMTOSTRINGBLOCK(table) ^id(id num) { return table[((NSNumber *)num).unsignedIntegerValue]; }
@@ -1762,15 +1775,24 @@ static NSArray *classEncodingsForClass(Class c) {
     return classEncodings;
 }
 
-static id objectForJsonObject(id input, Class expectedClass, ORKESerializationJSONToObjectBlock converterBlock) {
+static id objectForJsonObject(id input, Class expectedClass, ORKESerializationJSONToObjectBlock converterBlock, ORKESerializationLocalizer *localizer) {
     id output = nil;
+    
     if (converterBlock != nil) {
         input = converterBlock(input);
     }
     
     if (expectedClass != nil && [input isKindOfClass:expectedClass]) {
         // Input is already of the expected class, do nothing
-        output = input;
+        
+        // We end up here in the case of answerFormat strings, so we need to
+        // localize these if need be.
+        if ([input isKindOfClass:[NSString class]] && localizer != nil) {
+            NSString *localizedValue = NSLocalizedStringFromTableInBundle((NSString *)input, localizer.tableName, localizer.bundle, nil);
+            output = localizedValue;
+        } else {
+            output = input;
+        }
     } else if ([input isKindOfClass:[NSDictionary class]]) {
         NSDictionary *dict = (NSDictionary *)input;
         NSString *className = input[_ClassKey];
@@ -1786,7 +1808,7 @@ static id objectForJsonObject(id input, Class expectedClass, ORKESerializationJS
         if (initBlock != nil) {
             output = initBlock(dict,
                                ^id(NSDictionary *propDict, NSString *param) {
-                                   return propFromDict(propDict, param); });
+                                   return propFromDict(propDict, param, localizer); });
             writeAllProperties = NO;
         } else {
             output = [[NSClassFromString(className) alloc] init];
@@ -1804,7 +1826,18 @@ static id objectForJsonObject(id input, Class expectedClass, ORKESerializationJS
                 if (propertyEntry != nil) {
                     // Only write the property if it has not already been set during init
                     if (writeAllProperties || propertyEntry.writeAfterInit) {
-                        [output setValue:propFromDict(dict,key) forKey:key];
+                        id property = propFromDict(dict, key, localizer);
+                        if ((localizer != nil) && ([property isKindOfClass: [NSString class]])) {
+                            NSString *localizedValue = NSLocalizedStringFromTableInBundle((NSString *)property, localizer.tableName, localizer.bundle, nil);
+
+                            // If the localizer does not find a value for the designated key, it returns that key, and
+                            // in this case would be the value string in the JSON. At the moment let's just display that
+                            // as it is what we want to display anyways. At some point it might be good to assert if the
+                            // key is not found to make sure we are relying soley on the localizer for our content.
+                            [output setValue:localizedValue forKey:key];
+                        } else {
+                            [output setValue:propFromDict(dict,key,localizer) forKey:key];
+                        }
                     }
                     haveSetProp = YES;
                     break;
@@ -1909,7 +1942,11 @@ static id jsonObjectForObject(id object) {
 }
 
 + (id)objectFromJSONObject:(NSDictionary *)object error:(__unused NSError * __autoreleasing *)error {
-    return objectForJsonObject(object, nil, nil);
+    return objectForJsonObject(object, nil, nil, nil);
+}
+
++ (id)objectFromJSONObject:(NSDictionary *)object error:(__unused NSError * __autoreleasing *)error localizer:(ORKESerializationLocalizer *)localizer {
+    return objectForJsonObject(object, nil, nil, localizer);
 }
 
 + (NSData *)JSONDataForObject:(id)object error:(NSError * __autoreleasing *)error {
@@ -1921,7 +1958,7 @@ static id jsonObjectForObject(id object) {
     id json = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions)0 error:error];
     id ret = nil;
     if (json != nil) {
-        ret = objectForJsonObject(json, nil, nil);
+        ret = objectForJsonObject(json, nil, nil, nil);
     }
     return ret;
 }
