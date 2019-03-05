@@ -426,6 +426,22 @@
     
     ORKTextAnswerFormat *noMaxAnswerFormat = [ORKAnswerFormat textAnswerFormat];
     XCTAssertEqual(noMaxAnswerFormat.maximumLength, 0);
+    
+    NSString *pattern = @"^[2-9]\\d{2}-\\d{3}-\\d{4}$";
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionAnchorsMatchLines error:NULL];
+    ORKTextAnswerFormat *regexAnswerFormat = [ORKAnswerFormat textAnswerFormatWithValidationRegularExpression:regex invalidMessage:@"NOT A PHONENUMBER!"];
+    
+    XCTAssertEqual(regexAnswerFormat.validationRegularExpression, regex);
+    XCTAssertEqual(regexAnswerFormat.invalidMessage, @"NOT A PHONENUMBER!");
+
+//    XCTAssertThrowsSpecificNamed([ORKAnswerFormat textAnswerFormatWithValidationRegularExpression:regex invalidMessage:NULL],
+//                                 NSException, NSInvalidArgumentException,
+//                                 @"Should throw exception since both have to nil or have a value");
+//
+//    XCTAssertThrowsSpecificNamed([ORKAnswerFormat textAnswerFormatWithValidationRegularExpression:NULL
+//                                                                                   invalidMessage:@"INVALID"],
+//                                 NSException,NSInvalidArgumentException,
+//                                 @"Should throw exception since both have to nil or have a value");
 }
 
 - (void)testLocationAnswerFormat {
