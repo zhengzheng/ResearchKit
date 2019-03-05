@@ -447,11 +447,11 @@
     
     XCTAssertThrowsSpecificNamed([[ORKAnswerFormat textAnswerFormatWithValidationRegularExpression:regex invalidMessage:NULL] validateParameters],
                                  NSException, NSInvalidArgumentException,
-                                 @"Should throw exception since both have to nil or have a value");
+                                 @"Should throw exception since both have to nil");
     XCTAssertThrowsSpecificNamed([[ORKAnswerFormat textAnswerFormatWithValidationRegularExpression:NULL
                                                                                    invalidMessage:@"INVALID"] validateParameters],
                                  NSException,NSInvalidArgumentException,
-                                 @"Should throw exception since both have to nil or have a value");
+                                 @"Should throw exception since both have to nil");
 }
 
 - (void)testLocationAnswerFormat {
