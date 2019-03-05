@@ -422,7 +422,12 @@
 
 - (void)testTextAnswerFormat {
     ORKTextAnswerFormat *answerFormat = [ORKAnswerFormat textAnswerFormatWithMaximumLength:10];
+
+    XCTAssertEqual([answerFormat questionType], ORKQuestionTypeText);
     XCTAssertEqual(answerFormat.maximumLength, 10);
+    XCTAssertEqual([answerFormat isAnswerValidWithString:@"CORRECT"], YES, @"Should return YES since the string lenght is less than max");
+    XCTAssertEqual([answerFormat isAnswerValidWithString:@"REALLY LONG STRING! I THINK?"], NO, @"Should return NO since the string lenght is more than max");
+    XCTAssert([answerFormat isEqual:answerFormat], @"Should be equal");
     
     ORKTextAnswerFormat *noMaxAnswerFormat = [ORKAnswerFormat textAnswerFormat];
     XCTAssertEqual(noMaxAnswerFormat.maximumLength, 0);
@@ -433,15 +438,20 @@
     
     XCTAssertEqual(regexAnswerFormat.validationRegularExpression, regex);
     XCTAssertEqual(regexAnswerFormat.invalidMessage, @"NOT A PHONENUMBER!");
-
-//    XCTAssertThrowsSpecificNamed([ORKAnswerFormat textAnswerFormatWithValidationRegularExpression:regex invalidMessage:NULL],
-//                                 NSException, NSInvalidArgumentException,
-//                                 @"Should throw exception since both have to nil or have a value");
-//
-//    XCTAssertThrowsSpecificNamed([ORKAnswerFormat textAnswerFormatWithValidationRegularExpression:NULL
-//                                                                                   invalidMessage:@"INVALID"],
-//                                 NSException,NSInvalidArgumentException,
-//                                 @"Should throw exception since both have to nil or have a value");
+    
+    NSString *correctPhoneNumber = @"333-444-5555";
+    NSString *incorrectPhoneNumber = @"123-456-7890";
+    
+    XCTAssertEqual([regexAnswerFormat isAnswerValidWithString:correctPhoneNumber], YES, @"Should return YES since it is in the correct format");
+    XCTAssertEqual([regexAnswerFormat isAnswerValidWithString:incorrectPhoneNumber], NO, @"Should return NO since it is not in the correct format");
+    
+    XCTAssertThrowsSpecificNamed([[ORKAnswerFormat textAnswerFormatWithValidationRegularExpression:regex invalidMessage:NULL] validateParameters],
+                                 NSException, NSInvalidArgumentException,
+                                 @"Should throw exception since both have to nil or have a value");
+    XCTAssertThrowsSpecificNamed([[ORKAnswerFormat textAnswerFormatWithValidationRegularExpression:NULL
+                                                                                   invalidMessage:@"INVALID"] validateParameters],
+                                 NSException,NSInvalidArgumentException,
+                                 @"Should throw exception since both have to nil or have a value");
 }
 
 - (void)testLocationAnswerFormat {
