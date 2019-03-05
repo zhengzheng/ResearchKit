@@ -420,6 +420,71 @@
                                  @"Should throw NSInvalidArgumentException since step is lower than the recommended maximum: 30");
 }
 
+- (void)testLocationAnswerFormat {
+    ORKLocationAnswerFormat *answerFormat = [ORKAnswerFormat locationAnswerFormat];
+    [answerFormat setUseCurrentLocation:YES];
+    XCTAssertEqual(answerFormat.useCurrentLocation, YES);
+}
+
+- (void)testWeightAnswerFormat {
+    ORKWeightAnswerFormat *answerFormat = [ORKAnswerFormat weightAnswerFormatWithMeasurementSystem:ORKMeasurementSystemMetric
+                                                                                  numericPrecision:ORKNumericPrecisionHigh
+                                                                                      minimumValue:0
+                                                                                      maximumValue:300
+                                                                                      defaultValue: 150];
+    
+    XCTAssertEqual(answerFormat.measurementSystem, ORKMeasurementSystemMetric);
+    XCTAssertEqual(answerFormat.numericPrecision, ORKNumericPrecisionHigh);
+    XCTAssertEqual(answerFormat.minimumValue, 0);
+    XCTAssertEqual(answerFormat.maximumValue, 300);
+    XCTAssertEqual(answerFormat.defaultValue, 150);
+    
+    XCTAssertThrowsSpecificNamed([ORKAnswerFormat weightAnswerFormatWithMeasurementSystem:ORKMeasurementSystemMetric
+                                                                         numericPrecision:ORKNumericPrecisionHigh
+                                                                             minimumValue:100
+                                                                             maximumValue:50
+                                                                             defaultValue:25],
+                                 NSException,
+                                 NSInvalidArgumentException,
+                                 @"Should throw NSInvalidArgumentException since min > max");
+
+}
+
+- (void)testMultipleValuePickerAnswerFormat {
+    ORKTextChoice *choiceOne = [ORKTextChoice choiceWithText:@"Choice One" value: [NSNumber numberWithInteger:1]];
+    ORKTextChoice *choiceTwo = [ORKTextChoice choiceWithText:@"Choice Two" value: [NSNumber numberWithInteger:2]];
+    ORKTextChoice *choiceThree = [ORKTextChoice choiceWithText:@"Choice Two" value: [NSNumber numberWithInteger:3]];
+    ORKTextChoice *choiceFour = [ORKTextChoice choiceWithText:@"Choice Two" value: [NSNumber numberWithInteger:4]];
+    
+    NSArray *firstChoices = [NSArray arrayWithObjects:choiceOne, choiceTwo, nil];
+    NSArray *secondChoices = [NSArray arrayWithObjects:choiceThree, choiceFour, nil];
+    
+    ORKValuePickerAnswerFormat *valuePickerOne = [ORKAnswerFormat valuePickerAnswerFormatWithTextChoices:firstChoices];
+    ORKValuePickerAnswerFormat *valuePickerTwo = [ORKAnswerFormat valuePickerAnswerFormatWithTextChoices:secondChoices];
+    
+    NSArray *valuePickerFormats = [NSArray arrayWithObjects:valuePickerOne, valuePickerTwo, nil];
+    ORKMultipleValuePickerAnswerFormat *multiplePickerAnswerFormat = [[ORKMultipleValuePickerAnswerFormat alloc] initWithValuePickers:valuePickerFormats separator:@"S"];
+    
+    XCTAssertEqualObjects(multiplePickerAnswerFormat.valuePickers, valuePickerFormats);
+    XCTAssert([multiplePickerAnswerFormat.separator isEqualToString:@"S"]);
+}
+
+- (void)testValuePickerAnswerFormat {
+    
+    ORKTextChoice *choiceOne, *choiceTwo;
+    
+    choiceOne = [ORKTextChoice choiceWithText:@"Choice One" value:[NSNumber numberWithInteger:1]];
+    choiceTwo = [ORKTextChoice choiceWithText:@"Choice Two" value:[NSNumber numberWithInteger:2]];
+    
+    NSArray *choices = [NSArray arrayWithObjects:choiceOne, choiceTwo, nil];
+    ORKValuePickerAnswerFormat *answerFormat = [ORKAnswerFormat valuePickerAnswerFormatWithTextChoices:choices];
+    
+    XCTAssertEqual([[[answerFormat textChoices] objectAtIndex:0] value], [NSNumber numberWithInteger:1]);
+    XCTAssertEqual([[[answerFormat textChoices] objectAtIndex:1] value], [NSNumber numberWithInteger:2]);
+    
+    XCTAssertThrows([ORKValuePickerAnswerFormat valuePickerAnswerFormatWithTextChoices:[NSNumber numberWithInteger:0]]);
+}
+
 - (void)testDateAnswerFornat {
     
     NSDateComponents *earlierDateComponents = [[NSDateComponents alloc] init];

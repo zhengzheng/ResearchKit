@@ -161,6 +161,66 @@
     XCTAssertEqualObjects([pageStep stepWithIdentifier:@"step3"], step3);
 }
 
+- (void)testORKNavigablePageStep {
+    ORKQuestionStep *stepOne = [ORKQuestionStep questionStepWithIdentifier:@"stepOne"
+                                                                     title:@"QUESTION"
+                                                                  question:@"Which step do we go to?"
+                                                                    answer:[ORKAnswerFormat booleanAnswerFormat]];
+    
+    ORKStep *stepTwo = [[ORKStep alloc] initWithIdentifier:@"stepTwo"];
+    ORKStep *stepThree = [[ORKStep alloc] initWithIdentifier:@"stepThree"];
+    ORKStep *stepFour = [[ORKStep alloc] initWithIdentifier:@"stepFour"];
+    
+    NSArray *steps = [NSArray arrayWithObjects:stepOne, stepTwo, stepThree, stepFour, nil];
+    ORKNavigableOrderedTask *task = [[ORKNavigableOrderedTask alloc] initWithIdentifier:@"task" steps:steps];
+    
+    ORKBooleanQuestionResult *result = [[ORKBooleanQuestionResult alloc] initWithIdentifier:@"stepOne.result"];
+    result.booleanAnswer = @(YES);
+    
+    ORKStepResult *stepResult = [[ORKStepResult alloc] initWithStepIdentifier:@"stepOne" results:@[result]];
+    ORKTaskResult *taskResult = [[ORKTaskResult alloc] initWithIdentifier:@"task"];
+    taskResult.results = @[stepResult];
+    
+    // Creating predicates
+    ORKResultSelector *resultSelector = [ORKResultSelector selectorWithStepIdentifier:@"stepOne" resultIdentifier:@"stepOne.result"];
+    NSPredicate *stepOneYes = [ORKResultPredicate predicateForBooleanQuestionResultWithResultSelector:resultSelector expectedAnswer:YES];
+    NSPredicate *stepOneNo = [ORKResultPredicate predicateForBooleanQuestionResultWithResultSelector:resultSelector expectedAnswer:NO];
+    
+    // Creating navigation rule and setting it to task
+    ORKStepNavigationRule *navigationRule = [[ORKPredicateStepNavigationRule alloc] initWithResultPredicates:@[stepOneYes, stepOneNo]
+                                                                                  destinationStepIdentifiers:@[@"stepTwo", @"stepThree"]
+                                                                                       defaultStepIdentifier:@"stepFour"];
+    [task setNavigationRule:navigationRule forTriggerStepIdentifier:@"stepOne"];
+    ORKNavigablePageStep *pageStep = [[ORKNavigablePageStep alloc] initWithIdentifier:@"pageStep" pageTask:task];
+    
+    // Check step if answer is YES
+    ORKStep *nextStep = [pageStep stepAfterStepWithIdentifier:@"stepOne" withResult:taskResult];
+    XCTAssert([nextStep.identifier isEqualToString:@"stepTwo"]);
+
+    // Check step if answer is NO
+    result.booleanAnswer = @(NO);
+    stepResult = [[ORKStepResult alloc] initWithStepIdentifier:@"stepOne" results:@[result]];
+    taskResult.results = @[stepResult];
+    nextStep = [pageStep stepAfterStepWithIdentifier:@"stepOne" withResult:taskResult];
+    XCTAssert([nextStep.identifier isEqualToString:@"stepThree"]);
+    
+    // Check step if answer is NULL
+    result.booleanAnswer = NULL;
+    stepResult = [[ORKStepResult alloc] initWithStepIdentifier:@"stepOne" results:@[result]];
+    taskResult.results = @[stepResult];
+    nextStep = [pageStep stepAfterStepWithIdentifier:@"stepOne" withResult:taskResult];
+    XCTAssert([nextStep.identifier isEqualToString:@"stepFour"]);
+
+}
+
+- (void)testPasscodeStep {
+    
+    ORKPasscodeStep *step = [ORKPasscodeStep passcodeStepWithIdentifier:@"STEP" passcodeFlow:ORKPasscodeFlowAuthenticate];
+    XCTAssert([step.identifier isEqualToString:@"STEP"]);
+    XCTAssertEqual(step.passcodeFlow, ORKPasscodeFlowAuthenticate);
+    XCTAssertEqual(step.passcodeType, ORKPasscodeType4Digit);
+}
+
 @end
 
 

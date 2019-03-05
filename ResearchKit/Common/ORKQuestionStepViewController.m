@@ -845,7 +845,7 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
         case ORKQuestionTypeSingleChoice:
         case ORKQuestionTypeMultipleChoice:{
             if ([self.questionStep isFormatFitsChoiceCells]) {
-                height = [self heightForChoiceItemOptionAtIndex:indexPath.row];
+                return UITableViewAutomaticDimension;
             } else {
                 height = [ORKSurveyAnswerCellForPicker suggestedCellHeightForView:tableView];
             }
@@ -875,11 +875,6 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
     return height;
 }
 
-- (CGFloat)heightForChoiceItemOptionAtIndex:(NSInteger)index {
-    ORKTextChoice *option = [(ORKTextChoiceAnswerFormat *)_answerFormat textChoices][index];
-    CGFloat height = [ORKChoiceViewCell suggestedCellHeightForShortText:option.text LongText:option.detailText inTableView:_tableView];
-    return height;
-}
 
 #pragma mark - ORKSurveyAnswerCellDelegate
 
