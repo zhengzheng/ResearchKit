@@ -151,7 +151,7 @@
 
 #import <ResearchKit/ORKAccessibility.h>
 #import <ResearchKit/ORKAccessibilityFunctions.h>
-#import <ResearchKit/ORKLineGraphAccessibilityElement.h>
+#import <ResearchKit/ORKGraphChartAccessibilityElement.h>
 #import <ResearchKit/UIView+ORKAccessibility.h>
 
 #import <ResearchKit/ORKRoundTappingButton.h>
