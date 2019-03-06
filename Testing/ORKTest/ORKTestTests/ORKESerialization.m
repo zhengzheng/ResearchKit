@@ -1512,7 +1512,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     PROPERTY(timestamp, NSNumber, NSObject, NO, nil, nil),
                     PROPERTY(fileResult, ORKResult, NSObject, NO, nil, nil)
                     })),
-           ENTRY(ORKSpeechRecognitonResult,
+           ENTRY(ORKSpeechRecognitionResult,
                  nil,
                  (@{
                     })),

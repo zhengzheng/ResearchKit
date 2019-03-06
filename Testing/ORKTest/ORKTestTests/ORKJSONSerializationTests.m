@@ -478,7 +478,7 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
                                               @"ORKInstructionStep.attributedDetailText",
                                               @"ORKOrderedTask.progressLabelColor",
                                               @"ORKRegistrationStep.passcodeRules",
-                                              @"ORKSpeechRecognitonResult.transcription", // SFTranscription
+                                              @"ORKSpeechRecognitionResult.transcription", // SFTranscription
                                               @"ORKAmslerGridResult.image",
                                               @"ORKTextChoice.detailTextAttributedString",
                                               @"ORKTextChoice.primaryTextAttributedString"
