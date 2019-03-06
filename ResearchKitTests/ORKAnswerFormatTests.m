@@ -425,8 +425,8 @@
 
     XCTAssertEqual([answerFormat questionType], ORKQuestionTypeText);
     XCTAssertEqual(answerFormat.maximumLength, 10);
-    XCTAssertEqual([answerFormat isAnswerValidWithString:@"CORRECT"], YES, @"Should return YES since the string lenght is less than max");
-    XCTAssertEqual([answerFormat isAnswerValidWithString:@"REALLY LONG STRING! I THINK?"], NO, @"Should return NO since the string lenght is more than max");
+    XCTAssertEqual([answerFormat isAnswerValidWithString:@"CORRECT"], YES, @"Should return YES since the string length is less than max");
+    XCTAssertEqual([answerFormat isAnswerValidWithString:@"REALLY LONG STRING! I THINK?"], NO, @"Should return NO since the string length is more than max");
     XCTAssert([answerFormat isEqual:answerFormat], @"Should be equal");
     
     ORKTextAnswerFormat *noMaxAnswerFormat = [ORKAnswerFormat textAnswerFormat];
@@ -444,14 +444,6 @@
     
     XCTAssertEqual([regexAnswerFormat isAnswerValidWithString:correctPhoneNumber], YES, @"Should return YES since it is in the correct format");
     XCTAssertEqual([regexAnswerFormat isAnswerValidWithString:incorrectPhoneNumber], NO, @"Should return NO since it is not in the correct format");
-    
-    XCTAssertThrowsSpecificNamed([[ORKAnswerFormat textAnswerFormatWithValidationRegularExpression:regex invalidMessage:NULL] validateParameters],
-                                 NSException, NSInvalidArgumentException,
-                                 @"Should throw exception since both have to nil");
-    XCTAssertThrowsSpecificNamed([[ORKAnswerFormat textAnswerFormatWithValidationRegularExpression:NULL
-                                                                                   invalidMessage:@"INVALID"] validateParameters],
-                                 NSException,NSInvalidArgumentException,
-                                 @"Should throw exception since both have to nil");
 }
 
 - (void)testLocationAnswerFormat {
@@ -515,8 +507,6 @@
     
     XCTAssertEqual([[[answerFormat textChoices] objectAtIndex:0] value], [NSNumber numberWithInteger:1]);
     XCTAssertEqual([[[answerFormat textChoices] objectAtIndex:1] value], [NSNumber numberWithInteger:2]);
-    
-    XCTAssertThrows([ORKValuePickerAnswerFormat valuePickerAnswerFormatWithTextChoices:[NSNumber numberWithInteger:0]]);
 }
 
 @end
