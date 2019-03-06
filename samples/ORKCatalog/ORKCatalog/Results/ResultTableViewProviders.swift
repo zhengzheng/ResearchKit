@@ -398,7 +398,7 @@ class LocationQuestionResultTableViewProvider: ResultTableViewProvider {
     override func resultRowsForSection(_ section: Int) -> [ResultRow] {
         let questionResult = result as! ORKLocationQuestionResult
         let location = questionResult.locationAnswer
-        let addresss = CNPostalAddressFormatter.string(from: location?.postalAddress, style: .mailingAddress)
+        let address = CNPostalAddressFormatter.string(from: (location?.postalAddress)!, style: .mailingAddress)
         let rows = super.resultRowsForSection(section) + [
             // The latitude of the location the user entered.
             ResultRow(text: "latitude", detail: location?.coordinate.latitude),
