@@ -210,7 +210,27 @@
     taskResult.results = @[stepResult];
     nextStep = [pageStep stepAfterStepWithIdentifier:@"stepOne" withResult:taskResult];
     XCTAssert([nextStep.identifier isEqualToString:@"stepFour"]);
+
+}
+
+- (void)testPasscodeStep {
     
+    ORKPasscodeStep *step = [ORKPasscodeStep passcodeStepWithIdentifier:@"STEP" passcodeFlow:ORKPasscodeFlowAuthenticate];
+    XCTAssert([step.identifier isEqualToString:@"STEP"]);
+    XCTAssertEqual(step.passcodeFlow, ORKPasscodeFlowAuthenticate);
+    XCTAssertEqual(step.passcodeType, ORKPasscodeType4Digit);
+}
+
+- (void)testPDFViewerStep {
+    NSString *identifier = @"STEP";
+    NSURL *url = [NSURL URLWithString:@"TESTINGURL"];
+    
+    ORKPDFViewerStep *step = [[ORKPDFViewerStep alloc] initWithIdentifier:identifier pdfURL:url];
+    step.actionBarOption = ORKPDFViewerActionBarOptionExcludeShare;
+    
+    XCTAssertEqual([step identifier], identifier);
+    XCTAssertEqual([step pdfURL], url);
+    XCTAssertEqual([step actionBarOption], ORKPDFViewerActionBarOptionExcludeShare);
 }
 
 @end

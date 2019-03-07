@@ -75,8 +75,8 @@ static const CGFloat TextViewHeight = 100.0;
         _checkView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"checkmark" inBundle:ORKBundle() compatibleWithTraitCollection:nil] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
         self.accessoryView = _checkView;
         [self setupContainerView];
+        _cellLeftMargin = self.separatorInset.left;
     }
-    _cellLeftMargin = self.separatorInset.left;
     return self;
 }
 
