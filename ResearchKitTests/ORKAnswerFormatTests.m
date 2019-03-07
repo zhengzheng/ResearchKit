@@ -420,6 +420,32 @@
                                  @"Should throw NSInvalidArgumentException since step is lower than the recommended maximum: 30");
 }
 
+- (void)testTextAnswerFormat {
+    ORKTextAnswerFormat *answerFormat = [ORKAnswerFormat textAnswerFormatWithMaximumLength:10];
+
+    XCTAssertEqual([answerFormat questionType], ORKQuestionTypeText);
+    XCTAssertEqual(answerFormat.maximumLength, 10);
+    XCTAssertEqual([answerFormat isAnswerValidWithString:@"CORRECT"], YES, @"Should return YES since the string length is less than max");
+    XCTAssertEqual([answerFormat isAnswerValidWithString:@"REALLY LONG STRING! I THINK?"], NO, @"Should return NO since the string length is more than max");
+    XCTAssert([answerFormat isEqual:answerFormat], @"Should be equal");
+    
+    ORKTextAnswerFormat *noMaxAnswerFormat = [ORKAnswerFormat textAnswerFormat];
+    XCTAssertEqual(noMaxAnswerFormat.maximumLength, 0);
+    
+    NSString *pattern = @"^[2-9]\\d{2}-\\d{3}-\\d{4}$";
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionAnchorsMatchLines error:NULL];
+    ORKTextAnswerFormat *regexAnswerFormat = [ORKAnswerFormat textAnswerFormatWithValidationRegularExpression:regex invalidMessage:@"NOT A PHONENUMBER!"];
+    
+    XCTAssertEqual(regexAnswerFormat.validationRegularExpression, regex);
+    XCTAssertEqual(regexAnswerFormat.invalidMessage, @"NOT A PHONENUMBER!");
+    
+    NSString *correctPhoneNumber = @"333-444-5555";
+    NSString *incorrectPhoneNumber = @"123-456-7890";
+    
+    XCTAssertEqual([regexAnswerFormat isAnswerValidWithString:correctPhoneNumber], YES, @"Should return YES since it is in the correct format");
+    XCTAssertEqual([regexAnswerFormat isAnswerValidWithString:incorrectPhoneNumber], NO, @"Should return NO since it is not in the correct format");
+}
+
 - (void)testLocationAnswerFormat {
     ORKLocationAnswerFormat *answerFormat = [ORKAnswerFormat locationAnswerFormat];
     [answerFormat setUseCurrentLocation:YES];
@@ -481,8 +507,6 @@
     
     XCTAssertEqual([[[answerFormat textChoices] objectAtIndex:0] value], [NSNumber numberWithInteger:1]);
     XCTAssertEqual([[[answerFormat textChoices] objectAtIndex:1] value], [NSNumber numberWithInteger:2]);
-    
-    XCTAssertThrows([ORKValuePickerAnswerFormat valuePickerAnswerFormatWithTextChoices:[NSNumber numberWithInteger:0]]);
 }
 
 - (void)testHealthKitCharacteristicTypeAnswerFormat {
