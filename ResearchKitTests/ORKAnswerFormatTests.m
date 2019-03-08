@@ -538,6 +538,13 @@
                                  NSException,
                                  NSInvalidArgumentException,
                                  @"Should throw NSInvalidArgumentException since default date is less than minimum date");
+    XCTAssertThrowsSpecificNamed([ORKAnswerFormat dateAnswerFormatWithDefaultDate:nil
+                                                                      minimumDate:laterDate
+                                                                      maximumDate:earlierDate
+                                                                         calendar:calendar],
+                                 NSException,
+                                 NSInvalidArgumentException,
+                                 @"Should throw NSInvalidArgumentException since minimum date is later than maximum date");
     XCTAssertNoThrowSpecificNamed([ORKAnswerFormat dateAnswerFormatWithDefaultDate:nil
                                                                        minimumDate:earlierDate
                                                                        maximumDate:laterDate
