@@ -212,10 +212,6 @@
             [device lockForConfiguration:nil];
             device.torchMode = _videoCaptureStep.torchMode;
             [device unlockForConfiguration];
-        }else if([device isTorchModeSupported:AVCaptureTorchModeAuto]){
-            [device lockForConfiguration:nil];
-            device.torchMode = AVCaptureTorchModeAuto;
-            [device unlockForConfiguration];
         }
         
         // Configure the input and output
