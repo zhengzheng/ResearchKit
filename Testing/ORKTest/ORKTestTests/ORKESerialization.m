@@ -1785,8 +1785,10 @@ static id objectForJsonObject(id input, Class expectedClass, ORKESerializationJS
     if (expectedClass != nil && [input isKindOfClass:expectedClass]) {
         // Input is already of the expected class, do nothing
         
-        // We end up here in the case of answerFormat strings, so we need to
-        // localize these if need be.
+        // This is a bit of an edge case and we end up here mainly in the case of answerFormats.
+        // Some answerFormat types like ORKTextChoiceAnswerFormat have strings defined within them like
+        // ORKTextChoices or 'Yes' and 'No' in boolean choice that will need to be localized. Because
+        // it does not need to be traversed anymore we end up here so we need to localize.
         if ([input isKindOfClass:[NSString class]] && localizer != nil) {
             NSString *localizedValue = NSLocalizedStringFromTableInBundle((NSString *)input, localizer.tableName, localizer.bundle, nil);
             output = localizedValue;
@@ -1833,10 +1835,10 @@ static id objectForJsonObject(id input, Class expectedClass, ORKESerializationJS
                             // If the localizer does not find a value for the designated key, it returns that key, and
                             // in this case would be the value string in the JSON. At the moment let's just display that
                             // as it is what we want to display anyways. At some point it might be good to assert if the
-                            // key is not found to make sure we are relying soley on the localizer for our content.
+                            // key is not found to make sure we are relying solely on the localizer for our content.
                             [output setValue:localizedValue forKey:key];
                         } else {
-                            [output setValue:propFromDict(dict,key,localizer) forKey:key];
+                            [output setValue:property forKey:key];
                         }
                     }
                     haveSetProp = YES;
