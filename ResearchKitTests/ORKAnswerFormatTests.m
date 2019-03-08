@@ -420,4 +420,181 @@
                                  @"Should throw NSInvalidArgumentException since step is lower than the recommended maximum: 30");
 }
 
+- (void)testTextAnswerFormat {
+    ORKTextAnswerFormat *answerFormat = [ORKAnswerFormat textAnswerFormatWithMaximumLength:10];
+
+    XCTAssertEqual([answerFormat questionType], ORKQuestionTypeText);
+    XCTAssertEqual(answerFormat.maximumLength, 10);
+    XCTAssertEqual([answerFormat isAnswerValidWithString:@"CORRECT"], YES, @"Should return YES since the string length is less than max");
+    XCTAssertEqual([answerFormat isAnswerValidWithString:@"REALLY LONG STRING! I THINK?"], NO, @"Should return NO since the string length is more than max");
+    XCTAssert([answerFormat isEqual:answerFormat], @"Should be equal");
+    
+    ORKTextAnswerFormat *noMaxAnswerFormat = [ORKAnswerFormat textAnswerFormat];
+    XCTAssertEqual(noMaxAnswerFormat.maximumLength, 0);
+    
+    NSString *pattern = @"^[2-9]\\d{2}-\\d{3}-\\d{4}$";
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionAnchorsMatchLines error:NULL];
+    ORKTextAnswerFormat *regexAnswerFormat = [ORKAnswerFormat textAnswerFormatWithValidationRegularExpression:regex invalidMessage:@"NOT A PHONENUMBER!"];
+    
+    XCTAssertEqual(regexAnswerFormat.validationRegularExpression, regex);
+    XCTAssertEqual(regexAnswerFormat.invalidMessage, @"NOT A PHONENUMBER!");
+    
+    NSString *correctPhoneNumber = @"333-444-5555";
+    NSString *incorrectPhoneNumber = @"123-456-7890";
+    
+    XCTAssertEqual([regexAnswerFormat isAnswerValidWithString:correctPhoneNumber], YES, @"Should return YES since it is in the correct format");
+    XCTAssertEqual([regexAnswerFormat isAnswerValidWithString:incorrectPhoneNumber], NO, @"Should return NO since it is not in the correct format");
+}
+
+- (void)testLocationAnswerFormat {
+    ORKLocationAnswerFormat *answerFormat = [ORKAnswerFormat locationAnswerFormat];
+    [answerFormat setUseCurrentLocation:YES];
+    XCTAssertEqual(answerFormat.useCurrentLocation, YES);
+}
+
+- (void)testWeightAnswerFormat {
+    ORKWeightAnswerFormat *answerFormat = [ORKAnswerFormat weightAnswerFormatWithMeasurementSystem:ORKMeasurementSystemMetric
+                                                                                  numericPrecision:ORKNumericPrecisionHigh
+                                                                                      minimumValue:0
+                                                                                      maximumValue:300
+                                                                                      defaultValue: 150];
+    
+    XCTAssertEqual(answerFormat.measurementSystem, ORKMeasurementSystemMetric);
+    XCTAssertEqual(answerFormat.numericPrecision, ORKNumericPrecisionHigh);
+    XCTAssertEqual(answerFormat.minimumValue, 0);
+    XCTAssertEqual(answerFormat.maximumValue, 300);
+    XCTAssertEqual(answerFormat.defaultValue, 150);
+    
+    XCTAssertThrowsSpecificNamed([ORKAnswerFormat weightAnswerFormatWithMeasurementSystem:ORKMeasurementSystemMetric
+                                                                         numericPrecision:ORKNumericPrecisionHigh
+                                                                             minimumValue:100
+                                                                             maximumValue:50
+                                                                             defaultValue:25],
+                                 NSException,
+                                 NSInvalidArgumentException,
+                                 @"Should throw NSInvalidArgumentException since min > max");
+
+}
+
+- (void)testMultipleValuePickerAnswerFormat {
+    ORKTextChoice *choiceOne = [ORKTextChoice choiceWithText:@"Choice One" value: [NSNumber numberWithInteger:1]];
+    ORKTextChoice *choiceTwo = [ORKTextChoice choiceWithText:@"Choice Two" value: [NSNumber numberWithInteger:2]];
+    ORKTextChoice *choiceThree = [ORKTextChoice choiceWithText:@"Choice Two" value: [NSNumber numberWithInteger:3]];
+    ORKTextChoice *choiceFour = [ORKTextChoice choiceWithText:@"Choice Two" value: [NSNumber numberWithInteger:4]];
+    
+    NSArray *firstChoices = [NSArray arrayWithObjects:choiceOne, choiceTwo, nil];
+    NSArray *secondChoices = [NSArray arrayWithObjects:choiceThree, choiceFour, nil];
+    
+    ORKValuePickerAnswerFormat *valuePickerOne = [ORKAnswerFormat valuePickerAnswerFormatWithTextChoices:firstChoices];
+    ORKValuePickerAnswerFormat *valuePickerTwo = [ORKAnswerFormat valuePickerAnswerFormatWithTextChoices:secondChoices];
+    
+    NSArray *valuePickerFormats = [NSArray arrayWithObjects:valuePickerOne, valuePickerTwo, nil];
+    ORKMultipleValuePickerAnswerFormat *multiplePickerAnswerFormat = [[ORKMultipleValuePickerAnswerFormat alloc] initWithValuePickers:valuePickerFormats separator:@"S"];
+    
+    XCTAssertEqualObjects(multiplePickerAnswerFormat.valuePickers, valuePickerFormats);
+    XCTAssert([multiplePickerAnswerFormat.separator isEqualToString:@"S"]);
+}
+
+- (void)testValuePickerAnswerFormat {
+    
+    ORKTextChoice *choiceOne, *choiceTwo;
+    
+    choiceOne = [ORKTextChoice choiceWithText:@"Choice One" value:[NSNumber numberWithInteger:1]];
+    choiceTwo = [ORKTextChoice choiceWithText:@"Choice Two" value:[NSNumber numberWithInteger:2]];
+    
+    NSArray *choices = [NSArray arrayWithObjects:choiceOne, choiceTwo, nil];
+    ORKValuePickerAnswerFormat *answerFormat = [ORKAnswerFormat valuePickerAnswerFormatWithTextChoices:choices];
+    
+    XCTAssertEqual([[[answerFormat textChoices] objectAtIndex:0] value], [NSNumber numberWithInteger:1]);
+    XCTAssertEqual([[[answerFormat textChoices] objectAtIndex:1] value], [NSNumber numberWithInteger:2]);
+}
+
+- (void)testHealthKitCharacteristicTypeAnswerFormat {
+    
+    HKCharacteristicType *biologicalSex = [HKCharacteristicType characteristicTypeForIdentifier:HKCharacteristicTypeIdentifierBiologicalSex];
+    ORKHealthKitCharacteristicTypeAnswerFormat *answerFormat = [ORKHealthKitCharacteristicTypeAnswerFormat answerFormatWithCharacteristicType:biologicalSex];
+    NSArray *options = @[[ORKTextChoice choiceWithText:ORKLocalizedString(@"GENDER_FEMALE", nil) value: ORKBiologicalSexIdentifierFemale],
+                         [ORKTextChoice choiceWithText:ORKLocalizedString(@"GENDER_MALE", nil) value:ORKBiologicalSexIdentifierMale],
+                         [ORKTextChoice choiceWithText:ORKLocalizedString(@"GENDER_OTHER", nil) value:ORKBiologicalSexIdentifierOther]
+                         ];
+    ORKAnswerFormat *expectedFormat = [ORKAnswerFormat choiceAnswerFormatWithStyle:ORKChoiceAnswerStyleSingleChoice textChoices:options];
+    XCTAssertEqualObjects([answerFormat impliedAnswerFormat], expectedFormat);
+    
+    HKCharacteristicType *bloodType = [HKCharacteristicType characteristicTypeForIdentifier:HKCharacteristicTypeIdentifierBloodType];
+    answerFormat = [ORKHealthKitCharacteristicTypeAnswerFormat answerFormatWithCharacteristicType:bloodType];
+    options = @[[ORKTextChoice choiceWithText:ORKLocalizedString(@"BLOOD_TYPE_A+", nil) value:ORKBloodTypeIdentifierAPositive],
+                         [ORKTextChoice choiceWithText:ORKLocalizedString(@"BLOOD_TYPE_A-", nil) value:ORKBloodTypeIdentifierANegative],
+                         [ORKTextChoice choiceWithText:ORKLocalizedString(@"BLOOD_TYPE_B+", nil) value:ORKBloodTypeIdentifierBPositive],
+                         [ORKTextChoice choiceWithText:ORKLocalizedString(@"BLOOD_TYPE_B-", nil) value:ORKBloodTypeIdentifierBNegative],
+                         [ORKTextChoice choiceWithText:ORKLocalizedString(@"BLOOD_TYPE_AB+", nil) value:ORKBloodTypeIdentifierABPositive],
+                         [ORKTextChoice choiceWithText:ORKLocalizedString(@"BLOOD_TYPE_AB-", nil) value:ORKBloodTypeIdentifierABNegative],
+                         [ORKTextChoice choiceWithText:ORKLocalizedString(@"BLOOD_TYPE_O+", nil) value:ORKBloodTypeIdentifierOPositive],
+                         [ORKTextChoice choiceWithText:ORKLocalizedString(@"BLOOD_TYPE_O-", nil) value:ORKBloodTypeIdentifierONegative]
+                         ];
+    expectedFormat = [ORKAnswerFormat valuePickerAnswerFormatWithTextChoices:options];
+    XCTAssertEqualObjects([answerFormat impliedAnswerFormat], expectedFormat);
+    
+    HKCharacteristicType *dateOfBirth = [HKCharacteristicType characteristicTypeForIdentifier:HKCharacteristicTypeIdentifierDateOfBirth];
+    answerFormat = [ORKHealthKitCharacteristicTypeAnswerFormat answerFormatWithCharacteristicType:dateOfBirth];
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDate *defaultDate = [NSDate date];
+    NSDate *minimumDate = [NSDate dateWithTimeIntervalSinceNow:-1000];
+    NSDate *maximumDate = [NSDate dateWithTimeIntervalSinceNow:1000];
+    answerFormat.defaultDate = defaultDate;
+    answerFormat.minimumDate = minimumDate;
+    answerFormat.maximumDate = maximumDate;
+    expectedFormat = [ORKDateAnswerFormat dateAnswerFormatWithDefaultDate:defaultDate
+                                                              minimumDate:minimumDate
+                                                              maximumDate:maximumDate
+                                                                 calendar:calendar];
+    XCTAssertEqualObjects([answerFormat impliedAnswerFormat], expectedFormat);
+   
+    HKCharacteristicType *fitzpatrickSkin = [HKCharacteristicType characteristicTypeForIdentifier:HKCharacteristicTypeIdentifierFitzpatrickSkinType];
+    answerFormat = [ORKHealthKitCharacteristicTypeAnswerFormat answerFormatWithCharacteristicType:fitzpatrickSkin];
+    options = @[[ORKTextChoice choiceWithText:ORKLocalizedString(@"FITZPATRICK_SKIN_TYPE_I", nil) value:@(HKFitzpatrickSkinTypeI)],
+                [ORKTextChoice choiceWithText:ORKLocalizedString(@"FITZPATRICK_SKIN_TYPE_II", nil) value:@(HKFitzpatrickSkinTypeII)],
+                [ORKTextChoice choiceWithText:ORKLocalizedString(@"FITZPATRICK_SKIN_TYPE_III", nil) value:@(HKFitzpatrickSkinTypeIII)],
+                [ORKTextChoice choiceWithText:ORKLocalizedString(@"FITZPATRICK_SKIN_TYPE_IV", nil) value:@(HKFitzpatrickSkinTypeIV)],
+                [ORKTextChoice choiceWithText:ORKLocalizedString(@"FITZPATRICK_SKIN_TYPE_V", nil) value:@(HKFitzpatrickSkinTypeV)],
+                [ORKTextChoice choiceWithText:ORKLocalizedString(@"FITZPATRICK_SKIN_TYPE_VI", nil) value:@(HKFitzpatrickSkinTypeVI)],
+                ];
+    expectedFormat = [ORKAnswerFormat valuePickerAnswerFormatWithTextChoices:options];
+    XCTAssertEqualObjects([answerFormat impliedAnswerFormat], expectedFormat);
+    
+    HKCharacteristicType *wheelchairUse = [HKCharacteristicType characteristicTypeForIdentifier:HKCharacteristicTypeIdentifierWheelchairUse];
+    answerFormat = [ORKHealthKitCharacteristicTypeAnswerFormat answerFormatWithCharacteristicType:wheelchairUse];
+    expectedFormat = [ORKAnswerFormat booleanAnswerFormat];
+    XCTAssertEqualObjects([answerFormat impliedAnswerFormat], [expectedFormat impliedAnswerFormat]);
+    XCTAssertEqual([answerFormat questionType], ORKQuestionTypeSingleChoice);
+    XCTAssert([answerFormat isEqual:answerFormat]);
+}
+
+- (void)testHealthKitQuantityTypeAnswerFormat {
+    
+    HKQuantityType *height = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeight];
+    ORKHealthKitQuantityTypeAnswerFormat *answerFormat = [ORKHealthKitQuantityTypeAnswerFormat answerFormatWithQuantityType:height unit:NULL style:ORKNumericAnswerStyleInteger];
+    ORKAnswerFormat *expectedFormat = [ORKHeightAnswerFormat heightAnswerFormat];
+    XCTAssertEqualObjects([answerFormat impliedAnswerFormat], expectedFormat);
+    XCTAssertEqual([answerFormat unit], [HKUnit meterUnitWithMetricPrefix:(HKMetricPrefixCenti)]);
+    
+    HKQuantityType *weight = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierBodyMass];
+    answerFormat = [ORKHealthKitQuantityTypeAnswerFormat answerFormatWithQuantityType:weight unit:NULL style:ORKNumericAnswerStyleInteger];
+    expectedFormat = [ORKWeightAnswerFormat weightAnswerFormat];
+    XCTAssertEqualObjects([answerFormat impliedAnswerFormat], expectedFormat);
+    XCTAssertEqual([answerFormat unit], [HKUnit gramUnitWithMetricPrefix:(HKMetricPrefixKilo)]);
+    
+    HKUnit *unit = [HKUnit unitFromEnergyFormatterUnit:(NSEnergyFormatterUnitCalorie)];
+    HKQuantityType *calories = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierActiveEnergyBurned];
+    answerFormat = [ORKHealthKitQuantityTypeAnswerFormat answerFormatWithQuantityType:calories unit:unit style:ORKNumericAnswerStyleDecimal];
+    expectedFormat = [ORKNumericAnswerFormat decimalAnswerFormatWithUnit:[unit localizedUnitString]];
+    XCTAssertEqualObjects([answerFormat impliedAnswerFormat], expectedFormat);
+    
+    answerFormat = [ORKHealthKitQuantityTypeAnswerFormat answerFormatWithQuantityType:calories unit:unit style:ORKNumericAnswerStyleInteger];
+    expectedFormat = [ORKNumericAnswerFormat integerAnswerFormatWithUnit:[unit localizedUnitString]];
+    XCTAssertEqualObjects([answerFormat impliedAnswerFormat], expectedFormat);
+    XCTAssertEqual([answerFormat unit], unit);
+    XCTAssertEqual([answerFormat numericAnswerStyle], ORKNumericAnswerStyleInteger);
+    XCTAssertEqual([answerFormat quantityType], calories);
+}
+
 @end
