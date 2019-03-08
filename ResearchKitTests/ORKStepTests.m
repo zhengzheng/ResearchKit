@@ -226,11 +226,23 @@
     NSString *title = @"Title";
     NSString *question = @"How are you?";
     NSString *errorMessage = @"ERROR";
+    NSString *placeHolder = @"PLACEHOLDER";
     
     ORKTextAnswerFormat *answerFormat = [ORKAnswerFormat textAnswerFormatWithMaximumLength:100];
     ORKConfirmTextAnswerFormat *incorrectAnswerFormat = [[ORKConfirmTextAnswerFormat alloc] initWithOriginalItemIdentifier:identifier errorMessage:errorMessage];
-    
     ORKQuestionStep *step = [ORKQuestionStep questionStepWithIdentifier:identifier title:title question:question answer:answerFormat];
+    [step setPlaceholder:placeHolder];
+    [step setUseSurveyMode: NO];
+    [step setUseCardView: NO];
+    [step setOptional:NO];
+    
+    XCTAssertEqual([step identifier], identifier);
+    XCTAssertEqual([step title], title);
+    XCTAssertEqual([step question], question);
+    XCTAssertEqual([step placeholder], placeHolder);
+    XCTAssertEqual([step useSurveyMode], NO);
+    XCTAssertEqual([step useCardView], NO);
+    XCTAssertEqual([step isOptional], NO);
     XCTAssertNoThrowSpecificNamed([step validateParameters], NSException, NSInvalidArgumentException, @"Should not throw exception");
     XCTAssertEqual([step requestedHealthKitTypesForReading], nil);
     XCTAssertEqual([step stepViewControllerClass], [ORKQuestionStepViewController class], @"Should return ORKQuestionStepViewController");
