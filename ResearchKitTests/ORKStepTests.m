@@ -161,6 +161,32 @@
     XCTAssertEqualObjects([pageStep stepWithIdentifier:@"step3"], step3);
 }
 
+- (void)testStep {
+    ORKStep *step = [[ORKStep alloc] initWithIdentifier:@"STEP"];
+    ORKOrderedTask *task = [[ORKOrderedTask alloc] initWithIdentifier:@"TASK" steps:NULL];
+    ORKResult *result = [[ORKResult alloc] initWithIdentifier:@"RESULT"];
+    
+    [step setTitle:@"Title"];
+    [step setText:@"Text"];
+    [step setTask:task];
+    
+    ORKStepViewController *controller = [step instantiateStepViewControllerWithResult:result];
+    
+    XCTAssertEqual([step title], @"Title");
+    XCTAssertEqual([step text], @"Text");
+    XCTAssertEqual([step task], task);
+    XCTAssertEqual([controller restorationIdentifier], [step identifier]);
+    XCTAssertEqual([controller restorationClass], [step stepViewControllerClass]);
+    XCTAssertEqual([controller step], step);
+    XCTAssertEqual([step stepViewControllerClass], [ORKStepViewController class]);
+    XCTAssertEqual([step isRestorable], YES);
+    XCTAssert([step.identifier isEqualToString:@"STEP"]);
+    XCTAssert([step isEqual:step]);
+    XCTAssertEqual([step requestedPermissions], ORKPermissionNone);
+    XCTAssertEqualObjects([step requestedHealthKitTypesForReading], nil);
+    XCTAssertThrowsSpecificNamed([[ORKStep alloc] initWithIdentifier:NULL], NSException, NSInvalidArgumentException);
+}
+
 - (void)testORKNavigablePageStep {
     ORKQuestionStep *stepOne = [ORKQuestionStep questionStepWithIdentifier:@"stepOne"
                                                                      title:@"QUESTION"
