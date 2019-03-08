@@ -50,6 +50,7 @@
 
 @end
 
+
 @implementation ORKImageCaptureStepViewController {
     ORKImageCaptureView *_imageCaptureView;
     dispatch_queue_t _sessionQueue;
@@ -59,8 +60,7 @@
     NSData *_compressedImageData;
     NSData *_rawImageData;
     NSURL *_fileURL;
-    NSString *_requestedPhotoFormat;
-    NSString *_usedPhotoFormat;
+    NSString *_photoFormat;
     UIImage *_previewImage;
 }
 
@@ -88,7 +88,7 @@
         NSParameterAssert([step isKindOfClass:[ORKImageCaptureStep class]]);
         _imageCaptureView = [[ORKImageCaptureView alloc] initWithFrame:CGRectZero];
         _imageCaptureView.imageCaptureStep = (ORKImageCaptureStep *)step;
-        _requestedPhotoFormat = _imageCaptureView.imageCaptureStep.photoOutputFormat;
+        _photoFormat = _imageCaptureView.imageCaptureStep.photoOutputFormat;
         _imageCaptureView.delegate = self;
         [self.view addSubview:_imageCaptureView];
         
@@ -167,37 +167,30 @@
 - (AVCapturePhotoSettings *)generateCustomPhotoSettings {
     AVCapturePhotoSettings *photoSettings;
     
-    if(_requestedPhotoFormat == ORKPhotoOutputFormatHEVC && [[_photoOutput availablePhotoCodecTypes] containsObject:AVVideoCodecTypeHEVC]){
+    if(_photoFormat == ORKPhotoOutputFormatHEVC && [[_photoOutput availablePhotoCodecTypes] containsObject:AVVideoCodecTypeHEVC]){
         photoSettings = [AVCapturePhotoSettings photoSettingsWithFormat:@{AVVideoCodecKey: AVVideoCodecTypeHEVC}];
         [photoSettings setAutoStillImageStabilizationEnabled: [_photoOutput isStillImageStabilizationSupported]];
-        [photoSettings setFlashMode:(AVCaptureFlashModeAuto)];
-        _usedPhotoFormat = ORKPhotoOutputFormatHEVC;
-        return photoSettings;
-    }else if(_requestedPhotoFormat == ORKPhotoOutputFormatRAW && [_photoOutput availableRawPhotoPixelFormatTypes]){
+    }else if(_photoFormat == ORKPhotoOutputFormatRAW && [_photoOutput availableRawPhotoPixelFormatTypes]){
         OSType rawPixelFormatType = (OSType)(((NSNumber *)_photoOutput.availableRawPhotoPixelFormatTypes[0]).unsignedLongValue);
         photoSettings = [AVCapturePhotoSettings photoSettingsWithRawPixelFormatType:rawPixelFormatType
                                                                     processedFormat:@{AVVideoCodecKey: AVVideoCodecTypeHEVC}];
-        [photoSettings setFlashMode:(AVCaptureFlashModeAuto)];
         [photoSettings setAutoStillImageStabilizationEnabled:NO];
-        _usedPhotoFormat = ORKPhotoOutputFormatRAW;
-        return photoSettings;
     }else{
         photoSettings = [AVCapturePhotoSettings photoSettings];
         [photoSettings setAutoStillImageStabilizationEnabled: [_photoOutput isStillImageStabilizationSupported]];
-        [photoSettings setFlashMode:(AVCaptureFlashModeAuto)];
-        _usedPhotoFormat = ORKPhotoOutputFormatJPEG;
-        return photoSettings;
     }
+    [photoSettings setFlashMode:(AVCaptureFlashModeAuto)];
+    return photoSettings;
 }
 
 - (AVCapturePhotoSettings *)generateOptimalPhotoSettings {
     AVCapturePhotoSettings *photoSettings;
     
     if([[_photoOutput availablePhotoCodecTypes] containsObject:AVVideoCodecTypeHEVC]){
-        _usedPhotoFormat = ORKPhotoOutputFormatHEVC;
+        _photoFormat = ORKPhotoOutputFormatHEVC;
         photoSettings = [AVCapturePhotoSettings photoSettingsWithFormat:@{AVVideoCodecKey: AVVideoCodecTypeHEVC}];
     }else{
-        _usedPhotoFormat = ORKPhotoOutputFormatJPEG;
+        _photoFormat = ORKPhotoOutputFormatJPEG;
         photoSettings = [AVCapturePhotoSettings photoSettings];
     }
     
@@ -213,7 +206,7 @@
         
         // Create settings for photo capture
         AVCapturePhotoSettings *photoSettings;
-        photoSettings = [AVCapturePhotoSettings photoSettingsFromPhotoSettings: _requestedPhotoFormat ? [self generateCustomPhotoSettings] : [self generateOptimalPhotoSettings]];
+        photoSettings = [AVCapturePhotoSettings photoSettingsFromPhotoSettings: _photoFormat ? [self generateCustomPhotoSettings] : [self generateOptimalPhotoSettings]];
         [_photoOutput capturePhotoWithSettings:photoSettings delegate:self];
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -227,7 +220,7 @@
 
 - (void)captureOutput:(AVCapturePhotoOutput *)captureOutput didFinishProcessingPhoto:(AVCapturePhoto *)photo error:(nullable NSError *)error{
     
-    if(_usedPhotoFormat == ORKPhotoOutputFormatRAW){
+    if(_photoFormat == ORKPhotoOutputFormatRAW){
         if([photo isRawPhoto]){
             _rawImageData = photo.fileDataRepresentation;
         }else{
@@ -248,7 +241,7 @@
     // Use the main queue, as UI components may need to be updated
     dispatch_async(dispatch_get_main_queue(), ^{
         // Set this, even if there was an error and we got a nil buffer
-        if(_usedPhotoFormat == ORKPhotoOutputFormatRAW){
+        if(_photoFormat == ORKPhotoOutputFormatRAW){
             self.capturedImageData = _rawImageData;
         }else{
             self.capturedImageData = _compressedImageData;
@@ -372,7 +365,7 @@
 }
 
 - (NSURL *)writeCapturedDataWithError:(NSError **)errorOut {
-    NSURL *URL = [self.outputDirectory URLByAppendingPathComponent:[NSString stringWithFormat:_usedPhotoFormat, self.step.identifier]];
+    NSURL *URL = [self.outputDirectory URLByAppendingPathComponent:[NSString stringWithFormat:_photoFormat, self.step.identifier]];
     // Confirm the outputDirectory was set properly
     if (!URL) {
         if (errorOut != NULL) {
@@ -413,7 +406,7 @@
     ORKFileResult *fileResult = [[ORKFileResult alloc] initWithIdentifier:self.step.identifier];
     fileResult.startDate = stepResult.startDate;
     fileResult.endDate = now;
-    NSString *contentType = [NSString stringWithFormat:@"image/%@", _usedPhotoFormat];
+    NSString *contentType = [NSString stringWithFormat:@"image/%@", _photoFormat];
     fileResult.contentType = contentType;
     fileResult.fileURL = _fileURL;
     [results addObject:fileResult];

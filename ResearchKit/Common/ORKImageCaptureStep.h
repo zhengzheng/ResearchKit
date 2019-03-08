@@ -36,7 +36,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- ORKPhotoOutputFormat is used to determine what type of codec you would like your result to be in
+ ORKPhotoOutputFormat is used to determine type of codec user likes the result to be in.
  */
 typedef NSString *ORKPhotoOutputFormat NS_TYPED_ENUM;
 
@@ -98,7 +98,7 @@ ORK_CLASS_AVAILABLE
 @property (nonatomic, copy) NSString *accessibilityHint;
 
 /**
- Format type that image will be captured with.
+ Format type for capturing image.
  */
 @property (nonatomic, copy, nullable) ORKPhotoOutputFormat photoOutputFormat;
 
