@@ -1785,10 +1785,8 @@ static id objectForJsonObject(id input, Class expectedClass, ORKESerializationJS
     if (expectedClass != nil && [input isKindOfClass:expectedClass]) {
         // Input is already of the expected class, do nothing
         
-        // This is a bit of an edge case and we end up here mainly in the case of answerFormats.
-        // Some answerFormat types like ORKTextChoiceAnswerFormat have strings defined within them like
-        // ORKTextChoices or 'Yes' and 'No' in boolean choice that will need to be localized. Because
-        // it does not need to be traversed anymore we end up here so we need to localize.
+        // Edge case for ORKAnswerFormat options. Certain formats (e.g. ORKTextChoiceAnswerFormat) contain
+        // text strings (e.g. 'Yes', 'No') that need to be localized but are already of the expected type.
         if ([input isKindOfClass:[NSString class]] && localizer != nil) {
             NSString *localizedValue = NSLocalizedStringFromTableInBundle((NSString *)input, localizer.tableName, localizer.bundle, nil);
             output = localizedValue;
@@ -1830,12 +1828,12 @@ static id objectForJsonObject(id input, Class expectedClass, ORKESerializationJS
                     if (writeAllProperties || propertyEntry.writeAfterInit) {
                         id property = propFromDict(dict, key, localizer);
                         if ((localizer != nil) && ([property isKindOfClass: [NSString class]])) {
+                            // Keys that exist in the localization table will be localized.
+                            //
+                            // If the key is not found in the table the provided key string will be returned as is,
+                            // supporting the expected functionality for inputs that contain both strings to be
+                            // localized as well as strings to be displayed as is.
                             NSString *localizedValue = NSLocalizedStringFromTableInBundle((NSString *)property, localizer.tableName, localizer.bundle, nil);
-
-                            // If the localizer does not find a value for the designated key, it returns that key, and
-                            // in this case would be the value string in the JSON. At the moment let's just display that
-                            // as it is what we want to display anyways. At some point it might be good to assert if the
-                            // key is not found to make sure we are relying solely on the localizer for our content.
                             [output setValue:localizedValue forKey:key];
                         } else {
                             [output setValue:property forKey:key];
