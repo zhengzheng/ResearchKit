@@ -1945,7 +1945,7 @@ static id jsonObjectForObject(id object) {
     return objectForJsonObject(object, nil, nil, nil);
 }
 
-+ (id)objectFromJSONObject:(NSDictionary *)object error:(__unused NSError * __autoreleasing *)error localizer:(ORKESerializationLocalizer *)localizer {
++ (id)objectFromJSONObject:(NSDictionary *)object localizer:(ORKESerializationLocalizer *)localizer error:(__unused NSError * __autoreleasing *)error {
     return objectForJsonObject(object, nil, nil, localizer);
 }
 

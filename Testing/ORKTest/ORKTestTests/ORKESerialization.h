@@ -58,7 +58,7 @@ typedef _Nullable id (^ORKESerializationJSONToObjectBlock)(id jsonObject);
 
 + (nullable id)objectFromJSONObject:(NSDictionary *)object error:(NSError **)error;
 
-+ (nullable id)objectFromJSONObject:(NSDictionary *)object error:(NSError **)error localizer:(ORKESerializationLocalizer *)localizer;
++ (nullable id)objectFromJSONObject:(NSDictionary *)object localizer:(ORKESerializationLocalizer *)localizer error:(NSError **)error;
 
 + (nullable id)objectFromJSONData:(NSData *)data error:(NSError **)error;
 
