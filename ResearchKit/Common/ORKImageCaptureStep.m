@@ -37,10 +37,6 @@
 
 #import "ORKHelpers_Internal.h"
 
-ORKPhotoOutputFormat const ORKPhotoOutputFormatHEVC = @".heif";
-ORKPhotoOutputFormat const ORKPhotoOutputFormatRAW = @".dng";
-ORKPhotoOutputFormat const ORKPhotoOutputFormatJPEG = @".jpeg";
-
 @implementation ORKImageCaptureStep
 
 + (Class)stepViewControllerClass {

@@ -35,14 +35,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/**
- ORKPhotoOutputFormat is used to determine type of codec user likes the result to be in.
- */
-typedef NSString *ORKPhotoOutputFormat NS_TYPED_ENUM;
-
-extern ORKPhotoOutputFormat const ORKPhotoOutputFormatHEVC;
-extern ORKPhotoOutputFormat const ORKPhotoOutputFormatRAW;
-extern ORKPhotoOutputFormat const ORKPhotoOutputFormatJPEG;
 
 /**
  The `ORKImageCaptureStep` class represents a step that captures an image through the device
@@ -98,9 +90,12 @@ ORK_CLASS_AVAILABLE
 @property (nonatomic, copy) NSString *accessibilityHint;
 
 /**
- Format type for capturing image.
+ Set value to YES if you would like to capture in RAW
+ If the device is unable to capture in RAW it will capture to either HEIC or JPEG.
+ This is determined by what is supported from the device.
+ Default: NO
  */
-@property (nonatomic, copy, nullable) ORKPhotoOutputFormat photoOutputFormat;
+@property (nonatomic, nullable) BOOL *captureRaw;
 
 @end
 

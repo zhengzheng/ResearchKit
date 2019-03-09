@@ -60,8 +60,9 @@
     NSData *_compressedImageData;
     NSData *_rawImageData;
     NSURL *_fileURL;
-    NSString *_photoFormat;
     UIImage *_previewImage;
+    BOOL _captureRaw;
+    NSString *imageDataExtension;
 }
 
 - (instancetype)initWithStep:(ORKStep *)step result:(ORKResult *)result {
@@ -88,8 +89,8 @@
         NSParameterAssert([step isKindOfClass:[ORKImageCaptureStep class]]);
         _imageCaptureView = [[ORKImageCaptureView alloc] initWithFrame:CGRectZero];
         _imageCaptureView.imageCaptureStep = (ORKImageCaptureStep *)step;
-        _photoFormat = _imageCaptureView.imageCaptureStep.photoOutputFormat;
         _imageCaptureView.delegate = self;
+        _captureRaw = _imageCaptureView.imageCaptureStep.captureRaw;
         [self.view addSubview:_imageCaptureView];
         
         _imageCaptureView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -164,34 +165,33 @@
     });
 }
 
-- (AVCapturePhotoSettings *)generateCustomPhotoSettings {
-    AVCapturePhotoSettings *photoSettings;
+- (AVCapturePhotoSettings *)createRawPhotoSettings {
     
-    if(_photoFormat == ORKPhotoOutputFormatHEVC && [[_photoOutput availablePhotoCodecTypes] containsObject:AVVideoCodecTypeHEVC]){
-        photoSettings = [AVCapturePhotoSettings photoSettingsWithFormat:@{AVVideoCodecKey: AVVideoCodecTypeHEVC}];
-        [photoSettings setAutoStillImageStabilizationEnabled: [_photoOutput isStillImageStabilizationSupported]];
-    }else if(_photoFormat == ORKPhotoOutputFormatRAW && [_photoOutput availableRawPhotoPixelFormatTypes]){
+    AVCapturePhotoSettings *photoSettings;
+    if([[_photoOutput availablePhotoCodecTypes] containsObject:AVVideoCodecTypeHEVC]){
         OSType rawPixelFormatType = (OSType)(((NSNumber *)_photoOutput.availableRawPhotoPixelFormatTypes[0]).unsignedLongValue);
         photoSettings = [AVCapturePhotoSettings photoSettingsWithRawPixelFormatType:rawPixelFormatType
                                                                     processedFormat:@{AVVideoCodecKey: AVVideoCodecTypeHEVC}];
-        [photoSettings setAutoStillImageStabilizationEnabled:NO];
     }else{
-        photoSettings = [AVCapturePhotoSettings photoSettings];
-        [photoSettings setAutoStillImageStabilizationEnabled: [_photoOutput isStillImageStabilizationSupported]];
+        OSType rawPixelFormatType = (OSType)(((NSNumber *)_photoOutput.availableRawPhotoPixelFormatTypes[0]).unsignedLongValue);
+        photoSettings = [AVCapturePhotoSettings photoSettingsWithRawPixelFormatType:rawPixelFormatType
+                                                                    processedFormat:@{AVVideoCodecKey: AVVideoCodecTypeJPEG}];
     }
+    [photoSettings setAutoStillImageStabilizationEnabled:NO];
     [photoSettings setFlashMode:(AVCaptureFlashModeAuto)];
+    
     return photoSettings;
 }
 
-- (AVCapturePhotoSettings *)generateOptimalPhotoSettings {
+- (AVCapturePhotoSettings *)generatePhotoSetting {
     AVCapturePhotoSettings *photoSettings;
     
     if([[_photoOutput availablePhotoCodecTypes] containsObject:AVVideoCodecTypeHEVC]){
-        _photoFormat = ORKPhotoOutputFormatHEVC;
         photoSettings = [AVCapturePhotoSettings photoSettingsWithFormat:@{AVVideoCodecKey: AVVideoCodecTypeHEVC}];
+        imageDataExtension = @"heif";
     }else{
-        _photoFormat = ORKPhotoOutputFormatJPEG;
         photoSettings = [AVCapturePhotoSettings photoSettings];
+        imageDataExtension = @"jpeg";
     }
     
     [photoSettings setFlashMode:(AVCaptureFlashModeAuto)];
@@ -203,11 +203,13 @@
 - (void)capturePressed:(void (^)(BOOL))handler {
     // Capture image
     dispatch_async(_sessionQueue,^{
-        
-        // Create settings for photo capture
-        AVCapturePhotoSettings *photoSettings;
-        photoSettings = [AVCapturePhotoSettings photoSettingsFromPhotoSettings: _photoFormat ? [self generateCustomPhotoSettings] : [self generateOptimalPhotoSettings]];
-        [_photoOutput capturePhotoWithSettings:photoSettings delegate:self];
+        if(_captureRaw && [_photoOutput availableRawPhotoFileTypes]){
+             [_photoOutput capturePhotoWithSettings:[self createRawPhotoSettings] delegate:self];
+            imageDataExtension = @"dng";
+        }else{
+            [_photoOutput capturePhotoWithSettings:[self generatePhotoSetting] delegate:self];
+            _captureRaw = NO;
+        }
         
         dispatch_async(dispatch_get_main_queue(), ^{
             // Notify handler that we are done
@@ -220,7 +222,7 @@
 
 - (void)captureOutput:(AVCapturePhotoOutput *)captureOutput didFinishProcessingPhoto:(AVCapturePhoto *)photo error:(nullable NSError *)error{
     
-    if(_photoFormat == ORKPhotoOutputFormatRAW){
+    if(_captureRaw){
         if([photo isRawPhoto]){
             _rawImageData = photo.fileDataRepresentation;
         }else{
@@ -241,7 +243,7 @@
     // Use the main queue, as UI components may need to be updated
     dispatch_async(dispatch_get_main_queue(), ^{
         // Set this, even if there was an error and we got a nil buffer
-        if(_photoFormat == ORKPhotoOutputFormatRAW){
+        if(_captureRaw){
             self.capturedImageData = _rawImageData;
         }else{
             self.capturedImageData = _compressedImageData;
@@ -365,7 +367,7 @@
 }
 
 - (NSURL *)writeCapturedDataWithError:(NSError **)errorOut {
-    NSURL *URL = [self.outputDirectory URLByAppendingPathComponent:[NSString stringWithFormat:_photoFormat, self.step.identifier]];
+    NSURL *URL = [[self.outputDirectory URLByAppendingPathComponent:self.step.identifier] URLByAppendingPathExtension: imageDataExtension];
     // Confirm the outputDirectory was set properly
     if (!URL) {
         if (errorOut != NULL) {
@@ -406,7 +408,7 @@
     ORKFileResult *fileResult = [[ORKFileResult alloc] initWithIdentifier:self.step.identifier];
     fileResult.startDate = stepResult.startDate;
     fileResult.endDate = now;
-    NSString *contentType = [NSString stringWithFormat:@"image/%@", _photoFormat];
+    NSString *contentType = [NSString stringWithFormat:@"image/%@", imageDataExtension];
     fileResult.contentType = contentType;
     fileResult.fileURL = _fileURL;
     [results addObject:fileResult];
