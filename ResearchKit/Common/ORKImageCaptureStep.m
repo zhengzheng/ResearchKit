@@ -37,6 +37,7 @@
 
 #import "ORKHelpers_Internal.h"
 
+
 @implementation ORKImageCaptureStep
 
 + (Class)stepViewControllerClass {
