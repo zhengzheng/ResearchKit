@@ -1014,7 +1014,7 @@ ORK_CLASS_AVAILABLE
  The `ORKTextChoiceOther` class defines the `ORKTextChoice` option to describe an answer not
  included in provided choices.
  
- The `ORKTextChoiceOther` provides an optional text view of type `ORKAnswerTextView` to provide an alternative answer.
+ The `ORKTextChoiceOther` provides an optional text view of type `ORKAnswerTextView` that allows users to enter free form text.
  */
 ORK_CLASS_AVAILABLE
 @interface ORKTextChoiceOther : ORKTextChoice
@@ -1033,6 +1033,9 @@ ORK_CLASS_AVAILABLE
  @param detailTextAttributedString   The detail text to display below the primary text, in an attributed string. Setting this will override `detailText`.
  @param value                        The value to record in a result object when this item is selected.
  @param exclusive                    Whether this choice is to be considered exclusive within the set of choices.
+ @param placeholderText              The placeholder text for the text view.
+ @param textOptional                 Whether it is required to provide additional text when selecting this choice.
+ @startsHidden                       Whether the text view should be hidden untill the cell is selected.
  
  @return An initialized text choice.
  */
@@ -1042,15 +1045,15 @@ ORK_CLASS_AVAILABLE
   detailTextAttributedString:(nullable NSAttributedString *)detailTextAttributedString
                        value:(id<NSCopying, NSCoding, NSObject>)value
                    exclusive:(BOOL)exclusive
-                 placeholder:(NSString *)placeholder
-              isTextoptional:(BOOL)isTextOptional
-      textViewShouldCollapse:(BOOL)textViewShouldCollapse;
+             placeholderText:(NSString *)placeholderText
+                textoptional:(BOOL)textOptional
+                startsHidden:(BOOL)startsHidden;
 
-@property (nonatomic, copy) NSString *placeholder;
+@property (nonatomic, copy) NSString *placeholderText;
 
-@property (readonly) BOOL isTextOptional;
+@property (readonly, getter=isTextOptional) BOOL textOptional;
 
-@property (readonly) BOOL textViewShouldCollapse;
+@property (readonly) BOOL startsHidden;
 
 @end
 

@@ -92,9 +92,9 @@
         if ([textChoice isKindOfClass:[ORKTextChoiceOther class]]) {
             ORKChoiceOtherViewCell * choiceOtherViewCell = [[ORKChoiceOtherViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             ORKTextChoiceOther *textChoiceOther = (ORKTextChoiceOther *)textChoice;
-            choiceOtherViewCell.otherAnswerTextView.placeholder = textChoiceOther.placeholder;
+            choiceOtherViewCell.otherAnswerTextView.placeholder = textChoiceOther.placeholderText;
             choiceOtherViewCell.otherAnswerTextView.text = textChoiceOther.textViewText;
-            [choiceOtherViewCell hideTextView:textChoiceOther.textViewShouldCollapse];
+            [choiceOtherViewCell hideTextView:textChoiceOther.startsHidden];
             cell = choiceOtherViewCell;
         } else {
             cell = [[ORKChoiceViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -117,7 +117,7 @@
 }
 
 - (void)updateTextViewForChoiceOtherCell:(ORKChoiceOtherViewCell *)choiceCell withTextChoiceOther:(ORKTextChoiceOther *)choiceOther {
-    if (choiceOther.textViewShouldCollapse && choiceCell.otherAnswerTextView.text.length <= 0) {
+    if (choiceOther.startsHidden && choiceCell.otherAnswerTextView.text.length <= 0) {
         [choiceCell hideTextView:!choiceCell.isTextViewHidden];
         [self.delegate tableViewCellHeightUpdated];
     }
@@ -131,7 +131,7 @@
     ORKChoiceOtherViewCell *touchedCell = (ORKChoiceOtherViewCell *) [self cellAtIndex:index withReuseIdentifier:nil];
     ORKTextChoiceOther *textChoice = (ORKTextChoiceOther *) [_helper textChoiceAtIndex:index];
     
-    if (textChoice.isTextOptional || !touchedCell.isSelected || (!textChoice.isTextOptional && touchedCell.otherAnswerTextView.text.length > 0)) {
+    if (textChoice.isTextOptional || !touchedCell.isCellSelected || (!textChoice.isTextOptional && touchedCell.otherAnswerTextView.text.length > 0)) {
         textChoice.textViewText = touchedCell.otherAnswerTextView.text;
         [self didSelectCellAtIndexPath:indexPath];
     }
@@ -158,21 +158,21 @@
     }
     
     if (_singleChoice) {
-        touchedCell.isSelected = YES;
+        touchedCell.cellSelected = YES;
         for (ORKChoiceViewCell *cell in _cells.allValues) {
             if (cell != touchedCell) {
-                cell.isSelected = NO;
+                cell.cellSelected = NO;
             }
         }
     } else {
-        touchedCell.isSelected = !touchedCell.isSelected;
-        if (touchedCell.isSelected) {
+        touchedCell.cellSelected = !touchedCell.isCellSelected;
+        if (touchedCell.isCellSelected) {
             ORKTextChoice *touchedChoice = [_helper textChoiceAtIndex:index];
             for (NSNumber *num in _cells.allKeys) {
                 ORKChoiceViewCell *cell = _cells[num];
                 ORKTextChoice *choice = [_helper textChoiceAtIndex:num.unsignedIntegerValue];
-                if (cell != touchedCell && (touchedChoice.exclusive || (cell.isSelected && choice.exclusive))) {
-                    cell.isSelected = NO;
+                if (cell != touchedCell && (touchedChoice.exclusive || (cell.isCellSelected && choice.exclusive))) {
+                    cell.cellSelected = NO;
                 }
             }
         }
@@ -197,11 +197,11 @@
         if (selected) {
             // In case the cell has not been created, need to create cell
             ORKChoiceViewCell *cell = [self cellAtIndex:index withReuseIdentifier:nil];
-            cell.isSelected = YES;
+            cell.cellSelected = YES;
         } else {
             // It is ok to not create the cell at here
             ORKChoiceViewCell *cell = _cells[@(index)];
-            cell.isSelected = NO;
+            cell.cellSelected = NO;
         }
     }
 }
@@ -211,7 +211,7 @@
     
     for (NSUInteger index = 0; index < self.size; index++ ) {
         ORKChoiceViewCell *cell = _cells[@(index)];
-        if (cell.isSelected) {
+        if (cell.isCellSelected) {
             [indexes addObject:@(index)];
         }
     }

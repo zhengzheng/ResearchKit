@@ -136,8 +136,8 @@
 		2EAC5DFB201AAFF8000EF186 /* Speech.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EAC5DFA201AAFF8000EF186 /* Speech.framework */; };
 		2EBFE11D1AE1B32D00CB8254 /* ORKUIViewAccessibilityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EBFE11C1AE1B32D00CB8254 /* ORKUIViewAccessibilityTests.m */; };
 		2EBFE1201AE1B74100CB8254 /* ORKVoiceEngineTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EBFE11F1AE1B74100CB8254 /* ORKVoiceEngineTests.m */; };
-		6146D0A31B84A91E0068491D /* ORKLineGraphAccessibilityElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 6146D0A11B84A91E0068491D /* ORKLineGraphAccessibilityElement.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6146D0A41B84A91E0068491D /* ORKLineGraphAccessibilityElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 6146D0A21B84A91E0068491D /* ORKLineGraphAccessibilityElement.m */; };
+		6146D0A31B84A91E0068491D /* ORKGraphChartAccessibilityElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 6146D0A11B84A91E0068491D /* ORKGraphChartAccessibilityElement.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		6146D0A41B84A91E0068491D /* ORKGraphChartAccessibilityElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 6146D0A21B84A91E0068491D /* ORKGraphChartAccessibilityElement.m */; };
 		618DA04E1A93D0D600E63AA8 /* ORKAccessibility.h in Headers */ = {isa = PBXBuildFile; fileRef = 618DA0481A93D0D600E63AA8 /* ORKAccessibility.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		618DA0501A93D0D600E63AA8 /* ORKAccessibilityFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = 618DA0491A93D0D600E63AA8 /* ORKAccessibilityFunctions.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		618DA0521A93D0D600E63AA8 /* ORKAccessibilityFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 618DA04A1A93D0D600E63AA8 /* ORKAccessibilityFunctions.m */; };
@@ -360,7 +360,7 @@
 		86C40CF81A8D7C5C00081FAC /* ORKBorderedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C40B6E1A8D7C5C00081FAC /* ORKBorderedButton.m */; };
 		86C40CFA1A8D7C5C00081FAC /* ORKCaption1Label.h in Headers */ = {isa = PBXBuildFile; fileRef = 86C40B6F1A8D7C5C00081FAC /* ORKCaption1Label.h */; };
 		86C40CFC1A8D7C5C00081FAC /* ORKCaption1Label.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C40B701A8D7C5C00081FAC /* ORKCaption1Label.m */; };
-		86C40CFE1A8D7C5C00081FAC /* ORKChoiceViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 86C40B711A8D7C5C00081FAC /* ORKChoiceViewCell.h */; };
+		86C40CFE1A8D7C5C00081FAC /* ORKChoiceViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 86C40B711A8D7C5C00081FAC /* ORKChoiceViewCell.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		86C40D001A8D7C5C00081FAC /* ORKChoiceViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C40B721A8D7C5C00081FAC /* ORKChoiceViewCell.m */; };
 		86C40D021A8D7C5C00081FAC /* ORKContinueButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 86C40B731A8D7C5C00081FAC /* ORKContinueButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		86C40D041A8D7C5C00081FAC /* ORKContinueButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C40B741A8D7C5C00081FAC /* ORKContinueButton.m */; };

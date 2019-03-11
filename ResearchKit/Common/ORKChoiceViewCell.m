@@ -294,8 +294,8 @@ static const CGFloat TextViewHeight = 100.0;
 
 - (void)updateSelectedItem {
     if (_immediateNavigation == NO) {
-        self.accessoryView.hidden = _isSelected ? NO : YES;
-        if (_isSelected) {
+        self.accessoryView.hidden = self.isCellSelected ? NO : YES;
+        if (self.isCellSelected) {
             _primaryLabel.textColor = [self tintColor];
             _detailLabel.textColor = [[self tintColor] colorWithAlphaComponent:192.0 / 255.0];
         }
@@ -311,8 +311,8 @@ static const CGFloat TextViewHeight = 100.0;
     }
 }
 
-- (void)setIsSelected:(BOOL)isSelected {
-    _isSelected = isSelected;
+- (void)setCellSelected:(BOOL)cellSelected {
+    _cellSelected = cellSelected;
     [self updateSelectedItem];
 }
 
@@ -372,7 +372,7 @@ static const CGFloat TextViewHeight = 100.0;
 }
 
 - (UIAccessibilityTraits)accessibilityTraits {
-    return UIAccessibilityTraitButton | (self.isSelected ? UIAccessibilityTraitSelected : 0);
+    return UIAccessibilityTraitButton | (self.isCellSelected ? UIAccessibilityTraitSelected : 0);
 }
 
 @end

@@ -150,6 +150,10 @@
                         matchedChoice = choice;
                         break;
                     }
+                    else if (choiceOther.isTextOptional && choiceOther.textViewText.length <= 0 && [choiceOther.value isEqual:answerValue]) {
+                        matchedChoice = choice;
+                        break;
+                    }
                 }
                 else if ([choice.value isEqual:answerValue]) {
                     matchedChoice = choice;
