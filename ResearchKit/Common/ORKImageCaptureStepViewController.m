@@ -62,7 +62,7 @@
     NSURL *_fileURL;
     UIImage *_previewImage;
     BOOL _captureRaw;
-    NSString *imageDataExtension;
+    NSString *_imageDataExtension;
 }
 
 - (instancetype)initWithStep:(ORKStep *)step result:(ORKResult *)result {
@@ -188,10 +188,10 @@
     
     if([[_photoOutput availablePhotoCodecTypes] containsObject:AVVideoCodecTypeHEVC]){
         photoSettings = [AVCapturePhotoSettings photoSettingsWithFormat:@{AVVideoCodecKey: AVVideoCodecTypeHEVC}];
-        imageDataExtension = @"heif";
+        _imageDataExtension = @"heif";
     }else{
         photoSettings = [AVCapturePhotoSettings photoSettings];
-        imageDataExtension = @"jpeg";
+        _imageDataExtension = @"jpeg";
     }
     
     [photoSettings setFlashMode:(AVCaptureFlashModeAuto)];
@@ -205,7 +205,7 @@
     dispatch_async(_sessionQueue,^{
         if(_captureRaw && [_photoOutput availableRawPhotoFileTypes]){
              [_photoOutput capturePhotoWithSettings:[self createRawPhotoSettings] delegate:self];
-            imageDataExtension = @"dng";
+            _imageDataExtension = @"dng";
         }else{
             [_photoOutput capturePhotoWithSettings:[self generatePhotoSetting] delegate:self];
             _captureRaw = NO;
@@ -367,7 +367,7 @@
 }
 
 - (NSURL *)writeCapturedDataWithError:(NSError **)errorOut {
-    NSURL *URL = [[self.outputDirectory URLByAppendingPathComponent:self.step.identifier] URLByAppendingPathExtension: imageDataExtension];
+    NSURL *URL = [[self.outputDirectory URLByAppendingPathComponent:self.step.identifier] URLByAppendingPathExtension: _imageDataExtension];
     // Confirm the outputDirectory was set properly
     if (!URL) {
         if (errorOut != NULL) {
@@ -408,7 +408,7 @@
     ORKFileResult *fileResult = [[ORKFileResult alloc] initWithIdentifier:self.step.identifier];
     fileResult.startDate = stepResult.startDate;
     fileResult.endDate = now;
-    NSString *contentType = [NSString stringWithFormat:@"image/%@", imageDataExtension];
+    NSString *contentType = [NSString stringWithFormat:@"image/%@", _imageDataExtension];
     fileResult.contentType = contentType;
     fileResult.fileURL = _fileURL;
     [results addObject:fileResult];
