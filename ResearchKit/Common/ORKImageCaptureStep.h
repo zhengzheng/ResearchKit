@@ -90,9 +90,10 @@ ORK_CLASS_AVAILABLE
 @property (nonatomic, copy) NSString *accessibilityHint;
 
 /**
- Set value to YES if you would like to capture in RAW
- If the device is unable to capture in RAW it will capture to either HEIC or JPEG.
- This is determined by what is supported from the device.
+ BOOL value for capturing RAW Images
+ If set to YES it will capture in RAW and display preview using HEIC or JPEG
+ RAW format will only be captured if the device supports it
+ 
  Default: NO
  */
 @property (nonatomic, nullable) BOOL *captureRaw;

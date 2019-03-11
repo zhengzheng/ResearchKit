@@ -168,12 +168,12 @@
 - (AVCapturePhotoSettings *)createRawPhotoSettings {
     
     AVCapturePhotoSettings *photoSettings;
+    OSType rawPixelFormatType = [[[_photoOutput availableRawPhotoPixelFormatTypes] firstObject] unsignedIntValue];
+    
     if([[_photoOutput availablePhotoCodecTypes] containsObject:AVVideoCodecTypeHEVC]){
-        OSType rawPixelFormatType = (OSType)(((NSNumber *)_photoOutput.availableRawPhotoPixelFormatTypes[0]).unsignedLongValue);
         photoSettings = [AVCapturePhotoSettings photoSettingsWithRawPixelFormatType:rawPixelFormatType
-                                                                    processedFormat:@{AVVideoCodecKey: AVVideoCodecTypeHEVC}];
+                                                                processedFormat:@{AVVideoCodecKey: AVVideoCodecTypeHEVC}];
     }else{
-        OSType rawPixelFormatType = (OSType)(((NSNumber *)_photoOutput.availableRawPhotoPixelFormatTypes[0]).unsignedLongValue);
         photoSettings = [AVCapturePhotoSettings photoSettingsWithRawPixelFormatType:rawPixelFormatType
                                                                     processedFormat:@{AVVideoCodecKey: AVVideoCodecTypeJPEG}];
     }
@@ -253,7 +253,7 @@
 
 - (void)videoOrientationDidChange:(AVCaptureVideoOrientation)videoOrientation {
     // Keep the output orientation in sync with the input orientation
-    ((AVCaptureConnection *)_photoOutput.connections[0]).videoOrientation = videoOrientation;
+    [[[_photoOutput connections] firstObject] setVideoOrientation:videoOrientation];
 }
 
 - (void)viewDidLoad {
