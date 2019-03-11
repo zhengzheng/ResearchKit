@@ -35,7 +35,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-
 /**
  The `ORKImageCaptureStep` class represents a step that captures an image through the device
  camera.  A template image can optionally be laid over the camera preview to assist in properly
