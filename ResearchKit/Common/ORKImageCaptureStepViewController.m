@@ -170,10 +170,10 @@
     AVCapturePhotoSettings *photoSettings;
     OSType rawPixelFormatType = [[[_photoOutput availableRawPhotoPixelFormatTypes] firstObject] unsignedIntValue];
     
-    if([[_photoOutput availablePhotoCodecTypes] containsObject:AVVideoCodecTypeHEVC]){
+    if ([[_photoOutput availablePhotoCodecTypes] containsObject:AVVideoCodecTypeHEVC]) {
         photoSettings = [AVCapturePhotoSettings photoSettingsWithRawPixelFormatType:rawPixelFormatType
                                                                 processedFormat:@{AVVideoCodecKey: AVVideoCodecTypeHEVC}];
-    }else{
+    } else {
         photoSettings = [AVCapturePhotoSettings photoSettingsWithRawPixelFormatType:rawPixelFormatType
                                                                     processedFormat:@{AVVideoCodecKey: AVVideoCodecTypeJPEG}];
     }
@@ -186,10 +186,10 @@
 - (AVCapturePhotoSettings *)generatePhotoSetting {
     AVCapturePhotoSettings *photoSettings;
     
-    if([[_photoOutput availablePhotoCodecTypes] containsObject:AVVideoCodecTypeHEVC]){
+    if ([[_photoOutput availablePhotoCodecTypes] containsObject:AVVideoCodecTypeHEVC]) {
         photoSettings = [AVCapturePhotoSettings photoSettingsWithFormat:@{AVVideoCodecKey: AVVideoCodecTypeHEVC}];
         _imageDataExtension = @"heif";
-    }else{
+    } else {
         photoSettings = [AVCapturePhotoSettings photoSettings];
         _imageDataExtension = @"jpeg";
     }
@@ -202,11 +202,11 @@
 
 - (void)capturePressed:(void (^)(BOOL))handler {
     // Capture image
-    dispatch_async(_sessionQueue,^{
-        if(_captureRaw && [_photoOutput availableRawPhotoFileTypes]){
+    dispatch_async(_sessionQueue, ^{
+        if (_captureRaw && [_photoOutput availableRawPhotoFileTypes]) {
              [_photoOutput capturePhotoWithSettings:[self createRawPhotoSettings] delegate:self];
             _imageDataExtension = @"dng";
-        }else{
+        } else {
             [_photoOutput capturePhotoWithSettings:[self generatePhotoSetting] delegate:self];
             _captureRaw = NO;
         }
@@ -222,13 +222,13 @@
 
 - (void)captureOutput:(AVCapturePhotoOutput *)captureOutput didFinishProcessingPhoto:(AVCapturePhoto *)photo error:(nullable NSError *)error{
     
-    if(_captureRaw){
-        if([photo isRawPhoto]){
+    if (_captureRaw) {
+        if ([photo isRawPhoto]){
             _rawImageData = photo.fileDataRepresentation;
-        }else{
+        } else {
             _previewImage = [UIImage imageWithData:photo.fileDataRepresentation];
         }
-    }else{
+    } else {
         _compressedImageData = photo.fileDataRepresentation;
         _previewImage = [UIImage imageWithData:photo.fileDataRepresentation];
     }
@@ -243,9 +243,9 @@
     // Use the main queue, as UI components may need to be updated
     dispatch_async(dispatch_get_main_queue(), ^{
         // Set this, even if there was an error and we got a nil buffer
-        if(_captureRaw){
+        if (_captureRaw) {
             self.capturedImageData = _rawImageData;
-        }else{
+        } else {
             self.capturedImageData = _compressedImageData;
         }
     });
@@ -350,9 +350,9 @@
 - (void)setCapturedImageData:(NSData *)capturedImageData {
     _capturedImageData = capturedImageData;
     
-    if(capturedImageData){
+    if (capturedImageData) {
         _imageCaptureView.capturedImage = _previewImage;
-    }else{
+    } else {
         _imageCaptureView.capturedImage = nil;
     }
     
