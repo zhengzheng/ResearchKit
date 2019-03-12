@@ -95,7 +95,7 @@ ORK_CLASS_AVAILABLE
  
  Default: NO
  */
-@property (nonatomic, nullable) BOOL *captureRaw;
+@property (nonatomic, assign) BOOL captureRaw;
 
 @end
 
