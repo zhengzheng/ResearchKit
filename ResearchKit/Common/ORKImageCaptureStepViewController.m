@@ -90,7 +90,7 @@
         _imageCaptureView = [[ORKImageCaptureView alloc] initWithFrame:CGRectZero];
         _imageCaptureView.imageCaptureStep = (ORKImageCaptureStep *)step;
         _imageCaptureView.delegate = self;
-        _captureRaw = _imageCaptureView.imageCaptureStep.captureRaw;
+        _captureRaw = NO;
         [self.view addSubview:_imageCaptureView];
         
         _imageCaptureView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -296,7 +296,7 @@
     [_captureSession beginConfiguration];
     
     _captureSession.sessionPreset = AVCaptureSessionPresetPhoto;
-    
+    _captureRaw = [self imageCaptureStep].captureRaw;
     // Get the camera
     AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     if (device) {
@@ -349,12 +349,7 @@
 
 - (void)setCapturedImageData:(NSData *)capturedImageData {
     _capturedImageData = capturedImageData;
-    
-    if (capturedImageData) {
-        _imageCaptureView.capturedImage = _previewImage;
-    } else {
-        _imageCaptureView.capturedImage = nil;
-    }
+    _imageCaptureView.capturedImage = capturedImageData ? _previewImage : nil;
     
     // Remove the old file, if it exists, now that new data was acquired or reset
     if (_fileURL) {
@@ -414,6 +409,10 @@
     [results addObject:fileResult];
     stepResult.results = [results copy];
     return stepResult;
+}
+
+- (ORKImageCaptureStep *)imageCaptureStep {
+    return (ORKImageCaptureStep *)self.step;
 }
 
 @end
