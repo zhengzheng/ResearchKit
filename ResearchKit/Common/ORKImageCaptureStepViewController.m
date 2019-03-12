@@ -184,8 +184,8 @@
 }
 
 - (AVCapturePhotoSettings *)generatePhotoSetting {
-    AVCapturePhotoSettings *photoSettings;
     
+    AVCapturePhotoSettings *photoSettings;
     if ([[_photoOutput availablePhotoCodecTypes] containsObject:AVVideoCodecTypeHEVC]) {
         photoSettings = [AVCapturePhotoSettings photoSettingsWithFormat:@{AVVideoCodecKey: AVVideoCodecTypeHEVC}];
         _imageDataExtension = @"heif";
