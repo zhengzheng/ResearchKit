@@ -106,11 +106,11 @@
         }
         
         id<ORKAnswerOption> choice = _choices[index];
-        ORKTextChoiceOther *otherTextChoice;
+        ORKTextChoiceOther *textChoiceOther;
         if ([choice isKindOfClass: [ORKTextChoiceOther class]]) {
-            otherTextChoice = (ORKTextChoiceOther *)choice;
+            textChoiceOther = (ORKTextChoiceOther *)choice;
         }
-        id value = otherTextChoice.textViewText ? : choice.value;
+        id value = textChoiceOther.textViewText ? : choice.value;
         if (value == nil) {
             value = _isValuePicker ? @(index - 1) : @(index);
         }
