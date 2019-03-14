@@ -1120,9 +1120,9 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
   detailTextAttributedString:(NSAttributedString *)detailTextAttributedString
                        value:(id<NSCopying,NSCoding,NSObject>)value
                    exclusive:(BOOL)exclusive
-             placeholderText:(NSString *)placeholderText
-                textoptional:(BOOL)textOptional
-                startsHidden:(BOOL)startsHidden {
+     textViewPlaceholderText:(NSString *)textViewPlaceholderText
+       textViewInputOptional:(BOOL)textViewInputOptional
+        textViewStartsHidden:(BOOL)textViewStartsHidden {
     
     self = [super initWithText:text
    primaryTextAttributedString:primaryTextAttributedString
@@ -1132,9 +1132,9 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
                      exclusive:exclusive];
     
     if (self) {
-        _placeholderText = placeholderText;
-        _textOptional = textOptional;
-        _startsHidden = startsHidden;
+        _textViewPlaceholderText = textViewPlaceholderText;
+        _textViewInputOptional = textViewInputOptional;
+        _textViewStartsHidden = textViewStartsHidden;
     }
     return self;
 }
@@ -1150,9 +1150,9 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
                                                            detailTextAttributedString:[self.detailTextAttributedString copy]
                                                                                 value:[self.value copyWithZone:zone]
                                                                             exclusive:self.exclusive
-                                                                      placeholderText:[self.placeholderText copy]
-                                                                         textoptional:self.textOptional
-                                                                         startsHidden:self.startsHidden];
+                                                              textViewPlaceholderText:[self.textViewPlaceholderText copy]
+                                                                textViewInputOptional:self.textViewInputOptional
+                                                                 textViewStartsHidden:self.textViewStartsHidden];
     return other;
 }
 
@@ -1169,13 +1169,13 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
             && ORKEqualObjects(self.detailTextAttributedString, castObject.detailTextAttributedString)
             && ORKEqualObjects(self.value, castObject.value)
             && self.exclusive == castObject.exclusive)
-    && ORKEqualObjects(self.placeholderText, castObject.placeholderText)
-    && self.textOptional == castObject.textOptional
-    && self.startsHidden == castObject.startsHidden;
+    && ORKEqualObjects(self.textViewPlaceholderText, castObject.textViewPlaceholderText)
+    && self.textViewInputOptional == castObject.textViewInputOptional
+    && self.textViewStartsHidden == castObject.textViewStartsHidden;
 }
 
 - (NSUInteger)hash {
-    return _placeholderText.hash;
+    return _textViewPlaceholderText.hash;
 }
 
 @end

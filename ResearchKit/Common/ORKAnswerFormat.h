@@ -1011,7 +1011,7 @@ ORK_CLASS_AVAILABLE
 
 
 /**
- The `ORKTextChoiceOther` class defines the `ORKTextChoice` option to describe an answer not
+ The `ORKTextChoiceOther` class defines the choice option to describe an answer not
  included in provided choices.
  
  The `ORKTextChoiceOther` provides an optional text view of type `ORKAnswerTextView` that allows users to enter free form text.
@@ -1023,7 +1023,7 @@ ORK_CLASS_AVAILABLE
 - (instancetype)init NS_UNAVAILABLE;
 
 /**
- Returns an initialized text choice object using the specified primary text or text with string attributes, detail text or text with string attributes, and exclusivity.
+ Returns an initialized text choice object using the specified primary text or text with string attributes, detail text or text with string attributes, exclusivity and an optional view for free form text entry.
  
  This method is the designated initializer.
  
@@ -1033,9 +1033,9 @@ ORK_CLASS_AVAILABLE
  @param detailTextAttributedString   The detail text to display below the primary text, in an attributed string. Setting this will override `detailText`.
  @param value                        The value to record in a result object when this item is selected.
  @param exclusive                    Whether this choice is to be considered exclusive within the set of choices.
- @param placeholderText              The placeholder text for the text view.
- @param textOptional                 Whether it is required to provide additional text when selecting this choice.
- @param startsHidden                 Whether the text view should be hidden untill the cell is selected.
+ @param textViewPlaceholderText      The placeholder text for the text view.
+ @param textViewInputOptional        Whether it is required to provide additional text when selecting this choice.
+ @param textViewStartsHidden         Whether the text view should be hidden untill the cell is selected.
  
  @return An initialized text choice.
  */
@@ -1045,15 +1045,15 @@ ORK_CLASS_AVAILABLE
   detailTextAttributedString:(nullable NSAttributedString *)detailTextAttributedString
                        value:(id<NSCopying, NSCoding, NSObject>)value
                    exclusive:(BOOL)exclusive
-             placeholderText:(NSString *)placeholderText
-                textoptional:(BOOL)textOptional
-                startsHidden:(BOOL)startsHidden;
+     textViewPlaceholderText:(NSString *)textViewPlaceholderText
+       textViewInputOptional:(BOOL)textViewInputOptional
+        textViewStartsHidden:(BOOL)textViewStartsHidden;
 
-@property (nonatomic, copy) NSString *placeholderText;
+@property (nonatomic, copy) NSString *textViewPlaceholderText;
 
-@property (readonly, getter=isTextOptional) BOOL textOptional;
+@property (readonly) BOOL textViewInputOptional;
 
-@property (readonly) BOOL startsHidden;
+@property (readonly) BOOL textViewStartsHidden;
 
 @end
 
