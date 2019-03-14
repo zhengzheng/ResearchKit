@@ -161,6 +161,31 @@
     XCTAssertEqualObjects([pageStep stepWithIdentifier:@"step3"], step3);
 }
 
+- (void)testStep {
+    ORKStep *step = [[ORKStep alloc] initWithIdentifier:@"STEP"];
+    ORKOrderedTask *task = [[ORKOrderedTask alloc] initWithIdentifier:@"TASK" steps:NULL];
+    ORKResult *result = [[ORKResult alloc] initWithIdentifier:@"RESULT"];
+    
+    [step setTitle:@"Title"];
+    [step setText:@"Text"];
+    [step setTask:task];
+    
+    ORKStepViewController *controller = [step instantiateStepViewControllerWithResult:result];
+    
+    XCTAssertEqual([step title], @"Title");
+    XCTAssertEqual([step text], @"Text");
+    XCTAssertEqual([step task], task);
+    XCTAssertEqual([controller restorationIdentifier], [step identifier]);
+    XCTAssertEqual([controller restorationClass], [step stepViewControllerClass]);
+    XCTAssertEqual([controller step], step);
+    XCTAssertEqual([step stepViewControllerClass], [ORKStepViewController class]);
+    XCTAssertEqual([step isRestorable], YES);
+    XCTAssert([step.identifier isEqualToString:@"STEP"]);
+    XCTAssert([step isEqual:step]);
+    XCTAssertEqual([step requestedPermissions], ORKPermissionNone);
+    XCTAssertEqualObjects([step requestedHealthKitTypesForReading], nil);
+}
+
 - (void)testORKNavigablePageStep {
     ORKQuestionStep *stepOne = [ORKQuestionStep questionStepWithIdentifier:@"stepOne"
                                                                      title:@"QUESTION"
@@ -219,6 +244,18 @@
     XCTAssert([step.identifier isEqualToString:@"STEP"]);
     XCTAssertEqual(step.passcodeFlow, ORKPasscodeFlowAuthenticate);
     XCTAssertEqual(step.passcodeType, ORKPasscodeType4Digit);
+}
+
+- (void)testPDFViewerStep {
+    NSString *identifier = @"STEP";
+    NSURL *url = [NSURL URLWithString:@"TESTINGURL"];
+    
+    ORKPDFViewerStep *step = [[ORKPDFViewerStep alloc] initWithIdentifier:identifier pdfURL:url];
+    step.actionBarOption = ORKPDFViewerActionBarOptionExcludeShare;
+    
+    XCTAssertEqual([step identifier], identifier);
+    XCTAssertEqual([step pdfURL], url);
+    XCTAssertEqual([step actionBarOption], ORKPDFViewerActionBarOptionExcludeShare);
 }
 
 @end
