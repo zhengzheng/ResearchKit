@@ -1035,7 +1035,7 @@ ORK_CLASS_AVAILABLE
  @param exclusive                    Whether this choice is to be considered exclusive within the set of choices.
  @param placeholderText              The placeholder text for the text view.
  @param textOptional                 Whether it is required to provide additional text when selecting this choice.
- @startsHidden                       Whether the text view should be hidden untill the cell is selected.
+ @param startsHidden                 Whether the text view should be hidden untill the cell is selected.
  
  @return An initialized text choice.
  */
