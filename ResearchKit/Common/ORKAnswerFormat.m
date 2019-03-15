@@ -1184,7 +1184,7 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
 }
 
 - (NSUInteger)hash {
-    return _textViewPlaceholderText.hash;
+    return _text.hash ^ _primaryTextAttributedString.hash ^ _detailText.hash ^ _detailTextAttributedString.hash ^ _value.hash ^ _textViewPlaceholderText.hash;
 }
 
 @end
