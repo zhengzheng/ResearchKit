@@ -389,11 +389,11 @@ static const CGFloat TextViewHeight = 100.0;
 }
 
 - (void)setupAnswerTextView {
-    if (!_otherAnswerTextView) {
-        _otherAnswerTextView = [[ORKAnswerTextView alloc] init];
-        _otherAnswerTextView.delegate = self;
-        _otherAnswerTextView.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.containerView addSubview:_otherAnswerTextView];
+    if (!_textView) {
+        _textView = [[ORKAnswerTextView alloc] init];
+        _textView.delegate = self;
+        _textView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.containerView addSubview:_textView];
         [self updateTextView];
     }
 }
@@ -405,36 +405,36 @@ static const CGFloat TextViewHeight = 100.0;
 }
 
 - (void)updateTextView {
-    [self.otherAnswerTextView setHidden:_isTextViewHidden];
+    [self.textView setHidden:_isTextViewHidden];
 }
 
 - (void)addOtherAnswerTextViewConstraints {
     
-    NSLayoutConstraint *textViewHeightConstraint = [NSLayoutConstraint constraintWithItem:_otherAnswerTextView
+    NSLayoutConstraint *textViewHeightConstraint = [NSLayoutConstraint constraintWithItem:_textView
                                                                                 attribute:NSLayoutAttributeHeight
                                                                                 relatedBy:NSLayoutRelationEqual
                                                                                    toItem:nil
                                                                                 attribute:NSLayoutAttributeNotAnAttribute
                                                                                multiplier:1.0
-                                                                                 constant:MAX(_otherAnswerTextView.font.pointSize, TextViewHeight)];
+                                                                                 constant:MAX(_textView.font.pointSize, TextViewHeight)];
     textViewHeightConstraint.priority = UILayoutPriorityDefaultLow;
     
     [self.containerConstraints addObjectsFromArray:@[
-                                                     [NSLayoutConstraint constraintWithItem:_otherAnswerTextView
+                                                     [NSLayoutConstraint constraintWithItem:_textView
                                                                                   attribute:NSLayoutAttributeTop
                                                                                   relatedBy:NSLayoutRelationEqual
                                                                                      toItem:self.detailLabel ? : self.primaryLabel
                                                                                   attribute:NSLayoutAttributeBottom
                                                                                  multiplier:1.0
                                                                                    constant:TextViewTopMargin],
-                                                     [NSLayoutConstraint constraintWithItem:_otherAnswerTextView
+                                                     [NSLayoutConstraint constraintWithItem:_textView
                                                                                   attribute:NSLayoutAttributeLeft
                                                                                   relatedBy:NSLayoutRelationEqual
                                                                                      toItem:self.containerView
                                                                                   attribute:NSLayoutAttributeLeft
                                                                                  multiplier:1.0
                                                                                    constant:self.cellLeftMargin],
-                                                     [NSLayoutConstraint constraintWithItem:_otherAnswerTextView
+                                                     [NSLayoutConstraint constraintWithItem:_textView
                                                                                   attribute:NSLayoutAttributeRight
                                                                                   relatedBy:NSLayoutRelationEqual
                                                                                      toItem:self.containerView
@@ -445,7 +445,7 @@ static const CGFloat TextViewHeight = 100.0;
                                                      [NSLayoutConstraint constraintWithItem:self.containerView
                                                                                   attribute:NSLayoutAttributeBottom
                                                                                   relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:_otherAnswerTextView
+                                                                                     toItem:_textView
                                                                                   attribute:NSLayoutAttributeBottom
                                                                                  multiplier:1.0
                                                                                    constant:LabelTopBottomMargin]
@@ -464,9 +464,9 @@ static const CGFloat TextViewHeight = 100.0;
 
 - (void)setMaskLayers {
     [super setMaskLayers];
-    _otherAnswerTextView.layer.borderWidth = 0.25;
-    [_otherAnswerTextView.layer setBorderColor:[UIColor lightGrayColor].CGColor];
-    _otherAnswerTextView.layer.cornerRadius = 10.0;
+    _textView.layer.borderWidth = 0.25;
+    [_textView.layer setBorderColor:[UIColor lightGrayColor].CGColor];
+    _textView.layer.cornerRadius = 10.0;
 }
 
 # pragma mark - UITextViewDelegate

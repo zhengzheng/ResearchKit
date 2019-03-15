@@ -92,8 +92,8 @@
         if ([textChoice isKindOfClass:[ORKTextChoiceOther class]]) {
             ORKChoiceOtherViewCell * choiceOtherViewCell = [[ORKChoiceOtherViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             ORKTextChoiceOther *textChoiceOther = (ORKTextChoiceOther *)textChoice;
-            choiceOtherViewCell.otherAnswerTextView.placeholder = textChoiceOther.textViewPlaceholderText;
-            choiceOtherViewCell.otherAnswerTextView.text = textChoiceOther.textViewText;
+            choiceOtherViewCell.textView.placeholder = textChoiceOther.textViewPlaceholderText;
+            choiceOtherViewCell.textView.text = textChoiceOther.textViewText;
             [choiceOtherViewCell hideTextView:textChoiceOther.textViewStartsHidden];
             cell = choiceOtherViewCell;
         } else {
@@ -117,7 +117,7 @@
 }
 
 - (void)updateTextViewForChoiceOtherCell:(ORKChoiceOtherViewCell *)choiceCell withTextChoiceOther:(ORKTextChoiceOther *)choiceOther {
-    if (choiceOther.textViewStartsHidden && choiceCell.otherAnswerTextView.text.length <= 0) {
+    if (choiceOther.textViewStartsHidden && choiceCell.textView.text.length <= 0) {
         [choiceCell hideTextView:!choiceCell.isTextViewHidden];
         [self.delegate tableViewCellHeightUpdated];
     }
@@ -131,12 +131,12 @@
     ORKChoiceOtherViewCell *touchedCell = (ORKChoiceOtherViewCell *) [self cellAtIndex:index withReuseIdentifier:nil];
     ORKTextChoiceOther *textChoice = (ORKTextChoiceOther *) [_helper textChoiceAtIndex:index];
     
-    if (textChoice.textViewInputOptional || !touchedCell.isCellSelected || (!textChoice.textViewInputOptional && touchedCell.otherAnswerTextView.text.length > 0)) {
-        textChoice.textViewText = touchedCell.otherAnswerTextView.text;
+    if (textChoice.textViewInputOptional || !touchedCell.isCellSelected || (!textChoice.textViewInputOptional && touchedCell.textView.text.length > 0)) {
+        textChoice.textViewText = touchedCell.textView.text;
         [self didSelectCellAtIndexPath:indexPath];
     }
     else {
-        touchedCell.otherAnswerTextView.text = textChoice.textViewText;
+        touchedCell.textView.text = textChoice.textViewText;
     }
 }
 
