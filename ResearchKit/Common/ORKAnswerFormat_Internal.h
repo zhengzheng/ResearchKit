@@ -253,7 +253,7 @@ ORK_DESIGNATE_CODING_AND_SERIALIZATION_INITIALIZERS(ORKWeightAnswerFormat)
 
 @interface ORKTextChoiceOther()
 
-@property (nonatomic, nullable) NSString * textViewText;
+@property (nonatomic, nullable) NSString *textViewText;
 
 @end
 
