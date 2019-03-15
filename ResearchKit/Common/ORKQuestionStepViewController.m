@@ -757,9 +757,8 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
         cell = [_choiceCellGroup cellAtIndexPath:indexPath withReuseIdentifier:identifier];
     }
     
-    
     if ([cell isKindOfClass:[ORKChoiceOtherViewCell class]]) {
-        ORKChoiceOtherViewCell * otherCell = (ORKChoiceOtherViewCell *)cell;
+        ORKChoiceOtherViewCell *otherCell = (ORKChoiceOtherViewCell *)cell;
         otherCell.delegate = self;
         cell = otherCell;
     }
