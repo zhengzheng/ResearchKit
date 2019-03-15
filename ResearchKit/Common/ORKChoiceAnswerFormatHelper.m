@@ -145,12 +145,12 @@
             id<ORKAnswerOption> matchedChoice = nil;
             for ( id<ORKAnswerOption> choice in _choices) {
                 if ([choice isKindOfClass:[ORKTextChoiceOther class]]) {
-                    ORKTextChoiceOther *choiceOther = (ORKTextChoiceOther *)choice;
-                    if ([choiceOther.textViewText isEqual:answerValue]) {
+                    ORKTextChoiceOther *textChoiceOther = (ORKTextChoiceOther *)choice;
+                    if ([textChoiceOther.textViewText isEqual:answerValue]) {
                         matchedChoice = choice;
                         break;
                     }
-                    else if (choiceOther.textViewInputOptional && choiceOther.textViewText.length <= 0 && [choiceOther.value isEqual:answerValue]) {
+                    else if (textChoiceOther.textViewInputOptional && textChoiceOther.textViewText.length <= 0 && [textChoiceOther.value isEqual:answerValue]) {
                         matchedChoice = choice;
                         break;
                     }
