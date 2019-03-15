@@ -32,8 +32,9 @@
 @import UIKit;
 
 
-@class ORKAnswerTextView;
 NS_ASSUME_NONNULL_BEGIN
+
+@class ORKAnswerTextView;
 
 @interface ORKChoiceViewCell : UITableViewCell
 
