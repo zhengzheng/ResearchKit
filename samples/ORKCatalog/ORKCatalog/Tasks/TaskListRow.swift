@@ -1068,7 +1068,7 @@ enum TaskListRow: Int, CustomStringConvertible {
             ORKTextChoice(text: textChoiceOneText, value: "choice_1" as NSCoding & NSCopying & NSObjectProtocol),
             ORKTextChoice(text: textChoiceTwoText, value: "choice_2" as NSCoding & NSCopying & NSObjectProtocol),
             ORKTextChoice(text: textChoiceThreeText, value: "choice_3" as NSCoding & NSCopying & NSObjectProtocol),
-            ORKTextChoiceOther(text: textChoiceFourText, primaryTextAttributedString: nil, detailText: NSLocalizedString("Detail text", comment: ""), detailTextAttributedString: nil, value: "choice_Other" as NSCoding & NSCopying & NSObjectProtocol, exclusive: false, placeholderText: NSLocalizedString("Please explain your choice", comment: ""), textoptional: true, startsHidden: false)
+            ORKTextChoiceOther.choice(withText: textChoiceFourText, detailText: nil, value: "choice_4" as NSCoding & NSCopying & NSObjectProtocol, exclusive: true, textViewPlaceholderText: "enter additional information")
         ]
         
         let answerFormat = ORKAnswerFormat.choiceAnswerFormat(with: .singleChoice, textChoices: textChoices)
