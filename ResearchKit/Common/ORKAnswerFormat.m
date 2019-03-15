@@ -1098,13 +1098,7 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
 
 #pragma mark - ORKTextChoiceOther
 
-@implementation ORKTextChoiceOther {
-    NSString *_text;
-    NSString *_detailtext;
-    NSAttributedString *_primaryTextAttributedString;
-    NSAttributedString *_detailTextAttributedString;
-    id<NSCopying, NSCoding, NSObject> _value;
-}
+@implementation ORKTextChoiceOther
 
 + (instancetype)new {
     ORKThrowMethodUnavailableException();
@@ -1184,7 +1178,7 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
 }
 
 - (NSUInteger)hash {
-    return _text.hash ^ _primaryTextAttributedString.hash ^ _detailText.hash ^ _detailTextAttributedString.hash ^ _value.hash ^ _textViewPlaceholderText.hash;
+    return [super hash] ^ _textViewPlaceholderText.hash;
 }
 
 @end
