@@ -670,9 +670,9 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
     if (section == ORKQuestionSectionAnswer) {
         if (!_choiceCellGroup) {
             _choiceCellGroup = [[ORKTextChoiceCellGroup alloc] initWithTextChoiceAnswerFormat:(ORKTextChoiceAnswerFormat *)impliedAnswerFormat
-                                                                                   answer:self.answer
-                                                                       beginningIndexPath:[NSIndexPath indexPathForRow:0 inSection:section]
-                                                                      immediateNavigation:[self isStepImmediateNavigation]];
+                                                                                       answer:self.answer
+                                                                           beginningIndexPath:[NSIndexPath indexPathForRow:0 inSection:section]
+                                                                          immediateNavigation:[self isStepImmediateNavigation]];
             _choiceCellGroup.delegate = self;
         }
         return _choiceCellGroup.size;
