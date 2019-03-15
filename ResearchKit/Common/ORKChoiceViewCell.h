@@ -59,8 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly) ORKAnswerTextView *textView;
 
-@property (nonatomic, assign, setter=hideTextView:) BOOL isTextViewHidden;
-
+@property (nonatomic, assign, setter=hideTextView:) BOOL textViewHidden;
 
 @end
 

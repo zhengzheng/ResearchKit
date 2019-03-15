@@ -118,7 +118,7 @@
 
 - (void)updateTextViewForChoiceOtherCell:(ORKChoiceOtherViewCell *)choiceCell withTextChoiceOther:(ORKTextChoiceOther *)choiceOther {
     if (choiceOther.textViewStartsHidden && choiceCell.textView.text.length <= 0) {
-        [choiceCell hideTextView:!choiceCell.isTextViewHidden];
+        [choiceCell hideTextView:!choiceCell.textViewHidden];
         [self.delegate tableViewCellHeightUpdated];
     }
 }

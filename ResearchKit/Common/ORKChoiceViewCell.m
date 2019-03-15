@@ -383,7 +383,7 @@ static const CGFloat TextViewHeight = 100.0;
 - (instancetype)initWithStyle:(UITableViewCellStyle)style
               reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    _isTextViewHidden = NO;
+    _textViewHidden = NO;
     [self setupAnswerTextView];
     return self;
 }
@@ -398,14 +398,14 @@ static const CGFloat TextViewHeight = 100.0;
     }
 }
 
-- (void)hideTextView:(BOOL)isTextViewHidden {
-    _isTextViewHidden = isTextViewHidden;
+- (void)hideTextView:(BOOL)textViewHidden {
+    _textViewHidden = textViewHidden;
     [self updateTextView];
     [self setupConstraints];
 }
 
 - (void)updateTextView {
-    [self.textView setHidden:_isTextViewHidden];
+    [self.textView setHidden:_textViewHidden];
 }
 
 - (void)addOtherAnswerTextViewConstraints {
@@ -454,7 +454,7 @@ static const CGFloat TextViewHeight = 100.0;
 
 // Overriding ContainerView Bottom Constraints
 - (void)addContainerViewBottomConstraint {
-    if (_isTextViewHidden) {
+    if (_textViewHidden) {
         [super addContainerViewBottomConstraint];
     }
     else {
