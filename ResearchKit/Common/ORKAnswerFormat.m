@@ -1177,10 +1177,10 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
             && ORKEqualObjects(self.detailText, castObject.detailText)
             && ORKEqualObjects(self.detailTextAttributedString, castObject.detailTextAttributedString)
             && ORKEqualObjects(self.value, castObject.value)
-            && self.exclusive == castObject.exclusive)
-    && ORKEqualObjects(self.textViewPlaceholderText, castObject.textViewPlaceholderText)
-    && self.textViewInputOptional == castObject.textViewInputOptional
-    && self.textViewStartsHidden == castObject.textViewStartsHidden;
+            && self.exclusive == castObject.exclusive
+            && ORKEqualObjects(self.textViewPlaceholderText, castObject.textViewPlaceholderText)
+            && self.textViewInputOptional == castObject.textViewInputOptional
+            && self.textViewStartsHidden == castObject.textViewStartsHidden);
 }
 
 - (NSUInteger)hash {
