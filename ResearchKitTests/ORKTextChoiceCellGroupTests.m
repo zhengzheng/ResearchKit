@@ -58,10 +58,10 @@
 }
 
 - (NSArray *)textChoicesOther {
-    ORKTextChoiceOther *textChoiceOtherOne = [[ORKTextChoiceOther alloc] initWithText:@"Text Choice Other One" primaryTextAttributedString:nil detailText:nil detailTextAttributedString:nil value:@"one" exclusive:true placeholderText:@"Please describe." textoptional:YES startsHidden:YES];
-    ORKTextChoiceOther *textChoiceOtherTwo = [[ORKTextChoiceOther alloc] initWithText:@"Text Choice Other Two" primaryTextAttributedString:nil detailText:nil detailTextAttributedString:nil value:@"two" exclusive:true placeholderText:@"" textoptional:YES startsHidden:NO];
-    ORKTextChoiceOther *textChoiceOtherThree = [[ORKTextChoiceOther alloc] initWithText:@"Text Choice Other Three" primaryTextAttributedString:nil detailText:nil detailTextAttributedString:nil value:@"three" exclusive:true placeholderText:@"Please describe." textoptional:NO startsHidden:YES];
-    ORKTextChoiceOther *textChoiceOtherFour = [[ORKTextChoiceOther alloc] initWithText:nil primaryTextAttributedString:nil detailText:@"Text Choice Other Four"  detailTextAttributedString:nil value:@"four" exclusive:true placeholderText:@"Please describe." textoptional:NO startsHidden:NO];
+    ORKTextChoiceOther *textChoiceOtherOne = [[ORKTextChoiceOther alloc] initWithText:@"Text Choice Other One" primaryTextAttributedString:nil detailText:nil detailTextAttributedString:nil value:@"one" exclusive:true textViewPlaceholderText:@"Please describe." textViewInputOptional:YES textViewStartsHidden:YES];
+    ORKTextChoiceOther *textChoiceOtherTwo = [[ORKTextChoiceOther alloc] initWithText:@"Text Choice Other Two" primaryTextAttributedString:nil detailText:nil detailTextAttributedString:nil value:@"two" exclusive:true textViewPlaceholderText:@"" textViewInputOptional:YES textViewStartsHidden:NO];
+    ORKTextChoiceOther *textChoiceOtherThree = [[ORKTextChoiceOther alloc] initWithText:@"Text Choice Other Three" primaryTextAttributedString:nil detailText:nil detailTextAttributedString:nil value:@"three" exclusive:true textViewPlaceholderText:@"Please describe." textViewInputOptional:NO textViewStartsHidden:YES];
+    ORKTextChoiceOther *textChoiceOtherFour = [[ORKTextChoiceOther alloc] initWithText:nil primaryTextAttributedString:nil detailText:@"Text Choice Other Four"  detailTextAttributedString:nil value:@"four" exclusive:true textViewPlaceholderText:@"Please describe." textViewInputOptional:NO textViewStartsHidden:NO];
     
     static NSArray *choicesOther = nil;
     if (choicesOther == nil) {
@@ -622,13 +622,13 @@
         XCTAssertEqualObjects(cell.reuseIdentifier, @"abc", @"");
         XCTAssertEqual(cell.immediateNavigation, YES, @"");
         XCTAssertEqual(cell.accessoryType, UITableViewCellAccessoryDisclosureIndicator, @"");
-        if (choice.startsHidden) {
-            XCTAssertTrue(cell.otherAnswerTextView.isHidden);
+        if (choice.textViewStartsHidden) {
+            XCTAssertTrue(cell.textView.isHidden);
         }
         else {
-            XCTAssertFalse(cell.otherAnswerTextView.isHidden);
+            XCTAssertFalse(cell.textView.isHidden);
         }
-        XCTAssertEqual(choice.placeholderText, cell.otherAnswerTextView.placeholder);
+        XCTAssertEqual(choice.textViewPlaceholderText, cell.textView.placeholder);
     }
     
     ORKChoiceOtherViewCell *cell = (ORKChoiceOtherViewCell *)[group cellAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] withReuseIdentifier:@"abc"];
@@ -649,7 +649,7 @@
         XCTAssert([answer isKindOfClass:[NSArray class]]);
         NSArray *answerArray = answer;
         XCTAssertEqual(answerArray.count, 1);
-        XCTAssertEqual(cell.isCellSelected, (choice.isTextOptional || cell.otherAnswerTextView.text.length > 0));
+        XCTAssertEqual(cell.isCellSelected, (choice.textViewInputOptional || cell.textView.text.length > 0));
     }
 }
 
