@@ -419,6 +419,7 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
                                        @"ORKNavigablePageStep.steps",
                                        @"ORKTextAnswerFormat.validationRegex",
                                        @"ORKRegistrationStep.passcodeValidationRegex",
+                                       @"ORKConsentSection.image"
                                        ];
     NSArray *knownNotSerializedProperties = @[
                                               @"ORKStep.task",
@@ -487,7 +488,8 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
                                               @"ORKSpeechRecognitionResult.transcription", // SFTranscription
                                               @"ORKAmslerGridResult.image",
                                               @"ORKTextChoice.detailTextAttributedString",
-                                              @"ORKTextChoice.primaryTextAttributedString"
+                                              @"ORKTextChoice.primaryTextAttributedString",
+                                              @"ORKConsentSection.image"
                                               ];
     NSArray *allowedUnTouchedKeys = @[@"_class"];
     
@@ -729,7 +731,8 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
                                               @"ORKHealthClinicalTypeRecorderConfiguration.healthFHIRResourceType",
                                               @"ORKInstructionStep.attributedDetailText",
                                               @"ORKOrderedTask.progressLabelColor",
-                                              @"ORKQuestionStep.question"
+                                              @"ORKQuestionStep.question",
+                                              @"ORKConsentSection.image"
                                               ];
     
     // Test Each class
