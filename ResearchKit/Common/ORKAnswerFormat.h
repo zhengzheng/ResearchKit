@@ -1064,7 +1064,7 @@ ORK_CLASS_AVAILABLE
                    exclusive:(BOOL)exclusive
      textViewPlaceholderText:(NSString *)textViewPlaceholderText
        textViewInputOptional:(BOOL)textViewInputOptional
-        textViewStartsHidden:(BOOL)textViewStartsHidden NS_DESIGNATED_INITIALIZER;
+        textViewStartsHidden:(BOOL)textViewStartsHidden;
 
 @property (nonatomic, copy) NSString *textViewPlaceholderText;
 
