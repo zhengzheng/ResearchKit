@@ -756,6 +756,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     PROPERTY(initialdBHLValue, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(dBHLStepUpSize, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(dBHLStepDownSize, NSNumber, NSObject, YES, nil, nil),
+                    PROPERTY(presetSystemVolumeLevel, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(headphoneType, NSString, NSObject, YES, nil, nil),
                     PROPERTY(earPreference, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(frequencyList, NSArray, NSObject, YES, nil, nil)
