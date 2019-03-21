@@ -31,7 +31,7 @@
 
 @import XCTest;
 @import ResearchKit.Private;
-
+@import ResearchKit;
 
 @interface ORKStepTests : XCTestCase
 
@@ -256,6 +256,30 @@
     XCTAssertEqual([step identifier], identifier);
     XCTAssertEqual([step pdfURL], url);
     XCTAssertEqual([step actionBarOption], ORKPDFViewerActionBarOptionExcludeShare);
+}
+
+- (void)testEnvironmentSPLMeterStep {
+    NSString *identifier = @"STEP";
+    ORKEnvironmentSPLMeterStep *step = [[ORKEnvironmentSPLMeterStep alloc] initWithIdentifier:identifier];
+
+    XCTAssertEqual([step identifier], identifier);
+    XCTAssertNoThrow([step validateParameters]);
+    XCTAssertEqual([step thresholdValue], 35.0);
+    XCTAssertEqual([step samplingInterval], 1.0);
+    XCTAssertEqual([step requiredContiguousSamples], 5);
+    
+    [step setThresholdValue:-1];
+    XCTAssertThrowsSpecificNamed([step validateParameters], NSException, NSInvalidArgumentException);
+    
+    [step setSamplingInterval:-1];
+    [step setThresholdValue:0];
+    XCTAssertThrowsSpecificNamed([step validateParameters], NSException, NSInvalidArgumentException);
+    
+    [step setRequiredContiguousSamples:0];
+    [step setThresholdValue:2];
+    XCTAssertThrowsSpecificNamed([step validateParameters], NSException, NSInvalidArgumentException);
+    
+    XCTAssert([step isEqual:step]);
 }
 
 @end
