@@ -237,11 +237,6 @@
         XCTAssertEqual(uploaded.count, 0);
         
         NSArray *needUpload = [self logsUploaded:NO withError:&error];
-        NSURL *needUploadedURLOne = [needUpload objectAtIndex:0];
-        NSString *needUploadStringOne = [[needUploadedURLOne lastPathComponent] stringByDeletingPathExtension];
-        
-        NSURL *needUploadURLTwo = [needUpload objectAtIndex:1];
-        NSString *needUploadSTringTwo = [[needUploadURLTwo lastPathComponent] stringByDeletingPathExtension];
         
         XCTAssertNil(error);
         XCTAssertEqual(needUpload.count, 2);
