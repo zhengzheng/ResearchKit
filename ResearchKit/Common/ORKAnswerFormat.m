@@ -1502,7 +1502,7 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
         _maximum = [maximum copy];
         _maximumFractionDigits = [maximumFractionDigits copy];
         
-        if(_minimum != NULL | _maximum != NULL){
+        if(_minimum != NULL && _maximum != NULL){
             [self validateParameters];
         }
     }
