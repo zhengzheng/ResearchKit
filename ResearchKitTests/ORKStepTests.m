@@ -258,6 +258,20 @@
     XCTAssertEqual([step actionBarOption], ORKPDFViewerActionBarOptionExcludeShare);
 }
 
+- (void)testWebViewStep {
+    NSString *identifier = @"STEP";
+    NSString *html = @"HTML";
+    ORKWebViewStep *step = [ORKWebViewStep webViewStepWithIdentifier:identifier html:html];
+    
+    XCTAssertEqual([step identifier], identifier);
+    XCTAssertEqual([step html], html);
+    XCTAssertEqual([step stepViewControllerClass], [ORKWebViewStepViewController class]);
+    XCTAssert([step isEqual:step]);
+    
+    [step setHtml:nil];
+    XCTAssertThrowsSpecificNamed([step validateParameters], NSException, NSInvalidArgumentException);
+}
+
 @end
 
 
