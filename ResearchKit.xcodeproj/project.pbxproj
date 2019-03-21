@@ -4085,7 +4085,6 @@
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
-				TEST_HOST = "";
 				TOOLCHAINS = default;
 			};
 			name = Debug;
@@ -4139,7 +4138,6 @@
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
-				TEST_HOST = "";
 				TOOLCHAINS = default;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -4363,7 +4361,6 @@
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "";
 			};
 			name = Debug;
 		};
@@ -4409,7 +4406,6 @@
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "";
 			};
 			name = Release;
 		};
