@@ -223,11 +223,17 @@ ORK_MAKE_TEST_INIT_ALT(CLCircularRegion, (^{
     return [self initWithCenter:CLLocationCoordinate2DMake(3.0, 4.0) radius:150.0 identifier:@"identifier"];
 }))
 ORK_MAKE_TEST_INIT(ORKLocation, (^{
-    ORKLocation *location = [self initWithCoordinate:CLLocationCoordinate2DMake(2.0, 3.0) region:[[CLCircularRegion alloc] orktest_init] userInput:@"addressStringA" addressDictionary:@{@"city":@"cityA", @"street":@"street"}];
+    CNMutablePostalAddress *postalAddress = [[CNMutablePostalAddress alloc] init];
+    postalAddress.city = @"cityA";
+    postalAddress.street = @"street";
+    ORKLocation *location = [self initWithCoordinate:CLLocationCoordinate2DMake(2.0, 3.0) region:[[CLCircularRegion alloc] orktest_init] userInput:@"addressStringA" postalAddress:postalAddress];
     return location;
 }));
 ORK_MAKE_TEST_INIT_ALT(ORKLocation, (^{
-    ORKLocation *location = [self initWithCoordinate:CLLocationCoordinate2DMake(4.0, 5.0) region:[[CLCircularRegion alloc] orktest_init_alt] userInput:@"addressStringB" addressDictionary:@{@"city":@"cityB", @"street":@"street"}];
+    CNMutablePostalAddress *postalAddress = [[CNMutablePostalAddress alloc] init];
+    postalAddress.city = @"cityB";
+    postalAddress.street = @"street";
+    ORKLocation *location = [self initWithCoordinate:CLLocationCoordinate2DMake(4.0, 5.0) region:[[CLCircularRegion alloc] orktest_init_alt] userInput:@"addressStringB" postalAddress:postalAddress];
     return location;
 }));
 ORK_MAKE_TEST_INIT(HKSampleType, (^{
@@ -413,6 +419,7 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
                                        @"ORKNavigablePageStep.steps",
                                        @"ORKTextAnswerFormat.validationRegex",
                                        @"ORKRegistrationStep.passcodeValidationRegex",
+                                       @"ORKConsentSection.image"
                                        ];
     NSArray *knownNotSerializedProperties = @[
                                               @"ORKStep.task",
@@ -478,8 +485,11 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
                                               @"ORKInstructionStep.attributedDetailText",
                                               @"ORKOrderedTask.progressLabelColor",
                                               @"ORKRegistrationStep.passcodeRules",
-                                              @"ORKSpeechRecognitonResult.transcription", // SFTranscription
-                                              @"ORKAmslerGridResult.image"
+                                              @"ORKSpeechRecognitionResult.transcription", // SFTranscription
+                                              @"ORKAmslerGridResult.image",
+                                              @"ORKTextChoice.detailTextAttributedString",
+                                              @"ORKTextChoice.primaryTextAttributedString",
+                                              @"ORKConsentSection.image"
                                               ];
     NSArray *allowedUnTouchedKeys = @[@"_class"];
     
@@ -721,7 +731,8 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
                                               @"ORKHealthClinicalTypeRecorderConfiguration.healthFHIRResourceType",
                                               @"ORKInstructionStep.attributedDetailText",
                                               @"ORKOrderedTask.progressLabelColor",
-                                              @"ORKQuestionStep.question"
+                                              @"ORKQuestionStep.question",
+                                              @"ORKConsentSection.image"
                                               ];
     
     // Test Each class
@@ -850,6 +861,8 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
                                  [ORKStepNavigationRule class],     // abstract base class
                                  [ORKSkipStepNavigationRule class],     // abstract base class
                                  [ORKStepModifier class],     // abstract base class
+                                 [ORKVideoCaptureStep class],
+                                 [ORKImageCaptureStep class]
                                  ];
     
     
@@ -1015,6 +1028,7 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
     // Classes for which tests are not currently implemented
     NSArray <NSString *> *excludedClassNames = @[
                                                  @"ORKVisualConsentStepViewController",     // Requires step with scenes
+                                                 @"ORKImageCaptureStepViewController"
                                                  ];
     
     // Classes that do not allow adding a result should throw an exception
