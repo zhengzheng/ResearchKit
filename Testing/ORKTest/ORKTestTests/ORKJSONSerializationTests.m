@@ -419,6 +419,7 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
                                        @"ORKNavigablePageStep.steps",
                                        @"ORKTextAnswerFormat.validationRegex",
                                        @"ORKRegistrationStep.passcodeValidationRegex",
+                                       @"ORKConsentSection.image"
                                        ];
     NSArray *knownNotSerializedProperties = @[
                                               @"ORKStep.task",
@@ -487,7 +488,8 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
                                               @"ORKSpeechRecognitionResult.transcription", // SFTranscription
                                               @"ORKAmslerGridResult.image",
                                               @"ORKTextChoice.detailTextAttributedString",
-                                              @"ORKTextChoice.primaryTextAttributedString"
+                                              @"ORKTextChoice.primaryTextAttributedString",
+                                              @"ORKConsentSection.image"
                                               ];
     NSArray *allowedUnTouchedKeys = @[@"_class"];
     
@@ -729,7 +731,8 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
                                               @"ORKHealthClinicalTypeRecorderConfiguration.healthFHIRResourceType",
                                               @"ORKInstructionStep.attributedDetailText",
                                               @"ORKOrderedTask.progressLabelColor",
-                                              @"ORKQuestionStep.question"
+                                              @"ORKQuestionStep.question",
+                                              @"ORKConsentSection.image"
                                               ];
     
     // Test Each class
@@ -858,6 +861,8 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
                                  [ORKStepNavigationRule class],     // abstract base class
                                  [ORKSkipStepNavigationRule class],     // abstract base class
                                  [ORKStepModifier class],     // abstract base class
+                                 [ORKVideoCaptureStep class],
+                                 [ORKImageCaptureStep class]
                                  ];
     
     
@@ -1023,6 +1028,7 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
     // Classes for which tests are not currently implemented
     NSArray <NSString *> *excludedClassNames = @[
                                                  @"ORKVisualConsentStepViewController",     // Requires step with scenes
+                                                 @"ORKImageCaptureStepViewController"
                                                  ];
     
     // Classes that do not allow adding a result should throw an exception

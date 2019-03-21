@@ -184,7 +184,6 @@
     XCTAssert([step isEqual:step]);
     XCTAssertEqual([step requestedPermissions], ORKPermissionNone);
     XCTAssertEqualObjects([step requestedHealthKitTypesForReading], nil);
-    XCTAssertThrowsSpecificNamed([[ORKStep alloc] initWithIdentifier:NULL], NSException, NSInvalidArgumentException);
 }
 
 - (void)testORKNavigablePageStep {

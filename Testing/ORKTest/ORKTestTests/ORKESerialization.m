@@ -176,6 +176,14 @@ static NSDictionary *dictionaryFromCircularRegion(CLCircularRegion *region) {
     return dictionary;
 }
 
+static NSDictionary *dictionaryFromPostalAddress(CNPostalAddress *address) {
+   return @{ @"city": address.city, @"street": address.street };
+}
+
+static NSString *identifierFromClinicalType(HKClinicalType *type) {
+    return type.identifier;
+}
+
 static CLCircularRegion *circularRegionFromDictionary(NSDictionary *dict) {
     CLCircularRegion *circularRegion;
     if (dict.count == 3) {
@@ -275,6 +283,17 @@ static UITextInputPasswordRules *passwordRulesFromDictionary(NSDictionary *dict)
         passwordRules = [UITextInputPasswordRules passwordRulesWithDescriptor:dict[@"rules"]];
     }
     return passwordRules;
+}
+
+static CNPostalAddress *postalAddressFromDictionary(NSDictionary *dict) {
+    CNMutablePostalAddress *postalAddress = [[CNMutablePostalAddress alloc] init];
+    postalAddress.city = dict[@"city"];
+    postalAddress.street = dict[@"street"];
+    return [postalAddress copy];
+}
+
+static HKClinicalType *typeFromIdentifier(NSString *identifier) {
+    return [HKClinicalType clinicalTypeForIdentifier:identifier];
 }
 
 static NSMutableDictionary *ORKESerializationEncodingTable(void);
@@ -737,6 +756,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     PROPERTY(initialdBHLValue, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(dBHLStepUpSize, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(dBHLStepDownSize, NSNumber, NSObject, YES, nil, nil),
+                    PROPERTY(presetSystemVolumeLevel, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(headphoneType, NSString, NSObject, YES, nil, nil),
                     PROPERTY(earPreference, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(frequencyList, NSArray, NSObject, YES, nil, nil)
@@ -772,6 +792,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                              ^id(id dict) { return [NSValue valueWithUIEdgeInsets:edgeInsetsFromDictionary(dict)]; }),
                     PROPERTY(accessibilityHint, NSString, NSObject, YES, nil, nil),
                     PROPERTY(accessibilityInstructions, NSString, NSObject, YES, nil, nil),
+                    PROPERTY(captureRaw, NSNumber, NSObject, YES, nil, nil)
                     })),
            ENTRY(ORKVideoCaptureStep,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
@@ -783,7 +804,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                              ^id(id dict) { return [NSValue valueWithUIEdgeInsets:edgeInsetsFromDictionary(dict)]; }),
                     PROPERTY(duration, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(audioMute, NSNumber, NSObject, YES, nil, nil),
-                    PROPERTY(flashMode, NSNumber, NSObject, YES, nil, nil),
+                    PROPERTY(torchMode, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(devicePosition, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(accessibilityHint, NSString, NSObject, YES, nil, nil),
                     PROPERTY(accessibilityInstructions, NSString, NSObject, YES, nil, nil),
@@ -1686,7 +1707,9 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                  },
                  (@{
                     PROPERTY(userInput, NSString, NSObject, NO, nil, nil),
-                    PROPERTY(postalAddress, NSString, NSObject, NO, nil, nil),
+                    PROPERTY(postalAddress, CNPostalAddress, NSObject, NO,
+                             ^id(id value) { return dictionaryFromPostalAddress(value); },
+                             ^id(id dict) { return  postalAddressFromDictionary(dict); }),
                     PROPERTY(coordinate, NSValue, NSObject, NO,
                              ^id(id value) { return value ? dictionaryFromCoordinate(((NSValue *)value).MKCoordinateValue) : nil; },
                              ^id(id dict) { return [NSValue valueWithMKCoordinate:coordinateFromDictionary(dict)]; }),
@@ -1750,7 +1773,9 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                                                                          return [[ORKHealthClinicalTypeRecorderConfiguration alloc] initWithIdentifier:GETPROP(dict, identifier) healthClinicalType:GETPROP(dict, healthClinicalType) healthFHIRResourceType:GETPROP(dict, healthFHIRResourceType)];
                                                                      },
                                                                      (@{
-                                                                        PROPERTY(healthClinicalType, HKClinicalType, NSObject, NO, nil, nil),
+                                                                        PROPERTY(healthClinicalType, HKClinicalType, NSObject, NO,
+                                                                                 ^id(id type) { return identifierFromClinicalType(type); },
+                                                                                 ^id(id identifier) { return  typeFromIdentifier(identifier); }),
                                                                         PROPERTY(healthFHIRResourceType, NSString, NSObject, NO, nil, nil),
                                                                         })) }];
         }
