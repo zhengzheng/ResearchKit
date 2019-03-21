@@ -30,6 +30,7 @@
 
 
 @import XCTest;
+@import ResearchKit;
 @import ResearchKit.Private;
 
 
@@ -256,6 +257,25 @@
     XCTAssertEqual([step identifier], identifier);
     XCTAssertEqual([step pdfURL], url);
     XCTAssertEqual([step actionBarOption], ORKPDFViewerActionBarOptionExcludeShare);
+}
+
+- (void)testRegistrationStep {
+    NSString *identifier = @"STEP";
+    NSString *title = @"TITLE";
+    NSString *text = @"TEXT";
+    
+    NSString *pattern = @"^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$";
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionAnchorsMatchLines error:nil];
+    
+    ORKRegistrationStep *step = [[ORKRegistrationStep alloc] initWithIdentifier:identifier title:title text:text passcodeValidationRegularExpression:regex passcodeInvalidMessage:@"Invalid Password" options:ORKRegistrationStepDefault];
+    
+    XCTAssertEqual([step identifier], identifier);
+    XCTAssertEqual([step title], title);
+    XCTAssertEqual([step text], text);
+    XCTAssertEqual([step options], ORKRegistrationStepDefault);
+    XCTAssert([[[[step formItems] objectAtIndex:0] identifier] isEqualToString:@"ORKRegistrationFormItemEmail"]);
+    XCTAssert([[[[step formItems] objectAtIndex:1] identifier] isEqualToString:@"ORKRegistrationFormItemPassword"]);
+    XCTAssert([[[[step formItems] objectAtIndex:2] identifier] isEqualToString:@"ORKRegistrationFormItemConfirmPassword"]);
 }
 
 @end
