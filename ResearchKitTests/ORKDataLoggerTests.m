@@ -237,7 +237,6 @@
         XCTAssertEqual(uploaded.count, 0);
         
         NSArray *needUpload = [self logsUploaded:NO withError:&error];
-        
         XCTAssertNil(error);
         XCTAssertEqual(needUpload.count, 2);
     }
