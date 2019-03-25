@@ -32,7 +32,7 @@
 @import XCTest;
 @import ResearchKit;
 @import ResearchKit.Private;
-
+@import ResearchKit;
 
 @interface ORKStepTests : XCTestCase
 
@@ -247,6 +247,38 @@
     XCTAssertEqual(step.passcodeType, ORKPasscodeType4Digit);
 }
 
+- (void)testQuestionStep {
+    NSString *identifier = @"Identifier";
+    NSString *title = @"Title";
+    NSString *question = @"How are you?";
+    NSString *errorMessage = @"ERROR";
+    NSString *placeHolder = @"PLACEHOLDER";
+    
+    ORKTextAnswerFormat *answerFormat = [ORKAnswerFormat textAnswerFormatWithMaximumLength:100];
+    ORKConfirmTextAnswerFormat *incorrectAnswerFormat = [[ORKConfirmTextAnswerFormat alloc] initWithOriginalItemIdentifier:identifier errorMessage:errorMessage];
+    ORKQuestionStep *step = [ORKQuestionStep questionStepWithIdentifier:identifier title:title question:question answer:answerFormat];
+    [step setPlaceholder:placeHolder];
+    [step setUseSurveyMode: NO];
+    [step setUseCardView: NO];
+    [step setOptional:NO];
+    
+    XCTAssertEqual([step identifier], identifier);
+    XCTAssertEqual([step title], title);
+    XCTAssertEqual([step question], question);
+    XCTAssertEqual([step placeholder], placeHolder);
+    XCTAssertEqual([step useSurveyMode], NO);
+    XCTAssertEqual([step useCardView], NO);
+    XCTAssertEqual([step isOptional], NO);
+    XCTAssertNoThrowSpecificNamed([step validateParameters], NSException, NSInvalidArgumentException, @"Should not throw exception");
+    XCTAssertEqual([step requestedHealthKitTypesForReading], nil);
+    XCTAssertEqual([step stepViewControllerClass], [ORKQuestionStepViewController class], @"Should return ORKQuestionStepViewController");
+    XCTAssert([step isEqual:step]);
+    XCTAssertEqual([step questionType], ORKQuestionTypeText, @"Should return ORKQuestionTypeText");
+    
+    ORKQuestionStep *incorrectStep = [ORKQuestionStep questionStepWithIdentifier:identifier title:title question:question answer:incorrectAnswerFormat];
+    XCTAssertThrowsSpecificNamed([incorrectStep validateParameters], NSException, NSInvalidArgumentException);
+}
+
 - (void)testPDFViewerStep {
     NSString *identifier = @"STEP";
     NSURL *url = [NSURL URLWithString:@"TESTINGURL"];
@@ -276,6 +308,44 @@
     XCTAssert([[[[step formItems] objectAtIndex:0] identifier] isEqualToString:@"ORKRegistrationFormItemEmail"]);
     XCTAssert([[[[step formItems] objectAtIndex:1] identifier] isEqualToString:@"ORKRegistrationFormItemPassword"]);
     XCTAssert([[[[step formItems] objectAtIndex:2] identifier] isEqualToString:@"ORKRegistrationFormItemConfirmPassword"]);
+}
+
+- (void)testWebViewStep {
+    NSString *identifier = @"STEP";
+    NSString *html = @"HTML";
+    ORKWebViewStep *step = [ORKWebViewStep webViewStepWithIdentifier:identifier html:html];
+    
+    XCTAssertEqual([step identifier], identifier);
+    XCTAssertEqual([step html], html);
+    XCTAssertEqual([step stepViewControllerClass], [ORKWebViewStepViewController class]);
+    XCTAssert([step isEqual:step]);
+    
+    [step setHtml:nil];
+    XCTAssertThrowsSpecificNamed([step validateParameters], NSException, NSInvalidArgumentException);
+}
+
+- (void)testEnvironmentSPLMeterStep {
+    NSString *identifier = @"STEP";
+    ORKEnvironmentSPLMeterStep *step = [[ORKEnvironmentSPLMeterStep alloc] initWithIdentifier:identifier];
+
+    XCTAssertEqual([step identifier], identifier);
+    XCTAssertNoThrow([step validateParameters]);
+    XCTAssertEqual([step thresholdValue], 35.0);
+    XCTAssertEqual([step samplingInterval], 1.0);
+    XCTAssertEqual([step requiredContiguousSamples], 5);
+    
+    [step setThresholdValue:-1];
+    XCTAssertThrowsSpecificNamed([step validateParameters], NSException, NSInvalidArgumentException);
+    
+    [step setSamplingInterval:-1];
+    [step setThresholdValue:0];
+    XCTAssertThrowsSpecificNamed([step validateParameters], NSException, NSInvalidArgumentException);
+    
+    [step setRequiredContiguousSamples:0];
+    [step setThresholdValue:2];
+    XCTAssertThrowsSpecificNamed([step validateParameters], NSException, NSInvalidArgumentException);
+    
+    XCTAssert([step isEqual:step]);
 }
 
 @end
