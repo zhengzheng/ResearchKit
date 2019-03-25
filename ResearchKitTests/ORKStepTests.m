@@ -298,12 +298,18 @@
     NSString *pattern = @"^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$";
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionAnchorsMatchLines error:nil];
     
-    ORKRegistrationStep *step = [[ORKRegistrationStep alloc] initWithIdentifier:identifier title:title text:text passcodeValidationRegularExpression:regex passcodeInvalidMessage:@"Invalid Password" options:ORKRegistrationStepDefault];
+    ORKRegistrationStep *step = [[ORKRegistrationStep alloc] initWithIdentifier:identifier title:title text:text passcodeValidationRegularExpression:regex passcodeInvalidMessage:@"Invalid Password" options:ORKRegistrationStepIncludePhoneNumber];
+    step.phoneNumberValidationRegularExpression = regex;
+    step.phoneNumberInvalidMessage = @"Invalid Number";
     
     XCTAssertEqual([step identifier], identifier);
     XCTAssertEqual([step title], title);
     XCTAssertEqual([step text], text);
-    XCTAssertEqual([step options], ORKRegistrationStepDefault);
+    XCTAssertEqual([step options], ORKRegistrationStepIncludePhoneNumber);
+    XCTAssertEqual([step passcodeValidationRegularExpression], regex);
+    XCTAssertEqual([step passcodeInvalidMessage], @"Invalid Password");
+    XCTAssertEqual([step phoneNumberValidationRegularExpression], regex);
+    XCTAssertEqual([step phoneNumberInvalidMessage], @"Invalid Number");
     XCTAssert([[[[step formItems] objectAtIndex:0] identifier] isEqualToString:@"ORKRegistrationFormItemEmail"]);
     XCTAssert([[[[step formItems] objectAtIndex:1] identifier] isEqualToString:@"ORKRegistrationFormItemPassword"]);
     XCTAssert([[[[step formItems] objectAtIndex:2] identifier] isEqualToString:@"ORKRegistrationFormItemConfirmPassword"]);
