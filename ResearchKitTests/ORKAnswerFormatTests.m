@@ -391,10 +391,10 @@
 - (void)testNumericAnswerFormat {
     
     ORKNumericAnswerFormat *answerFormatWithIntegerStyle = [[ORKNumericAnswerFormat alloc] initWithStyle:ORKNumericAnswerStyleInteger
-                                                                                    unit:@"Units"
-                                                                                 minimum:[NSNumber numberWithInteger:0]
-                                                                                 maximum:[NSNumber numberWithInteger:100]
-                                                                   maximumFractionDigits:@(0)];
+                                                                                                    unit:@"Units"
+                                                                                                 minimum:[NSNumber numberWithInteger:0]
+                                                                                                 maximum:[NSNumber numberWithInteger:100]
+                                                                                   maximumFractionDigits:@(0)];
     
     XCTAssertEqual([answerFormatWithIntegerStyle style], ORKNumericAnswerStyleInteger);
     XCTAssertEqual([answerFormatWithIntegerStyle unit], @"Units");
