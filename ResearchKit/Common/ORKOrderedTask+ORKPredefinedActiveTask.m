@@ -183,6 +183,7 @@ NSString *const ORKAmslerGridCalibrationRightIdentifier = @"amsler.grid.calibrat
         {
             ORKInstructionStep *step = [[ORKInstructionStep alloc] initWithIdentifier:ORKInstruction0StepIdentifier];
             step.title = ORKLocalizedString(@"AMSLER_GRID_TITLE", nil);
+            step.hideProgress = true;
             step.text = intendedUseDescription;
             step.detailText = ORKLocalizedString(@"AMSLER_GRID_INTRO_TEXT", nil);
             step.image = [UIImage imageNamed:@"amslerGrid" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];

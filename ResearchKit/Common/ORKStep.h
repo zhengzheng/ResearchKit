@@ -193,6 +193,11 @@ ORK_CLASS_AVAILABLE
  Subclasses should override this method to provide validation of their additional
  properties, and must call super.
  */
+
+//pariece
+
+@property (nonatomic) BOOL hideProgress;
+
 - (void)validateParameters;
 
 /**

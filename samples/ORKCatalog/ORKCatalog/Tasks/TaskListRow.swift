@@ -766,6 +766,16 @@ enum TaskListRow: Int, CustomStringConvertible {
         summaryStep.title = NSLocalizedString("Thanks", comment: "")
         summaryStep.text = NSLocalizedString("Thank you for participating in this sample survey.", comment: "")
         
+        
+        let orderedTask = ORKOrderedTask(identifier: String(describing:Identifier.surveyTask), steps: [
+            instructionStep,
+            question1Step,
+            question2Step,
+            summaryStep
+            ])
+        
+        
+        
         return ORKOrderedTask(identifier: String(describing:Identifier.surveyTask), steps: [
             instructionStep,
             question1Step,
