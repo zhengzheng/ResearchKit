@@ -1023,7 +1023,7 @@ ORK_CLASS_AVAILABLE
 - (instancetype)init NS_UNAVAILABLE;
 
 /**
- Returns a text choice other object that includes the specified primary text or text with string attributes, detail text or text with string attributes, exclusivity and a text view with placeholder text for additional user input.
+ Returns a text choice other object that includes the specified text, detail text, exclusivity and a text view with placeholder text for additional user input.
  
  @param text                         The primary text that describes the choice in a localized string.
  @param detailText                   The detail text to display below the primary text, in a localized string.
@@ -1051,7 +1051,7 @@ ORK_CLASS_AVAILABLE
  @param value                        The value to record in a result object when this item is selected.
  @param exclusive                    Whether this choice is to be considered exclusive within the set of choices.
  @param textViewPlaceholderText      The placeholder text for the text view.
- @param textViewInputOptional        Whether it is required to provide additional text when selecting this choice.
+ @param textViewInputOptional        Whether the user is required to provide additional text when selecting this choice.
  @param textViewStartsHidden         Whether the text view should be hidden untill the cell is selected.
  
  @return An initialized text choice other object.
