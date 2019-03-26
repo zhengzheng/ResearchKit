@@ -161,7 +161,7 @@ static void *_ORKViewControllerToolbarObserverContext = &_ORKViewControllerToolb
 @end
 
 
-@interface ORKTaskViewController () <ORKViewControllerToolbarObserverDelegate, ORKScrollViewObserverDelegate> {
+@interface ORKTaskViewController () <ORKViewControllerToolbarObserverDelegate> {
     NSMutableDictionary *_managedResults;
     NSMutableArray *_managedStepIdentifiers;
     ORKViewControllerToolbarObserver *_stepViewControllerObserver;
@@ -186,8 +186,6 @@ static void *_ORKViewControllerToolbarObserverContext = &_ORKViewControllerToolb
     NSString *_restoredStepIdentifier;
 }
 
-@property (nonatomic, strong) UIImageView *hairline;
-
 @property (nonatomic, strong) UINavigationController *childNavigationController;
 @property (nonatomic, strong) UIPageViewController *pageViewController;
 @property (nonatomic, strong) ORKStepViewController *currentStepViewController;
@@ -198,20 +196,6 @@ static void *_ORKViewControllerToolbarObserverContext = &_ORKViewControllerToolb
 @implementation ORKTaskViewController
 
 @synthesize taskRunUUID=_taskRunUUID;
-
-+ (void)initialize {
-    if (self == [ORKTaskViewController class]) {
-        
-        [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[[ORKTaskViewController class]]] setTranslucent:NO];
-        if ([[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[[ORKTaskViewController class]]] barTintColor] == nil) {
-            [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[[ORKTaskViewController class]]] setBarTintColor:ORKColor(ORKToolBarTintColorKey)];
-        }
-        
-        if ([[UIToolbar appearanceWhenContainedInInstancesOfClasses:@[[ORKTaskViewController class]]] barTintColor] == nil) {
-            [[UIToolbar appearanceWhenContainedInInstancesOfClasses:@[[ORKTaskViewController class]]] setBarTintColor:ORKColor(ORKToolBarTintColorKey)];
-        }
-    }
-}
 
 static NSString *const _PageViewControllerRestorationKey = @"pageViewController";
 static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigationController";
@@ -272,11 +256,6 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
     _managedStepIdentifiers = [NSMutableArray array];
     
     self.taskRunUUID = taskRunUUID ?: [NSUUID UUID];
-    
-    [self.childNavigationController.navigationBar setShadowImage:[UIImage new]];
-    self.hairline = [self findHairlineViewUnder:self.childNavigationController.navigationBar];
-    self.hairline.alpha = 0.0f;
-    self.childNavigationController.toolbar.clipsToBounds = YES;
     
     // Ensure taskRunUUID has non-nil valuetaskRunUUID
     (void)[self taskRunUUID];
@@ -697,21 +676,6 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
     }
 }
 
-- (UIImageView *)findHairlineViewUnder:(UIView *)view {
-    if ([view isKindOfClass:UIImageView.class] && view.bounds.size.height <= 1.0) {
-        return (UIImageView *)view;
-    }
-    
-    for (UIView *subview in view.subviews) {
-        UIImageView *imageView = [self findHairlineViewUnder:subview];
-        if (imageView) {
-            return imageView;
-        }
-    }
-    
-    return nil;
-}
-
 - (NSArray *)managedResults {
     NSMutableArray *results = [NSMutableArray new];
     
@@ -816,18 +780,10 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
 - (void)setRegisteredScrollView:(UIScrollView *)registeredScrollView {
     if (_registeredScrollView != registeredScrollView) {
         
-        // Clear harline
-        self.hairline.alpha = 0.0;
-        
         _registeredScrollView = registeredScrollView;
         
         // Stop old observer
         _scrollViewObserver = nil;
-        
-        // Start new observer
-        if (_registeredScrollView) {
-            _scrollViewObserver = [[ORKScrollViewObserver alloc] initWithTargetView:_registeredScrollView delegate:self];
-        }
     }
 }
 
@@ -957,7 +913,6 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
     
     ORK_Log_Debug(@"%@ %@", self, viewController);
     
-    // Stop monitor old scrollView, reset hairline's alpha to 0;
     self.registeredScrollView = nil;
     
     // Switch to non-animated transition if the application is not in the foreground.
@@ -1041,12 +996,6 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
             _pageViewController.navigationItem.rightBarButtonItem = viewController.navigationItem.rightBarButtonItem;
         }
     }
-}
-
-- (void)observedScrollViewDidScroll:(UIScrollView *)scrollView {
-    // alpha's range [0.0, 1.0]
-    float alpha = MAX( MIN(scrollView.contentOffset.y / 64.0, 1.0), 0.0);
-    self.hairline.alpha = alpha;
 }
 
 - (NSArray<ORKStep *> *)stepsForReviewStep:(ORKReviewStep *)reviewStep {

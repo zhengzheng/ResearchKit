@@ -110,7 +110,6 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
     [super viewDidLoad];
 
     self.view.backgroundColor = ORKColor(ORKBackgroundColorKey);
-    [self.taskViewController.navigationBar setBarTintColor:[self.view backgroundColor]];
     if ([self step].title) {
         self.title = [self step].title;
     } else {
@@ -295,7 +294,6 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
     [super viewWillAppear:animated];
     ORK_Log_Debug(@"%@", self);
     
-    [self.taskViewController.navigationBar setBackgroundColor:ORKColor(ORKBackgroundColorKey)];
     
     // Required here (instead of viewDidLoad) because any custom buttons are set once the delegate responds to the stepViewControllerWillAppear,
     // otherwise there is a minor visual glitch, where the original buttons are displayed on the UI for a short period. This is not placed after
