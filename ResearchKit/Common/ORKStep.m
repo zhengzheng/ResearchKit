@@ -55,6 +55,7 @@
     if (self) {
         ORKThrowInvalidArgumentExceptionIfNil(identifier);
         _identifier = [identifier copy];
+        self.showsProgress = YES;
     }
     return self;
 }

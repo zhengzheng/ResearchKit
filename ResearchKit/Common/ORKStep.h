@@ -196,6 +196,8 @@ ORK_CLASS_AVAILABLE
 
 //pariece
 
+@property (nonatomic) BOOL showsProgress;
+
 @property (nonatomic) BOOL hideProgress;
 
 - (void)validateParameters;
