@@ -161,77 +161,6 @@ static void *_ORKViewControllerToolbarObserverContext = &_ORKViewControllerToolb
 @end
 
 
-@interface ORKPageViewController: UIPageViewController
-
-@property (nonatomic, copy, nullable) UITableView * tableView;
-
-@end
-
-@implementation ORKPageViewController {
-    NSArray<NSLayoutConstraint *> *_constraints;
-}
-
-- (instancetype)init {
-    self = [super initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll
-                    navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
-                                  options:nil];
-    if (self) {
-        [self setupTableView];
-        [self setupConstraints];
-    }
-    return self;
-}
-
-- (void)setupTableView {
-    if (!_tableView) {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
-    }
-    _tableView.userInteractionEnabled = NO;
-    [self.tableView setBackgroundColor:[UIColor clearColor]];
-    [self.view insertSubview:_tableView atIndex:0];
-}
-
-- (void)setupConstraints {
-    _tableView.translatesAutoresizingMaskIntoConstraints = NO;
-    if (_constraints) {
-        [NSLayoutConstraint deactivateConstraints:_constraints];
-    }
-    _constraints = @[
-                     [NSLayoutConstraint constraintWithItem:_tableView
-                                                  attribute:NSLayoutAttributeTop
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:self.view
-                                                  attribute:NSLayoutAttributeTop
-                                                 multiplier:1.0
-                                                   constant:0.0],
-                     [NSLayoutConstraint constraintWithItem:_tableView
-                                                  attribute:NSLayoutAttributeLeft
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:self.view
-                                                  attribute:NSLayoutAttributeLeft
-                                                 multiplier:1.0
-                                                   constant:0.0],
-                     [NSLayoutConstraint constraintWithItem:_tableView
-                                                  attribute:NSLayoutAttributeRight
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:self.view
-                                                  attribute:NSLayoutAttributeRight
-                                                 multiplier:1.0
-                                                   constant:0.0],
-                     [NSLayoutConstraint constraintWithItem:_tableView
-                                                  attribute:NSLayoutAttributeBottom
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:self.view
-                                                  attribute:NSLayoutAttributeBottom
-                                                 multiplier:1.0
-                                                   constant:100.0]
-                     ];
-    [NSLayoutConstraint activateConstraints:_constraints];
-}
-
-@end
-
-
 @interface ORKTaskViewController () <ORKViewControllerToolbarObserverDelegate, ORKScrollViewObserverDelegate> {
     NSMutableDictionary *_managedResults;
     NSMutableArray *_managedStepIdentifiers;
@@ -260,7 +189,7 @@ static void *_ORKViewControllerToolbarObserverContext = &_ORKViewControllerToolb
 @property (nonatomic, strong) UIImageView *hairline;
 
 @property (nonatomic, strong) UINavigationController *childNavigationController;
-@property (nonatomic, strong) ORKPageViewController *pageViewController;
+@property (nonatomic, strong) UIPageViewController *pageViewController;
 @property (nonatomic, strong) ORKStepViewController *currentStepViewController;
 
 @end
@@ -287,8 +216,10 @@ static void *_ORKViewControllerToolbarObserverContext = &_ORKViewControllerToolb
 static NSString *const _PageViewControllerRestorationKey = @"pageViewController";
 static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigationController";
 
-+ (ORKPageViewController *)pageViewController {
-    ORKPageViewController *pageViewController = [ORKPageViewController new];
++ (UIPageViewController *)pageViewController {
+    UIPageViewController *pageViewController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll
+                                                                               navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
+                                                                                             options:nil];
 
     if ([pageViewController respondsToSelector:@selector(edgesForExtendedLayout)]) {
         pageViewController.edgesForExtendedLayout = UIRectEdgeNone;
@@ -328,7 +259,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
 }
 
 - (instancetype)commonInitWithTask:(id<ORKTask>)task taskRunUUID:(NSUUID *)taskRunUUID {
-    ORKPageViewController *pageViewController = [[self class] pageViewController];
+    UIPageViewController *pageViewController = [[self class] pageViewController];
     self.childNavigationController = [[UINavigationController alloc] initWithRootViewController:pageViewController];
     
     _pageViewController = pageViewController;
@@ -1130,7 +1061,6 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
     // alpha's range [0.0, 1.0]
     float alpha = MAX( MIN(scrollView.contentOffset.y / 64.0, 1.0), 0.0);
     self.hairline.alpha = alpha;
-    _pageViewController.tableView.contentOffset = scrollView.contentOffset;
 }
 
 - (NSArray<ORKStep *> *)stepsForReviewStep:(ORKReviewStep *)reviewStep {
@@ -1590,7 +1520,7 @@ static NSString *const _ORKPresentedDate = @"presentedDate";
 - (void)applicationFinishedRestoringState {
     [super applicationFinishedRestoringState];
     
-    _pageViewController = (ORKPageViewController *)[self.childNavigationController viewControllers][0];
+    _pageViewController = (UIPageViewController *)[self.childNavigationController viewControllers][0];
 
     if (!_task) {
         @throw [NSException exceptionWithName:NSInternalInconsistencyException
@@ -1630,7 +1560,7 @@ static NSString *const _ORKPresentedDate = @"presentedDate";
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
     if ([identifierComponents.lastObject isEqualToString:_PageViewControllerRestorationKey]) {
-        ORKPageViewController *pageViewController = [self pageViewController];
+        UIPageViewController *pageViewController = [self pageViewController];
         pageViewController.restorationIdentifier = identifierComponents.lastObject;
         pageViewController.restorationClass = self;
         return pageViewController;
