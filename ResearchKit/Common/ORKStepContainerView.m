@@ -29,14 +29,9 @@
  */
 
 
-#import "ORKTitleLabel.h"
+#import "ORKStepContainerView.h"
 
+@implementation ORKStepContainerView
 
-@implementation ORKTitleLabel
-
-+ (UIFont *)defaultFont {
-    UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleLargeTitle];
-    return [UIFont systemFontOfSize:[[descriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue]];
-}
 
 @end

@@ -29,14 +29,13 @@
  */
 
 
-#import "ORKTitleLabel.h"
+@import UIKit;
 
 
-@implementation ORKTitleLabel
+NS_ASSUME_NONNULL_BEGIN
 
-+ (UIFont *)defaultFont {
-    UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleLargeTitle];
-    return [UIFont systemFontOfSize:[[descriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue]];
-}
+@interface ORKStepContainerView : UIScrollView
 
 @end
+
+NS_ASSUME_NONNULL_END

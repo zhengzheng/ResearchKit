@@ -557,6 +557,8 @@
 		BA6E1EB6209E9A3F00DA9D55 /* ORKPDFViewerStepView_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = BA6E1EB5209E9A3F00DA9D55 /* ORKPDFViewerStepView_Internal.h */; };
 		BA8078E3224A8D6E0013B554 /* ORKTitleLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = BA8078E1224A8D6E0013B554 /* ORKTitleLabel.h */; };
 		BA8078E4224A8D6E0013B554 /* ORKTitleLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = BA8078E2224A8D6E0013B554 /* ORKTitleLabel.m */; };
+		BA8078F3224AC8AA0013B554 /* ORKStepContainerView.h in Headers */ = {isa = PBXBuildFile; fileRef = BA8078F1224AC8AA0013B554 /* ORKStepContainerView.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		BA8078F4224AC8AA0013B554 /* ORKStepContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA8078F2224AC8AA0013B554 /* ORKStepContainerView.m */; };
 		BA87E26D20A79FA100B375A9 /* ORKRingView.h in Headers */ = {isa = PBXBuildFile; fileRef = BA87E26B20A79FA100B375A9 /* ORKRingView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BA87E26E20A79FA100B375A9 /* ORKRingView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA87E26C20A79FA100B375A9 /* ORKRingView.m */; };
 		BA95AA9620ACD07A00E7FF8E /* ORKAmslerGridStep.h in Headers */ = {isa = PBXBuildFile; fileRef = BA95AA9420ACD07A00E7FF8E /* ORKAmslerGridStep.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1330,6 +1332,8 @@
 		BA6E1EB5209E9A3F00DA9D55 /* ORKPDFViewerStepView_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKPDFViewerStepView_Internal.h; sourceTree = "<group>"; };
 		BA8078E1224A8D6E0013B554 /* ORKTitleLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKTitleLabel.h; sourceTree = "<group>"; };
 		BA8078E2224A8D6E0013B554 /* ORKTitleLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKTitleLabel.m; sourceTree = "<group>"; };
+		BA8078F1224AC8AA0013B554 /* ORKStepContainerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKStepContainerView.h; sourceTree = "<group>"; };
+		BA8078F2224AC8AA0013B554 /* ORKStepContainerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKStepContainerView.m; sourceTree = "<group>"; };
 		BA87E26B20A79FA100B375A9 /* ORKRingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKRingView.h; sourceTree = "<group>"; };
 		BA87E26C20A79FA100B375A9 /* ORKRingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKRingView.m; sourceTree = "<group>"; };
 		BA95AA9420ACD07A00E7FF8E /* ORKAmslerGridStep.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKAmslerGridStep.h; sourceTree = "<group>"; };
@@ -2340,6 +2344,8 @@
 				86C40BE11A8D7C5C00081FAC /* ORKVerticalContainerView.h */,
 				86C40BE21A8D7C5C00081FAC /* ORKVerticalContainerView.m */,
 				86C40BE31A8D7C5C00081FAC /* ORKVerticalContainerView_Internal.h */,
+				BA8078F1224AC8AA0013B554 /* ORKStepContainerView.h */,
+				BA8078F2224AC8AA0013B554 /* ORKStepContainerView.m */,
 				86B89AB91AB3BECC001626A4 /* ORKStepHeaderView.h */,
 				86B89ABA1AB3BECC001626A4 /* ORKStepHeaderView.m */,
 				86B89ABD1AB3BFDB001626A4 /* ORKStepHeaderView_Internal.h */,
@@ -3157,6 +3163,7 @@
 				BF1D43891D4905FC007EE90B /* ORKVideoInstructionStepViewController.h in Headers */,
 				CBD34A561BB1FB9000F204EA /* ORKLocationSelectionView.h in Headers */,
 				71BD9EA520969BE1007B436E /* ORKEnvironmentSPLMeterStep.h in Headers */,
+				BA8078F3224AC8AA0013B554 /* ORKStepContainerView.h in Headers */,
 				865EA1621AB8DF750037C68E /* ORKDateTimePicker.h in Headers */,
 				86C40DA01A8D7C5C00081FAC /* ORKSurveyAnswerCell.h in Headers */,
 				86C40D941A8D7C5C00081FAC /* ORKStepViewController.h in Headers */,
@@ -3787,6 +3794,7 @@
 				D42FEFB91AF7557000A124F8 /* ORKImageCaptureView.m in Sources */,
 				86C40C401A8D7C5C00081FAC /* ORKSpatialSpanMemoryContentView.m in Sources */,
 				BCB6E6671B7D535F000D5B34 /* ORKXAxisView.m in Sources */,
+				BA8078F4224AC8AA0013B554 /* ORKStepContainerView.m in Sources */,
 				71769E322088260B00A19914 /* ORKdBHLToneAudiometryOnboardingStepViewController.m in Sources */,
 				FF919A3C1E81AF1D005C2A1E /* ORKFileResult.m in Sources */,
 				147503BC1AEE807C004B17F3 /* ORKToneAudiometryStepViewController.m in Sources */,
