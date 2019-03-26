@@ -241,7 +241,13 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
 
 - (instancetype)commonInitWithTask:(id<ORKTask>)task taskRunUUID:(NSUUID *)taskRunUUID {
     UIPageViewController *pageViewController = [[self class] pageViewController];
-    self.childNavigationController = [[UINavigationController alloc] initWithRootViewController:pageViewController];
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:pageViewController];
+    [navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    [navigationController.navigationBar setShadowImage:[UIImage new]];
+    [navigationController.navigationBar setTranslucent:YES];
+    [navigationController.view setBackgroundColor:UIColor.clearColor];
+    self.childNavigationController = navigationController;
     
     _pageViewController = pageViewController;
     [self setTask: task];
