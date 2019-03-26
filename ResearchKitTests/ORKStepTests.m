@@ -32,6 +32,7 @@
 @import XCTest;
 @import ResearchKit;
 @import ResearchKit.Private;
+@import UIKit;
 
 @interface ORKStepTests : XCTestCase
 
@@ -159,6 +160,28 @@
     XCTAssertEqualObjects([pageStep stepWithIdentifier:@"step1"], step1);
     XCTAssertEqualObjects([pageStep stepWithIdentifier:@"step2"], step2);
     XCTAssertEqualObjects([pageStep stepWithIdentifier:@"step3"], step3);
+}
+
+- (void)testInstructionStep {
+    ORKInstructionStep *step = [[ORKInstructionStep alloc] initWithIdentifier:@"step"];
+    
+    [step setDetailText:@"DETAILS"];
+    NSAttributedString *attributeString = [[NSAttributedString alloc] initWithString:@"ATTRIBUTE"];
+    [step setAttributedDetailText:attributeString];
+    [step setFootnote:@"FOOTNOTE"];
+    
+    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"org.researchkit.ResearchKit"];
+    UIImage *image = [UIImage imageNamed:@"heartbeat" inBundle:bundle compatibleWithTraitCollection:nil];
+    [step setImage:image];
+    [step setAuxiliaryImage:image];
+    [step setIconImage:image];
+    
+    XCTAssert([step.detailText isEqualToString:@"DETAILS"]);
+    XCTAssertEqual(step.attributedDetailText, attributeString);
+    XCTAssert([step.footnote isEqualToString:@"FOOTNOTE"]);
+    XCTAssertEqual([step image], image);
+    XCTAssertEqual([step auxiliaryImage], image);
+    XCTAssertEqual([step iconImage], image);
 }
 
 - (void)testStep {
