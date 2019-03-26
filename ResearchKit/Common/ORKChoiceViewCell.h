@@ -34,15 +34,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class ORKSelectionTitleLabel;
-@class ORKSelectionSubTitleLabel;
-
 @interface ORKChoiceViewCell : UITableViewCell
-
-@property (nonatomic, strong, readonly) ORKSelectionTitleLabel *shortLabel;
-@property (nonatomic, strong, readonly) ORKSelectionSubTitleLabel *longLabel;
-
-+ (CGFloat)suggestedCellHeightForPrimaryText:(nullable NSString *)shortText primaryTextAttributedString: (nullable NSAttributedString *)primaryTextAttributedString detailText:(nullable NSString *)longText  detailTextAttributedString: (nullable NSAttributedString *)detailTextAttributedString inTableView:(nullable UITableView *)tableView;
 
 @property (nonatomic, assign, getter=isImmediateNavigation) BOOL immediateNavigation;
 
@@ -53,6 +45,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) bool isLastItem;
 
 @property (nonatomic) BOOL isFirstItemInSectionWithoutTitle;
+
+- (void)setPrimaryText:(NSString *)primaryText;
+- (void)setPrimaryAttributedText: (NSAttributedString *)primaryAttributedText;
+- (void)setDetailText:(NSString *)detailText;
+- (void)setDetailAttributedText:(NSAttributedString *)detailAttributedText;
 
 @end
 

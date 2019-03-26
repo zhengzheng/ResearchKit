@@ -176,6 +176,14 @@ static NSDictionary *dictionaryFromCircularRegion(CLCircularRegion *region) {
     return dictionary;
 }
 
+static NSDictionary *dictionaryFromPostalAddress(CNPostalAddress *address) {
+   return @{ @"city": address.city, @"street": address.street };
+}
+
+static NSString *identifierFromClinicalType(HKClinicalType *type) {
+    return type.identifier;
+}
+
 static CLCircularRegion *circularRegionFromDictionary(NSDictionary *dict) {
     CLCircularRegion *circularRegion;
     if (dict.count == 3) {
@@ -277,10 +285,21 @@ static UITextInputPasswordRules *passwordRulesFromDictionary(NSDictionary *dict)
     return passwordRules;
 }
 
+static CNPostalAddress *postalAddressFromDictionary(NSDictionary *dict) {
+    CNMutablePostalAddress *postalAddress = [[CNMutablePostalAddress alloc] init];
+    postalAddress.city = dict[@"city"];
+    postalAddress.street = dict[@"street"];
+    return [postalAddress copy];
+}
+
+static HKClinicalType *typeFromIdentifier(NSString *identifier) {
+    return [HKClinicalType clinicalTypeForIdentifier:identifier];
+}
+
 static NSMutableDictionary *ORKESerializationEncodingTable(void);
-static id propFromDict(NSDictionary *dict, NSString *propName);
+static id propFromDict(NSDictionary *dict, NSString *propName, ORKESerializationLocalizer *localizer);
 static NSArray *classEncodingsForClass(Class c) ;
-static id objectForJsonObject(id input, Class expectedClass, ORKESerializationJSONToObjectBlock converterBlock) ;
+static id objectForJsonObject(id input, Class expectedClass, ORKESerializationJSONToObjectBlock converterBlock, ORKESerializationLocalizer *localizer) ;
 
 __unused static NSInteger const SerializationVersion = 1; // Will be used moving forward as we get additional versions
 
@@ -369,7 +388,7 @@ __unused static NSInteger const SerializationVersion = 1; // Will be used moving
 
 static NSString *_ClassKey = @"_class";
 
-static id propFromDict(NSDictionary *dict, NSString *propName) {
+static id propFromDict(NSDictionary *dict, NSString *propName, ORKESerializationLocalizer *localizer) {
     NSArray *classEncodings = classEncodingsForClass(NSClassFromString(dict[_ClassKey]));
     ORKESerializableProperty *propertyEntry = nil;
     for (ORKESerializableTableEntry *classEncoding in classEncodings) {
@@ -392,7 +411,7 @@ static id propFromDict(NSDictionary *dict, NSString *propName) {
         if ([containerClass isSubclassOfClass:[NSArray class]]) {
             NSMutableArray *outputArray = [NSMutableArray array];
             for (id value in DYNAMICCAST(input, NSArray)) {
-                id convertedValue = objectForJsonObject(value, propertyClass, converterBlock);
+                id convertedValue = objectForJsonObject(value, propertyClass, converterBlock, localizer);
                 NSCAssert(convertedValue != nil, @"Could not convert to object of class %@", propertyClass);
                 [outputArray addObject:convertedValue];
             }
@@ -400,7 +419,7 @@ static id propFromDict(NSDictionary *dict, NSString *propName) {
         } else if ([containerClass isSubclassOfClass:[NSDictionary class]]) {
             NSMutableDictionary *outputDictionary = [NSMutableDictionary dictionary];
             for (NSString *key in [DYNAMICCAST(input, NSDictionary) allKeys]) {
-                id convertedValue = objectForJsonObject(DYNAMICCAST(input, NSDictionary)[key], propertyClass, converterBlock);
+                id convertedValue = objectForJsonObject(DYNAMICCAST(input, NSDictionary)[key], propertyClass, converterBlock, nil);
                 NSCAssert(convertedValue != nil, @"Could not convert to object of class %@", propertyClass);
                 outputDictionary[key] = convertedValue;
             }
@@ -408,11 +427,24 @@ static id propFromDict(NSDictionary *dict, NSString *propName) {
         } else {
             NSCAssert(containerClass == [NSObject class], @"Unexpected container class %@", containerClass);
             
-            output = objectForJsonObject(input, propertyClass, converterBlock);
+            output = objectForJsonObject(input, propertyClass, converterBlock, localizer);
         }
     }
     return output;
 }
+
+@implementation ORKESerializationLocalizer
+
+- (instancetype)initWithBundle:(NSBundle *)bundle tableName:(NSString *)tableName {
+    self = [super init];
+    if (self) {
+        self.bundle = bundle;
+        self.tableName = tableName;
+    }
+    return self;
+}
+
+@end
 
 
 #define NUMTOSTRINGBLOCK(table) ^id(id num) { return table[((NSNumber *)num).unsignedIntegerValue]; }
@@ -759,6 +791,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                              ^id(id dict) { return [NSValue valueWithUIEdgeInsets:edgeInsetsFromDictionary(dict)]; }),
                     PROPERTY(accessibilityHint, NSString, NSObject, YES, nil, nil),
                     PROPERTY(accessibilityInstructions, NSString, NSObject, YES, nil, nil),
+                    PROPERTY(captureRaw, NSNumber, NSObject, YES, nil, nil)
                     })),
            ENTRY(ORKVideoCaptureStep,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
@@ -770,7 +803,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                              ^id(id dict) { return [NSValue valueWithUIEdgeInsets:edgeInsetsFromDictionary(dict)]; }),
                     PROPERTY(duration, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(audioMute, NSNumber, NSObject, YES, nil, nil),
-                    PROPERTY(flashMode, NSNumber, NSObject, YES, nil, nil),
+                    PROPERTY(torchMode, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(devicePosition, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(accessibilityHint, NSString, NSObject, YES, nil, nil),
                     PROPERTY(accessibilityInstructions, NSString, NSObject, YES, nil, nil),
@@ -1512,7 +1545,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     PROPERTY(timestamp, NSNumber, NSObject, NO, nil, nil),
                     PROPERTY(fileResult, ORKResult, NSObject, NO, nil, nil)
                     })),
-           ENTRY(ORKSpeechRecognitonResult,
+           ENTRY(ORKSpeechRecognitionResult,
                  nil,
                  (@{
                     })),
@@ -1669,11 +1702,13 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                      return [[ORKLocation alloc] initWithCoordinate:coordinate
                                                              region:GETPROP(dict, region)
                                                           userInput:GETPROP(dict, userInput)
-                                                  addressDictionary:GETPROP(dict, addressDictionary)];
+                                                      postalAddress:GETPROP(dict, postalAddress)];
                  },
                  (@{
                     PROPERTY(userInput, NSString, NSObject, NO, nil, nil),
-                    PROPERTY(addressDictionary, NSString, NSDictionary, NO, nil, nil),
+                    PROPERTY(postalAddress, CNPostalAddress, NSObject, NO,
+                             ^id(id value) { return dictionaryFromPostalAddress(value); },
+                             ^id(id dict) { return  postalAddressFromDictionary(dict); }),
                     PROPERTY(coordinate, NSValue, NSObject, NO,
                              ^id(id value) { return value ? dictionaryFromCoordinate(((NSValue *)value).MKCoordinateValue) : nil; },
                              ^id(id dict) { return [NSValue valueWithMKCoordinate:coordinateFromDictionary(dict)]; }),
@@ -1731,6 +1766,18 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     })),
            
            } mutableCopy];
+        if (@available(iOS 12.0, *)) {
+            [internalEncodingTable addEntriesFromDictionary:@{ ENTRY(ORKHealthClinicalTypeRecorderConfiguration,
+                                                                     ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
+                                                                         return [[ORKHealthClinicalTypeRecorderConfiguration alloc] initWithIdentifier:GETPROP(dict, identifier) healthClinicalType:GETPROP(dict, healthClinicalType) healthFHIRResourceType:GETPROP(dict, healthFHIRResourceType)];
+                                                                     },
+                                                                     (@{
+                                                                        PROPERTY(healthClinicalType, HKClinicalType, NSObject, NO,
+                                                                                 ^id(id type) { return identifierFromClinicalType(type); },
+                                                                                 ^id(id identifier) { return  typeFromIdentifier(identifier); }),
+                                                                        PROPERTY(healthFHIRResourceType, NSString, NSObject, NO, nil, nil),
+                                                                        })) }];
+        }
     });
     return internalEncodingTable;
 }
@@ -1752,15 +1799,24 @@ static NSArray *classEncodingsForClass(Class c) {
     return classEncodings;
 }
 
-static id objectForJsonObject(id input, Class expectedClass, ORKESerializationJSONToObjectBlock converterBlock) {
+static id objectForJsonObject(id input, Class expectedClass, ORKESerializationJSONToObjectBlock converterBlock, ORKESerializationLocalizer *localizer) {
     id output = nil;
+    
     if (converterBlock != nil) {
         input = converterBlock(input);
     }
     
     if (expectedClass != nil && [input isKindOfClass:expectedClass]) {
         // Input is already of the expected class, do nothing
-        output = input;
+        
+        // Edge case for ORKAnswerFormat options. Certain formats (e.g. ORKTextChoiceAnswerFormat) contain
+        // text strings (e.g. 'Yes', 'No') that need to be localized but are already of the expected type.
+        if ([input isKindOfClass:[NSString class]] && localizer != nil) {
+            NSString *localizedValue = NSLocalizedStringFromTableInBundle((NSString *)input, localizer.tableName, localizer.bundle, nil);
+            output = localizedValue;
+        } else {
+            output = input;
+        }
     } else if ([input isKindOfClass:[NSDictionary class]]) {
         NSDictionary *dict = (NSDictionary *)input;
         NSString *className = input[_ClassKey];
@@ -1776,7 +1832,7 @@ static id objectForJsonObject(id input, Class expectedClass, ORKESerializationJS
         if (initBlock != nil) {
             output = initBlock(dict,
                                ^id(NSDictionary *propDict, NSString *param) {
-                                   return propFromDict(propDict, param); });
+                                   return propFromDict(propDict, param, localizer); });
             writeAllProperties = NO;
         } else {
             output = [[NSClassFromString(className) alloc] init];
@@ -1794,7 +1850,18 @@ static id objectForJsonObject(id input, Class expectedClass, ORKESerializationJS
                 if (propertyEntry != nil) {
                     // Only write the property if it has not already been set during init
                     if (writeAllProperties || propertyEntry.writeAfterInit) {
-                        [output setValue:propFromDict(dict,key) forKey:key];
+                        id property = propFromDict(dict, key, localizer);
+                        if ((localizer != nil) && ([property isKindOfClass: [NSString class]])) {
+                            // Keys that exist in the localization table will be localized.
+                            //
+                            // If the key is not found in the table the provided key string will be returned as is,
+                            // supporting the expected functionality for inputs that contain both strings to be
+                            // localized as well as strings to be displayed as is.
+                            NSString *localizedValue = NSLocalizedStringFromTableInBundle((NSString *)property, localizer.tableName, localizer.bundle, nil);
+                            [output setValue:localizedValue forKey:key];
+                        } else {
+                            [output setValue:property forKey:key];
+                        }
                     }
                     haveSetProp = YES;
                     break;
@@ -1899,7 +1966,11 @@ static id jsonObjectForObject(id object) {
 }
 
 + (id)objectFromJSONObject:(NSDictionary *)object error:(__unused NSError * __autoreleasing *)error {
-    return objectForJsonObject(object, nil, nil);
+    return objectForJsonObject(object, nil, nil, nil);
+}
+
++ (id)objectFromJSONObject:(NSDictionary *)object localizer:(ORKESerializationLocalizer *)localizer error:(__unused NSError * __autoreleasing *)error {
+    return objectForJsonObject(object, nil, nil, localizer);
 }
 
 + (NSData *)JSONDataForObject:(id)object error:(NSError * __autoreleasing *)error {
@@ -1911,7 +1982,7 @@ static id jsonObjectForObject(id object) {
     id json = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions)0 error:error];
     id ret = nil;
     if (json != nil) {
-        ret = objectForJsonObject(json, nil, nil);
+        ret = objectForJsonObject(json, nil, nil, nil);
     }
     return ret;
 }
