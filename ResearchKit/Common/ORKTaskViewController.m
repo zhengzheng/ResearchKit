@@ -205,9 +205,6 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
                                                                                navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
                                                                                              options:nil];
 
-    if ([pageViewController respondsToSelector:@selector(edgesForExtendedLayout)]) {
-        pageViewController.edgesForExtendedLayout = UIRectEdgeNone;
-    }
     pageViewController.restorationIdentifier = _PageViewControllerRestorationKey;
     pageViewController.restorationClass = self;
     
