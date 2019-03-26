@@ -263,7 +263,6 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
     self.childNavigationController = [[UINavigationController alloc] initWithRootViewController:pageViewController];
     
     _pageViewController = pageViewController;
-    [_pageViewController.navigationController.navigationBar setPrefersLargeTitles:YES];
     [self setTask: task];
     
     self.showsProgressInNavigationBar = YES;
@@ -1037,19 +1036,6 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
         _pageViewController.navigationItem.leftBarButtonItem = viewController.navigationItem.leftBarButtonItem;
         if (!ORKNeedWideScreenDesign(self.view)) {
             _pageViewController.navigationItem.title = viewController.navigationItem.title;
-            _pageViewController.navigationItem.titleView = viewController.navigationItem.titleView;
-            CGFloat maxWidth = UIScreen.mainScreen.bounds.size.width - 40;
-            CGFloat fontSize = [UIFont preferredFontForTextStyle:UIFontTextStyleLargeTitle].pointSize;
-            CGFloat width = [_pageViewController.navigationItem.title sizeWithAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:fontSize]}].width;
-            while (width > maxWidth) {
-                fontSize -= 1;
-                // adhering to iPhone Typography Guidelines
-                if (fontSize <= 17) {
-                    break;
-                }
-                width = [_pageViewController.navigationItem.title sizeWithAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:fontSize]}].width;
-            }
-            _pageViewController.navigationController.navigationBar.largeTitleTextAttributes = @{NSFontAttributeName : [UIFont boldSystemFontOfSize:fontSize]};
         }
         if (![self shouldDisplayProgressLabel]) {
             _pageViewController.navigationItem.rightBarButtonItem = viewController.navigationItem.rightBarButtonItem;
