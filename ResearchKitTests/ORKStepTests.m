@@ -31,6 +31,7 @@
 
 @import XCTest;
 @import ResearchKit.Private;
+@import UIKit;
 
 
 @interface ORKStepTests : XCTestCase
@@ -168,16 +169,19 @@
     NSAttributedString *attributeString = [[NSAttributedString alloc] initWithString:@"ATTRIBUTE"];
     [step setAttributedDetailText:attributeString];
     [step setFootnote:@"FOOTNOTE"];
-    [step setImage:NULL];
-    [step setAuxiliaryImage:NULL];
-    [step setIconImage:NULL];
+    
+    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"org.researchkit.ResearchKit"];
+    UIImage *image = [UIImage imageNamed:@"heartbeat" inBundle:bundle compatibleWithTraitCollection:nil];
+    [step setImage:image];
+    [step setAuxiliaryImage:image];
+    [step setIconImage:image];
     
     XCTAssert([step.detailText isEqualToString:@"DETAILS"]);
     XCTAssertEqual(step.attributedDetailText, attributeString);
     XCTAssert([step.footnote isEqualToString:@"FOOTNOTE"]);
-    XCTAssertNil(step.image);
-    XCTAssertNil(step.auxiliaryImage);
-    XCTAssertNil(step.iconImage);
+    XCTAssertEqual([step image], image);
+    XCTAssertEqual([step auxiliaryImage], image);
+    XCTAssertEqual([step iconImage], image);
 }
 
 @end
