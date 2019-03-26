@@ -71,7 +71,8 @@ class OnboardingViewController: ORKTaskViewController, ORKTaskViewControllerDele
             NSLocalizedString("ONBOARDING_WELCOME_EXPECTATIONS_STUDY_OWNER", comment: "") as NSString
         ]
         whatToExpectStep.bulletIconNames = ["phone", "calendar", "share"]
-        whatToExpectStep.isBulleted = true
+        //whatToExpectStep.isBulleted = true
+        whatToExpectStep.bulletType = .numbers
         
         // Requirements
         let requirementsStep = ORKTableStep(identifier: "requirementsStep")
