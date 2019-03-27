@@ -32,6 +32,8 @@
 #import "ORKStepContainerView.h"
 #import "ORKTitleLabel.h"
 
+#import "ORKSkin.h"
+
 
 @implementation ORKStepContainerView {
     
@@ -86,7 +88,6 @@
     if (!_scrollableContainerView) {
         _scrollableContainerView = [[UIScrollView alloc] init];
     }
-    [_scrollableContainerView setBackgroundColor:UIColor.greenColor];
     [self addSubview:_scrollableContainerView];
 }
 
@@ -99,6 +100,7 @@
 }
 
 - (NSArray<NSLayoutConstraint *> *)scrollableContainerStaticConstraints {
+    CGFloat leftRightPadding = ORKStepContainerLeftRightPaddingForWindow(self.window);
     return @[
              [NSLayoutConstraint constraintWithItem:_scrollableContainerView
                                           attribute:NSLayoutAttributeLeft
@@ -106,14 +108,14 @@
                                              toItem:self
                                           attribute:NSLayoutAttributeLeft
                                          multiplier:1.0
-                                           constant:0.0],
+                                           constant:leftRightPadding],
              [NSLayoutConstraint constraintWithItem:_scrollableContainerView
                                           attribute:NSLayoutAttributeRight
                                           relatedBy:NSLayoutRelationEqual
                                              toItem:self
                                           attribute:NSLayoutAttributeRight
                                          multiplier:1.0
-                                           constant:0.0],
+                                           constant:-leftRightPadding],
              [NSLayoutConstraint constraintWithItem:_scrollableContainerView
                                           attribute:NSLayoutAttributeCenterX
                                           relatedBy:NSLayoutRelationEqual
@@ -138,7 +140,7 @@
                                                                         toItem:_topContentImageView ? : self
                                                                      attribute:_topContentImageView ? NSLayoutAttributeBottom : NSLayoutAttributeTop
                                                                     multiplier:1.0
-                                                                      constant:0.0];
+                                                                      constant:_topContentImageView ? 0.0 : ORKStepContainerTopPaddingForWindow(self.window)];
 }
 
 - (void)updateScrollableContainerTopConstraint {
@@ -178,7 +180,7 @@
                                                                         toItem:nil
                                                                      attribute:NSLayoutAttributeNotAnAttribute
                                                                     multiplier:1.0
-                                                                      constant:200.0]
+                                                                      constant:ORKStepContainerTopContentHeightForWindow(self.window)]
                                         ];
 }
 

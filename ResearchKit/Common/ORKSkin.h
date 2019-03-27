@@ -211,5 +211,8 @@ BOOL ORKNeedWideScreenDesign(UIView *view);
 
 void ORKUpdateScrollViewBottomInset(UIScrollView *scrollView, CGFloat bottomInset);
 
+CGFloat ORKStepContainerLeftRightPaddingForWindow(UIWindow *window);
+CGFloat ORKStepContainerTopPaddingForWindow(UIWindow *window);
+CGFloat ORKStepContainerTopContentHeightForWindow(UIWindow *window);
 
 NS_ASSUME_NONNULL_END

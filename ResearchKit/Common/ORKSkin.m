@@ -64,6 +64,22 @@ CGFloat ORKiPadBackgroundViewCornerRadius = 20.0;
 CGFloat ORKiPadBackgroundViewBottomPadding = 50.0;
 CGFloat ORKiPadBackgroundViewLeftRightPadding = 115.0;
 
+CGFloat ORKStepContainerLeftRightMarginForXSMax = 44.0;
+CGFloat ORKStepContainerLeftRightMarginForXS = 24.0;
+CGFloat ORKStepContainerLeftRightMarginFor7Plus = 44.0;
+CGFloat ORKStepContainerLeftRightMarginFor7 = 24.0;
+CGFloat ORKStepContainerLeftRightMarginForSE = 16.0;
+CGFloat ORKStepContainerLeftRightMarginForDefault = 24.0;
+
+CGFloat ORKStepContainerTopMarginForXSMax = 44.0;
+CGFloat ORKStepContainerTopMarginForXS = 44.0;
+CGFloat ORKStepContainerTopMarginFor7Plus = 20.0;
+CGFloat ORKStepContainerTopMarginFor7 = 20.0;
+CGFloat ORKStepContainerTopMarginForSE = 20.0;
+CGFloat ORKStepContainerTopMarginForDefault = 20.0;
+
+CGFloat ORKStepContainerTopContentHeightPercentage = 36.0;
+
 @implementation UIColor (ORKColor)
 
 #define ORKCachedColorMethod(m, r, g, b, a) \
@@ -398,4 +414,60 @@ void ORKUpdateScrollViewBottomInset(UIScrollView *scrollView, CGFloat bottomInse
         
         scrollView.contentOffset = savedOffset;
     }
+}
+
+CGFloat ORKStepContainerLeftRightPaddingForWindow(UIWindow *window) {
+    CGFloat margin = 0;
+    switch (ORKGetHorizontalScreenTypeForWindow(window)) {
+        case ORKScreenTypeiPhoneXSMax:
+            margin = ORKStepContainerLeftRightMarginForXSMax;
+            break;
+        case ORKScreenTypeiPhoneX:
+            margin = ORKStepContainerLeftRightMarginForXS;
+            break;
+        case ORKScreenTypeiPhone6Plus:
+            margin = ORKStepContainerLeftRightMarginFor7Plus;
+            break;
+        case ORKScreenTypeiPhone6:
+            margin = ORKStepContainerLeftRightMarginFor7;
+            break;
+        case ORKScreenTypeiPhone5:
+            margin = ORKStepContainerLeftRightMarginForSE;
+            break;
+        default:
+            margin = ORKStepContainerLeftRightMarginForDefault;
+            break;
+    }
+    return margin;
+}
+
+CGFloat ORKStepContainerTopPaddingForWindow(UIWindow *window) {
+    CGFloat margin = 0;
+    switch (ORKGetHorizontalScreenTypeForWindow(window)) {
+        case ORKScreenTypeiPhoneXSMax:
+            margin = ORKStepContainerTopMarginForXSMax;
+            break;
+        case ORKScreenTypeiPhoneX:
+            margin = ORKStepContainerTopMarginForXS;
+            break;
+        case ORKScreenTypeiPhone6Plus:
+            margin = ORKStepContainerTopMarginFor7Plus;
+            break;
+        case ORKScreenTypeiPhone6:
+            margin = ORKStepContainerTopMarginFor7;
+            break;
+        case ORKScreenTypeiPhone5:
+            margin = ORKStepContainerTopMarginForSE;
+            break;
+        default:
+            margin = ORKStepContainerTopMarginForDefault;
+            break;
+    }
+    return margin;
+}
+
+CGFloat ORKStepContainerTopContentHeightForWindow(UIWindow *window) {
+    window = ORKDefaultWindowIfWindowIsNil(window);
+    const CGSize windowSize = window.bounds.size;
+    return ceil((ORKStepContainerTopContentHeightPercentage / 100.0) * windowSize.height);
 }
