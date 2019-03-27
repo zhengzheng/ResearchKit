@@ -295,10 +295,6 @@ static const CGFloat TextViewHeight = 100.0;
 - (void)updateSelectedItem {
     if (_immediateNavigation == NO) {
         self.accessoryView.hidden = self.isCellSelected ? NO : YES;
-        if (self.isCellSelected) {
-            _primaryLabel.textColor = [self tintColor];
-            _detailLabel.textColor = [[self tintColor] colorWithAlphaComponent:192.0 / 255.0];
-        }
     }
 }
 
