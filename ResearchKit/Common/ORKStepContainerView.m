@@ -37,14 +37,14 @@
 
 @implementation ORKStepContainerView {
     
-    UIView *_scrollableContainerView;
-    UIView *_staticContainerView;
+    UIScrollView *_scrollView;
+    UIView *_scrollContainerView;
     
     ORKTitleLabel *_titleLabel;
     UIImageView *_topContentImageView;
     
 //    variable constraints:
-    NSLayoutConstraint *_scrollableContainerTopConstraint;
+    NSLayoutConstraint *_scrollViewTopConstraint;
     NSArray<NSLayoutConstraint *> *_topContentImageViewConstraints;
     NSMutableArray<NSLayoutConstraint *> *_updatedConstraints;
 }
@@ -52,7 +52,8 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        [self setupScrollableContainerView];
+        [self setupScrollView];
+        [self setupScrollContainerView];
         [self setupConstraints];
         [self setupUpdatedConstraints];
     }
@@ -68,7 +69,7 @@
         [_topContentImageView removeFromSuperview];
         _topContentImageView = nil;
         [self deactivateTopContentImageViewConstraints];
-        [self updateScrollableContainerTopConstraint];
+        [self updateScrollViewTopConstraint];
         [self setNeedsUpdateConstraints];
     }
     
@@ -76,7 +77,7 @@
     if (stepTopContentImage && !_topContentImageView) {
         [self setupTopContentImageView];
         _topContentImageView.image = stepTopContentImage;
-        [self updateScrollableContainerTopConstraint];
+        [self updateScrollViewTopConstraint];
         [self setNeedsUpdateConstraints];
     }
     
@@ -94,11 +95,18 @@
     [_titleLabel setText:stepTitle];
 }
 
-- (void)setupScrollableContainerView {
-    if (!_scrollableContainerView) {
-        _scrollableContainerView = [[UIScrollView alloc] init];
+- (void)setupScrollView {
+    if (!_scrollView) {
+        _scrollView = [[UIScrollView alloc] init];
     }
-    [self addSubview:_scrollableContainerView];
+    [self addSubview:_scrollView];
+}
+
+- (void)setupScrollContainerView {
+    if (!_scrollContainerView) {
+        _scrollContainerView = [UIView new];
+    }
+    [_scrollView addSubview:_scrollContainerView];
 }
 
 - (void)setupUpdatedConstraints {
@@ -117,7 +125,7 @@
     if (!_titleLabel) {
         _titleLabel = [ORKTitleLabel new];
     }
-    [_scrollableContainerView addSubview:_titleLabel];
+    [_scrollContainerView addSubview:_titleLabel];
     [self setupTitleLabelConstraints];
 }
 
@@ -127,64 +135,111 @@
                                                [NSLayoutConstraint constraintWithItem:_titleLabel
                                                                             attribute:NSLayoutAttributeTop
                                                                             relatedBy:NSLayoutRelationEqual
-                                                                               toItem:_scrollableContainerView
+                                                                               toItem:_scrollView
                                                                             attribute:NSLayoutAttributeTop
                                                                            multiplier:1.0
                                                                              constant:ORKStepContainerTitleLabelTopPaddingForWindow(self.window)],
                                                [NSLayoutConstraint constraintWithItem:_titleLabel
                                                                             attribute:NSLayoutAttributeCenterX
                                                                             relatedBy:NSLayoutRelationEqual
-                                                                               toItem:_scrollableContainerView
+                                                                               toItem:_scrollView
                                                                             attribute:NSLayoutAttributeCenterX
                                                                            multiplier:1.0
                                                                              constant:0.0],
                                                [NSLayoutConstraint constraintWithItem:_titleLabel
                                                                             attribute:NSLayoutAttributeWidth
                                                                             relatedBy:NSLayoutRelationEqual
-                                                                               toItem:_scrollableContainerView
+                                                                               toItem:_scrollView
                                                                             attribute:NSLayoutAttributeWidth
+                                                                           multiplier:1.0
+                                                                             constant:0.0],
+                                               [NSLayoutConstraint constraintWithItem:_titleLabel
+                                                                            attribute:NSLayoutAttributeHeight
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:nil
+                                                                            attribute:NSLayoutAttributeNotAnAttribute
+                                                                           multiplier:1.0
+                                                                             constant:1000.0],
+                                               [NSLayoutConstraint constraintWithItem:_scrollContainerView
+                                                                            attribute:NSLayoutAttributeBottom
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:_titleLabel
+                                                                            attribute:NSLayoutAttributeBottom
                                                                            multiplier:1.0
                                                                              constant:0.0]
                                                ]];
     [self setNeedsUpdateConstraints];
 }
 
-- (NSArray<NSLayoutConstraint *> *)scrollableContainerStaticConstraints {
+- (NSArray<NSLayoutConstraint *> *)scrollViewStaticConstraints {
     CGFloat leftRightPadding = ORKStepContainerLeftRightPaddingForWindow(self.window);
     return @[
-             [NSLayoutConstraint constraintWithItem:_scrollableContainerView
+             [NSLayoutConstraint constraintWithItem:_scrollView
                                           attribute:NSLayoutAttributeLeft
                                           relatedBy:NSLayoutRelationEqual
                                              toItem:self
                                           attribute:NSLayoutAttributeLeft
                                          multiplier:1.0
                                            constant:leftRightPadding],
-             [NSLayoutConstraint constraintWithItem:_scrollableContainerView
+             [NSLayoutConstraint constraintWithItem:_scrollView
                                           attribute:NSLayoutAttributeRight
                                           relatedBy:NSLayoutRelationEqual
                                              toItem:self
                                           attribute:NSLayoutAttributeRight
                                          multiplier:1.0
                                            constant:-leftRightPadding],
-             [NSLayoutConstraint constraintWithItem:_scrollableContainerView
-                                          attribute:NSLayoutAttributeCenterX
+             [NSLayoutConstraint constraintWithItem:_scrollView
+                                          attribute:NSLayoutAttributeBottom
                                           relatedBy:NSLayoutRelationEqual
                                              toItem:self
-                                          attribute:NSLayoutAttributeCenterX
-                                         multiplier:1.0
-                                           constant:0.0],
-             [NSLayoutConstraint constraintWithItem:_scrollableContainerView
-                                          attribute:NSLayoutAttributeHeight
-                                          relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                             toItem:self
-                                          attribute:NSLayoutAttributeHeight
+                                          attribute:NSLayoutAttributeBottom
                                          multiplier:1.0
                                            constant:0.0]
              ];
 }
 
-- (void)setScrollableContainerTopConstraint {
-    _scrollableContainerTopConstraint = [NSLayoutConstraint constraintWithItem:_scrollableContainerView
+- (NSArray<NSLayoutConstraint *> *)scrollContainerStaticConstraints {
+    return @[
+             [NSLayoutConstraint constraintWithItem:_scrollContainerView
+                                          attribute:NSLayoutAttributeTop
+                                          relatedBy:NSLayoutRelationEqual
+                                             toItem:_scrollView
+                                          attribute:NSLayoutAttributeTop
+                                         multiplier:1.0
+                                           constant:0.0],
+             [NSLayoutConstraint constraintWithItem:_scrollContainerView
+                                          attribute:NSLayoutAttributeLeft
+                                          relatedBy:NSLayoutRelationEqual
+                                             toItem:_scrollView
+                                          attribute:NSLayoutAttributeLeft
+                                         multiplier:1.0
+                                           constant:0.0],
+             [NSLayoutConstraint constraintWithItem:_scrollContainerView
+                                          attribute:NSLayoutAttributeRight
+                                          relatedBy:NSLayoutRelationEqual
+                                             toItem:_scrollView
+                                          attribute:NSLayoutAttributeRight
+                                         multiplier:1.0
+                                           constant:0.0],
+             [NSLayoutConstraint constraintWithItem:_scrollContainerView
+                                          attribute:NSLayoutAttributeBottom
+                                          relatedBy:NSLayoutRelationEqual
+                                             toItem:_scrollView
+                                          attribute:NSLayoutAttributeBottom
+                                         multiplier:1.0
+                                           constant:0.0],
+             [NSLayoutConstraint constraintWithItem:_scrollContainerView
+                                          attribute:NSLayoutAttributeCenterX
+                                          relatedBy:NSLayoutRelationEqual
+                                             toItem:_scrollView
+                                          attribute:NSLayoutAttributeCenterX
+                                         multiplier:1.0
+                                           constant:0.0]
+             ];
+}
+
+- (void)setScrollViewTopConstraint {
+    _scrollViewTopConstraint = [NSLayoutConstraint constraintWithItem:_scrollView
                                                                      attribute:NSLayoutAttributeTop
                                                                      relatedBy:NSLayoutRelationEqual
                                                                         toItem:_topContentImageView ? : self
@@ -193,11 +248,11 @@
                                                                       constant:_topContentImageView ? 0.0 : ORKStepContainerTopPaddingForWindow(self.window)];
 }
 
-- (void)updateScrollableContainerTopConstraint {
-    if (_scrollableContainerTopConstraint) {
-        [NSLayoutConstraint deactivateConstraints:@[_scrollableContainerTopConstraint]];
+- (void)updateScrollViewTopConstraint {
+    if (_scrollViewTopConstraint) {
+        [NSLayoutConstraint deactivateConstraints:@[_scrollViewTopConstraint]];
     }
-    [self setScrollableContainerTopConstraint];
+    [self setScrollViewTopConstraint];
 }
 
 - (void)setTopContentImageViewConstraints {
@@ -242,12 +297,14 @@
 }
 
 - (void)setupConstraints {
-    _scrollableContainerView.translatesAutoresizingMaskIntoConstraints = NO;
+    _scrollView.translatesAutoresizingMaskIntoConstraints = NO;
+    _scrollContainerView.translatesAutoresizingMaskIntoConstraints = NO;
     
-    [self setScrollableContainerTopConstraint];
-    NSMutableArray<NSLayoutConstraint *> *scrollableContainerConstraints = [[NSMutableArray alloc] initWithArray:[self scrollableContainerStaticConstraints]];
-    [scrollableContainerConstraints addObject:_scrollableContainerTopConstraint];
-    [NSLayoutConstraint activateConstraints:scrollableContainerConstraints];
+    [self setScrollViewTopConstraint];
+    NSMutableArray<NSLayoutConstraint *> *staticConstraints = [[NSMutableArray alloc] initWithArray:[self scrollViewStaticConstraints]];
+    [staticConstraints addObject:_scrollViewTopConstraint];
+    [staticConstraints addObjectsFromArray:[self scrollContainerStaticConstraints]];
+    [NSLayoutConstraint activateConstraints:staticConstraints];
 }
 
 - (void)updateContainerConstraints {
@@ -255,7 +312,7 @@
     if (_topContentImageViewConstraints) {
         [_updatedConstraints addObjectsFromArray:_topContentImageViewConstraints];
     }
-    [_updatedConstraints addObject:_scrollableContainerTopConstraint];
+    [_updatedConstraints addObject:_scrollViewTopConstraint];
     [NSLayoutConstraint activateConstraints:_updatedConstraints];
     [_updatedConstraints removeAllObjects];
 }
