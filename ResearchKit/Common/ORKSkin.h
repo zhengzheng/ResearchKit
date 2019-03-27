@@ -214,5 +214,8 @@ void ORKUpdateScrollViewBottomInset(UIScrollView *scrollView, CGFloat bottomInse
 CGFloat ORKStepContainerLeftRightPaddingForWindow(UIWindow *window);
 CGFloat ORKStepContainerTopPaddingForWindow(UIWindow *window);
 CGFloat ORKStepContainerTopContentHeightForWindow(UIWindow *window);
+CGFloat ORKStepContainerTitleLabelTopPaddingForWindow(UIWindow *window);
+
+UIFontTextStyle ORKTitleLabelFontTextStyleForWindow(UIWindow *window);
 
 NS_ASSUME_NONNULL_END

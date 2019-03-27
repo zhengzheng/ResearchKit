@@ -46,6 +46,7 @@
 //    variable constraints:
     NSLayoutConstraint *_scrollableContainerTopConstraint;
     NSArray<NSLayoutConstraint *> *_topContentImageViewConstraints;
+    NSMutableArray<NSLayoutConstraint *> *_updatedConstraints;
 }
 
 - (instancetype)init {
@@ -53,6 +54,7 @@
     if (self) {
         [self setupScrollableContainerView];
         [self setupConstraints];
+        [self setupUpdatedConstraints];
     }
     return self;
 }
@@ -84,11 +86,23 @@
     }
 }
 
+- (void)setStepTitle:(NSString *)stepTitle {
+    _stepTitle = stepTitle;
+    if (!_titleLabel) {
+        [self setupTitleLabel];
+    }
+    [_titleLabel setText:stepTitle];
+}
+
 - (void)setupScrollableContainerView {
     if (!_scrollableContainerView) {
         _scrollableContainerView = [[UIScrollView alloc] init];
     }
     [self addSubview:_scrollableContainerView];
+}
+
+- (void)setupUpdatedConstraints {
+    _updatedConstraints = [[NSMutableArray alloc] init];
 }
 
 - (void)setupTopContentImageView {
@@ -97,6 +111,42 @@
     }
     [self addSubview:_topContentImageView];
     [self setTopContentImageViewConstraints];
+}
+
+- (void)setupTitleLabel {
+    if (!_titleLabel) {
+        _titleLabel = [ORKTitleLabel new];
+    }
+    [_scrollableContainerView addSubview:_titleLabel];
+    [self setupTitleLabelConstraints];
+}
+
+- (void)setupTitleLabelConstraints {
+    _titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [_updatedConstraints addObjectsFromArray:@[
+                                               [NSLayoutConstraint constraintWithItem:_titleLabel
+                                                                            attribute:NSLayoutAttributeTop
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:_scrollableContainerView
+                                                                            attribute:NSLayoutAttributeTop
+                                                                           multiplier:1.0
+                                                                             constant:ORKStepContainerTitleLabelTopPaddingForWindow(self.window)],
+                                               [NSLayoutConstraint constraintWithItem:_titleLabel
+                                                                            attribute:NSLayoutAttributeCenterX
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:_scrollableContainerView
+                                                                            attribute:NSLayoutAttributeCenterX
+                                                                           multiplier:1.0
+                                                                             constant:0.0],
+                                               [NSLayoutConstraint constraintWithItem:_titleLabel
+                                                                            attribute:NSLayoutAttributeWidth
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:_scrollableContainerView
+                                                                            attribute:NSLayoutAttributeWidth
+                                                                           multiplier:1.0
+                                                                             constant:0.0]
+                                               ]];
+    [self setNeedsUpdateConstraints];
 }
 
 - (NSArray<NSLayoutConstraint *> *)scrollableContainerStaticConstraints {
@@ -201,12 +251,13 @@
 }
 
 - (void)updateContainerConstraints {
-    NSMutableArray<NSLayoutConstraint *> *updatedConstraints = [[NSMutableArray alloc] init];
+    
     if (_topContentImageViewConstraints) {
-        [updatedConstraints addObjectsFromArray:_topContentImageViewConstraints];
+        [_updatedConstraints addObjectsFromArray:_topContentImageViewConstraints];
     }
-    [updatedConstraints addObject:_scrollableContainerTopConstraint];
-    [NSLayoutConstraint activateConstraints:updatedConstraints];
+    [_updatedConstraints addObject:_scrollableContainerTopConstraint];
+    [NSLayoutConstraint activateConstraints:_updatedConstraints];
+    [_updatedConstraints removeAllObjects];
 }
 
 - (void)updateConstraints {

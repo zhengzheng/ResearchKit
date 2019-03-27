@@ -30,13 +30,25 @@
 
 
 #import "ORKTitleLabel.h"
-
+#import "ORKSkin.h"
 
 @implementation ORKTitleLabel
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.numberOfLines = 2;
+        self.textAlignment = NSTextAlignmentCenter;
+    }
+    return self;
+}
+
 + (UIFont *)defaultFont {
-    UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleLargeTitle];
-    return [UIFont systemFontOfSize:[[descriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue]];
+    UIFontTextStyle style = ORKTitleLabelFontTextStyleForWindow([UIView new].window);
+    UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:style];
+    UIFontDescriptor *fontDescripter = [descriptor fontDescriptorWithSymbolicTraits:style == UIFontTextStyleTitle1 ? (UIFontDescriptorTraitBold | UIFontDescriptorTraitTightLeading) : (UIFontDescriptorTraitBold)];
+    return [UIFont systemFontOfSize:[[fontDescripter objectForKey: UIFontDescriptorSizeAttribute] doubleValue]];
 }
 
 @end

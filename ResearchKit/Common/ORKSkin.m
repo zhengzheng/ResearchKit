@@ -79,6 +79,7 @@ CGFloat ORKStepContainerTopMarginForSE = 20.0;
 CGFloat ORKStepContainerTopMarginForDefault = 20.0;
 
 CGFloat ORKStepContainerTopContentHeightPercentage = 36.0;
+CGFloat ORKStepContainerTitleLabelTopPaddingPercentage = 9.0;
 
 @implementation UIColor (ORKColor)
 
@@ -443,7 +444,7 @@ CGFloat ORKStepContainerLeftRightPaddingForWindow(UIWindow *window) {
 
 CGFloat ORKStepContainerTopPaddingForWindow(UIWindow *window) {
     CGFloat margin = 0;
-    switch (ORKGetHorizontalScreenTypeForWindow(window)) {
+    switch (ORKGetVerticalScreenTypeForWindow(window)) {
         case ORKScreenTypeiPhoneXSMax:
             margin = ORKStepContainerTopMarginForXSMax;
             break;
@@ -470,4 +471,20 @@ CGFloat ORKStepContainerTopContentHeightForWindow(UIWindow *window) {
     window = ORKDefaultWindowIfWindowIsNil(window);
     const CGSize windowSize = window.bounds.size;
     return ceil((ORKStepContainerTopContentHeightPercentage / 100.0) * windowSize.height);
+}
+
+CGFloat ORKStepContainerTitleLabelTopPaddingForWindow(UIWindow *window) {
+    window = ORKDefaultWindowIfWindowIsNil(window);
+    const CGSize windowSize = window.bounds.size;
+    return ceil((ORKStepContainerTitleLabelTopPaddingPercentage / 100.0) * windowSize.height);
+}
+
+UIFontTextStyle ORKTitleLabelFontTextStyleForWindow(UIWindow *window) {
+    window = ORKDefaultWindowIfWindowIsNil(window);
+    switch (ORKGetVerticalScreenTypeForWindow(window)) {
+        case ORKScreenTypeiPhone5:
+            return UIFontTextStyleTitle1;
+        default:
+            return UIFontTextStyleLargeTitle;
+    }
 }
