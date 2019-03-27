@@ -79,7 +79,7 @@ CGFloat ORKStepContainerTopMarginForSE = 20.0;
 CGFloat ORKStepContainerTopMarginForDefault = 20.0;
 
 CGFloat ORKStepContainerTopContentHeightPercentage = 36.0;
-CGFloat ORKStepContainerTitleLabelTopPaddingPercentage = 9.0;
+CGFloat ORKStepContainerFirstItemTopPaddingPercentage = 9.0;
 
 @implementation UIColor (ORKColor)
 
@@ -473,10 +473,10 @@ CGFloat ORKStepContainerTopContentHeightForWindow(UIWindow *window) {
     return ceil((ORKStepContainerTopContentHeightPercentage / 100.0) * windowSize.height);
 }
 
-CGFloat ORKStepContainerTitleLabelTopPaddingForWindow(UIWindow *window) {
+CGFloat ORKStepContainerFirstItemTopPaddingForWindow(UIWindow *window) {
     window = ORKDefaultWindowIfWindowIsNil(window);
     const CGSize windowSize = window.bounds.size;
-    return ceil((ORKStepContainerTitleLabelTopPaddingPercentage / 100.0) * windowSize.height);
+    return ceil((ORKStepContainerFirstItemTopPaddingPercentage / 100.0) * windowSize.height);
 }
 
 UIFontTextStyle ORKTitleLabelFontTextStyleForWindow(UIWindow *window) {

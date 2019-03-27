@@ -138,7 +138,7 @@
                                                                                toItem:_scrollView
                                                                             attribute:NSLayoutAttributeTop
                                                                            multiplier:1.0
-                                                                             constant:ORKStepContainerTitleLabelTopPaddingForWindow(self.window)],
+                                                                             constant:ORKStepContainerFirstItemTopPaddingForWindow(self.window)],
                                                [NSLayoutConstraint constraintWithItem:_titleLabel
                                                                             attribute:NSLayoutAttributeCenterX
                                                                             relatedBy:NSLayoutRelationEqual
