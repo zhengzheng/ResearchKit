@@ -86,6 +86,7 @@
     if (!_scrollableContainerView) {
         _scrollableContainerView = [[UIScrollView alloc] init];
     }
+    [_scrollableContainerView setBackgroundColor:UIColor.greenColor];
     [self addSubview:_scrollableContainerView];
 }
 
@@ -95,13 +96,6 @@
     }
     [self addSubview:_topContentImageView];
     [self setTopContentImageViewConstraints];
-}
-
-- (void)deactivateTopContentImageViewConstraints {
-    if (_topContentImageViewConstraints) {
-        [NSLayoutConstraint deactivateConstraints:_topContentImageViewConstraints];
-    }
-    _topContentImageViewConstraints = nil;
 }
 
 - (NSArray<NSLayoutConstraint *> *)scrollableContainerStaticConstraints {
@@ -135,6 +129,23 @@
                                          multiplier:1.0
                                            constant:0.0]
              ];
+}
+
+- (void)setScrollableContainerTopConstraint {
+    _scrollableContainerTopConstraint = [NSLayoutConstraint constraintWithItem:_scrollableContainerView
+                                                                     attribute:NSLayoutAttributeTop
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:_topContentImageView ? : self
+                                                                     attribute:_topContentImageView ? NSLayoutAttributeBottom : NSLayoutAttributeTop
+                                                                    multiplier:1.0
+                                                                      constant:0.0];
+}
+
+- (void)updateScrollableContainerTopConstraint {
+    if (_scrollableContainerTopConstraint) {
+        [NSLayoutConstraint deactivateConstraints:@[_scrollableContainerTopConstraint]];
+    }
+    [self setScrollableContainerTopConstraint];
 }
 
 - (void)setTopContentImageViewConstraints {
@@ -171,21 +182,11 @@
                                         ];
 }
 
-- (void)setScrollableContainerTopConstraint {
-    _scrollableContainerTopConstraint = [NSLayoutConstraint constraintWithItem:_scrollableContainerView
-                                                                     attribute:NSLayoutAttributeTop
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:_topContentImageView ? : self
-                                                                     attribute:_topContentImageView ? NSLayoutAttributeBottom : NSLayoutAttributeTop
-                                                                    multiplier:1.0
-                                                                      constant:0.0];
-}
-
-- (void)updateScrollableContainerTopConstraint {
-    if (_scrollableContainerTopConstraint) {
-        [NSLayoutConstraint deactivateConstraints:@[_scrollableContainerTopConstraint]];
+- (void)deactivateTopContentImageViewConstraints {
+    if (_topContentImageViewConstraints) {
+        [NSLayoutConstraint deactivateConstraints:_topContentImageViewConstraints];
     }
-    [self setScrollableContainerTopConstraint];
+    _topContentImageViewConstraints = nil;
 }
 
 - (void)setupConstraints {
