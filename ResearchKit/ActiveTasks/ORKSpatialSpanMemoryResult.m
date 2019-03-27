@@ -188,9 +188,9 @@
 }
 
 - (BOOL)isEqual:(id)object {
-    BOOL isParentSame = [super isEqual:object];
-    
     __typeof(self) castObject = object;
+    
+    BOOL isParentSame = [[self superclass] isEqual:[castObject superclass]];
     return (isParentSame &&
             (self.score == castObject.score) &&
             (self.numberOfGames == castObject.numberOfGames) &&

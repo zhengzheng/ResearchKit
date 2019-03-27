@@ -59,9 +59,10 @@
 }
 
 - (BOOL)isEqual:(id)object {
-    BOOL isParentSame = [super isEqual:object];
-    
     __typeof(self) castObject = object;
+    
+    BOOL isParentSame = [[self superclass] isEqual:[castObject superclass]];
+    
     return (isParentSame &&
             (self.timestamp == castObject.timestamp) &&
             ORKEqualObjects(self.fileResult, castObject.fileResult)) ;
