@@ -36,6 +36,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ORKStepContainerView : UIScrollView
 
+@property (nonatomic) NSString * stepTitle;
+
+@property (nonatomic, nullable) UIImage * stepTopContentImage;
+
 @end
 
 NS_ASSUME_NONNULL_END
