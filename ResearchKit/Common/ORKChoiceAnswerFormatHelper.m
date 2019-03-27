@@ -149,13 +149,11 @@
                     if ([textChoiceOther.textViewText isEqual:answerValue]) {
                         matchedChoice = choice;
                         break;
-                    }
-                    else if (textChoiceOther.textViewInputOptional && textChoiceOther.textViewText.length <= 0 && [textChoiceOther.value isEqual:answerValue]) {
+                    } else if (textChoiceOther.textViewInputOptional && textChoiceOther.textViewText.length <= 0 && [textChoiceOther.value isEqual:answerValue]) {
                         matchedChoice = choice;
                         break;
                     }
-                }
-                else if ([choice.value isEqual:answerValue]) {
+                } else if ([choice.value isEqual:answerValue]) {
                     matchedChoice = choice;
                     break;
                 }
