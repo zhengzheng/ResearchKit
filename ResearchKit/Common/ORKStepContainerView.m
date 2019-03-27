@@ -117,6 +117,8 @@
     if (!_topContentImageView) {
         _topContentImageView = [UIImageView new];
     }
+    _topContentImageView.contentMode = UIViewContentModeScaleAspectFit;
+    [_topContentImageView setBackgroundColor:ORKColor(ORKTopContentImageViewBackgroundColorKey)];
     [self addSubview:_topContentImageView];
     [self setTopContentImageViewConstraints];
 }

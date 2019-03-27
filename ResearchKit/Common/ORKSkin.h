@@ -92,6 +92,9 @@ ORK_EXTERN NSString *const ORKProgressLabelColorKey;
 /// Default color used by iPadBackgroundView
 ORK_EXTERN NSString *const ORKiPadBackgroundViewColorKey;
 
+/// Background color of TopContentImageView in ORKStepContainerView
+ORK_EXTERN NSString *const ORKTopContentImageViewBackgroundColorKey;
+
 /// Return the color for a specified ORK...ColorKey
 UIColor *ORKColor(NSString *colorKey);
 
