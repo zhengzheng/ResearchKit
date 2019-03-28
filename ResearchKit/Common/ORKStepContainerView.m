@@ -35,6 +35,9 @@
 #import "ORKSkin.h"
 
 
+static const CGFloat ORKStepContainerIconImageViewDimension = 80.0;
+static const CGFloat ORKStepContainerIconImageViewToTitleLabelPadding = 20.0;
+
 @implementation ORKStepContainerView {
     
     UIScrollView *_scrollView;
@@ -42,10 +45,14 @@
     
     ORKTitleLabel *_titleLabel;
     UIImageView *_topContentImageView;
+    UIImageView *_iconImageView;
     
 //    variable constraints:
     NSLayoutConstraint *_scrollViewTopConstraint;
+    NSLayoutConstraint *_titleLabelTopConstraint;
+    NSLayoutConstraint *_scrollContainerContentSizeConstraint;
     NSArray<NSLayoutConstraint *> *_topContentImageViewConstraints;
+    NSArray<NSLayoutConstraint *> *_iconImageViewConstraints;
     NSMutableArray<NSLayoutConstraint *> *_updatedConstraints;
 }
 
@@ -95,11 +102,37 @@
     [_titleLabel setText:stepTitle];
 }
 
+- (void)setTitleIconImage:(UIImage *)titleIconImage {
+    _titleIconImage = titleIconImage;
+    if (!titleIconImage && _iconImageView) {
+        [_iconImageView removeFromSuperview];
+        _iconImageView = nil;
+        [self deactivateIconImageViewConstraints];
+        [self updateTitleLabelTopConstraint];
+        [self setNeedsUpdateConstraints];
+    }
+    if (titleIconImage && !_iconImageView) {
+        [self setupIconImageView];
+        _iconImageView.image = titleIconImage;
+        [self updateTitleLabelTopConstraint];
+        [self setNeedsUpdateConstraints];
+    }
+    if (titleIconImage && _iconImageView) {
+        _iconImageView.image = titleIconImage;
+    }
+}
+
 - (void)setupScrollView {
     if (!_scrollView) {
         _scrollView = [[UIScrollView alloc] init];
     }
+    _scrollView.showsVerticalScrollIndicator = _showScrollIndicator;
     [self addSubview:_scrollView];
+}
+
+- (void)setShowScrollIndicator:(BOOL)showScrollIndicator {
+    _showScrollIndicator = showScrollIndicator;
+    _scrollView.showsVerticalScrollIndicator = showScrollIndicator;
 }
 
 - (void)setupScrollContainerView {
@@ -131,45 +164,70 @@
     [self setupTitleLabelConstraints];
 }
 
+- (void)setupIconImageView {
+    if (!_iconImageView) {
+        _iconImageView = [UIImageView new];
+    }
+    _iconImageView.contentMode = UIViewContentModeScaleAspectFit;
+    [_scrollContainerView addSubview:_iconImageView];
+    [self setIconImageViewConstraints];
+}
+
 - (void)setupTitleLabelConstraints {
     _titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [self setTitleLabelTopConstraint];
     [_updatedConstraints addObjectsFromArray:@[
-                                               [NSLayoutConstraint constraintWithItem:_titleLabel
-                                                                            attribute:NSLayoutAttributeTop
-                                                                            relatedBy:NSLayoutRelationEqual
-                                                                               toItem:_scrollView
-                                                                            attribute:NSLayoutAttributeTop
-                                                                           multiplier:1.0
-                                                                             constant:ORKStepContainerFirstItemTopPaddingForWindow(self.window)],
+                                               _titleLabelTopConstraint,
                                                [NSLayoutConstraint constraintWithItem:_titleLabel
                                                                             attribute:NSLayoutAttributeCenterX
                                                                             relatedBy:NSLayoutRelationEqual
-                                                                               toItem:_scrollView
+                                                                               toItem:_scrollContainerView
                                                                             attribute:NSLayoutAttributeCenterX
                                                                            multiplier:1.0
                                                                              constant:0.0],
                                                [NSLayoutConstraint constraintWithItem:_titleLabel
                                                                             attribute:NSLayoutAttributeWidth
                                                                             relatedBy:NSLayoutRelationEqual
-                                                                               toItem:_scrollView
+                                                                               toItem:_scrollContainerView
                                                                             attribute:NSLayoutAttributeWidth
-                                                                           multiplier:1.0
-                                                                             constant:0.0],
-                                               [NSLayoutConstraint constraintWithItem:_titleLabel
-                                                                            attribute:NSLayoutAttributeHeight
-                                                                            relatedBy:NSLayoutRelationEqual
-                                                                               toItem:nil
-                                                                            attribute:NSLayoutAttributeNotAnAttribute
-                                                                           multiplier:1.0
-                                                                             constant:1000.0],
-                                               [NSLayoutConstraint constraintWithItem:_scrollContainerView
-                                                                            attribute:NSLayoutAttributeBottom
-                                                                            relatedBy:NSLayoutRelationEqual
-                                                                               toItem:_titleLabel
-                                                                            attribute:NSLayoutAttributeBottom
                                                                            multiplier:1.0
                                                                              constant:0.0]
                                                ]];
+    [self setNeedsUpdateConstraints];
+}
+
+- (void)setIconImageViewConstraints {
+    _iconImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    _iconImageViewConstraints = @[
+                                  [NSLayoutConstraint constraintWithItem:_iconImageView
+                                                               attribute:NSLayoutAttributeTop
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:_scrollContainerView
+                                                               attribute:NSLayoutAttributeTop
+                                                              multiplier:1.0
+                                                                constant:ORKStepContainerFirstItemTopPaddingForWindow(self.window)],
+                                  [NSLayoutConstraint constraintWithItem:_iconImageView
+                                                               attribute:NSLayoutAttributeCenterX
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:_scrollContainerView
+                                                               attribute:NSLayoutAttributeCenterX
+                                                              multiplier:1.0
+                                                                constant:0.0],
+                                  [NSLayoutConstraint constraintWithItem:_iconImageView
+                                                               attribute:NSLayoutAttributeWidth
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:nil
+                                                               attribute:NSLayoutAttributeNotAnAttribute
+                                                              multiplier:1.0
+                                                                constant:ORKStepContainerIconImageViewDimension],
+                                  [NSLayoutConstraint constraintWithItem:_iconImageView
+                                                               attribute:NSLayoutAttributeHeight
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:nil
+                                                               attribute:NSLayoutAttributeNotAnAttribute
+                                                              multiplier:1.0
+                                                                constant:ORKStepContainerIconImageViewDimension]];
+    [_updatedConstraints addObjectsFromArray:_iconImageViewConstraints];
     [self setNeedsUpdateConstraints];
 }
 
@@ -257,6 +315,31 @@
     [self setScrollViewTopConstraint];
 }
 
+- (void)deactivateIconImageViewConstraints {
+    if (_iconImageViewConstraints) {
+        [NSLayoutConstraint deactivateConstraints:_iconImageViewConstraints];
+    }
+}
+
+- (void)setTitleLabelTopConstraint {
+    if (_titleLabel) {
+        _titleLabelTopConstraint = [NSLayoutConstraint constraintWithItem:_titleLabel
+                                                                attribute:NSLayoutAttributeTop
+                                                                relatedBy:NSLayoutRelationEqual
+                                                                   toItem:_iconImageView ? : _scrollContainerView
+                                                                attribute:_iconImageView ? NSLayoutAttributeBottom : NSLayoutAttributeTop
+                                                               multiplier:1.0
+                                                                 constant:_iconImageView ? ORKStepContainerIconImageViewToTitleLabelPadding : ORKStepContainerFirstItemTopPaddingForWindow(self.window)];
+    }
+}
+
+- (void)updateTitleLabelTopConstraint {
+    if (_titleLabelTopConstraint) {
+        [NSLayoutConstraint deactivateConstraints:@[_titleLabelTopConstraint]];
+    }
+    [self setTitleLabelTopConstraint];
+}
+
 - (void)setTopContentImageViewConstraints {
     _topContentImageView.translatesAutoresizingMaskIntoConstraints = NO;
     _topContentImageViewConstraints = @[
@@ -309,12 +392,27 @@
     [NSLayoutConstraint activateConstraints:staticConstraints];
 }
 
+- (void)updateScrollContainerContentSizeConstraint {
+    if (_scrollContainerContentSizeConstraint) {
+        [NSLayoutConstraint deactivateConstraints:@[_scrollContainerContentSizeConstraint]];
+    }
+    _scrollContainerContentSizeConstraint = [NSLayoutConstraint constraintWithItem:_scrollContainerView
+                                                                         attribute:NSLayoutAttributeHeight
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:nil
+                                                                         attribute:NSLayoutAttributeNotAnAttribute
+                                                                        multiplier:1.0
+                                                                          constant:1200.0];
+}
+
 - (void)updateContainerConstraints {
     
     if (_topContentImageViewConstraints) {
         [_updatedConstraints addObjectsFromArray:_topContentImageViewConstraints];
     }
     [_updatedConstraints addObject:_scrollViewTopConstraint];
+    [self updateScrollContainerContentSizeConstraint];
+    [_updatedConstraints addObject:_scrollContainerContentSizeConstraint];
     [NSLayoutConstraint activateConstraints:_updatedConstraints];
     [_updatedConstraints removeAllObjects];
 }
