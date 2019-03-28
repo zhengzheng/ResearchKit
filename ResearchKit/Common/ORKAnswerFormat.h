@@ -1066,7 +1066,7 @@ ORK_CLASS_AVAILABLE
        textViewInputOptional:(BOOL)textViewInputOptional
         textViewStartsHidden:(BOOL)textViewStartsHidden;
 
-@property (nonatomic, copy) NSString *textViewPlaceholderText;
+@property (copy, readonly, nullable) NSString *textViewPlaceholderText;
 
 @property (readonly) BOOL textViewInputOptional;
 
