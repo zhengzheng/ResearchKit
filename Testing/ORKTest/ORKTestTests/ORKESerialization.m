@@ -1202,6 +1202,15 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     PROPERTY(detailText, NSString, NSObject, NO, nil, nil),
                     PROPERTY(exclusive, NSNumber, NSObject, NO, nil, nil),
                     })),
+           ENTRY(ORKTextChoiceOther,
+                 ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
+                     return [[ORKTextChoiceOther alloc] initWithText:GETPROP(dict, text) primaryTextAttributedString:nil detailText:GETPROP(dict, detailText) detailTextAttributedString:nil value:GETPROP(dict, value) exclusive:((NSNumber *)GETPROP(dict, exclusive)).boolValue textViewPlaceholderText:GETPROP(dict, textViewPlaceholderText) textViewInputOptional:((NSNumber *)GETPROP(dict, textViewInputOptional)).boolValue textViewStartsHidden:((NSNumber *)GETPROP(dict, textViewStartsHidden)).boolValue];
+                 },
+                 (@{
+                    PROPERTY(textViewPlaceholderText, NSString, NSObject, NO, nil, nil),
+                    PROPERTY(textViewInputOptional, NSNumber, NSObject, NO, nil, nil),
+                    PROPERTY(textViewStartsHidden, NSNumber, NSObject, NO, nil, nil),
+                    })),
            ENTRY(ORKImageChoice,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
                      return [[ORKImageChoice alloc] initWithNormalImage:nil selectedImage:nil text:GETPROP(dict, text) value:GETPROP(dict, value)];

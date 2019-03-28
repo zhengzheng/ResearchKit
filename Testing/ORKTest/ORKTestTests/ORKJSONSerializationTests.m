@@ -208,6 +208,7 @@ ORK_MAKE_TEST_INIT(ORKReviewStep, ^{return [[self class] standaloneReviewStepWit
 ORK_MAKE_TEST_INIT(ORKOrderedTask, ^{return [self initWithIdentifier:@"test1" steps:nil];});
 ORK_MAKE_TEST_INIT(ORKImageChoice, ^{return [super init];});
 ORK_MAKE_TEST_INIT(ORKTextChoice, ^{return [super init];});
+ORK_MAKE_TEST_INIT(ORKTextChoiceOther, ^{return [self initWithText:@"test" primaryTextAttributedString:nil detailText:@"test1" detailTextAttributedString:nil value:@"value" exclusive:YES textViewPlaceholderText:@"test2" textViewInputOptional:NO textViewStartsHidden:YES];});
 ORK_MAKE_TEST_INIT(ORKPredicateStepNavigationRule, ^{return [self initWithResultPredicates:@[[ORKResultPredicate predicateForBooleanQuestionResultWithResultSelector:[ORKResultSelector selectorWithResultIdentifier:@"test"] expectedAnswer:YES]] destinationStepIdentifiers:@[@"test2"]];});
 ORK_MAKE_TEST_INIT(ORKResultSelector, ^{return [self initWithResultIdentifier:@"resultIdentifier"];});
 ORK_MAKE_TEST_INIT(ORKRecorderConfiguration, ^{return [self initWithIdentifier:@"testRecorder"];});
@@ -419,7 +420,8 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
                                        @"ORKNavigablePageStep.steps",
                                        @"ORKTextAnswerFormat.validationRegex",
                                        @"ORKRegistrationStep.passcodeValidationRegex",
-                                       @"ORKConsentSection.image"
+                                       @"ORKConsentSection.image",
+                                       @"textViewText"
                                        ];
     NSArray *knownNotSerializedProperties = @[
                                               @"ORKStep.task",
@@ -684,6 +686,7 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
                                        @"ORKNavigablePageStep.steps",
                                        @"ORKTextAnswerFormat.validationRegex",
                                        @"ORKRegistrationStep.passcodeValidationRegex",
+                                       @"textViewText"
                                        ];
     NSArray *knownNotSerializedProperties = @[@"ORKConsentDocument.writer", // created on demand
                                               @"ORKConsentDocument.signatureFormatter", // created on demand
