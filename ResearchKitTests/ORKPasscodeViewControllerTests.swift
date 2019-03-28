@@ -31,10 +31,13 @@
 import XCTest
 @testable import ResearchKit
 import ResearchKit.Private
+import ResearchKit.Internal
 
 class ORKPasscodeViewControllerTests: XCTestCase {
     
     var testController: ORKPasscodeViewController!
+    var resultController: ORKPasscodeViewController?
+    var asyncExpectation: XCTestExpectation?
     
     func testPasscodeAuthenticationView() {
         testController = ORKPasscodeViewController.passcodeAuthenticationViewController(withText: "TEST", delegate: self)
@@ -66,11 +69,38 @@ class ORKPasscodeViewControllerTests: XCTestCase {
         XCTAssertEqual(step.passcodeFlow, ORKPasscodeFlow.edit)
         XCTAssertEqual(step.passcodeType, ORKPasscodeType.type6Digit)
     }
+    
+    func testPasscodeViewControllerDelegateCalls() {
+        testController = ORKPasscodeViewController.passcodeEditingViewController(withText: "TEST", delegate: self, passcodeType: .type4Digit)
+        
+        let testExpectation = expectation(description: "ORKPasscodeViewController calls the delegate as the result of an async method completion")
+        self.asyncExpectation = testExpectation
+
+        waitForExpectations(timeout: 19) { (error) in
+            if let error = error {
+                XCTFail("waitForExpectationWithTimeout error: \(error)")
+            }
+            
+            guard let result = self.resultController else {
+                XCTFail("Expected delegate to be called")
+                return
+            }
+            
+            XCTAssertEqual(self, result)
+        }
+        
+    }
 }
+
 
 extension ORKPasscodeViewControllerTests: ORKPasscodeDelegate {
     func passcodeViewControllerDidFinish(withSuccess viewController: UIViewController) {
-        // pass
+        guard let expectation = asyncExpectation else {
+            XCTFail("Delegate was not setup correclty. Missing XCTExpectation reference")
+            return
+        }
+//        completion = true
+        expectation.fulfill()
     }
     
     func passcodeViewControllerDidFailAuthentication(_ viewController: UIViewController) {
