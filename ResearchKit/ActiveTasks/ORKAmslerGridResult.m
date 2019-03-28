@@ -75,10 +75,9 @@
 }
 
 - (BOOL)isEqual:(id)object {
-    __typeof(self) castObject = object;
-    
-    BOOL isParentSame = [[self superclass] isEqual:[castObject superclass]];
+     BOOL isParentSame = [super isEqual:object];
    
+    __typeof(self) castObject = object;
     return (isParentSame &&
             ORKEqualObjects(self.image, castObject.image) &&
             ORKEqualObjects(self.path, castObject.path) &&

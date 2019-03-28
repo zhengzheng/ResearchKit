@@ -69,9 +69,9 @@
 }
 
 - (BOOL)isEqual:(id)object {
-    __typeof(self) castObject = object;
+    BOOL isParentSame = [super isEqual:object];
     
-    BOOL isParentSame = [[self superclass] isEqual:[castObject superclass]];
+    __typeof(self) castObject = object;
     return (isParentSame &&
             self.numberOfErrors == castObject.numberOfErrors &&
             ORKEqualObjects(self.taps, castObject.taps));
