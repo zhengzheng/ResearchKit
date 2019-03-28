@@ -64,9 +64,7 @@
 
 - (BOOL)isEqual:(id)object {
     BOOL isParentSame = [super isEqual:object];
-    
     __typeof(self) castObject = object;
-    
     return isParentSame &&
     self.start == castObject.start &&
     self.finish == castObject.finish &&
