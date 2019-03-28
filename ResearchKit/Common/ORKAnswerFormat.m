@@ -1181,6 +1181,23 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
     return [super hash] ^ _textViewPlaceholderText.hash;
 }
 
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        ORK_DECODE_OBJ_CLASS(aDecoder, textViewPlaceholderText, NSString);
+        ORK_DECODE_BOOL(aDecoder, textViewInputOptional);
+        ORK_DECODE_BOOL(aDecoder, textViewStartsHidden);
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [super encodeWithCoder:aCoder];
+    ORK_ENCODE_OBJ(aCoder, textViewPlaceholderText);
+    ORK_ENCODE_BOOL(aCoder, textViewInputOptional);
+    ORK_ENCODE_BOOL(aCoder, textViewStartsHidden);
+}
+
 @end
 
 
