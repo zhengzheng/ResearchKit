@@ -29,26 +29,10 @@
  */
 
 
-#import "ORKTitleLabel.h"
-#import "ORKSkin.h"
+#import "ORKBodyContainerView.h"
 
-@implementation ORKTitleLabel
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        self.numberOfLines = 2;
-        self.textAlignment = NSTextAlignmentCenter;
-    }
-    return self;
-}
+@implementation ORKBodyContainerView
 
-+ (UIFont *)defaultFont {
-    UIFontTextStyle style = ORKTitleLabelFontTextStyleForWindow([UIView new].window);
-    UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:style];
-    UIFontDescriptor *fontDescriptor = [descriptor fontDescriptorWithSymbolicTraits:style == UIFontTextStyleTitle1 ? (UIFontDescriptorTraitBold | UIFontDescriptorTraitTightLeading) : (UIFontDescriptorTraitBold)];
-    return [UIFont systemFontOfSize:[[fontDescriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue]];
-}
 
 @end

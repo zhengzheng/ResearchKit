@@ -29,26 +29,38 @@
  */
 
 
-#import "ORKTitleLabel.h"
-#import "ORKSkin.h"
+#import "ORKLearnMoreButton.h"
+#import "ORKHelpers_Internal.h"
 
-@implementation ORKTitleLabel
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        self.numberOfLines = 2;
-        self.textAlignment = NSTextAlignmentCenter;
-    }
-    return self;
+@implementation ORKLearnMoreButton
+
++ (instancetype)buttonWithType:(UIButtonType)buttonType {
+    ORKThrowMethodUnavailableException();
 }
 
-+ (UIFont *)defaultFont {
-    UIFontTextStyle style = ORKTitleLabelFontTextStyleForWindow([UIView new].window);
-    UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:style];
-    UIFontDescriptor *fontDescriptor = [descriptor fontDescriptorWithSymbolicTraits:style == UIFontTextStyleTitle1 ? (UIFontDescriptorTraitBold | UIFontDescriptorTraitTightLeading) : (UIFontDescriptorTraitBold)];
-    return [UIFont systemFontOfSize:[[fontDescriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue]];
++ (instancetype)learnMoreCustomButtonWithText:(NSString *)text infoViewController:(UIViewController *)infoViewController {
+    ORKLearnMoreButton *button = [super buttonWithType:UIButtonTypeCustom];
+    UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody];
+    [button.titleLabel setFont:[UIFont systemFontOfSize:[[descriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue]]];
+    [button setTitle:text forState:UIControlStateNormal];
+    [button setTitleColor:button.tintColor forState:UIControlStateNormal];
+    button.infoViewController = infoViewController;
+    [button addTarget:self action:@selector(presentInfoViewController) forControlEvents:UIControlEventTouchUpInside];
+    return button;
 }
+
++ (instancetype)learnMoreDetailDisclosureButtonWithInfoViewController:(UIViewController *)infoViewController {
+    ORKLearnMoreButton *button = [super buttonWithType:UIButtonTypeDetailDisclosure];
+    button.infoViewController = infoViewController;
+    [button addTarget:self action:@selector(presentInfoViewController) forControlEvents:UIControlEventTouchUpInside];
+    return button;
+}
+
++ (void)presentInfoViewController {
+    //    FIXME: replace with displaying viewController implementation.
+    NSLog(@"display info view controller");
+}
+
 
 @end
