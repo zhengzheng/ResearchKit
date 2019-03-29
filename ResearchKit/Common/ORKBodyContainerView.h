@@ -34,7 +34,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class ORKBodyItem;
 @interface ORKBodyContainerView : UIView
+
+- (instancetype)initWithFrame:(CGRect)frame NS_UNAVAILABLE;
+
+- (instancetype)initWithBodyItems:(NSArray<ORKBodyItem *> *)bodyItems;
+
+@property (nonatomic, nonnull) NSArray<ORKBodyItem *> * bodyItems;
 
 
 @end

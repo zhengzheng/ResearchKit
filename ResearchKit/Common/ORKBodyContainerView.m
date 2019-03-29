@@ -30,9 +30,24 @@
 
 
 #import "ORKBodyContainerView.h"
+#import "ORKHelpers_Internal.h"
 
 
 @implementation ORKBodyContainerView
 
+- (instancetype)initWithFrame:(CGRect)frame {
+    ORKThrowMethodUnavailableException();
+}
+
+- (instancetype)initWithBodyItems:(NSArray<ORKBodyItem *> *)bodyItems {
+    if (bodyItems && bodyItems.count <= 0) {
+        NSAssert(NO, @"Body Items array cannot be empty");
+    }
+    self = [super init];
+    if (self) {
+        self.bodyItems = bodyItems;
+    }
+    return self;
+}
 
 @end

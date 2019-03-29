@@ -28,15 +28,50 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
+@import UIKit;
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
+
+typedef NS_ENUM(NSInteger, ORKBodyItemStyle) {
+    /**
+     text style body item
+     */
+    ORKBodyItemStyleText,
+    
+    /**
+     bullet style body item
+     */
+    ORKBodyItemStyleBulletPoint
+} ORK_ENUM_AVAILABLE;
+
+@interface ORKLearnMoreItem : NSObject
+
++ (instancetype)learnMoreLinkItemWithText:(NSString *)text infoViewController:(UIViewController *)infoViewController;
+
++ (instancetype)learnMoreDetailDisclosureItemWithInfoViewController:(UIViewController *)infoViewController;
+
+@property (nonatomic, nonnull) UIViewController * infoViewController;
+
+- (nullable NSString *)getText;
+
+@end
+
 
 @interface ORKBodyItem : NSObject
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
+
+- (instancetype)initWithTitle:(nullable NSString *)title text:(nullable NSString *)text learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem bodyItemStyle:(ORKBodyItemStyle)bodyItemStyle NS_DESIGNATED_INITIALIZER;
+
+@property (nonatomic) NSString * title;
+
+@property (nonatomic) NSString * text;
+
+@property (nonatomic) ORKLearnMoreItem * learnMoreItem;
+
+@property (nonatomic) ORKBodyItemStyle bodyItemStyle;
 
 @end
 

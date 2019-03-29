@@ -32,6 +32,39 @@
 #import "ORKBodyItem.h"
 #import "ORKHelpers_Internal.h"
 
+
+@interface ORKLearnMoreItem()
+
+@property (nonatomic) NSString *text;
+
+@end
+
+@implementation ORKLearnMoreItem
+
+- (instancetype)initWithText:(NSString *)text infoViewController:(UIViewController *)infoViewController {
+    self = [super init];
+    if (self) {
+        self.text = text;
+        self.infoViewController = infoViewController;
+    }
+    return self;
+}
+
++ (instancetype)learnMoreLinkItemWithText:(NSString *)text infoViewController:(UIViewController *)infoViewController {
+    return [[ORKLearnMoreItem alloc] initWithText:text infoViewController:infoViewController];
+}
+
++ (instancetype)learnMoreDetailDisclosureItemWithInfoViewController:(UIViewController *)infoViewController {
+    return [[ORKLearnMoreItem alloc] initWithText:nil infoViewController:infoViewController];
+}
+
+- (NSString *)getText {
+    return _text;
+}
+
+
+@end
+
 @implementation ORKBodyItem
 
 + (instancetype)new {
@@ -40,6 +73,24 @@
 
 - (instancetype)init {
     ORKThrowMethodUnavailableException();
+}
+
+- (instancetype)initWithTitle:(NSString *)title text:(NSString *)text learnMoreItem:(ORKLearnMoreItem *)learnMoreItem bodyItemStyle:(ORKBodyItemStyle)bodyItemStyle {
+    self = [super init];
+    if (self) {
+        self.title = title;
+        self.text = text;
+        self.learnMoreItem = learnMoreItem;
+        self.bodyItemStyle = bodyItemStyle;
+    }
+    [self validateParameters];
+    return self;
+}
+
+- (void)validateParameters {
+    if (!_title && !_text) {
+        NSAssert(NO, @"Parameters title and text cannot be both nil.");
+    }
 }
 
 @end

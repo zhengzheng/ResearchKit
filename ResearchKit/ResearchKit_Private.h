@@ -160,3 +160,7 @@
 #import <ResearchKit/ORKSkin.h>
 #import <ResearchKit/ORKDefaultFont.h>
 #import <ResearchKit/ORKVoiceEngine.h>
+
+#import <ResearchKit/ORKLearnMoreButton.h>
+#import <ResearchKit/ORKBodyContainerView.h>
+#import <ResearchKit/ORKBodyItem.h>
