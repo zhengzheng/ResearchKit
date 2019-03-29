@@ -41,25 +41,34 @@
 
 + (instancetype)learnMoreCustomButtonWithText:(NSString *)text infoViewController:(UIViewController *)infoViewController {
     ORKLearnMoreButton *button = [super buttonWithType:UIButtonTypeCustom];
-    UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody];
-    [button.titleLabel setFont:[UIFont systemFontOfSize:[[descriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue]]];
     [button setTitle:text forState:UIControlStateNormal];
     [button setTitleColor:button.tintColor forState:UIControlStateNormal];
+    [button setContentEdgeInsets:UIEdgeInsetsMake(CGFLOAT_MIN, CGFLOAT_MIN, CGFLOAT_MIN, CGFLOAT_MIN)];
     button.infoViewController = infoViewController;
-    [button addTarget:self action:@selector(presentInfoViewController) forControlEvents:UIControlEventTouchUpInside];
+    [button addTarget:nil action:@selector(presentInfoViewController) forControlEvents:UIControlEventTouchUpInside];
     return button;
 }
 
 + (instancetype)learnMoreDetailDisclosureButtonWithInfoViewController:(UIViewController *)infoViewController {
     ORKLearnMoreButton *button = [super buttonWithType:UIButtonTypeDetailDisclosure];
     button.infoViewController = infoViewController;
-    [button addTarget:self action:@selector(presentInfoViewController) forControlEvents:UIControlEventTouchUpInside];
+    [button addTarget:nil action:@selector(presentInfoViewController) forControlEvents:UIControlEventTouchUpInside];
     return button;
 }
 
-+ (void)presentInfoViewController {
-    //    FIXME: replace with displaying viewController implementation.
-    NSLog(@"display info view controller");
+- (void)presentInfoViewController {
+    //    FIXME: replace with proper displaying viewController implementation.
+    NSLog(@"temp display info view controller");
+    
+    UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+    if (rootViewController) {
+        while (rootViewController.presentedViewController) {
+            rootViewController = rootViewController.presentedViewController;
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [rootViewController showDetailViewController:self.infoViewController sender:self];
+        });
+    }
 }
 
 
