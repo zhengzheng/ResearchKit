@@ -34,6 +34,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class ORKBodyItem;
 @interface ORKStepContainerView : UIView
 
 @property (nonatomic, nullable) UIImage * stepTopContentImage;
@@ -43,6 +44,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable) UIImage * titleIconImage;
 
 @property (nonatomic) BOOL showScrollIndicator;
+
+@property (nonatomic) NSArray<ORKBodyItem *> * bodyItems;
 
 @end
 

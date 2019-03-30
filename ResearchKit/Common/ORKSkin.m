@@ -79,6 +79,9 @@ CGFloat ORKStepContainerTopMarginFor7 = 20.0;
 CGFloat ORKStepContainerTopMarginForSE = 20.0;
 CGFloat ORKStepContainerTopMarginForDefault = 20.0;
 
+CGFloat ORKStepContainerTitleToBodyContainerTopPaddingRegular = 15.0;
+CGFloat ORKStepContainerTitleToBodyContainerTopPaddingSmall = 11.0;
+
 CGFloat ORKStepContainerTopContentHeightPercentage = 36.0;
 CGFloat ORKStepContainerFirstItemTopPaddingPercentage = 9.0;
 
@@ -479,6 +482,23 @@ CGFloat ORKStepContainerFirstItemTopPaddingForWindow(UIWindow *window) {
     window = ORKDefaultWindowIfWindowIsNil(window);
     const CGSize windowSize = window.bounds.size;
     return ceil((ORKStepContainerFirstItemTopPaddingPercentage / 100.0) * windowSize.height);
+}
+
+CGFloat ORKStepContainerTitleToBodyContainerTopPaddingForWindow(UIWindow *window) {
+    CGFloat padding = 0;
+    switch (ORKGetVerticalScreenTypeForWindow(window)) {
+        case ORKScreenTypeiPhone5:
+            padding = ORKStepContainerTitleToBodyContainerTopPaddingSmall;
+            break;
+        case ORKScreenTypeiPhoneXSMax:
+        case ORKScreenTypeiPhoneX:
+        case ORKScreenTypeiPhone6Plus:
+        case ORKScreenTypeiPhone6:
+        default:
+            padding = ORKStepContainerTitleToBodyContainerTopPaddingRegular;
+            break;
+    }
+    return padding;
 }
 
 UIFontTextStyle ORKTitleLabelFontTextStyleForWindow(UIWindow *window) {

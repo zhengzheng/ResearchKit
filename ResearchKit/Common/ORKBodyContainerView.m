@@ -35,10 +35,6 @@
 
 @implementation ORKBodyContainerView
 
-- (instancetype)initWithFrame:(CGRect)frame {
-    ORKThrowMethodUnavailableException();
-}
-
 - (instancetype)initWithBodyItems:(NSArray<ORKBodyItem *> *)bodyItems {
     if (bodyItems && bodyItems.count <= 0) {
         NSAssert(NO, @"Body Items array cannot be empty");
@@ -49,5 +45,7 @@
     }
     return self;
 }
+
+
 
 @end

@@ -218,6 +218,7 @@ CGFloat ORKStepContainerLeftRightPaddingForWindow(UIWindow *window);
 CGFloat ORKStepContainerTopPaddingForWindow(UIWindow *window);
 CGFloat ORKStepContainerTopContentHeightForWindow(UIWindow *window);
 CGFloat ORKStepContainerFirstItemTopPaddingForWindow(UIWindow *window);
+CGFloat ORKStepContainerTitleToBodyContainerTopPaddingForWindow(UIWindow *window);
 
 UIFontTextStyle ORKTitleLabelFontTextStyleForWindow(UIWindow *window);
 
