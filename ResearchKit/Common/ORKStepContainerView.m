@@ -334,10 +334,16 @@ static const CGFloat ORKStepContainerIconImageViewToTitleLabelPadding = 20.0;
 }
 
 - (void)updateTitleLabelTopConstraint {
-    if (_titleLabelTopConstraint) {
+    if (_titleLabelTopConstraint && _titleLabelTopConstraint.isActive) {
         [NSLayoutConstraint deactivateConstraints:@[_titleLabelTopConstraint]];
     }
+    if ([_updatedConstraints containsObject:_titleLabelTopConstraint]) {
+        [_updatedConstraints removeObject:_titleLabelTopConstraint];
+    }
     [self setTitleLabelTopConstraint];
+    if (_titleLabelTopConstraint) {
+        [_updatedConstraints addObject:_titleLabelTopConstraint];
+    }
 }
 
 - (void)setTopContentImageViewConstraints {
