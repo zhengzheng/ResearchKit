@@ -48,7 +48,7 @@
     UIFontTextStyle style = ORKTitleLabelFontTextStyleForWindow([UIView new].window);
     UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:style];
     UIFontDescriptor *fontDescriptor = [descriptor fontDescriptorWithSymbolicTraits:style == UIFontTextStyleTitle1 ? (UIFontDescriptorTraitBold | UIFontDescriptorTraitTightLeading) : (UIFontDescriptorTraitBold)];
-    return [UIFont systemFontOfSize:[[fontDescriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue]];
+    return [UIFont fontWithDescriptor:fontDescriptor size:0];
 }
 
 @end

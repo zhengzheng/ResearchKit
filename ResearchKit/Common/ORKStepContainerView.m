@@ -38,6 +38,8 @@
 
 static const CGFloat ORKStepContainerIconImageViewDimension = 80.0;
 static const CGFloat ORKStepContainerIconImageViewToTitleLabelPadding = 20.0;
+static const CGFloat ORKStepContainerIconToBodyTopPaddingStandard = 20.0;
+static const CGFloat ORKStepContainerIconToBulletTopPaddingStandard = 20.0;
 
 @implementation ORKStepContainerView {
     
@@ -208,12 +210,12 @@ static const CGFloat ORKStepContainerIconImageViewToTitleLabelPadding = 20.0;
     
     if (_titleLabel) {
         topItem = _titleLabel;
-        topPadding = ORKStepContainerTitleToBodyContainerTopPaddingForWindow(self.window);
+        topPadding = _bodyItems.firstObject.bodyItemStyle == ORKBodyItemStyleText ? ORKStepContainerTitleToBodyTopPaddingForWindow(self.window) : ORKStepContainerTitleToBulletTopPaddingForWindow(self.window);
         attribute = NSLayoutAttributeBottom;
     }
     else if (_iconImageView) {
         topItem = _iconImageView;
-        topPadding = ORKStepContainerTitleToBodyContainerTopPaddingForWindow(self.window);
+        topPadding = _bodyItems.firstObject.bodyItemStyle == ORKBodyItemStyleText ? ORKStepContainerIconToBodyTopPaddingStandard : ORKStepContainerIconToBulletTopPaddingStandard;
         attribute = NSLayoutAttributeBottom;
     }
     else {
@@ -499,13 +501,14 @@ static const CGFloat ORKStepContainerIconImageViewToTitleLabelPadding = 20.0;
     if (_scrollContainerContentSizeConstraint) {
         [NSLayoutConstraint deactivateConstraints:@[_scrollContainerContentSizeConstraint]];
     }
+    //    FIXME: set bottom Instead of height.
     _scrollContainerContentSizeConstraint = [NSLayoutConstraint constraintWithItem:_scrollContainerView
                                                                          attribute:NSLayoutAttributeHeight
                                                                          relatedBy:NSLayoutRelationEqual
                                                                             toItem:nil
                                                                          attribute:NSLayoutAttributeNotAnAttribute
                                                                         multiplier:1.0
-                                                                          constant:1200.0];
+                                                                          constant:3000.0];
 }
 
 - (void)updateContainerConstraints {

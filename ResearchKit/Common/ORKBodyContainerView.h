@@ -35,7 +35,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class ORKBodyItem;
-@interface ORKBodyContainerView : UIView
+@interface ORKBodyContainerView : UIStackView
 
 - (instancetype)initWithFrame:(CGRect)frame NS_UNAVAILABLE;
 

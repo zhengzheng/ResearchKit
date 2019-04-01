@@ -54,6 +54,7 @@ NSString *const ORKNavigationContainerShadowColorKey = @"ORKNavigationContainerS
 NSString *const ORKProgressLabelColorKey = @"ORKProgressLabelColorKey";
 NSString *const ORKiPadBackgroundViewColorKey = @"ORKiPadBacgroundViewColorKey";
 NSString *const ORKTopContentImageViewBackgroundColorKey = @"ORKTopContentImageViewBackgroundColorKey";
+NSString *const ORKBulletItemTextColorKey = @"ORKBulletItemTextColorKey";
 CGFloat ORKQuestionStepMinimumHeaderHeight = 29.75;
 CGFloat ORKCardDefaultCornerRadii = 10.0;
 CGFloat ORKCardDefaultBorderWidth = 0.5;
@@ -79,8 +80,11 @@ CGFloat ORKStepContainerTopMarginFor7 = 20.0;
 CGFloat ORKStepContainerTopMarginForSE = 20.0;
 CGFloat ORKStepContainerTopMarginForDefault = 20.0;
 
-CGFloat ORKStepContainerTitleToBodyContainerTopPaddingRegular = 15.0;
-CGFloat ORKStepContainerTitleToBodyContainerTopPaddingSmall = 11.0;
+CGFloat ORKStepContainerTitleToBodyTopPaddingStandard = 15.0;
+CGFloat ORKStepContainerTitleToBodyTopPaddingShort = 11.0;
+
+CGFloat ORKStepContainerTitleToBulletTopPaddingStandard = 57.0;
+CGFloat ORKStepContainerTitleToBulletTopPaddingShort = 37.0;
 
 CGFloat ORKStepContainerTopContentHeightPercentage = 36.0;
 CGFloat ORKStepContainerFirstItemTopPaddingPercentage = 9.0;
@@ -132,6 +136,7 @@ static NSMutableDictionary *colors() {
                     ORKProgressLabelColorKey: [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:142.0/255.0 alpha:1.0],
                     ORKiPadBackgroundViewColorKey: [UIColor colorWithRed:249.0 / 255.0 green:249.0 / 255.0 blue:251.0 / 255.0 alpha:1.0],
                     ORKTopContentImageViewBackgroundColorKey: (ORKRGB(0xD7D7D7)),
+                    ORKBulletItemTextColorKey: [UIColor colorWithRed:0.56 green:0.56 blue:0.58 alpha:1.0]
                     } mutableCopy];
     });
     return colors;
@@ -484,18 +489,37 @@ CGFloat ORKStepContainerFirstItemTopPaddingForWindow(UIWindow *window) {
     return ceil((ORKStepContainerFirstItemTopPaddingPercentage / 100.0) * windowSize.height);
 }
 
-CGFloat ORKStepContainerTitleToBodyContainerTopPaddingForWindow(UIWindow *window) {
+//FIXME: Consolidate title/Icon to Body/Bullet methods into one. remove copy paste.
+
+CGFloat ORKStepContainerTitleToBodyTopPaddingForWindow(UIWindow *window) {
     CGFloat padding = 0;
     switch (ORKGetVerticalScreenTypeForWindow(window)) {
         case ORKScreenTypeiPhone5:
-            padding = ORKStepContainerTitleToBodyContainerTopPaddingSmall;
+            padding = ORKStepContainerTitleToBodyTopPaddingShort;
             break;
         case ORKScreenTypeiPhoneXSMax:
         case ORKScreenTypeiPhoneX:
         case ORKScreenTypeiPhone6Plus:
         case ORKScreenTypeiPhone6:
         default:
-            padding = ORKStepContainerTitleToBodyContainerTopPaddingRegular;
+            padding = ORKStepContainerTitleToBodyTopPaddingStandard;
+            break;
+    }
+    return padding;
+}
+
+CGFloat ORKStepContainerTitleToBulletTopPaddingForWindow(UIWindow *window) {
+    CGFloat padding = 0;
+    switch (ORKGetVerticalScreenTypeForWindow(window)) {
+        case ORKScreenTypeiPhone5:
+            padding = ORKStepContainerTitleToBulletTopPaddingShort;
+            break;
+        case ORKScreenTypeiPhoneXSMax:
+        case ORKScreenTypeiPhoneX:
+        case ORKScreenTypeiPhone6Plus:
+        case ORKScreenTypeiPhone6:
+        default:
+            padding = ORKStepContainerTitleToBulletTopPaddingStandard;
             break;
     }
     return padding;
