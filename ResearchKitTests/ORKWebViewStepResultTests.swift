@@ -38,25 +38,23 @@ class ORKWebViewStepResultTests: XCTestCase {
     override func setUp() {
         identifer = "RESULT"
         result = ORKWebViewStepResult(identifier: identifer)
-        result.startDate = date
-        result.endDate = date
         result.result = "RESULTTORESULT"
     }
 
-    func testInit() {
+    func testProperties() {
         XCTAssertEqual(result.identifier, identifer)
-    }
-
-    func testAttributes() {
         XCTAssertEqual(result.result, "RESULTTORESULT")
     }
 
     func testIsEqual() {
+        result.startDate = date
+        result.endDate = date
+        
         let newResult = ORKWebViewStepResult(identifier: identifer)
         newResult.startDate = date
         newResult.endDate = date
         newResult.result = "RESULTTORESULT"
-        XCTAssert(result.isEqual(result))
+        
+        XCTAssert(result.isEqual(newResult))
     }
-
 }
