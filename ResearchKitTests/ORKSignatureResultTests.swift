@@ -39,19 +39,19 @@ class ORKSignatureResultTests: XCTestCase {
     override func setUp() {
         let bundle = Bundle(identifier: "org.researchkit.ResearchKit")
         image = UIImage(named: "heartbeat", in: bundle, compatibleWith: .none)
-        
         path = UIBezierPath(rect: CGRect(x: 0, y: 0, width: 50, height: 50))
         result = ORKSignatureResult(signatureImage: image, signaturePath: [path])
-        result.startDate = date
-        result.endDate = date
     }
 
-    func testInit() {
+    func testProperties() {
         XCTAssertEqual(result.signatureImage, image)
         XCTAssertEqual(result.signaturePath, [path])
     }
     
     func testIsEqual() {
+        result.startDate = date
+        result.endDate = date
+        
         let newResult = ORKSignatureResult(signatureImage: image, signaturePath: [path])
         newResult.startDate = date
         newResult.endDate = date
