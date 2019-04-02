@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /*
  Copyright (c) 2015, Apple Inc. All rights reserved.
  
@@ -28,15 +27,6 @@
  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-=======
-//
-//  ORKPasscodeResultTests.swift
-//  ResearchKitTests
-//
-//  Created by Oscar San Juan on 3/28/19.
-//  Copyright © 2019 researchkit.org. All rights reserved.
-//
->>>>>>> parent of f42916f2... Revert "Completed implementation for ORKPasscodeResult"
 
 import XCTest
 @testable import ResearchKit
