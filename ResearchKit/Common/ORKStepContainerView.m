@@ -40,6 +40,7 @@ static const CGFloat ORKStepContainerIconImageViewDimension = 80.0;
 static const CGFloat ORKStepContainerIconImageViewToTitleLabelPadding = 20.0;
 static const CGFloat ORKStepContainerIconToBodyTopPaddingStandard = 20.0;
 static const CGFloat ORKStepContainerIconToBulletTopPaddingStandard = 20.0;
+static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
 
 @implementation ORKStepContainerView {
     
@@ -55,6 +56,7 @@ static const CGFloat ORKStepContainerIconToBulletTopPaddingStandard = 20.0;
     NSLayoutConstraint *_scrollViewTopConstraint;
     NSLayoutConstraint *_titleLabelTopConstraint;
     NSLayoutConstraint *_bodyContainerViewTopConstraint;
+    NSLayoutConstraint *_customContentViewTopConstraint;
     
     NSLayoutConstraint *_scrollContainerContentSizeConstraint;
     NSArray<NSLayoutConstraint *> *_topContentImageViewConstraints;
@@ -106,6 +108,7 @@ static const CGFloat ORKStepContainerIconToBulletTopPaddingStandard = 20.0;
     if (!_titleLabel) {
         [self setupTitleLabel];
         [self updateBodyContainerViewTopConstraint];
+        [self updateCustomContentViewTopConstraint];
         [self setNeedsUpdateConstraints];
     }
     [_titleLabel setText:stepTitle];
@@ -119,6 +122,7 @@ static const CGFloat ORKStepContainerIconToBulletTopPaddingStandard = 20.0;
         [self deactivateIconImageViewConstraints];
         [self updateTitleLabelTopConstraint];
         [self updateBodyContainerViewTopConstraint];
+        [self updateCustomContentViewTopConstraint];
         [self setNeedsUpdateConstraints];
     }
     if (titleIconImage && !_iconImageView) {
@@ -126,6 +130,7 @@ static const CGFloat ORKStepContainerIconToBulletTopPaddingStandard = 20.0;
         _iconImageView.image = titleIconImage;
         [self updateTitleLabelTopConstraint];
         [self updateBodyContainerViewTopConstraint];
+        [self updateCustomContentViewTopConstraint];
         [self setNeedsUpdateConstraints];
     }
     if (titleIconImage && _iconImageView) {
@@ -137,6 +142,7 @@ static const CGFloat ORKStepContainerIconToBulletTopPaddingStandard = 20.0;
     _bodyItems = bodyItems;
     if (!_bodyContainerView) {
         [self setupBodyContainerView];
+        [self updateCustomContentViewTopConstraint];
         [self setNeedsUpdateConstraints];
     }
     else {
@@ -201,6 +207,80 @@ static const CGFloat ORKStepContainerIconToBulletTopPaddingStandard = 20.0;
     }
     [_scrollContainerView addSubview:_bodyContainerView];
     [self setupBodyContainerViewConstraints];
+}
+
+- (void)setCustomContentView:(UIView *)customContentView {
+    _customContentView = customContentView;
+    [_scrollContainerView addSubview:_customContentView];
+    [self setupCustomContentViewConstraints];
+}
+
+- (void)setupCustomContentViewConstraints {
+    _customContentView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self setCustomContentViewTopConstraint];
+    [_updatedConstraints addObjectsFromArray:@[
+                                               _customContentViewTopConstraint,
+                                               [NSLayoutConstraint constraintWithItem:_customContentView
+                                                                            attribute:NSLayoutAttributeLeft
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:_scrollContainerView
+                                                                            attribute:NSLayoutAttributeLeft
+                                                                           multiplier:1.0
+                                                                             constant:0.0],
+                                               [NSLayoutConstraint constraintWithItem:_customContentView
+                                                                            attribute:NSLayoutAttributeRight
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:_scrollContainerView
+                                                                            attribute:NSLayoutAttributeRight
+                                                                           multiplier:1.0
+                                                                             constant:0.0]
+                                               ]];
+    [self setNeedsUpdateConstraints];
+}
+
+- (void)setCustomContentViewTopConstraint {
+    id topItem;
+    NSLayoutAttribute attribute;
+    
+    if (_bodyContainerView) {
+        topItem = _bodyContainerView;
+        attribute = NSLayoutAttributeBottom;
+    }
+    else if (_titleLabel) {
+        topItem = _titleLabel;
+        attribute = NSLayoutAttributeBottom;
+    }
+    else if (_iconImageView) {
+        topItem = _iconImageView;
+        attribute = NSLayoutAttributeBottom;
+    }
+    else {
+        topItem = _scrollContainerView;
+        attribute = NSLayoutAttributeTop;
+    }
+    
+    _customContentViewTopConstraint = [NSLayoutConstraint constraintWithItem:_customContentView
+                                                                   attribute:NSLayoutAttributeTop
+                                                                   relatedBy:NSLayoutRelationEqual
+                                                                      toItem:topItem
+                                                                   attribute:attribute
+                                                                  multiplier:1.0
+                                                                    constant:ORKStepContainerTopCustomContentPaddingStandard];
+}
+
+- (void)updateCustomContentViewTopConstraint {
+    if (_customContentView) {
+        if (_customContentViewTopConstraint && _customContentViewTopConstraint.isActive) {
+            [NSLayoutConstraint deactivateConstraints:@[_customContentViewTopConstraint]];
+        }
+        if ([_updatedConstraints containsObject:_customContentViewTopConstraint]) {
+            [_updatedConstraints removeObject:_customContentViewTopConstraint];
+        }
+        [self setCustomContentViewTopConstraint];
+        if (_customContentViewTopConstraint) {
+            [_updatedConstraints addObject:_customContentViewTopConstraint];
+        }
+    }
 }
 
 - (void)setBodyContainerViewTopConstraint {

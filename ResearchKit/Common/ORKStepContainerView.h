@@ -47,6 +47,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) NSArray<ORKBodyItem *> * bodyItems;
 
+@property (nonatomic) UIView * customContentView;
+
 @end
 
 NS_ASSUME_NONNULL_END
