@@ -39,12 +39,12 @@ class ORKPasscodeResultTests: XCTestCase {
     override func setUp() {
         identifier = "RESULT"
         result = ORKPasscodeResult(identifier: identifier)
+        result.isPasscodeSaved = true
+        result.isTouchIdEnabled = false
     }
 
     func testProperties() {
         XCTAssertEqual(result.identifier, identifier)
-        result.isPasscodeSaved = true
-        result.isTouchIdEnabled = false
         XCTAssertEqual(result.isPasscodeSaved, true)
         XCTAssertEqual(result.isTouchIdEnabled, false)
     }
