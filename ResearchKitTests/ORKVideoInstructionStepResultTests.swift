@@ -39,12 +39,12 @@ class ORKVideoInstructionStepResultTests: XCTestCase {
     override func setUp() {
         identifier = "RESULT"
         result = ORKVideoInstructionStepResult(identifier: identifier)
+        result.playbackCompleted = true
+        result.playbackStoppedTime = 20.00
     }
     
     func testProperties() {
         XCTAssertEqual(result.identifier, identifier)
-        result.playbackCompleted = true
-        result.playbackStoppedTime = 20.00
         XCTAssertEqual(result.playbackCompleted, true)
         XCTAssertEqual(result.playbackStoppedTime, 20.00)
     }
