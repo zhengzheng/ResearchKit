@@ -29,8 +29,8 @@
  */
 import Foundation
 
-enum TestPredicateFormat: String{
-    case concent = "SUBQUERY(SELF, $x, $x.identifier == $ORK_TASK_IDENTIFIER AND SUBQUERY($x.results, $y, $y.identifier == %@ AND $y.isPreviousResult == 0 AND SUBQUERY($y.results, $z, $z.identifier == %@ AND $z.consented == 1).@count > 0).@count > 0).@count > 0"
+enum TestPredicateFormat: String {
+    case consent = "SUBQUERY(SELF, $x, $x.identifier == $ORK_TASK_IDENTIFIER AND SUBQUERY($x.results, $y, $y.identifier == %@ AND $y.isPreviousResult == 0 AND SUBQUERY($y.results, $z, $z.identifier == %@ AND $z.consented == 1).@count > 0).@count > 0).@count > 0"
     case text = "SUBQUERY(SELF, $x, $x.identifier == $ORK_TASK_IDENTIFIER AND SUBQUERY($x.results, $y, $y.identifier == %@ AND $y.isPreviousResult == 0 AND SUBQUERY($y.results, $z, $z.identifier == %@ AND $z.answer == %@).@count > 0).@count > 0).@count > 0"
     case choice = "SUBQUERY(SELF, $x, $x.identifier == $ORK_TASK_IDENTIFIER AND SUBQUERY($x.results, $y, $y.identifier == %@ AND $y.isPreviousResult == 0 AND SUBQUERY($y.results, $z, $z.identifier == %@ AND SUBQUERY($z.answer, $w, $w MATCHES %@).@count > 0).@count > 0).@count > 0).@count > 0"
     case choiceObject = "SUBQUERY(SELF, $x, $x.identifier == $ORK_TASK_IDENTIFIER AND SUBQUERY($x.results, $y, $y.identifier == %@ AND $y.isPreviousResult == 0 AND SUBQUERY($y.results, $z, $z.identifier == %@ AND SUBQUERY($z.answer, $w, $w == %@).@count > 0).@count > 0).@count > 0).@count > 0"
