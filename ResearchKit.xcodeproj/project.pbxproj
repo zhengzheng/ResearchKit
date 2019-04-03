@@ -65,6 +65,8 @@
 		147503BB1AEE807C004B17F3 /* ORKToneAudiometryStepViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 147503B51AEE807C004B17F3 /* ORKToneAudiometryStepViewController.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		147503BC1AEE807C004B17F3 /* ORKToneAudiometryStepViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 147503B61AEE807C004B17F3 /* ORKToneAudiometryStepViewController.m */; };
 		1483DBB5220125BE004C26B6 /* ORKActiveStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1483DBB4220125BE004C26B6 /* ORKActiveStepTests.swift */; };
+		1490DD02224D6A21003FEEDA /* ORKResultPredicateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1490DD01224D6A21003FEEDA /* ORKResultPredicateTests.swift */; };
+		1490DD04224D6A61003FEEDA /* ORKTestResultPredicateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1490DD03224D6A61003FEEDA /* ORKTestResultPredicateType.swift */; };
 		1490DCF4224D3C20003FEEDA /* ORKPasscodeResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1490DCF3224D3C20003FEEDA /* ORKPasscodeResultTests.swift */; };
 		1490DCF6224D426B003FEEDA /* ORKSignatureResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1490DCF5224D426B003FEEDA /* ORKSignatureResultTests.swift */; };
 		1490DCF8224D4550003FEEDA /* ORKVideoInstructionStepResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1490DCF7224D4550003FEEDA /* ORKVideoInstructionStepResultTests.swift */; };
@@ -795,6 +797,8 @@
 		147503B61AEE807C004B17F3 /* ORKToneAudiometryStepViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ORKToneAudiometryStepViewController.m; sourceTree = "<group>"; };
 		1483DBB3220125BE004C26B6 /* ResearchKitTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ResearchKitTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		1483DBB4220125BE004C26B6 /* ORKActiveStepTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORKActiveStepTests.swift; sourceTree = "<group>"; };
+		1490DD01224D6A21003FEEDA /* ORKResultPredicateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORKResultPredicateTests.swift; sourceTree = "<group>"; };
+		1490DD03224D6A61003FEEDA /* ORKTestResultPredicateType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORKTestResultPredicateType.swift; sourceTree = "<group>"; };
 		1490DCF3224D3C20003FEEDA /* ORKPasscodeResultTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORKPasscodeResultTests.swift; sourceTree = "<group>"; };
 		1490DCF5224D426B003FEEDA /* ORKSignatureResultTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORKSignatureResultTests.swift; sourceTree = "<group>"; };
 		1490DCF7224D4550003FEEDA /* ORKVideoInstructionStepResultTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORKVideoInstructionStepResultTests.swift; sourceTree = "<group>"; };
@@ -2111,6 +2115,8 @@
 				2EBFE11F1AE1B74100CB8254 /* ORKVoiceEngineTests.m */,
 				1483DBB4220125BE004C26B6 /* ORKActiveStepTests.swift */,
 				1483DBB3220125BE004C26B6 /* ResearchKitTests-Bridging-Header.h */,
+				1490DD01224D6A21003FEEDA /* ORKResultPredicateTests.swift */,
+				1490DD03224D6A61003FEEDA /* ORKTestResultPredicateType.swift */,
 			);
 			path = ResearchKitTests;
 			sourceTree = "<group>";
@@ -3669,6 +3675,7 @@
 				86CC8EB81AC09383001CCD89 /* ORKHKSampleTests.m in Sources */,
 				BCB96C131B19C0EC002A0B96 /* ORKStepTests.m in Sources */,
 				86CC8EB51AC09383001CCD89 /* ORKConsentTests.m in Sources */,
+				1490DD04224D6A61003FEEDA /* ORKTestResultPredicateType.swift in Sources */,
 				14BE7092220A206B005DEF07 /* ORKDataLoggerManagerTests.m in Sources */,
 				1483DBB5220125BE004C26B6 /* ORKActiveStepTests.swift in Sources */,
 				1490DCF6224D426B003FEEDA /* ORKSignatureResultTests.swift in Sources */,
@@ -3686,6 +3693,7 @@
 				1490DCF4224D3C20003FEEDA /* ORKPasscodeResultTests.swift in Sources */,
 				14BE7091220A201E005DEF07 /* ORKDataLoggerTests.m in Sources */,
 				86CC8EB31AC09383001CCD89 /* ORKAccessibilityTests.m in Sources */,
+				1490DD02224D6A21003FEEDA /* ORKResultPredicateTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
