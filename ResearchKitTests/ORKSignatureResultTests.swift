@@ -29,36 +29,33 @@
  */
 
 import XCTest
-@testable import ResearchKit
 
-class ORKPasscodeResultTests: XCTestCase {
-    var result: ORKPasscodeResult!
-    var identifier: String!
+class ORKSignatureResultTests: XCTestCase {
+    var result: ORKSignatureResult!
+    var image: UIImage!
+    var path: UIBezierPath!
     let date = Date()
-    
+
     override func setUp() {
-        identifier = "RESULT"
-        result = ORKPasscodeResult(identifier: identifier)
-        result.isPasscodeSaved = true
-        result.isTouchIdEnabled = false
+        let bundle = Bundle(identifier: "org.researchkit.ResearchKit")
+        image = UIImage(named: "heartbeat", in: bundle, compatibleWith: .none)
+        path = UIBezierPath(rect: CGRect(x: 0, y: 0, width: 50, height: 50))
+        result = ORKSignatureResult(signatureImage: image, signaturePath: [path])
     }
 
     func testProperties() {
-        XCTAssertEqual(result.identifier, identifier)
-        XCTAssertEqual(result.isPasscodeSaved, true)
-        XCTAssertEqual(result.isTouchIdEnabled, false)
+        XCTAssertEqual(result.signatureImage, image)
+        XCTAssertEqual(result.signaturePath, [path])
     }
     
     func testIsEqual() {
         result.startDate = date
         result.endDate = date
         
-        let newResult = ORKPasscodeResult(identifier: identifier)
-        newResult.isPasscodeSaved = true
-        newResult.isTouchIdEnabled = false
+        let newResult = ORKSignatureResult(signatureImage: image, signaturePath: [path])
         newResult.startDate = date
         newResult.endDate = date
         
-        XCTAssert(result.isEqual(result))
+        XCTAssert(result.isEqual(newResult))
     }
 }

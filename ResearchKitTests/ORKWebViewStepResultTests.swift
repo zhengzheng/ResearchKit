@@ -29,36 +29,32 @@
  */
 
 import XCTest
-@testable import ResearchKit
 
-class ORKPasscodeResultTests: XCTestCase {
-    var result: ORKPasscodeResult!
-    var identifier: String!
+class ORKWebViewStepResultTests: XCTestCase {
+    var result: ORKWebViewStepResult!
+    var identifer: String!
     let date = Date()
     
     override func setUp() {
-        identifier = "RESULT"
-        result = ORKPasscodeResult(identifier: identifier)
-        result.isPasscodeSaved = true
-        result.isTouchIdEnabled = false
+        identifer = "RESULT"
+        result = ORKWebViewStepResult(identifier: identifer)
+        result.result = "RESULTTORESULT"
     }
 
     func testProperties() {
-        XCTAssertEqual(result.identifier, identifier)
-        XCTAssertEqual(result.isPasscodeSaved, true)
-        XCTAssertEqual(result.isTouchIdEnabled, false)
+        XCTAssertEqual(result.identifier, identifer)
+        XCTAssertEqual(result.result, "RESULTTORESULT")
     }
-    
+
     func testIsEqual() {
         result.startDate = date
         result.endDate = date
         
-        let newResult = ORKPasscodeResult(identifier: identifier)
-        newResult.isPasscodeSaved = true
-        newResult.isTouchIdEnabled = false
+        let newResult = ORKWebViewStepResult(identifier: identifer)
         newResult.startDate = date
         newResult.endDate = date
+        newResult.result = "RESULTTORESULT"
         
-        XCTAssert(result.isEqual(result))
+        XCTAssert(result.isEqual(newResult))
     }
 }

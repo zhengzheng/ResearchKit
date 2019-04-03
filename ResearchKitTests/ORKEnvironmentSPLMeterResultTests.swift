@@ -29,36 +29,36 @@
  */
 
 import XCTest
-@testable import ResearchKit
 
-class ORKPasscodeResultTests: XCTestCase {
-    var result: ORKPasscodeResult!
-    var identifier: String!
+class ORKEnvironmentSPLMeterResultTests: XCTestCase {
+    
+    var result: ORKEnvironmentSPLMeterResult!
+    var identifer: String!
     let date = Date()
     
     override func setUp() {
-        identifier = "RESULT"
-        result = ORKPasscodeResult(identifier: identifier)
-        result.isPasscodeSaved = true
-        result.isTouchIdEnabled = false
+        identifer = "RESULT"
+        result = ORKEnvironmentSPLMeterResult(identifier: identifer)
+        result.sensitivityOffset = 40
+        result.recordedSPLMeterSamples = [2]
     }
-
+    
     func testProperties() {
-        XCTAssertEqual(result.identifier, identifier)
-        XCTAssertEqual(result.isPasscodeSaved, true)
-        XCTAssertEqual(result.isTouchIdEnabled, false)
+        XCTAssertEqual(result.identifier, identifer)
+        XCTAssertEqual(result.sensitivityOffset, 40)
+        XCTAssertEqual(result.recordedSPLMeterSamples, [2])
     }
     
     func testIsEqual() {
         result.startDate = date
         result.endDate = date
         
-        let newResult = ORKPasscodeResult(identifier: identifier)
-        newResult.isPasscodeSaved = true
-        newResult.isTouchIdEnabled = false
+        let newResult = ORKEnvironmentSPLMeterResult(identifier: identifer)
+        newResult.sensitivityOffset = 40
+        newResult.recordedSPLMeterSamples = [2]
         newResult.startDate = date
         newResult.endDate = date
         
-        XCTAssert(result.isEqual(result))
+        XCTAssert(result.isEqual(newResult))
     }
 }

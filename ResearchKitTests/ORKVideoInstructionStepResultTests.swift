@@ -29,36 +29,36 @@
  */
 
 import XCTest
-@testable import ResearchKit
 
-class ORKPasscodeResultTests: XCTestCase {
-    var result: ORKPasscodeResult!
+class ORKVideoInstructionStepResultTests: XCTestCase {
+    
+    var result: ORKVideoInstructionStepResult!
     var identifier: String!
     let date = Date()
-    
+
     override func setUp() {
         identifier = "RESULT"
-        result = ORKPasscodeResult(identifier: identifier)
-        result.isPasscodeSaved = true
-        result.isTouchIdEnabled = false
+        result = ORKVideoInstructionStepResult(identifier: identifier)
+        result.playbackCompleted = true
+        result.playbackStoppedTime = 20.00
     }
-
+    
     func testProperties() {
         XCTAssertEqual(result.identifier, identifier)
-        XCTAssertEqual(result.isPasscodeSaved, true)
-        XCTAssertEqual(result.isTouchIdEnabled, false)
+        XCTAssertEqual(result.playbackCompleted, true)
+        XCTAssertEqual(result.playbackStoppedTime, 20.00)
     }
     
     func testIsEqual() {
         result.startDate = date
         result.endDate = date
         
-        let newResult = ORKPasscodeResult(identifier: identifier)
-        newResult.isPasscodeSaved = true
-        newResult.isTouchIdEnabled = false
+        let newResult = ORKVideoInstructionStepResult(identifier: identifier)
         newResult.startDate = date
         newResult.endDate = date
+        newResult.playbackCompleted = true
+        newResult.playbackStoppedTime = 20.00
         
-        XCTAssert(result.isEqual(result))
+        XCTAssert(result.isEqual(newResult))
     }
 }
