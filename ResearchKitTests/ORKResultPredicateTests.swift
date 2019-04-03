@@ -32,9 +32,6 @@ import XCTest
 
 class ORKResultPredicateTests: XCTestCase {
     
-    var predicate: NSPredicate!
-    var expectedPredicate: NSPredicate!
-    var predicateString: TestPredicateFormat!
     var selector: ORKResultSelector!
     var identifier: String!
     
@@ -44,56 +41,56 @@ class ORKResultPredicateTests: XCTestCase {
     }
     
     func testPredicateForBooleanQuestion() {
-        predicate = ORKResultPredicate.predicateForBooleanQuestionResult(with: selector, expectedAnswer: true)
-        predicateString = .boolean
-        expectedPredicate = NSPredicate(format: predicateString.rawValue, identifier, identifier)
+        let predicate = ORKResultPredicate.predicateForBooleanQuestionResult(with: selector, expectedAnswer: true)
+        let predicateString = TestPredicateFormat.boolean
+        let expectedPredicate = NSPredicate(format: predicateString.rawValue, identifier, identifier)
         XCTAssert(predicate.isEqual(expectedPredicate))
     }
     
     func testPredicateForNilQuestion() {
-        predicate = ORKResultPredicate.predicateForNilQuestionResult(with: selector)
-        predicateString = .nilPredicate
-        expectedPredicate = NSPredicate(format: predicateString.rawValue, identifier, identifier)
+        let predicate = ORKResultPredicate.predicateForNilQuestionResult(with: selector)
+        let predicateString = TestPredicateFormat.nilPredicate
+        let expectedPredicate = NSPredicate(format: predicateString.rawValue, identifier, identifier)
         XCTAssert(predicate.isEqual(expectedPredicate))
     }
     
-    func testPredicatedForConcent(){
-        predicate = ORKResultPredicate.predicateForConsent(with: selector, didConsent: true)
-        predicateString = .concent
-        expectedPredicate = NSPredicate(format: predicateString.rawValue, identifier, identifier)
+    func testPredicatedForConsent() {
+        let predicate = ORKResultPredicate.predicateForConsent(with: selector, didConsent: true)
+        let predicateString = TestPredicateFormat.consent
+        let expectedPredicate = NSPredicate(format: predicateString.rawValue, identifier, identifier)
         XCTAssert(predicate.isEqual(expectedPredicate))
     }
     
     func testPredicateForTextQuestion() {
         let expectedString = "EXPECTED"
-        predicate = ORKResultPredicate.predicateForTextQuestionResult(with: selector, expectedString: expectedString)
-        predicateString = .text
-        expectedPredicate = NSPredicate(format: predicateString.rawValue, identifier, identifier, expectedString)
+        let predicate = ORKResultPredicate.predicateForTextQuestionResult(with: selector, expectedString: expectedString)
+        let predicateString = TestPredicateFormat.text
+        let expectedPredicate = NSPredicate(format: predicateString.rawValue, identifier, identifier, expectedString)
         XCTAssert(predicate.isEqual(expectedPredicate))
     }
     
     func testPredicateForScaleQuestion() {
-        predicate = ORKResultPredicate.predicateForScaleQuestionResult(with: selector, expectedAnswer: 5)
-        predicateString = .scale
-        expectedPredicate = NSPredicate(format: predicateString.rawValue, identifier, identifier)
+        var predicate = ORKResultPredicate.predicateForScaleQuestionResult(with: selector, expectedAnswer: 5)
+        var predicateString = TestPredicateFormat.scale
+        var expectedPredicate = NSPredicate(format: predicateString.rawValue, identifier, identifier)
         XCTAssert(predicate.isEqual(expectedPredicate))
         
         predicate = ORKResultPredicate.predicateForScaleQuestionResult(with: selector, maximumExpectedAnswerValue: 20)
-        predicateString = .scaleMax
+        predicateString = TestPredicateFormat.scaleMax
         expectedPredicate = NSPredicate(format: predicateString.rawValue, identifier, identifier)
         XCTAssert(predicate.isEqual(expectedPredicate))
         
         predicate = ORKResultPredicate.predicateForScaleQuestionResult(with: selector, minimumExpectedAnswerValue: 10)
-        predicateString = .scaleMin
+        predicateString = TestPredicateFormat.scaleMin
         expectedPredicate = NSPredicate(format: predicateString.rawValue, identifier, identifier)
         XCTAssert(predicate.isEqual(expectedPredicate))
     }
     
     func testPredicateForChoiceQuestion() {
         let pattern = "PATTERN"
-        predicate = ORKResultPredicate.predicateForChoiceQuestionResult(with: selector, matchingPattern: pattern)
-        predicateString = .choice
-        expectedPredicate = NSPredicate(format: predicateString.rawValue, identifier, identifier, pattern)
+        var predicate = ORKResultPredicate.predicateForChoiceQuestionResult(with: selector, matchingPattern: pattern)
+        var predicateString = TestPredicateFormat.choice
+        var expectedPredicate = NSPredicate(format: predicateString.rawValue, identifier, identifier, pattern)
         XCTAssert(predicate.isEqual(expectedPredicate))
         
         let resultOne = ORKChoiceQuestionResult(identifier: "RESULT_ONE")
@@ -101,55 +98,54 @@ class ORKResultPredicateTests: XCTestCase {
         let results = [resultOne, resultTwo]
         
         predicate = ORKResultPredicate.predicateForChoiceQuestionResult(with: selector, expectedAnswerValue: resultOne)
-        predicateString = .choiceObject
+        predicateString = TestPredicateFormat.choiceObject
         expectedPredicate = NSPredicate(format: predicateString.rawValue, identifier, identifier, resultOne)
         XCTAssert(predicate.isEqual(expectedPredicate))
         
         predicate = ORKResultPredicate.predicateForChoiceQuestionResult(with: selector, expectedAnswerValues: results)
-        predicateString = .choiceObjects
+        predicateString = TestPredicateFormat.choiceObjects
         expectedPredicate = NSPredicate(format: predicateString.rawValue, identifier, identifier, resultOne, resultTwo)
         XCTAssert(predicate.isEqual(expectedPredicate))
     }
     
     func testPredicateForNumericQuestion() {
-        predicate = ORKResultPredicate.predicateForNumericQuestionResult(with: selector, expectedAnswer: 25)
-        predicateString = .numeric
-        expectedPredicate = NSPredicate(format: predicateString.rawValue, identifier, identifier)
+        var predicate = ORKResultPredicate.predicateForNumericQuestionResult(with: selector, expectedAnswer: 25)
+        var predicateString = TestPredicateFormat.numeric
+        var expectedPredicate = NSPredicate(format: predicateString.rawValue, identifier, identifier)
         XCTAssert(predicate.isEqual(expectedPredicate))
         
         predicate = ORKResultPredicate.predicateForNumericQuestionResult(with: selector, maximumExpectedAnswerValue: 50)
-        predicateString = .numericMax
+        predicateString = TestPredicateFormat.numericMax
         expectedPredicate = NSPredicate(format: predicateString.rawValue, identifier, identifier)
         XCTAssert(predicate.isEqual(expectedPredicate))
         
         predicate = ORKResultPredicate.predicateForNumericQuestionResult(with: selector, minimumExpectedAnswerValue: 0)
-        predicateString = .numericMin
+        predicateString = TestPredicateFormat.numericMin
         expectedPredicate = NSPredicate(format: predicateString.rawValue, identifier, identifier)
         XCTAssert(predicate.isEqual(expectedPredicate))
     }
     
     func testPredicateForTimeIntervalQuestion() {
-        predicate = ORKResultPredicate.predicateForTimeIntervalQuestionResult(with: selector, maximumExpectedAnswerValue: 100)
-        predicateString = .timeMax
-        expectedPredicate = NSPredicate(format: predicateString.rawValue, identifier, identifier)
+        var predicate = ORKResultPredicate.predicateForTimeIntervalQuestionResult(with: selector, maximumExpectedAnswerValue: 100)
+        var predicateString = TestPredicateFormat.timeMax
+        var expectedPredicate = NSPredicate(format: predicateString.rawValue, identifier, identifier)
         XCTAssert(predicate.isEqual(expectedPredicate))
         
         predicate = ORKResultPredicate.predicateForTimeIntervalQuestionResult(with: selector, minimumExpectedAnswerValue: 16)
-        predicateString = .timeMin
+        predicateString = TestPredicateFormat.timeMin
         expectedPredicate = NSPredicate(format: predicateString.rawValue, identifier, identifier)
         XCTAssert(predicate.isEqual(expectedPredicate))
         
         predicate = ORKResultPredicate.predicateForTimeIntervalQuestionResult(with: selector, minimumExpectedAnswerValue: 10, maximumExpectedAnswerValue: 1000)
-        predicateString = .timeMinAndMax
+        predicateString = TestPredicateFormat.timeMinAndMax
         expectedPredicate = NSPredicate(format: predicateString.rawValue, identifier, identifier)
         XCTAssert(predicate.isEqual(expectedPredicate))
     }
     
     func testPredicateForTimeOfDayQuestion() {
-        predicate = ORKResultPredicate.predicateForTimeOfDayQuestionResult(with: selector, minimumExpectedHour: 2, minimumExpectedMinute: 30, maximumExpectedHour: 10, maximumExpectedMinute: 10)
-        predicateString = .timeOfDay
-        expectedPredicate = NSPredicate(format: predicateString.rawValue, identifier, identifier)
+        let predicate = ORKResultPredicate.predicateForTimeOfDayQuestionResult(with: selector, minimumExpectedHour: 2, minimumExpectedMinute: 30, maximumExpectedHour: 10, maximumExpectedMinute: 10)
+        let predicateString = TestPredicateFormat.timeOfDay
+        let expectedPredicate = NSPredicate(format: predicateString.rawValue, identifier, identifier)
         XCTAssert(predicate.isEqual(expectedPredicate))
     }
-    
 }
