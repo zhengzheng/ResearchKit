@@ -41,20 +41,18 @@ class ORKEnvironmentSPLMeterResultTests: XCTestCase {
         result = ORKEnvironmentSPLMeterResult(identifier: identifer)
         result.sensitivityOffset = 40
         result.recordedSPLMeterSamples = [2]
-        result.startDate = date
-        result.endDate = date
     }
     
-    func testInit() {
+    func testProperties() {
         XCTAssertEqual(result.identifier, identifer)
-    }
-    
-    func testAttributes() {
         XCTAssertEqual(result.sensitivityOffset, 40)
         XCTAssertEqual(result.recordedSPLMeterSamples, [2])
     }
     
     func testIsEqual() {
+        result.startDate = date
+        result.endDate = date
+        
         let newResult = ORKEnvironmentSPLMeterResult(identifier: identifer)
         newResult.sensitivityOffset = 40
         newResult.recordedSPLMeterSamples = [2]
