@@ -58,5 +58,4 @@ class ORKSignatureResultTests: XCTestCase {
         
         XCTAssert(result.isEqual(newResult))
     }
-
 }
