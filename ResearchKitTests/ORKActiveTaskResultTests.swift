@@ -44,8 +44,6 @@ class ORKAmslerGridResultTests: XCTestCase {
         image = UIImage(named: "amslerGrid", in: bundle, compatibleWith: nil)
         path = UIBezierPath(rect: CGRect(x: 0, y: 0, width: 50, height: 50))
         result = ORKAmslerGridResult(identifier: identifier, image: image, path: [path], eyeSide: .left)
-        result.startDate = date
-        result.endDate = date
     }
     
     func testProperties() {
@@ -56,13 +54,13 @@ class ORKAmslerGridResultTests: XCTestCase {
     }
     
     func testIsEqual() {
-        let bundle = Bundle(identifier: "org.researchkit.ResearchKit")
-        image = UIImage(named: "amslerGrid", in: bundle, compatibleWith: nil)
-        path = UIBezierPath(rect: CGRect(x: 0, y: 0, width: 50, height: 50))
+        result.startDate = date
+        result.endDate = date
+
         let newResult = ORKAmslerGridResult(identifier: identifier, image: image, path: [path], eyeSide: .left)
         newResult.startDate = date
         newResult.endDate = date
-        XCTAssert(result .isEqual(newResult))
+        XCTAssert(result.isEqual(newResult))
     }
 }
 
@@ -86,8 +84,6 @@ class ORKHolePegTestResultTests: XCTestCase {
         result.totalTime = 5.0
         result.totalDistance = 10.0
         result.samples = [2,4]
-        result.startDate = date
-        result.endDate = date
     }
 
     func testProperties() {
@@ -105,6 +101,9 @@ class ORKHolePegTestResultTests: XCTestCase {
     }
     
     func testIsEqual() {
+        result.startDate = date
+        result.endDate = date
+        
         let newResult = ORKHolePegTestResult(identifier: identifier)
         newResult.movingDirection = .left
         newResult.isDominantHandTested = true
@@ -135,6 +134,7 @@ class ORKPSATResultTests: XCTestCase {
     override func setUp() {
         identifier = "TESTS"
         result = ORKPSATResult(identifier: identifier)
+        
         result.presentationMode = .auditory
         result.interStimulusInterval = 2
         result.stimulusDuration = 3
@@ -146,8 +146,6 @@ class ORKPSATResultTests: XCTestCase {
         sample = ORKPSATSample()
         sample.answer = 20
         result.samples = [sample]
-        result.startDate = date
-        result.endDate = date
     }
     
     func testProperties() {
@@ -164,6 +162,9 @@ class ORKPSATResultTests: XCTestCase {
     }
     
     func testIsEqual() {
+        result.startDate = date
+        result.endDate = date
+        
         let newResult = ORKPSATResult(identifier: identifier)
         newResult.presentationMode = .auditory
         newResult.interStimulusInterval = 2
@@ -176,7 +177,8 @@ class ORKPSATResultTests: XCTestCase {
         newResult.samples = [sample]
         newResult.startDate = date
         newResult.endDate = date
-        XCTAssert(result .isEqual(newResult))
+        
+        XCTAssert(result.isEqual(newResult))
     }
 }
 
@@ -188,13 +190,12 @@ class ORKRangeOfMotionResultTests: XCTestCase {
     override func setUp() {
         identifier = "RESULT"
         result = ORKRangeOfMotionResult(identifier: identifier)
+        
         result.start = 0
         result.finish = 50
         result.minimum = 10
         result.maximum = 50
         result.range = 10
-        result.startDate = date
-        result.endDate = date
     }
 
     func testProperties() {
@@ -207,6 +208,9 @@ class ORKRangeOfMotionResultTests: XCTestCase {
     }
     
     func testIsEqual() {
+        result.startDate = date
+        result.endDate = date
+        
         let newResult = ORKRangeOfMotionResult(identifier: identifier)
         newResult.start = 0
         newResult.finish = 50
@@ -215,6 +219,7 @@ class ORKRangeOfMotionResultTests: XCTestCase {
         newResult.range = 10
         newResult.startDate = date
         newResult.endDate = date
+        
         XCTAssert(result.isEqual(newResult))
     }
 }
@@ -229,13 +234,12 @@ class ORKReactionTimeResultTests: XCTestCase {
     override func setUp() {
         identifier = "RESULT"
         result = ORKReactionTimeResult(identifier: identifier)
+        
         result.timestamp = 10
         fileResult = ORKFileResult()
         url = URL(fileURLWithPath: "FILEURL")
         fileResult.fileURL = url
         result.fileResult = fileResult
-        result.startDate = date
-        result.endDate = date
     }
 
     func testProperties() {
@@ -245,11 +249,15 @@ class ORKReactionTimeResultTests: XCTestCase {
     }
     
     func testIsEqual() {
+        result.startDate = date
+        result.endDate = date
+        
         let newResult = ORKReactionTimeResult(identifier: identifier)
         newResult.timestamp = 10
         newResult.fileResult = fileResult
         newResult.startDate = date
         newResult.endDate = date
+        
         XCTAssert(result.isEqual(newResult))
     }
 }
@@ -263,14 +271,13 @@ class ORKSpatialSpanMemoryResultTests: XCTestCase {
     override func setUp() {
         identifier = "RESULT"
         result = ORKSpatialSpanMemoryResult(identifier: identifier)
+        
         result.score = 0
         result.numberOfGames = 20
         result.numberOfFailures = 20
         gameRecord = ORKSpatialSpanMemoryGameRecord()
         gameRecord.score = 10
         result.gameRecords = [gameRecord]
-        result.startDate = date
-        result.endDate = date
     }
  
     func testProperties() {
@@ -282,6 +289,9 @@ class ORKSpatialSpanMemoryResultTests: XCTestCase {
     }
     
     func testIsEqual() {
+        result.startDate = date
+        result.endDate = date
+        
         let newResult = ORKSpatialSpanMemoryResult(identifier: identifier)
         newResult.score = 0
         newResult.numberOfGames = 20
@@ -289,6 +299,7 @@ class ORKSpatialSpanMemoryResultTests: XCTestCase {
         newResult.gameRecords = [gameRecord]
         newResult.startDate = date
         newResult.endDate = date
+        
         XCTAssert(result.isEqual(newResult))
     }
 }
@@ -302,10 +313,9 @@ class ORKSpeechRecognitionResultTests: XCTestCase {
     override func setUp() {
         identifier = "Result"
         result = ORKSpeechRecognitionResult(identifier: identifier)
+        
         transcription = SFTranscription()
         result.transcription = transcription
-        result.startDate = date
-        result.endDate = date
     }
  
     func testProperties() {
@@ -314,10 +324,14 @@ class ORKSpeechRecognitionResultTests: XCTestCase {
     }
     
     func testIsEqual() {
+        result.startDate = date
+        result.endDate = date
+        
         let newResult = ORKSpeechRecognitionResult(identifier: identifier)
         newResult.transcription = transcription
         newResult.startDate = date
         newResult.endDate = date
+        
         XCTAssert(result.isEqual(newResult))
     }
 }
@@ -330,13 +344,12 @@ class ORKStroopResultTests: XCTestCase {
     override func setUp() {
         identifier = "RESULT"
         result = ORKStroopResult(identifier: identifier)
+        
         result.startTime = 0
         result.endTime = 100
         result.color = "BLUE"
         result.text = "TEXT"
         result.colorSelected = "RED"
-        result.startDate = date
-        result.endDate = date
     }
 
     func testProperties() {
@@ -349,6 +362,9 @@ class ORKStroopResultTests: XCTestCase {
     }
     
     func testIsEqual() {
+        result.startDate = date
+        result.endDate = date
+        
         let newResult = ORKStroopResult(identifier: identifier)
         newResult.startTime = 0
         newResult.endTime = 100
@@ -357,6 +373,7 @@ class ORKStroopResultTests: XCTestCase {
         newResult.colorSelected = "RED"
         newResult.startDate = date
         newResult.endDate = date
+        
         XCTAssert(result.isEqual(newResult))
     }
 }
@@ -373,6 +390,7 @@ class ORKTappingIntervalResultTests: XCTestCase {
     override func setUp() {
         identifier = "RESULT"
         result = ORKTappingIntervalResult(identifier: identifier)
+        
         sample = ORKTappingSample()
         sample.duration = 20
         stepViewSize = CGSize(width: 50, height: 50)
@@ -382,8 +400,6 @@ class ORKTappingIntervalResultTests: XCTestCase {
         result.stepViewSize = stepViewSize
         result.buttonRect1 = buttonRect1
         result.buttonRect2 = buttonRect2
-        result.startDate = date
-        result.endDate = date
     }
  
     func testProperties() {
@@ -395,6 +411,9 @@ class ORKTappingIntervalResultTests: XCTestCase {
     }
     
     func testIsEqual() {
+        result.startDate = date
+        result.endDate = date
+        
         let newResult = ORKTappingIntervalResult(identifier: identifier)
         newResult.samples = [sample]
         newResult.stepViewSize = stepViewSize
@@ -402,6 +421,7 @@ class ORKTappingIntervalResultTests: XCTestCase {
         newResult.buttonRect2 = buttonRect2
         newResult.startDate = date
         newResult.endDate = date
+        
         XCTAssert(result.isEqual(newResult))
     }
 }
@@ -414,11 +434,10 @@ class ORKTimedWalkResultTests: XCTestCase {
     override func setUp() {
         identifier = "RESULT"
         result = ORKTimedWalkResult(identifier: identifier)
+        
         result.distanceInMeters = 100
         result.timeLimit = 100
         result.duration = 20
-        result.startDate = date
-        result.endDate = date
     }
 
     func testProperties() {
@@ -429,12 +448,16 @@ class ORKTimedWalkResultTests: XCTestCase {
     }
     
     func testIsEqual() {
+        result.startDate = date
+        result.endDate = date
+        
         let newResult = ORKTimedWalkResult(identifier: identifier)
         newResult.distanceInMeters = 100
         newResult.timeLimit = 100
         newResult.duration = 20
         newResult.startDate = date
         newResult.endDate = date
+        
         XCTAssert(result.isEqual(newResult))
     }
 }
@@ -448,13 +471,12 @@ class ORKToneAudiometryResultTests: XCTestCase {
     override func setUp() {
         identifier = "RESULT"
         result = ORKToneAudiometryResult(identifier: identifier)
+        
         result.outputVolume = 100
         sample = ORKToneAudiometrySample()
         sample.amplitude = 100
         sample.frequency = 100
         result.samples = [sample]
-        result.startDate = date
-        result.endDate = date
     }
  
     func testProperties() {
@@ -464,11 +486,15 @@ class ORKToneAudiometryResultTests: XCTestCase {
     }
     
     func testIsEqual() {
+        result.startDate = date
+        result.endDate = date
+        
         let newResult = ORKToneAudiometryResult(identifier: identifier)
         newResult.outputVolume = 100
         newResult.samples = [sample]
         newResult.startDate = date
         newResult.endDate = date
+        
         XCTAssert(result.isEqual(newResult))
     }
 }
@@ -482,6 +508,7 @@ class ORKdBHLToneAudiometryResultTests: XCTestCase {
     override func setUp() {
         identifier = "RESULT"
         result = ORKdBHLToneAudiometryResult(identifier: identifier)
+        
         result.outputVolume = 100
         result.tonePlaybackDuration = 360
         result.postStimulusDelay = 10
@@ -489,8 +516,6 @@ class ORKdBHLToneAudiometryResultTests: XCTestCase {
         sample = ORKdBHLToneAudiometryFrequencySample()
         sample.frequency = 100
         result.samples = [sample]
-        result.startDate = date
-        result.endDate = date
     }
  
     func testProperties() {
@@ -503,6 +528,9 @@ class ORKdBHLToneAudiometryResultTests: XCTestCase {
     }
     
     func testIsEqual() {
+        result.startDate = date
+        result.endDate = date
+        
         let newResult = ORKdBHLToneAudiometryResult(identifier: identifier)
         newResult.outputVolume = 100
         newResult.tonePlaybackDuration = 360
@@ -511,6 +539,7 @@ class ORKdBHLToneAudiometryResultTests: XCTestCase {
         newResult.samples = [sample]
         newResult.startDate = date
         newResult.endDate = date
+        
         XCTAssert(result.isEqual(newResult))
     }
 }
@@ -525,6 +554,7 @@ class ORKTowerOfHanoiResultTests: XCTestCase {
     override func setUp() {
         identifier = "RESULT"
         result = ORKTowerOfHanoiResult(identifier: identifier)
+        
         result.puzzleWasSolved = false
         moveOne = ORKTowerOfHanoiMove()
         moveOne.donorTowerIndex = 0
@@ -533,8 +563,6 @@ class ORKTowerOfHanoiResultTests: XCTestCase {
         moveTwo.donorTowerIndex = 4
         moveTwo.recipientTowerIndex = 2
         result.moves = [moveOne, moveTwo]
-        result.startDate = date
-        result.endDate = date
     }
  
     func testProperties() {
@@ -544,6 +572,9 @@ class ORKTowerOfHanoiResultTests: XCTestCase {
     }
     
     func testIsEqual() {
+        result.startDate = date
+        result.endDate = date
+        
         let newResult = ORKTowerOfHanoiResult(identifier: identifier)
         newResult.startDate = date
         newResult.endDate = date
@@ -563,12 +594,11 @@ class ORKTrailmakingResultTests: XCTestCase {
     override func setUp() {
         identifier = "RESULT"
         result = ORKTrailmakingResult(identifier: identifier)
+        
         tap = ORKTrailmakingTap()
         tap.incorrect = false
         result.taps = [tap]
         result.numberOfErrors = 1
-        result.startDate = date
-        result.endDate = date
     }
 
     func testProperties() {
@@ -578,11 +608,15 @@ class ORKTrailmakingResultTests: XCTestCase {
     }
     
     func testIsEqual() {
+        result.startDate = date
+        result.endDate = date
+        
         let newResult = ORKTrailmakingResult(identifier: identifier)
         newResult.startDate = date
         newResult.endDate = date
         newResult.taps = [tap]
         newResult.numberOfErrors = 1
+        
         XCTAssert(result.isEqual(newResult))
     }
 }
