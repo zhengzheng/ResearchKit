@@ -48,7 +48,7 @@ class ORKAmslerGridResultTests: XCTestCase {
         result.endDate = date
     }
     
-    func testInit() {
+    func testProperties() {
         XCTAssertEqual(result.identifier, identifier)
         XCTAssertEqual(result.image, image)
         XCTAssertEqual(result.path, [path])
@@ -89,12 +89,9 @@ class ORKHolePegTestResultTests: XCTestCase {
         result.startDate = date
         result.endDate = date
     }
-    
-    func testInit() {
-        XCTAssertEqual(result.identifier, identifier)
-    }
-    
+
     func testProperties() {
+        XCTAssertEqual(result.identifier, identifier)
         XCTAssertEqual(result.movingDirection, ORKBodySagittal(rawValue: 2))
         XCTAssertEqual(result.isDominantHandTested, true)
         XCTAssertEqual(result.numberOfPegs, 2)
@@ -153,11 +150,8 @@ class ORKPSATResultTests: XCTestCase {
         result.endDate = date
     }
     
-    func testInit() {
-        XCTAssertEqual(result.identifier, identifier)
-    }
-    
     func testProperties() {
+        XCTAssertEqual(result.identifier, identifier)
         XCTAssertEqual(result.presentationMode, ORKPSATPresentationMode.auditory)
         XCTAssertEqual(result.interStimulusInterval, 2)
         XCTAssertEqual(result.stimulusDuration, 3)
@@ -202,12 +196,9 @@ class ORKRangeOfMotionResultTests: XCTestCase {
         result.startDate = date
         result.endDate = date
     }
-    
-    func testInit() {
-        XCTAssertEqual(result.identifier, identifier)
-    }
-    
+
     func testProperties() {
+        XCTAssertEqual(result.identifier, identifier)
         XCTAssertEqual(result.start, 0)
         XCTAssertEqual(result.finish, 50)
         XCTAssertEqual(result.minimum, 10)
@@ -246,12 +237,9 @@ class ORKReactionTimeResultTests: XCTestCase {
         result.startDate = date
         result.endDate = date
     }
-    
-    func testInit() {
-        XCTAssertEqual(result.identifier, identifier)
-    }
-    
+
     func testProperties() {
+        XCTAssertEqual(result.identifier, identifier)
         XCTAssertEqual(result.timestamp, 10)
         XCTAssertEqual(result.fileResult, fileResult)
     }
@@ -284,12 +272,9 @@ class ORKSpatialSpanMemoryResultTests: XCTestCase {
         result.startDate = date
         result.endDate = date
     }
-    
-    func testInit() {
+ 
+    func testProperties() {
         XCTAssertEqual(result.identifier, identifier)
-    }
-    
-    func testAttributes() {
         XCTAssertEqual(result.score, 0)
         XCTAssertEqual(result.numberOfGames, 20)
         XCTAssertEqual(result.numberOfFailures, 20)
@@ -322,12 +307,9 @@ class ORKSpeechRecognitionResultTests: XCTestCase {
         result.startDate = date
         result.endDate = date
     }
-    
-    func testInit() {
-        XCTAssertEqual(result.identifier, identifier)
-    }
-    
+ 
     func testProperties() {
+        XCTAssertEqual(result.identifier, identifier)
         XCTAssertEqual(result.transcription, transcription)
     }
     
@@ -356,12 +338,9 @@ class ORKStroopResultTests: XCTestCase {
         result.startDate = date
         result.endDate = date
     }
-    
-    func testInit() {
-        XCTAssertEqual(result.identifier, identifier)
-    }
-    
+
     func testProperties() {
+        XCTAssertEqual(result.identifier, identifier)
         XCTAssertEqual(result.startTime, 0)
         XCTAssertEqual(result.endTime, 100)
         XCTAssertEqual(result.color, "BLUE")
@@ -406,12 +385,9 @@ class ORKTappingIntervalResultTests: XCTestCase {
         result.startDate = date
         result.endDate = date
     }
-    
-    func testInit() {
-        XCTAssertEqual(result.identifier, identifier)
-    }
-    
+ 
     func testProperties() {
+        XCTAssertEqual(result.identifier, identifier)
         XCTAssertEqual(result.samples, [sample])
         XCTAssertEqual(result.stepViewSize, stepViewSize)
         XCTAssertEqual(result.buttonRect1, buttonRect1)
@@ -444,12 +420,9 @@ class ORKTimedWalkResultTests: XCTestCase {
         result.startDate = date
         result.endDate = date
     }
-    
-    func testInit() {
-        XCTAssertEqual(result.identifier, identifier)
-    }
-    
+
     func testProperties() {
+        XCTAssertEqual(result.identifier, identifier)
         XCTAssertEqual(result.distanceInMeters, 100)
         XCTAssertEqual(result.timeLimit, 100)
         XCTAssertEqual(result.duration, 20)
@@ -483,12 +456,9 @@ class ORKToneAudiometryResultTests: XCTestCase {
         result.startDate = date
         result.endDate = date
     }
-    
-    func testInit() {
-        XCTAssertEqual(result.identifier, identifier)
-    }
-    
+ 
     func testProperties() {
+        XCTAssertEqual(result.identifier, identifier)
         XCTAssertEqual(result.outputVolume, 100)
         XCTAssertEqual(result.samples, [sample])
     }
@@ -522,12 +492,9 @@ class ORKdBHLToneAudiometryResultTests: XCTestCase {
         result.startDate = date
         result.endDate = date
     }
-    
-    func testInit() {
-        XCTAssertEqual(result.identifier, identifier)
-    }
-    
+ 
     func testProperties() {
+        XCTAssertEqual(result.identifier, identifier)
         XCTAssertEqual(result.outputVolume, 100)
         XCTAssertEqual(result.tonePlaybackDuration, 360)
         XCTAssertEqual(result.postStimulusDelay, 10)
@@ -569,12 +536,9 @@ class ORKTowerOfHanoiResultTests: XCTestCase {
         result.startDate = date
         result.endDate = date
     }
-    
-    func testInit() {
-        XCTAssertEqual(result.identifier, identifier)
-    }
-    
+ 
     func testProperties() {
+        XCTAssertEqual(result.identifier, identifier)
         XCTAssertEqual(result.puzzleWasSolved, false)
         XCTAssertEqual(result.moves, [moveOne, moveTwo])
     }
@@ -607,11 +571,8 @@ class ORKTrailmakingResultTests: XCTestCase {
         result.endDate = date
     }
 
-    func testInit() {
-        XCTAssertEqual(result.identifier, identifier)
-    }
-    
     func testProperties() {
+        XCTAssertEqual(result.identifier, identifier)
         XCTAssertEqual(result.taps, [tap])
         XCTAssertEqual(result.numberOfErrors, 1)
     }
