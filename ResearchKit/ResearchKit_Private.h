@@ -38,6 +38,8 @@
 #import <ResearchKit/ORKDataLogger.h>
 #import <ResearchKit/ORKErrors.h>
 
+#import <ResearchKit/ORKChoiceViewCell.h>
+#import <ResearchKit/ORKChoiceViewCell_Internal.h>
 #import <ResearchKit/ORKAnswerFormat_Private.h>
 #import <ResearchKit/ORKConsentDocument_Private.h>
 #import <ResearchKit/ORKConsentSection_Private.h>
