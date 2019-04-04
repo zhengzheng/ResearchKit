@@ -40,4 +40,16 @@
     [self.navigationFooterView setHidden:YES];
 }
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+//    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style: UIBarButtonItemStylePlain target:self action:@selector(back)];
+//    self.navigationItem.leftBarButtonItem = backButton;
+}
+
+- (void)back
+{
+    [self dismissViewControllerAnimated:YES completion:nil]; // ios 6
+}
+
 @end

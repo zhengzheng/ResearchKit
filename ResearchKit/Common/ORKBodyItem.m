@@ -30,6 +30,7 @@
 
 
 #import "ORKBodyItem.h"
+#import "ORKLearnMoreInstructionStep.h"
 #import "ORKHelpers_Internal.h"
 
 
@@ -41,21 +42,21 @@
 
 @implementation ORKLearnMoreItem
 
-- (instancetype)initWithText:(NSString *)text infoViewController:(UIViewController *)infoViewController {
+- (instancetype)initWithText:(NSString *)text learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep {
     self = [super init];
     if (self) {
         self.text = text;
-        self.infoViewController = infoViewController;
+        self.learnMoreInstructionStep = learnMoreInstructionStep;
     }
     return self;
 }
 
-+ (instancetype)learnMoreLinkItemWithText:(NSString *)text infoViewController:(UIViewController *)infoViewController {
-    return [[ORKLearnMoreItem alloc] initWithText:text infoViewController:infoViewController];
++ (instancetype)learnMoreLinkItemWithText:(NSString *)text learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep {
+    return [[ORKLearnMoreItem alloc] initWithText:text learnMoreInstructionStep:learnMoreInstructionStep];
 }
 
-+ (instancetype)learnMoreDetailDisclosureItemWithInfoViewController:(UIViewController *)infoViewController {
-    return [[ORKLearnMoreItem alloc] initWithText:nil infoViewController:infoViewController];
++ (instancetype)learnMoreDetailDisclosureItemWithLearnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep {
+    return [[ORKLearnMoreItem alloc] initWithText:nil learnMoreInstructionStep:learnMoreInstructionStep];
 }
 
 - (NSString *)getText {

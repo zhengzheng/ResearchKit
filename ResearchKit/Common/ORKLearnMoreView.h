@@ -34,17 +34,34 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ORKLearnMoreButton : UIButton
 
-+ (instancetype)buttonWithType:(UIButtonType)buttonType NS_UNAVAILABLE;
 
-+ (instancetype)learnMoreCustomButtonWithText:(NSString *)text infoViewController:(UIViewController *)infoViewController;
+@class ORKLearnMoreInstructionStep;
+@protocol ORKLearnMoreViewDelegate <NSObject>
 
-+ (instancetype)learnMoreDetailDisclosureButtonWithInfoViewController:(UIViewController *)infoViewController;
-
-@property (nonatomic, nonnull) UIViewController * infoViewController;
-
+@required
+- (void)learnMoreButtonPressedWithStep:(ORKLearnMoreInstructionStep *)learnMoreStep;
 
 @end
+
+
+@interface ORKLearnMoreView : UIView
+
+- (instancetype)initWithFrame:(CGRect)frame NS_UNAVAILABLE;
+- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
+
++ (instancetype)learnMoreCustomButtonViewWithText:(NSString *)text LearnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep;
+
++ (instancetype)learnMoreDetailDisclosureButtonViewWithLearnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep;
+
+@property (nonatomic, nonnull) ORKLearnMoreInstructionStep * learnMoreInstructionStep;
+
+@property (nonatomic, weak) id<ORKLearnMoreViewDelegate> delegate;
+
+- (void)setLearnMoreButtonFont: (UIFont *)font;
+
+@end
+
 
 NS_ASSUME_NONNULL_END

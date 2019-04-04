@@ -565,8 +565,8 @@
 		BA473FE4224DAFEF00A362E3 /* ORKBodyContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA473FE2224DAFEF00A362E3 /* ORKBodyContainerView.m */; };
 		BA473FE8224DB38900A362E3 /* ORKBodyItem.h in Headers */ = {isa = PBXBuildFile; fileRef = BA473FE6224DB38900A362E3 /* ORKBodyItem.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BA473FE9224DB38900A362E3 /* ORKBodyItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BA473FE7224DB38900A362E3 /* ORKBodyItem.m */; };
-		BA473FED224DBA3700A362E3 /* ORKLearnMoreButton.h in Headers */ = {isa = PBXBuildFile; fileRef = BA473FEB224DBA3700A362E3 /* ORKLearnMoreButton.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		BA473FEE224DBA3700A362E3 /* ORKLearnMoreButton.m in Sources */ = {isa = PBXBuildFile; fileRef = BA473FEC224DBA3700A362E3 /* ORKLearnMoreButton.m */; };
+		BA473FED224DBA3700A362E3 /* ORKLearnMoreView.h in Headers */ = {isa = PBXBuildFile; fileRef = BA473FEB224DBA3700A362E3 /* ORKLearnMoreView.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		BA473FEE224DBA3700A362E3 /* ORKLearnMoreView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA473FEC224DBA3700A362E3 /* ORKLearnMoreView.m */; };
 		BA5B9207204F5D9A007C2F9D /* ORKSpeechRecognitionResult.h in Headers */ = {isa = PBXBuildFile; fileRef = BA5B9205204F5D9A007C2F9D /* ORKSpeechRecognitionResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BA5B9208204F5D9A007C2F9D /* ORKSpeechRecognitionResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BA5B9206204F5D9A007C2F9D /* ORKSpeechRecognitionResult.m */; };
 		BA6E1EB6209E9A3F00DA9D55 /* ORKPDFViewerStepView_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = BA6E1EB5209E9A3F00DA9D55 /* ORKPDFViewerStepView_Internal.h */; };
@@ -1359,8 +1359,8 @@
 		BA473FE2224DAFEF00A362E3 /* ORKBodyContainerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKBodyContainerView.m; sourceTree = "<group>"; };
 		BA473FE6224DB38900A362E3 /* ORKBodyItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKBodyItem.h; sourceTree = "<group>"; };
 		BA473FE7224DB38900A362E3 /* ORKBodyItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKBodyItem.m; sourceTree = "<group>"; };
-		BA473FEB224DBA3700A362E3 /* ORKLearnMoreButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKLearnMoreButton.h; sourceTree = "<group>"; };
-		BA473FEC224DBA3700A362E3 /* ORKLearnMoreButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKLearnMoreButton.m; sourceTree = "<group>"; };
+		BA473FEB224DBA3700A362E3 /* ORKLearnMoreView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKLearnMoreView.h; sourceTree = "<group>"; };
+		BA473FEC224DBA3700A362E3 /* ORKLearnMoreView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKLearnMoreView.m; sourceTree = "<group>"; };
 		BA5B9205204F5D9A007C2F9D /* ORKSpeechRecognitionResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKSpeechRecognitionResult.h; sourceTree = "<group>"; };
 		BA5B9206204F5D9A007C2F9D /* ORKSpeechRecognitionResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKSpeechRecognitionResult.m; sourceTree = "<group>"; };
 		BA6E1EB5209E9A3F00DA9D55 /* ORKPDFViewerStepView_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKPDFViewerStepView_Internal.h; sourceTree = "<group>"; };
@@ -2986,8 +2986,8 @@
 		BA473FEA224DB9F600A362E3 /* Learn More */ = {
 			isa = PBXGroup;
 			children = (
-				BA473FEB224DBA3700A362E3 /* ORKLearnMoreButton.h */,
-				BA473FEC224DBA3700A362E3 /* ORKLearnMoreButton.m */,
+				BA473FEB224DBA3700A362E3 /* ORKLearnMoreView.h */,
+				BA473FEC224DBA3700A362E3 /* ORKLearnMoreView.m */,
 			);
 			name = "Learn More";
 			sourceTree = "<group>";
@@ -3336,7 +3336,7 @@
 				BCB6E6601B7D534C000D5B34 /* ORKLineGraphChartView.h in Headers */,
 				86C40E241A8D7C5C00081FAC /* ORKEAGLMoviePlayerView.h in Headers */,
 				7118AC7720BF6A7800D7A6BB /* ORKSpeechInNoiseContentView.h in Headers */,
-				BA473FED224DBA3700A362E3 /* ORKLearnMoreButton.h in Headers */,
+				BA473FED224DBA3700A362E3 /* ORKLearnMoreView.h in Headers */,
 				B183A4DD1A8535D100C76870 /* ResearchKit.h in Headers */,
 				95E11E551D73396300BF865B /* ORKShoulderRangeOfMotionStepViewController.h in Headers */,
 				86C40D101A8D7C5C00081FAC /* ORKDefaultFont.h in Headers */,
@@ -3983,7 +3983,7 @@
 				86C40DEC1A8D7C5C00081FAC /* UIBarButtonItem+ORKBarButtonItem.m in Sources */,
 				106FF2AF1B6FACA8004EACF2 /* ORKDirectionView.m in Sources */,
 				BF1D438A1D4905FC007EE90B /* ORKVideoInstructionStepViewController.m in Sources */,
-				BA473FEE224DBA3700A362E3 /* ORKLearnMoreButton.m in Sources */,
+				BA473FEE224DBA3700A362E3 /* ORKLearnMoreView.m in Sources */,
 				86C40CAA1A8D7C5C00081FAC /* ORKPedometerRecorder.m in Sources */,
 				BCA5C0361AEC05F20092AC8D /* ORKStepNavigationRule.m in Sources */,
 				8DE27B401D5BC0B9009A26E3 /* ORKHTMLPDFPageRenderer.m in Sources */,

@@ -34,6 +34,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class ORKLearnMoreInstructionStep;
+@protocol ORKStepContainerLearnMoreItemDelegate <NSObject>
+
+@required
+- (void)stepContainerLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep;
+
+@end
+
 @class ORKBodyItem;
 @interface ORKStepContainerView : UIView
 
@@ -48,6 +56,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) NSArray<ORKBodyItem *> * bodyItems;
 
 @property (nonatomic) UIView * customContentView;
+
+@property (nonatomic, weak) id<ORKStepContainerLearnMoreItemDelegate> delegate;
 
 @end
 

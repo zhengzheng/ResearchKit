@@ -244,6 +244,7 @@
 				TargetAttributes = {
 					869230BD1AAA890A00BFE11B = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = 7JYUG8QGJ3;
 						DevelopmentTeamName = "Apple Inc. - SPG-NGS";
 						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
@@ -524,7 +525,7 @@
 				CODE_SIGN_ENTITLEMENTS = "ORKCatalog/Supporting Files/ORKCatalog.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 7JYUG8QGJ3;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/ORKCatalog/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -546,7 +547,7 @@
 				CODE_SIGN_ENTITLEMENTS = "ORKCatalog/Supporting Files/ORKCatalog.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 7JYUG8QGJ3;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/ORKCatalog/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

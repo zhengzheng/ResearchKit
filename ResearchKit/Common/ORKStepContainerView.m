@@ -42,6 +42,10 @@ static const CGFloat ORKStepContainerIconToBodyTopPaddingStandard = 20.0;
 static const CGFloat ORKStepContainerIconToBulletTopPaddingStandard = 20.0;
 static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
 
+@interface ORKStepContainerView()<ORKBodyContainerViewDelegate>
+
+@end
+
 @implementation ORKStepContainerView {
     
     UIScrollView *_scrollView;
@@ -202,8 +206,10 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
 }
 
 - (void)setupBodyContainerView {
+    __weak id<ORKBodyContainerViewDelegate> weakSelf = self;
     if (!_bodyContainerView) {
-        _bodyContainerView = [[ORKBodyContainerView alloc] initWithBodyItems:_bodyItems];
+        _bodyContainerView = [[ORKBodyContainerView alloc] initWithBodyItems:_bodyItems
+                                                                    delegate:weakSelf];
     }
     [_scrollContainerView addSubview:_bodyContainerView];
     [self setupBodyContainerViewConstraints];
@@ -606,6 +612,12 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
 - (void)updateConstraints {
     [self updateContainerConstraints];
     [super updateConstraints];
+}
+
+#pragma mark - ORKBodyContainerViewDelegate
+
+- (void)bodyContainerLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep {
+    [_delegate stepContainerLearnMoreButtonPressed:learnMoreStep];
 }
 
 @end

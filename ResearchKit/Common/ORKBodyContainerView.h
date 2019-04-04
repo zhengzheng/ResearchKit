@@ -34,15 +34,26 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class ORKLearnMoreInstructionStep;
+@protocol ORKBodyContainerViewDelegate <NSObject>
+
+@required
+- (void)bodyContainerLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep;
+
+@end
+
+
 @class ORKBodyItem;
 @interface ORKBodyContainerView : UIStackView
 
 - (instancetype)initWithFrame:(CGRect)frame NS_UNAVAILABLE;
 
-- (instancetype)initWithBodyItems:(NSArray<ORKBodyItem *> *)bodyItems;
+- (instancetype)initWithBodyItems:(NSArray<ORKBodyItem *> *)bodyItems
+                         delegate:(id<ORKBodyContainerViewDelegate>)delegate;
 
 @property (nonatomic, nonnull) NSArray<ORKBodyItem *> * bodyItems;
 
+@property (nonatomic, weak) id<ORKBodyContainerViewDelegate> delegate;
 
 @end
 

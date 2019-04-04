@@ -45,13 +45,14 @@ typedef NS_ENUM(NSInteger, ORKBodyItemStyle) {
     ORKBodyItemStyleBulletPoint
 } ORK_ENUM_AVAILABLE;
 
+@class ORKLearnMoreInstructionStep;
 @interface ORKLearnMoreItem : NSObject
 
-+ (instancetype)learnMoreLinkItemWithText:(NSString *)text infoViewController:(UIViewController *)infoViewController;
++ (instancetype)learnMoreLinkItemWithText:(NSString *)text learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep;
 
-+ (instancetype)learnMoreDetailDisclosureItemWithInfoViewController:(UIViewController *)infoViewController;
++ (instancetype)learnMoreDetailDisclosureItemWithLearnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep;
 
-@property (nonatomic, nonnull) UIViewController * infoViewController;
+@property (nonatomic, nonnull) ORKLearnMoreInstructionStep * learnMoreInstructionStep;
 
 - (nullable NSString *)getText;
 

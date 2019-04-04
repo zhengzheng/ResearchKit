@@ -33,7 +33,7 @@
 #import "ORKHelpers_Internal.h"
 #import "ORKSkin.h"
 #import "ORKBodyItem.h"
-#import "ORKLearnMoreButton.h"
+#import "ORKLearnMoreView.h"
 
 
 static const CGFloat ORKBodyToBodyPaddingStandard = 22.0;
@@ -55,11 +55,23 @@ static const CGFloat ORKBulletStackLeftRightPadding = 10.0;
 static NSString * ORKBulletUniCode = @"\u2981";
 
 
+@protocol ORKBodyItemViewDelegate <NSObject>
+
+@required
+- (void)bodyItemLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep;
+
+@end
+
 @interface ORKBodyItemView: UIStackView
 
 - (instancetype)initWithBodyItem:(ORKBodyItem *)bodyItem;
 
 @property (nonatomic, nonnull) ORKBodyItem *bodyItem;
+@property (nonatomic, weak) id<ORKBodyItemViewDelegate> delegate;
+
+@end
+
+@interface ORKBodyItemView()<ORKLearnMoreViewDelegate>
 
 @end
 
@@ -141,10 +153,11 @@ static NSString * ORKBulletUniCode = @"\u2981";
         }
     }
     if (_bodyItem.learnMoreItem) {
-        ORKLearnMoreButton *learnMoreButton = [_bodyItem.learnMoreItem getText] ? [ORKLearnMoreButton learnMoreCustomButtonWithText:[_bodyItem.learnMoreItem getText] infoViewController:_bodyItem.learnMoreItem.infoViewController] : [ORKLearnMoreButton learnMoreDetailDisclosureButtonWithInfoViewController:_bodyItem.learnMoreItem.infoViewController];
-        [learnMoreButton.titleLabel setFont:[ORKBodyItemView bodyTextFont]];
-        learnMoreButton.translatesAutoresizingMaskIntoConstraints = NO;
-        [self addArrangedSubview:learnMoreButton];
+        ORKLearnMoreView *learnMoreView = [_bodyItem.learnMoreItem getText] ? [ORKLearnMoreView learnMoreCustomButtonViewWithText:[_bodyItem.learnMoreItem getText] LearnMoreInstructionStep:_bodyItem.learnMoreItem.learnMoreInstructionStep] : [ORKLearnMoreView learnMoreDetailDisclosureButtonViewWithLearnMoreInstructionStep:_bodyItem.learnMoreItem.learnMoreInstructionStep];
+        [learnMoreView setLearnMoreButtonFont:[ORKBodyItemView bodyTextFont]];
+        learnMoreView.delegate = self;
+        learnMoreView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self addArrangedSubview:learnMoreView];
         if (textLabel) {
             [self setCustomSpacing:ORKBodyTextToLearnMoreButtonPaddingStandard afterView:textLabel];
         }
@@ -201,20 +214,30 @@ static NSString * ORKBulletUniCode = @"\u2981";
         [subStackView addArrangedSubview:textLabel];
     }
     if (_bodyItem.learnMoreItem) {
-        ORKLearnMoreButton *learnMoreButton = [_bodyItem.learnMoreItem getText] ? [ORKLearnMoreButton learnMoreCustomButtonWithText:[_bodyItem.learnMoreItem getText] infoViewController:_bodyItem.learnMoreItem.infoViewController] : [ORKLearnMoreButton learnMoreDetailDisclosureButtonWithInfoViewController:_bodyItem.learnMoreItem.infoViewController];
-        [learnMoreButton.titleLabel setFont:[ORKBodyItemView bulletTextFont]];
-        learnMoreButton.translatesAutoresizingMaskIntoConstraints = NO;
-        [subStackView addArrangedSubview:learnMoreButton];
+        ORKLearnMoreView *learnMoreView = [_bodyItem.learnMoreItem getText] ? [ORKLearnMoreView learnMoreCustomButtonViewWithText:[_bodyItem.learnMoreItem getText] LearnMoreInstructionStep:_bodyItem.learnMoreItem.learnMoreInstructionStep] : [ORKLearnMoreView learnMoreDetailDisclosureButtonViewWithLearnMoreInstructionStep:_bodyItem.learnMoreItem.learnMoreInstructionStep];
+        [learnMoreView setLearnMoreButtonFont:[ORKBodyItemView bulletTextFont]];
+        learnMoreView.delegate = self;
+        learnMoreView.translatesAutoresizingMaskIntoConstraints = NO;
+        [subStackView addArrangedSubview:learnMoreView];
     }
 }
 
+#pragma mark - ORKLearnMoreViewDelegate
+
+- (void)learnMoreButtonPressedWithStep:(ORKLearnMoreInstructionStep *)learnMoreStep {
+    [_delegate bodyItemLearnMoreButtonPressed:learnMoreStep];
+}
 
 @end
 
+@interface ORKBodyContainerView()<ORKBodyItemViewDelegate>
+
+@end
 
 @implementation ORKBodyContainerView
 
-- (instancetype)initWithBodyItems:(NSArray<ORKBodyItem *> *)bodyItems {
+- (instancetype)initWithBodyItems:(NSArray<ORKBodyItem *> *)bodyItems delegate:(nonnull id<ORKBodyContainerViewDelegate>)delegate {
+    self.delegate = delegate;
     if (bodyItems && bodyItems.count <= 0) {
         NSAssert(NO, @"Body Items array cannot be empty");
     }
@@ -232,6 +255,7 @@ static NSString * ORKBulletUniCode = @"\u2981";
     NSArray<ORKBodyItemView *> *views = [ORKBodyContainerView bodyItemViewsWithBodyItems:_bodyItems];
     for (NSInteger i = 0; i < views.count; i++) {
         [self addArrangedSubview:views[i]];
+        views[i].delegate = self;
         if (i < views.count - 1) {
             
             CGFloat padding = [self spacingWithAboveStyle:_bodyItems[i].bodyItemStyle belowStyle:_bodyItems[i + 1].bodyItemStyle];
@@ -258,6 +282,12 @@ static NSString * ORKBulletUniCode = @"\u2981";
         [viewsArray addObject:itemView];
     }];
     return [viewsArray copy];
+}
+
+#pragma mark - ORKBodyItemViewDelegate
+
+- (void)bodyItemLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep {
+    [_delegate bodyContainerLearnMoreButtonPressed:learnMoreStep];
 }
 
 @end
