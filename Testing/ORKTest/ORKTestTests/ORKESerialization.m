@@ -1253,7 +1253,9 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     })),
            ENTRY(ORKNumericAnswerFormat,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
-                     return [[ORKNumericAnswerFormat alloc] initWithStyle:((NSNumber *)GETPROP(dict, style)).integerValue unit:GETPROP(dict, unit) minimum:GETPROP(dict, minimum) maximum:GETPROP(dict, maximum) maximumFractionDigits:GETPROP(dict, maximumFractionDigits)];
+                     ORKNumericAnswerFormat *format = [[ORKNumericAnswerFormat alloc] initWithStyle:((NSNumber *)GETPROP(dict, style)).integerValue unit:GETPROP(dict, unit) minimum:GETPROP(dict, minimum) maximum:GETPROP(dict, maximum) maximumFractionDigits:GETPROP(dict, maximumFractionDigits)];
+                     format.defaultNumericAnswer = GETPROP(dict, defaultNumericAnswer);
+                     return format;
                  },
                  (@{
                     PROPERTY(style, NSNumber, NSObject, NO,
@@ -1263,6 +1265,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     PROPERTY(minimum, NSNumber, NSObject, NO, nil, nil),
                     PROPERTY(maximum, NSNumber, NSObject, NO, nil, nil),
                     PROPERTY(maximumFractionDigits, NSNumber, NSObject, NO, nil, nil),
+                    PROPERTY(defaultNumericAnswer, NSNumber, NSObject, NO, nil, nil),
                     })),
            ENTRY(ORKScaleAnswerFormat,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {

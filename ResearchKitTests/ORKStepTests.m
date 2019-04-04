@@ -30,8 +30,9 @@
 
 
 @import XCTest;
+@import ResearchKit;
 @import ResearchKit.Private;
-
+@import UIKit;
 
 @interface ORKStepTests : XCTestCase
 
@@ -161,6 +162,28 @@
     XCTAssertEqualObjects([pageStep stepWithIdentifier:@"step3"], step3);
 }
 
+- (void)testInstructionStep {
+    ORKInstructionStep *step = [[ORKInstructionStep alloc] initWithIdentifier:@"step"];
+    
+    [step setDetailText:@"DETAILS"];
+    NSAttributedString *attributeString = [[NSAttributedString alloc] initWithString:@"ATTRIBUTE"];
+    [step setAttributedDetailText:attributeString];
+    [step setFootnote:@"FOOTNOTE"];
+    
+    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"org.researchkit.ResearchKit"];
+    UIImage *image = [UIImage imageNamed:@"heartbeat" inBundle:bundle compatibleWithTraitCollection:nil];
+    [step setImage:image];
+    [step setAuxiliaryImage:image];
+    [step setIconImage:image];
+    
+    XCTAssert([step.detailText isEqualToString:@"DETAILS"]);
+    XCTAssertEqual(step.attributedDetailText, attributeString);
+    XCTAssert([step.footnote isEqualToString:@"FOOTNOTE"]);
+    XCTAssertEqual([step image], image);
+    XCTAssertEqual([step auxiliaryImage], image);
+    XCTAssertEqual([step iconImage], image);
+}
+
 - (void)testStep {
     ORKStep *step = [[ORKStep alloc] initWithIdentifier:@"STEP"];
     ORKOrderedTask *task = [[ORKOrderedTask alloc] initWithIdentifier:@"TASK" steps:NULL];
@@ -246,6 +269,38 @@
     XCTAssertEqual(step.passcodeType, ORKPasscodeType4Digit);
 }
 
+- (void)testQuestionStep {
+    NSString *identifier = @"Identifier";
+    NSString *title = @"Title";
+    NSString *question = @"How are you?";
+    NSString *errorMessage = @"ERROR";
+    NSString *placeHolder = @"PLACEHOLDER";
+    
+    ORKTextAnswerFormat *answerFormat = [ORKAnswerFormat textAnswerFormatWithMaximumLength:100];
+    ORKConfirmTextAnswerFormat *incorrectAnswerFormat = [[ORKConfirmTextAnswerFormat alloc] initWithOriginalItemIdentifier:identifier errorMessage:errorMessage];
+    ORKQuestionStep *step = [ORKQuestionStep questionStepWithIdentifier:identifier title:title question:question answer:answerFormat];
+    [step setPlaceholder:placeHolder];
+    [step setUseSurveyMode: NO];
+    [step setUseCardView: NO];
+    [step setOptional:NO];
+    
+    XCTAssertEqual([step identifier], identifier);
+    XCTAssertEqual([step title], title);
+    XCTAssertEqual([step question], question);
+    XCTAssertEqual([step placeholder], placeHolder);
+    XCTAssertEqual([step useSurveyMode], NO);
+    XCTAssertEqual([step useCardView], NO);
+    XCTAssertEqual([step isOptional], NO);
+    XCTAssertNoThrowSpecificNamed([step validateParameters], NSException, NSInvalidArgumentException, @"Should not throw exception");
+    XCTAssertEqual([step requestedHealthKitTypesForReading], nil);
+    XCTAssertEqual([step stepViewControllerClass], [ORKQuestionStepViewController class], @"Should return ORKQuestionStepViewController");
+    XCTAssert([step isEqual:step]);
+    XCTAssertEqual([step questionType], ORKQuestionTypeText, @"Should return ORKQuestionTypeText");
+    
+    ORKQuestionStep *incorrectStep = [ORKQuestionStep questionStepWithIdentifier:identifier title:title question:question answer:incorrectAnswerFormat];
+    XCTAssertThrowsSpecificNamed([incorrectStep validateParameters], NSException, NSInvalidArgumentException);
+}
+
 - (void)testPDFViewerStep {
     NSString *identifier = @"STEP";
     NSURL *url = [NSURL URLWithString:@"TESTINGURL"];
@@ -256,6 +311,69 @@
     XCTAssertEqual([step identifier], identifier);
     XCTAssertEqual([step pdfURL], url);
     XCTAssertEqual([step actionBarOption], ORKPDFViewerActionBarOptionExcludeShare);
+}
+
+- (void)testRegistrationStep {
+    NSString *identifier = @"STEP";
+    NSString *title = @"TITLE";
+    NSString *text = @"TEXT";
+    
+    NSString *pattern = @"^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$";
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionAnchorsMatchLines error:nil];
+    
+    ORKRegistrationStep *step = [[ORKRegistrationStep alloc] initWithIdentifier:identifier title:title text:text passcodeValidationRegularExpression:regex passcodeInvalidMessage:@"Invalid Password" options:ORKRegistrationStepIncludePhoneNumber];
+    step.phoneNumberValidationRegularExpression = regex;
+    step.phoneNumberInvalidMessage = @"Invalid Number";
+    
+    XCTAssertEqual([step identifier], identifier);
+    XCTAssertEqual([step title], title);
+    XCTAssertEqual([step text], text);
+    XCTAssertEqual([step options], ORKRegistrationStepIncludePhoneNumber);
+    XCTAssertEqual([step passcodeValidationRegularExpression], regex);
+    XCTAssertEqual([step passcodeInvalidMessage], @"Invalid Password");
+    XCTAssertEqual([step phoneNumberValidationRegularExpression], regex);
+    XCTAssertEqual([step phoneNumberInvalidMessage], @"Invalid Number");
+    XCTAssert([[[[step formItems] objectAtIndex:0] identifier] isEqualToString:@"ORKRegistrationFormItemEmail"]);
+    XCTAssert([[[[step formItems] objectAtIndex:1] identifier] isEqualToString:@"ORKRegistrationFormItemPassword"]);
+    XCTAssert([[[[step formItems] objectAtIndex:2] identifier] isEqualToString:@"ORKRegistrationFormItemConfirmPassword"]);
+}
+
+- (void)testWebViewStep {
+    NSString *identifier = @"STEP";
+    NSString *html = @"HTML";
+    ORKWebViewStep *step = [ORKWebViewStep webViewStepWithIdentifier:identifier html:html];
+    
+    XCTAssertEqual([step identifier], identifier);
+    XCTAssertEqual([step html], html);
+    XCTAssertEqual([step stepViewControllerClass], [ORKWebViewStepViewController class]);
+    XCTAssert([step isEqual:step]);
+    
+    [step setHtml:nil];
+    XCTAssertThrowsSpecificNamed([step validateParameters], NSException, NSInvalidArgumentException);
+}
+
+- (void)testEnvironmentSPLMeterStep {
+    NSString *identifier = @"STEP";
+    ORKEnvironmentSPLMeterStep *step = [[ORKEnvironmentSPLMeterStep alloc] initWithIdentifier:identifier];
+
+    XCTAssertEqual([step identifier], identifier);
+    XCTAssertNoThrow([step validateParameters]);
+    XCTAssertEqual([step thresholdValue], 35.0);
+    XCTAssertEqual([step samplingInterval], 1.0);
+    XCTAssertEqual([step requiredContiguousSamples], 5);
+    
+    [step setThresholdValue:-1];
+    XCTAssertThrowsSpecificNamed([step validateParameters], NSException, NSInvalidArgumentException);
+    
+    [step setSamplingInterval:-1];
+    [step setThresholdValue:0];
+    XCTAssertThrowsSpecificNamed([step validateParameters], NSException, NSInvalidArgumentException);
+    
+    [step setRequiredContiguousSamples:0];
+    [step setThresholdValue:2];
+    XCTAssertThrowsSpecificNamed([step validateParameters], NSException, NSInvalidArgumentException);
+    
+    XCTAssert([step isEqual:step]);
 }
 
 @end
