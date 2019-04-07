@@ -36,6 +36,54 @@
 #import "ORKSkin.h"
 
 
+/**
+ 
+ +---------------------------------------+
+ | +-----------------------------------+ |<---_stepContainerView
+ | |        _topContentImageView       | |
+ | |                                   | |
+ | |                                   | |
+ | |___________________________________| |
+ | +-----------------------------------+ |
+ | |    +_________________________+    |<-----_scrollView
+ | |    |                         |    | |
+ | |    |       +-------+         |<----------_scrollContainerView
+ | |    |       | _icon |         |    | |
+ | |    |       |       |         |    | |
+ | |    |       +-------+         |    | |
+ | |    |                         |    | |
+ | |    | +---------------------+ |    | |
+ | |    | |    _titleLabel      | |    | |
+ | |    | |_____________________| |    | |
+ | |    |                         |    | |
+ | |    | +---------------------+ |    | |
+ | |    | |                     |<------------_bodyContainerView: UIstackView
+ | |    | | +-----------------+ | |    | |
+ | |    | | |                 | | |    | |
+ | |    | | |--Title          | | |    | |
+ | |    | | |--Text           |<------------- BodyItemStyleText
+ | |    | | |--LearnMore      | | |    | |
+ | |    | | |_________________| | |    | |
+ | |    | |                     | |    | |
+ | |    | | +---+-------------+ | |    | |
+ | |    | | |   |--Title      | | |    | |
+ | |    | | | o |--Text       |<------------- BodyItemStyleBullet
+ | |    | | |   |--LearnMore  | | |    | |
+ | |    | | |___|_____________| | |    | |
+ | |    | |_____________________| |    | |
+ | |    |                         |    | |
+ | |    | +---------------------+ |    | |
+ | |    | |  _CustomContentView | |    | |
+ | |    | |_____________________| |    | |
+ | |____|_________________________|____| |
+ |______|_________________________|______|
+        |                         |
+        |                         |
+        |                         |
+        |                         |
+        vvvvvvvvvvvvvvvvvvvvvvvvvvv
+ */
+
 static const CGFloat ORKStepContainerIconImageViewDimension = 80.0;
 static const CGFloat ORKStepContainerIconImageViewToTitleLabelPadding = 20.0;
 static const CGFloat ORKStepContainerIconToBodyTopPaddingStandard = 20.0;
