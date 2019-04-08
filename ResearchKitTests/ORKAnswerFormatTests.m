@@ -422,11 +422,11 @@
 }
 - (void)testImageChoiceAnswerFormat {
     
-    UIImage *imageOne = [UIImage imageNamed:@"ResearchKit⁩/Artwork.xcassets⁩/Active⁩/heart-fitness.imageset⁩/heart-fitness@2x.png"];
-    UIImage *imageTwo = [UIImage imageNamed:@"ResearchKit⁩/Artwork.xcassets⁩/Active⁩/heart-fitness.imageset⁩/heart-fitness@3x.png"];
+    UIImage *imageOne = [UIImage imageNamed:@"heart-fitness" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
+    UIImage *imageTwo = [UIImage imageNamed:@"phoneshake" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
     
-    ORKImageChoice *choiceOne = [ORKImageChoice choiceWithNormalImage:imageOne selectedImage:imageOne text:@"Heart 2x" value:@"ImageTwo"];
-    ORKImageChoice *choiceTwo = [ORKImageChoice choiceWithNormalImage:imageTwo selectedImage:imageTwo text:@"Heart 3X" value:@"ImageOne"];
+    ORKImageChoice *choiceOne = [ORKImageChoice choiceWithNormalImage:imageOne selectedImage:imageOne text:@"Heart" value:@"ImageTwo"];
+    ORKImageChoice *choiceTwo = [ORKImageChoice choiceWithNormalImage:imageTwo selectedImage:imageTwo text:@"Phone Shake" value:@"ImageOne"];
     
     NSArray *choices = [NSArray arrayWithObjects:choiceOne, choiceTwo, nil];
     ORKImageChoiceAnswerFormat *answerChoice = [ORKAnswerFormat choiceAnswerFormatWithImageChoices:choices];
