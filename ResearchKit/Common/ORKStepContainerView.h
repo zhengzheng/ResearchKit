@@ -43,6 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @class ORKBodyItem;
+@class ORKNavigationContainerView;
 @interface ORKStepContainerView : UIView
 
 @property (nonatomic, nullable) UIImage * stepTopContentImage;
@@ -57,9 +58,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) UIView * customContentView;
 
+@property (nonatomic) ORKNavigationContainerView * navigationFooterView;
+
 @property (nonatomic, weak) id<ORKStepContainerLearnMoreItemDelegate> delegate;
 
 - (void) addGDPRViewWithIconImage:(UIImage *)iconImage text:(NSString *)text learnMoreText:(NSString *)learnMoreText learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep;
+
+- (void)pinNavigationContainerToBottom;
 
 @end
 
