@@ -372,27 +372,27 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
     _navigationFooterView.translatesAutoresizingMaskIntoConstraints = NO;
     
     _navigationContainerViewConstraints = @[
-                                                          [NSLayoutConstraint constraintWithItem:_navigationFooterView
-                                                                                       attribute:NSLayoutAttributeBottom
-                                                                                       relatedBy:NSLayoutRelationEqual
-                                                                                          toItem:_isNavigationContainerScrollable ? _scrollContainerView : self
-                                                                                       attribute:NSLayoutAttributeBottom
-                                                                                      multiplier:1.0
-                                                                                        constant:0.0],
-                                                          [NSLayoutConstraint constraintWithItem:_navigationFooterView
-                                                                                       attribute:NSLayoutAttributeLeft
-                                                                                       relatedBy:NSLayoutRelationEqual
-                                                                                          toItem:_isNavigationContainerScrollable ? _scrollContainerView : self
-                                                                                       attribute:NSLayoutAttributeLeft
-                                                                                      multiplier:1.0
-                                                                                        constant:0.0],
-                                                          [NSLayoutConstraint constraintWithItem:_navigationFooterView
-                                                                                       attribute:NSLayoutAttributeRight
-                                                                                       relatedBy:NSLayoutRelationEqual
-                                                                                          toItem:_isNavigationContainerScrollable ? _scrollContainerView : self
-                                                                                       attribute:NSLayoutAttributeRight
-                                                                                      multiplier:1.0
-                                                                                        constant:0.0]];
+                                              [NSLayoutConstraint constraintWithItem:_navigationFooterView
+                                                                           attribute:NSLayoutAttributeBottom
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:_isNavigationContainerScrollable ? _scrollContainerView : self
+                                                                           attribute:NSLayoutAttributeBottom
+                                                                          multiplier:1.0
+                                                                            constant:0.0],
+                                              [NSLayoutConstraint constraintWithItem:_navigationFooterView
+                                                                           attribute:NSLayoutAttributeLeft
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:_isNavigationContainerScrollable ? _scrollContainerView : self
+                                                                           attribute:NSLayoutAttributeLeft
+                                                                          multiplier:1.0
+                                                                            constant:0.0],
+                                              [NSLayoutConstraint constraintWithItem:_navigationFooterView
+                                                                           attribute:NSLayoutAttributeRight
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:_isNavigationContainerScrollable ? _scrollContainerView : self
+                                                                           attribute:NSLayoutAttributeRight
+                                                                          multiplier:1.0
+                                                                            constant:0.0]];
     [_updatedConstraints addObjectsFromArray:_navigationContainerViewConstraints];
 
     if (!_isNavigationContainerScrollable) {
