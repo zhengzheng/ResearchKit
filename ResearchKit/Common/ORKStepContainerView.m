@@ -34,7 +34,7 @@
 #import "ORKBodyItem.h"
 #import "ORKBodyContainerView.h"
 #import "ORKSkin.h"
-
+#import "ORKGDPRView.h"
 
 /**
  
@@ -90,7 +90,7 @@ static const CGFloat ORKStepContainerIconToBodyTopPaddingStandard = 20.0;
 static const CGFloat ORKStepContainerIconToBulletTopPaddingStandard = 20.0;
 static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
 
-@interface ORKStepContainerView()<ORKBodyContainerViewDelegate>
+@interface ORKStepContainerView()<ORKBodyContainerViewDelegate, ORKGDPRViewLearnMoreDelegate>
 
 @end
 
@@ -103,6 +103,8 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
     UIImageView *_topContentImageView;
     UIImageView *_iconImageView;
     ORKBodyContainerView *_bodyContainerView;
+    
+    ORKGDPRView *_gdprView;
     
 //    variable constraints:
     NSLayoutConstraint *_scrollViewTopConstraint;
@@ -213,6 +215,55 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
 - (void)setShowScrollIndicator:(BOOL)showScrollIndicator {
     _showScrollIndicator = showScrollIndicator;
     _scrollView.showsVerticalScrollIndicator = showScrollIndicator;
+}
+
+- (void)addGDPRViewWithIconImage:(UIImage *)iconImage text:(NSString *)text learnMoreText:(NSString *)learnMoreText learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep {
+    
+    if (!_gdprView) {
+        _gdprView = [[ORKGDPRView alloc] initWithIconImage:iconImage
+                                                      text:text
+                                             learnMoreItem:[ORKLearnMoreItem learnMoreLinkItemWithText:learnMoreText
+                                                                              learnMoreInstructionStep:learnMoreInstructionStep]];
+    }
+    _gdprView.delegate = self;
+    [_scrollContainerView addSubview:_gdprView];
+    [self addGDPRViewConstraints];
+    [self setNeedsUpdateConstraints];
+}
+
+- (void)addGDPRViewConstraints {
+    _gdprView.translatesAutoresizingMaskIntoConstraints = NO;
+    [_updatedConstraints addObjectsFromArray:@[
+                                               [NSLayoutConstraint constraintWithItem:_gdprView
+                                                                            attribute:NSLayoutAttributeLeft
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:_scrollContainerView
+                                                                            attribute:NSLayoutAttributeLeft
+                                                                           multiplier:1.0
+                                                                             constant:0.0],
+                                               [NSLayoutConstraint constraintWithItem:_gdprView
+                                                                            attribute:NSLayoutAttributeRight
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:_scrollContainerView
+                                                                            attribute:NSLayoutAttributeRight
+                                                                           multiplier:1.0
+                                                                             constant:0.0],
+                                               
+//                                               [NSLayoutConstraint constraintWithItem:_gdprView
+//                                                                            attribute:NSLayoutAttributeHeight
+//                                                                            relatedBy:NSLayoutRelationEqual
+//                                                                               toItem:nil
+//                                                                            attribute:NSLayoutAttributeNotAnAttribute
+//                                                                           multiplier:1.0
+//                                                                             constant:200.0],
+                                               [NSLayoutConstraint constraintWithItem:_gdprView
+                                                                            attribute:NSLayoutAttributeBottom
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:_scrollContainerView
+                                                                            attribute:NSLayoutAttributeBottom
+                                                                           multiplier:1.0
+                                                                             constant:0.0]
+                                               ]];
 }
 
 - (void)setupScrollContainerView {
@@ -642,7 +693,7 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
                                                                             toItem:nil
                                                                          attribute:NSLayoutAttributeNotAnAttribute
                                                                         multiplier:1.0
-                                                                          constant:3000.0];
+                                                                          constant:1800.0];
 }
 
 - (void)updateContainerConstraints {
@@ -665,6 +716,12 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
 #pragma mark - ORKBodyContainerViewDelegate
 
 - (void)bodyContainerLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep {
+    [_delegate stepContainerLearnMoreButtonPressed:learnMoreStep];
+}
+
+#pragma mark - ORKGDPRViewLearnMoreDelegate
+
+- (void)gdprViewLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep {
     [_delegate stepContainerLearnMoreButtonPressed:learnMoreStep];
 }
 

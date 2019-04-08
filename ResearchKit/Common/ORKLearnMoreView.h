@@ -37,6 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 @class ORKLearnMoreInstructionStep;
+@class ORKLearnMoreItem;
 @protocol ORKLearnMoreViewDelegate <NSObject>
 
 @required
@@ -54,6 +55,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)learnMoreCustomButtonViewWithText:(NSString *)text LearnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep;
 
 + (instancetype)learnMoreDetailDisclosureButtonViewWithLearnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep;
+
++ (instancetype)learnMoreViewWithItem:(ORKLearnMoreItem *)learnMoreItem;
 
 @property (nonatomic, nonnull) ORKLearnMoreInstructionStep * learnMoreInstructionStep;
 

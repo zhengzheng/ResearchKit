@@ -31,35 +31,34 @@
 
 @import UIKit;
 
-
 NS_ASSUME_NONNULL_BEGIN
 
+@class ORKLearnMoreItem;
 @class ORKLearnMoreInstructionStep;
-@protocol ORKStepContainerLearnMoreItemDelegate <NSObject>
+
+@protocol ORKGDPRViewLearnMoreDelegate <NSObject>
 
 @required
-- (void)stepContainerLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep;
+- (void)gdprViewLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep;
 
 @end
 
-@class ORKBodyItem;
-@interface ORKStepContainerView : UIView
+@interface ORKGDPRView : UIStackView
 
-@property (nonatomic, nullable) UIImage * stepTopContentImage;
+- (instancetype)initWithFrame:(CGRect)frame NS_UNAVAILABLE;
 
-@property (nonatomic) NSString * stepTitle;
+- (instancetype)initWithIconImage:(UIImage *)iconImage
+                             text:(NSString *)text
+                    learnMoreItem:(ORKLearnMoreItem *)learnMoreItem;
 
-@property (nonatomic, nullable) UIImage * titleIconImage;
+@property (nonatomic) UIImage * iconImage;
 
-@property (nonatomic) BOOL showScrollIndicator;
+@property (nonatomic) NSString * text;
 
-@property (nonatomic) NSArray<ORKBodyItem *> * bodyItems;
+@property (nonatomic) ORKLearnMoreItem * learnMoreItem;
 
-@property (nonatomic) UIView * customContentView;
+@property (nonatomic, weak) id<ORKGDPRViewLearnMoreDelegate> delegate;
 
-@property (nonatomic, weak) id<ORKStepContainerLearnMoreItemDelegate> delegate;
-
-- (void) addGDPRViewWithIconImage:(UIImage *)iconImage text:(NSString *)text learnMoreText:(NSString *)learnMoreText learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep;
 
 @end
 

@@ -113,6 +113,7 @@
 #import <ResearchKit/ORKDiscreteGraphChartView.h>
 #import <ResearchKit/ORKLineGraphChartView.h>
 #import <ResearchKit/ORKPieChartView.h>
+#import <ResearchKit/ORKGDPRView.h>
 
 #import <ResearchKit/ORKDataCollectionManager.h>
 #import <ResearchKit/ORKCollector.h>

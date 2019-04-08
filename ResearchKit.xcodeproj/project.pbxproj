@@ -592,6 +592,8 @@
 		BABBB1B72097E58300CB29E5 /* ORKPDFViewerStepView.m in Sources */ = {isa = PBXBuildFile; fileRef = BABBB1B52097E58300CB29E5 /* ORKPDFViewerStepView.m */; };
 		BABBB1BA2097EF3800CB29E5 /* ORKFreehandDrawingView.h in Headers */ = {isa = PBXBuildFile; fileRef = BABBB1B82097EF3800CB29E5 /* ORKFreehandDrawingView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BABBB1BB2097EF3800CB29E5 /* ORKFreehandDrawingView.m in Sources */ = {isa = PBXBuildFile; fileRef = BABBB1B92097EF3800CB29E5 /* ORKFreehandDrawingView.m */; };
+		BAC919FC225A9C48002AFA6F /* ORKGDPRView.h in Headers */ = {isa = PBXBuildFile; fileRef = BAC919FA225A9C48002AFA6F /* ORKGDPRView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BAC919FD225A9C48002AFA6F /* ORKGDPRView.m in Sources */ = {isa = PBXBuildFile; fileRef = BAC919FB225A9C48002AFA6F /* ORKGDPRView.m */; };
 		BAD9E9122255E9750014FA29 /* ORKLearnMoreInstructionStep.h in Headers */ = {isa = PBXBuildFile; fileRef = BAD9E9102255E9750014FA29 /* ORKLearnMoreInstructionStep.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BAD9E9132255E9750014FA29 /* ORKLearnMoreInstructionStep.m in Sources */ = {isa = PBXBuildFile; fileRef = BAD9E9112255E9750014FA29 /* ORKLearnMoreInstructionStep.m */; };
 		BAD9E9162255E9CE0014FA29 /* ORKLearnMoreStepViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = BAD9E9142255E9CE0014FA29 /* ORKLearnMoreStepViewController.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1386,6 +1388,8 @@
 		BABBB1B52097E58300CB29E5 /* ORKPDFViewerStepView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKPDFViewerStepView.m; sourceTree = "<group>"; };
 		BABBB1B82097EF3800CB29E5 /* ORKFreehandDrawingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKFreehandDrawingView.h; sourceTree = "<group>"; };
 		BABBB1B92097EF3800CB29E5 /* ORKFreehandDrawingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKFreehandDrawingView.m; sourceTree = "<group>"; };
+		BAC919FA225A9C48002AFA6F /* ORKGDPRView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKGDPRView.h; sourceTree = "<group>"; };
+		BAC919FB225A9C48002AFA6F /* ORKGDPRView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKGDPRView.m; sourceTree = "<group>"; };
 		BAD9E9102255E9750014FA29 /* ORKLearnMoreInstructionStep.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKLearnMoreInstructionStep.h; sourceTree = "<group>"; };
 		BAD9E9112255E9750014FA29 /* ORKLearnMoreInstructionStep.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKLearnMoreInstructionStep.m; sourceTree = "<group>"; };
 		BAD9E9142255E9CE0014FA29 /* ORKLearnMoreStepViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKLearnMoreStepViewController.h; sourceTree = "<group>"; };
@@ -1682,6 +1686,7 @@
 		2429D56D1BBB52E4003A512F /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				BAC919F9225A9C2A002AFA6F /* ORKGDPRView */,
 				2429D56E1BBB5352003A512F /* Account */,
 			);
 			name = Onboarding;
@@ -3032,6 +3037,15 @@
 			name = PDFStep;
 			sourceTree = "<group>";
 		};
+		BAC919F9225A9C2A002AFA6F /* ORKGDPRView */ = {
+			isa = PBXGroup;
+			children = (
+				BAC919FA225A9C48002AFA6F /* ORKGDPRView.h */,
+				BAC919FB225A9C48002AFA6F /* ORKGDPRView.m */,
+			);
+			name = ORKGDPRView;
+			sourceTree = "<group>";
+		};
 		BAD9E90F2255E94F0014FA29 /* LearnMore Step */ = {
 			isa = PBXGroup;
 			children = (
@@ -3415,6 +3429,7 @@
 				86C40CF61A8D7C5C00081FAC /* ORKBorderedButton.h in Headers */,
 				71769E2D208824D100A19914 /* ORKdBHLToneAudiometryOnboardingStep.h in Headers */,
 				FF919A6D1E81D3B0005C2A1E /* ORKPasscodeResult.h in Headers */,
+				BAC919FC225A9C48002AFA6F /* ORKGDPRView.h in Headers */,
 				86C40D4A1A8D7C5C00081FAC /* ORKLabel.h in Headers */,
 				250F94041B4C5A6600FA23EB /* ORKTowerOfHanoiStep.h in Headers */,
 				861D11A91AA691BB003C98A7 /* ORKScaleSliderView.h in Headers */,
@@ -4002,6 +4017,7 @@
 				FF919A371E81AD9C005C2A1E /* ORKSpatialSpanMemoryResult.m in Sources */,
 				86C40CF41A8D7C5C00081FAC /* ORKBodyLabel.m in Sources */,
 				FF919A4C1E81BB7E005C2A1E /* ORKTimedWalkResult.m in Sources */,
+				BAC919FD225A9C48002AFA6F /* ORKGDPRView.m in Sources */,
 				106FF29F1B663FCE004EACF2 /* ORKHolePegTestPlaceStep.m in Sources */,
 				FFAE71411DAEC66200AE82B4 /* ORKFootnoteLabel.m in Sources */,
 				86C40C941A8D7C5C00081FAC /* ORKAudioRecorder.m in Sources */,
