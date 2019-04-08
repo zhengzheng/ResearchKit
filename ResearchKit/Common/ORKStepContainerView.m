@@ -80,8 +80,12 @@
  |______|_________________________|______|
         |                         |
         |                         |
-        |                         |
-        |                         |
+        | +---------------------+ |
+        | |      _gdprView      | |
+        | |_____________________| |
+        | +---------------------+ |
+        | |  _navigationFooter  | |
+        | |_____________________| |
         vvvvvvvvvvvvvvvvvvvvvvvvvvv
  */
 
@@ -225,7 +229,9 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
     _scrollView.showsVerticalScrollIndicator = showScrollIndicator;
 }
 
-- (void)addGDPRViewWithIconImage:(UIImage *)iconImage text:(NSString *)text learnMoreText:(NSString *)learnMoreText learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep {
+- (void)addGDPRViewWithIconImage:(UIImage *)iconImage text:(NSString *)text
+                   learnMoreText:(NSString *)learnMoreText
+        learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep {
     
     if (!_gdprView) {
         _gdprView = [[ORKGDPRView alloc] initWithIconImage:iconImage
