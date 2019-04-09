@@ -455,6 +455,26 @@
                                  NSInvalidArgumentException,
                                  @"Should throw NSInvalidArgumentException since step is lower than the recommended maximum: 30");
 }
+- (void)testImageChoiceAnswerFormat {
+    
+    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"org.researchkit.ResearchKit"];
+    
+    UIImage *imageOne = [UIImage imageNamed:@"heart-fitness" inBundle:bundle compatibleWithTraitCollection:nil];
+    UIImage *imageTwo = [UIImage imageNamed:@"phoneshake" inBundle:bundle compatibleWithTraitCollection:nil];
+    
+    ORKImageChoice *choiceOne = [ORKImageChoice choiceWithNormalImage:imageOne selectedImage:imageOne text:@"Heart" value:@"ImageTwo"];
+    ORKImageChoice *choiceTwo = [ORKImageChoice choiceWithNormalImage:imageTwo selectedImage:imageTwo text:@"Phone Shake" value:@"ImageOne"];
+    
+    NSArray *choices = [NSArray arrayWithObjects:choiceOne, choiceTwo, nil];
+    ORKImageChoiceAnswerFormat *answerChoice = [ORKAnswerFormat choiceAnswerFormatWithImageChoices:choices];
+    
+    XCTAssertEqual([[answerChoice imageChoices] objectAtIndex:0], choiceOne);
+    XCTAssertEqual([[answerChoice imageChoices] objectAtIndex:1], choiceTwo);
+    
+    NSArray *wrongChoices = [NSArray arrayWithObjects:@"Wrong Choice One", @"Wrong Choice Two", nil];
+    
+    XCTAssertThrowsSpecificNamed([ORKAnswerFormat choiceAnswerFormatWithImageChoices:wrongChoices], NSException, NSInvalidArgumentException, "Should throw NSInvalidArgumentException since choices were not ORKImageChoice objects");
+}
 
 - (void)testTextAnswerFormat {
     ORKTextAnswerFormat *answerFormat = [ORKAnswerFormat textAnswerFormatWithMaximumLength:10];
