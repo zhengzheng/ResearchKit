@@ -28,47 +28,33 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import XCTest
 
-@import Foundation;
-@import UIKit;
+class ORKWebViewStepResultTests: XCTestCase {
+    var result: ORKWebViewStepResult!
+    var identifer: String!
+    let date = Date()
+    
+    override func setUp() {
+        identifer = "RESULT"
+        result = ORKWebViewStepResult(identifier: identifer)
+        result.result = "RESULTTORESULT"
+    }
 
-NS_ASSUME_NONNULL_BEGIN
+    func testProperties() {
+        XCTAssertEqual(result.identifier, identifer)
+        XCTAssertEqual(result.result, "RESULTTORESULT")
+    }
 
-@class ORKChoiceViewCell;
-@class ORKTextChoiceAnswerFormat;
-
-@protocol ORKTextChoiceCellGroupDelegate <NSObject>
-
-@required
-- (void)answerChangedForIndexPath:(NSIndexPath *)indexPath;
-
-- (void)tableViewCellHeightUpdated;
-
-@end
-
-@interface ORKTextChoiceCellGroup : NSObject
-
-- (instancetype)initWithTextChoiceAnswerFormat:(ORKTextChoiceAnswerFormat *)answerFormat
-                                        answer:(nullable id)answer
-                            beginningIndexPath:(NSIndexPath *)indexPath
-                           immediateNavigation:(BOOL)immediateNavigation;
-
-@property (nonatomic, strong, nullable) id answer;
-
-@property (nonatomic, weak) id<ORKTextChoiceCellGroupDelegate> delegate;
-
-- (void)textViewDidResignResponderForCellAtIndexPath:(NSIndexPath *)indexPath;
-
-- (nullable ORKChoiceViewCell *)cellAtIndexPath:(NSIndexPath *)indexPath withReuseIdentifier:(nullable NSString *)identifier;
-
-- (BOOL)containsIndexPath:(NSIndexPath *)indexPath;
-
-- (void)didSelectCellAtIndexPath:(NSIndexPath *)indexPath;
-
-- (nullable id)answerForBoolean;
-
-- (NSUInteger)size;
-
-@end
-
-NS_ASSUME_NONNULL_END
+    func testIsEqual() {
+        result.startDate = date
+        result.endDate = date
+        
+        let newResult = ORKWebViewStepResult(identifier: identifer)
+        newResult.startDate = date
+        newResult.endDate = date
+        newResult.result = "RESULTTORESULT"
+        
+        XCTAssert(result.isEqual(newResult))
+    }
+}

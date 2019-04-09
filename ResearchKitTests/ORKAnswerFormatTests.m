@@ -386,7 +386,43 @@
     XCTAssertEqual([[answerFormat defaultComponents] month], 01);
     XCTAssertEqual([[answerFormat defaultComponents] day], 24);
     XCTAssertEqual([[answerFormat defaultComponents] year], 1984);
+}
+
+- (void)testNumericAnswerFormat {
     
+    ORKNumericAnswerFormat *answerFormatWithIntegerStyle = [[ORKNumericAnswerFormat alloc] initWithStyle:ORKNumericAnswerStyleInteger
+                                                                                                    unit:@"Units"
+                                                                                                 minimum:[NSNumber numberWithInteger:0]
+                                                                                                 maximum:[NSNumber numberWithInteger:100]
+                                                                                   maximumFractionDigits:@(0)];
+    
+    XCTAssertEqual([answerFormatWithIntegerStyle style], ORKNumericAnswerStyleInteger);
+    XCTAssertEqual([answerFormatWithIntegerStyle unit], @"Units");
+    XCTAssertEqual([answerFormatWithIntegerStyle minimum], [NSNumber numberWithInteger:0]);
+    XCTAssertEqual([answerFormatWithIntegerStyle maximum], [NSNumber numberWithInteger:100]);
+    XCTAssertEqual([answerFormatWithIntegerStyle maximumFractionDigits], @(0));
+    
+    
+    ORKNumericAnswerFormat *answerFormatWithDecimalStyle = [[ORKNumericAnswerFormat alloc] initWithStyle:ORKNumericAnswerStyleDecimal];
+    XCTAssertEqual([answerFormatWithDecimalStyle style ], ORKNumericAnswerStyleDecimal);
+    
+    XCTAssertThrowsSpecificNamed([[ORKNumericAnswerFormat alloc] initWithStyle:ORKNumericAnswerStyleInteger
+                                                                          unit:@"Integers"
+                                                                       minimum:[NSNumber numberWithInteger:100]
+                                                                       maximum:[NSNumber numberWithInteger:0]], NSException, NSInvalidArgumentException, @"Should throw NSInvalidArgumentException since max < min");
+    
+    
+    XCTAssertThrowsSpecificNamed([[ORKNumericAnswerFormat alloc] initWithStyle:ORKNumericAnswerStyleDecimal
+                                                                          unit:@"Doubles"
+                                                                       minimum:[NSNumber numberWithDouble:10.2]
+                                                                       maximum:[NSNumber numberWithDouble:10]], NSException, NSInvalidArgumentException, @"Should throw NSInvalidArgumentException since max < min");
+    
+    XCTAssertNoThrowSpecificNamed([[ORKNumericAnswerFormat alloc] initWithStyle:ORKNumericAnswerStyleInteger
+                                                                           unit:@"Integers"
+                                                                        minimum:NULL
+                                                                        maximum:NULL],
+                                  NSException, NSInvalidArgumentException,
+                                  @"Should not throw exception for null values");
 }
 
 - (void)testBooleanAnswerFormat {
@@ -418,6 +454,26 @@
                                  NSException,
                                  NSInvalidArgumentException,
                                  @"Should throw NSInvalidArgumentException since step is lower than the recommended maximum: 30");
+}
+- (void)testImageChoiceAnswerFormat {
+    
+    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"org.researchkit.ResearchKit"];
+    
+    UIImage *imageOne = [UIImage imageNamed:@"heart-fitness" inBundle:bundle compatibleWithTraitCollection:nil];
+    UIImage *imageTwo = [UIImage imageNamed:@"phoneshake" inBundle:bundle compatibleWithTraitCollection:nil];
+    
+    ORKImageChoice *choiceOne = [ORKImageChoice choiceWithNormalImage:imageOne selectedImage:imageOne text:@"Heart" value:@"ImageTwo"];
+    ORKImageChoice *choiceTwo = [ORKImageChoice choiceWithNormalImage:imageTwo selectedImage:imageTwo text:@"Phone Shake" value:@"ImageOne"];
+    
+    NSArray *choices = [NSArray arrayWithObjects:choiceOne, choiceTwo, nil];
+    ORKImageChoiceAnswerFormat *answerChoice = [ORKAnswerFormat choiceAnswerFormatWithImageChoices:choices];
+    
+    XCTAssertEqual([[answerChoice imageChoices] objectAtIndex:0], choiceOne);
+    XCTAssertEqual([[answerChoice imageChoices] objectAtIndex:1], choiceTwo);
+    
+    NSArray *wrongChoices = [NSArray arrayWithObjects:@"Wrong Choice One", @"Wrong Choice Two", nil];
+    
+    XCTAssertThrowsSpecificNamed([ORKAnswerFormat choiceAnswerFormatWithImageChoices:wrongChoices], NSException, NSInvalidArgumentException, "Should throw NSInvalidArgumentException since choices were not ORKImageChoice objects");
 }
 
 - (void)testTextAnswerFormat {

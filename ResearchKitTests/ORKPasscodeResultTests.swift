@@ -28,47 +28,37 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import XCTest
+@testable import ResearchKit
 
-@import Foundation;
-@import UIKit;
+class ORKPasscodeResultTests: XCTestCase {
+    var result: ORKPasscodeResult!
+    var identifier: String!
+    let date = Date()
+    
+    override func setUp() {
+        identifier = "RESULT"
+        result = ORKPasscodeResult(identifier: identifier)
+        result.isPasscodeSaved = true
+        result.isTouchIdEnabled = false
+    }
 
-NS_ASSUME_NONNULL_BEGIN
-
-@class ORKChoiceViewCell;
-@class ORKTextChoiceAnswerFormat;
-
-@protocol ORKTextChoiceCellGroupDelegate <NSObject>
-
-@required
-- (void)answerChangedForIndexPath:(NSIndexPath *)indexPath;
-
-- (void)tableViewCellHeightUpdated;
-
-@end
-
-@interface ORKTextChoiceCellGroup : NSObject
-
-- (instancetype)initWithTextChoiceAnswerFormat:(ORKTextChoiceAnswerFormat *)answerFormat
-                                        answer:(nullable id)answer
-                            beginningIndexPath:(NSIndexPath *)indexPath
-                           immediateNavigation:(BOOL)immediateNavigation;
-
-@property (nonatomic, strong, nullable) id answer;
-
-@property (nonatomic, weak) id<ORKTextChoiceCellGroupDelegate> delegate;
-
-- (void)textViewDidResignResponderForCellAtIndexPath:(NSIndexPath *)indexPath;
-
-- (nullable ORKChoiceViewCell *)cellAtIndexPath:(NSIndexPath *)indexPath withReuseIdentifier:(nullable NSString *)identifier;
-
-- (BOOL)containsIndexPath:(NSIndexPath *)indexPath;
-
-- (void)didSelectCellAtIndexPath:(NSIndexPath *)indexPath;
-
-- (nullable id)answerForBoolean;
-
-- (NSUInteger)size;
-
-@end
-
-NS_ASSUME_NONNULL_END
+    func testProperties() {
+        XCTAssertEqual(result.identifier, identifier)
+        XCTAssertEqual(result.isPasscodeSaved, true)
+        XCTAssertEqual(result.isTouchIdEnabled, false)
+    }
+    
+    func testIsEqual() {
+        result.startDate = date
+        result.endDate = date
+        
+        let newResult = ORKPasscodeResult(identifier: identifier)
+        newResult.isPasscodeSaved = true
+        newResult.isTouchIdEnabled = false
+        newResult.startDate = date
+        newResult.endDate = date
+        
+        XCTAssert(result.isEqual(result))
+    }
+}

@@ -580,7 +580,7 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
         if (![textObject isKindOfClass:[ORKTextChoice class]]) {
             @throw [NSException exceptionWithName:NSGenericException reason:@"The textChoices array should only containt objects of the ORKTextChoice kind." userInfo:@{@"nonConformingObject": textObject}];
         }
-        [choices addObject:textObject];
+        [choices addObject:[textObject isKindOfClass:[ORKTextChoiceOther class]] ? [textObject copyWithZone:nil] : textObject];
     }
     return choices;
 }
@@ -941,6 +941,12 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
     ork_validateChoices(_textChoices);
 }
 
+- (instancetype)copyWithZone:(NSZone *)zone {
+    ORKTextChoiceAnswerFormat *answerFormat = [[[self class] allocWithZone:zone] initWithStyle:_style
+                                                                                   textChoices:[_textChoices copy]];
+    return answerFormat;
+}
+
 - (BOOL)isEqual:(id)object {
     BOOL isParentSame = [super isEqual:object];
     
@@ -1085,6 +1091,111 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
     ORK_ENCODE_OBJ(aCoder, detailTextAttributedString);
     ORK_ENCODE_OBJ(aCoder, value);
     ORK_ENCODE_BOOL(aCoder, exclusive);
+}
+
+@end
+
+
+#pragma mark - ORKTextChoiceOther
+
+@implementation ORKTextChoiceOther
+
++ (instancetype)new {
+    ORKThrowMethodUnavailableException();
+}
+
+- (instancetype)init {
+    ORKThrowMethodUnavailableException();
+}
+
++ (instancetype)choiceWithText:(NSString *)text
+                    detailText:(NSString *)detailText
+                         value:(id<NSCopying, NSCoding, NSObject>)value
+                     exclusive:(BOOL)exclusive
+       textViewPlaceholderText:(NSString *)textViewPlaceholderText {
+    ORKTextChoiceOther *option = [[ORKTextChoiceOther alloc] initWithText:text primaryTextAttributedString:nil detailText:detailText detailTextAttributedString:nil value:value exclusive:exclusive textViewPlaceholderText:textViewPlaceholderText textViewInputOptional:NO textViewStartsHidden:YES];
+    return option;
+}
+
+- (instancetype)initWithText:(NSString *)text
+ primaryTextAttributedString:(NSAttributedString *)primaryTextAttributedString
+                  detailText:(NSString *)detailText
+  detailTextAttributedString:(NSAttributedString *)detailTextAttributedString
+                       value:(id<NSCopying,NSCoding,NSObject>)value
+                   exclusive:(BOOL)exclusive
+     textViewPlaceholderText:(NSString *)textViewPlaceholderText
+       textViewInputOptional:(BOOL)textViewInputOptional
+        textViewStartsHidden:(BOOL)textViewStartsHidden {
+    
+    self = [super initWithText:text
+   primaryTextAttributedString:primaryTextAttributedString
+                    detailText:detailText
+    detailTextAttributedString:detailTextAttributedString
+                         value:value
+                     exclusive:exclusive];
+    
+    if (self) {
+        _textViewPlaceholderText = textViewPlaceholderText;
+        _textViewInputOptional = textViewInputOptional;
+        _textViewStartsHidden = textViewStartsHidden;
+    }
+    return self;
+}
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
+- (instancetype)copyWithZone:(NSZone *)zone {
+    ORKTextChoiceOther *other = [[ORKTextChoiceOther allocWithZone:zone] initWithText:[self.text copy]
+                                                          primaryTextAttributedString:[self.primaryTextAttributedString copy]
+                                                                           detailText:[self.detailText copy]
+                                                           detailTextAttributedString:[self.detailTextAttributedString copy]
+                                                                                value:[self.value copyWithZone:zone]
+                                                                            exclusive:self.exclusive
+                                                              textViewPlaceholderText:[self.textViewPlaceholderText copy]
+                                                                textViewInputOptional:self.textViewInputOptional
+                                                                 textViewStartsHidden:self.textViewStartsHidden];
+    return other;
+}
+
+- (BOOL)isEqual:(id)object {
+    if ([self class] != [object class]) {
+        return NO;
+    }
+    
+    // Ignore the task reference - it's not part of the content of the step
+    __typeof(self) castObject = object;
+    return (ORKEqualObjects(self.text, castObject.text)
+            && ORKEqualObjects(self.primaryTextAttributedString, castObject.primaryTextAttributedString)
+            && ORKEqualObjects(self.detailText, castObject.detailText)
+            && ORKEqualObjects(self.detailTextAttributedString, castObject.detailTextAttributedString)
+            && ORKEqualObjects(self.value, castObject.value)
+            && self.exclusive == castObject.exclusive
+            && ORKEqualObjects(self.textViewPlaceholderText, castObject.textViewPlaceholderText)
+            && self.textViewInputOptional == castObject.textViewInputOptional
+            && self.textViewStartsHidden == castObject.textViewStartsHidden);
+}
+
+- (NSUInteger)hash {
+    return [super hash] ^ _textViewPlaceholderText.hash;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        ORK_DECODE_OBJ_CLASS(aDecoder, textViewPlaceholderText, NSString);
+        ORK_DECODE_BOOL(aDecoder, textViewInputOptional);
+        ORK_DECODE_BOOL(aDecoder, textViewStartsHidden);
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [super encodeWithCoder:aCoder];
+    ORK_ENCODE_OBJ(aCoder, textViewPlaceholderText);
+    ORK_ENCODE_BOOL(aCoder, textViewInputOptional);
+    ORK_ENCODE_BOOL(aCoder, textViewStartsHidden);
 }
 
 @end
@@ -1539,8 +1650,18 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
         _minimum = [minimum copy];
         _maximum = [maximum copy];
         _maximumFractionDigits = [maximumFractionDigits copy];
+        
+        [self validateParameters];
     }
     return self;
+}
+
+- (void)validateParameters {
+    if (_minimum != NULL && _maximum != NULL) {
+        if ([_maximum compare: _minimum] == NSOrderedAscending) {
+            @throw [NSException exceptionWithName:NSInvalidArgumentException reason:[NSString stringWithFormat:@"Expect maximumValue larger than minimumValue"] userInfo:nil];
+        }
+    }
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {

@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2015, Apple Inc. All rights reserved.
+ Copyright (c) 2019, Apple Inc. All rights reserved.
  
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
@@ -29,45 +29,22 @@
  */
 
 
-@import Foundation;
-@import UIKit;
+#import "ORKChoiceViewCell.h"
+
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class ORKChoiceViewCell;
-@class ORKTextChoiceAnswerFormat;
+@protocol ORKChoiceOtherViewCellDelegate <NSObject>
 
-@protocol ORKTextChoiceCellGroupDelegate <NSObject>
-
-@required
-- (void)answerChangedForIndexPath:(NSIndexPath *)indexPath;
-
-- (void)tableViewCellHeightUpdated;
+- (void)textChoiceOtherCellDidBecomeFirstResponder:(ORKChoiceOtherViewCell *)choiceOtherViewCell;
+- (void)textChoiceOtherCellDidResignFirstResponder:(ORKChoiceOtherViewCell *)choiceOtherViewCell;
 
 @end
 
-@interface ORKTextChoiceCellGroup : NSObject
 
-- (instancetype)initWithTextChoiceAnswerFormat:(ORKTextChoiceAnswerFormat *)answerFormat
-                                        answer:(nullable id)answer
-                            beginningIndexPath:(NSIndexPath *)indexPath
-                           immediateNavigation:(BOOL)immediateNavigation;
+@interface ORKChoiceOtherViewCell() <UITextViewDelegate>
 
-@property (nonatomic, strong, nullable) id answer;
-
-@property (nonatomic, weak) id<ORKTextChoiceCellGroupDelegate> delegate;
-
-- (void)textViewDidResignResponderForCellAtIndexPath:(NSIndexPath *)indexPath;
-
-- (nullable ORKChoiceViewCell *)cellAtIndexPath:(NSIndexPath *)indexPath withReuseIdentifier:(nullable NSString *)identifier;
-
-- (BOOL)containsIndexPath:(NSIndexPath *)indexPath;
-
-- (void)didSelectCellAtIndexPath:(NSIndexPath *)indexPath;
-
-- (nullable id)answerForBoolean;
-
-- (NSUInteger)size;
+@property (nonatomic, weak) id<ORKChoiceOtherViewCellDelegate> delegate;
 
 @end
 
