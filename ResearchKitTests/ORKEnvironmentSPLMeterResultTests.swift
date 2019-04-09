@@ -28,16 +28,37 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import XCTest
 
-@import UIKit;
-
-
-NS_ASSUME_NONNULL_BEGIN
-
-@interface ORKLineGraphAccessibilityElement : UIAccessibilityElement
-
-- (nonnull instancetype)initWithAccessibilityContainer:(nonnull UIView *)container index:(NSInteger)index maxIndex:(NSInteger)maxIndex;
-
-@end
-
-NS_ASSUME_NONNULL_END
+class ORKEnvironmentSPLMeterResultTests: XCTestCase {
+    
+    var result: ORKEnvironmentSPLMeterResult!
+    var identifer: String!
+    let date = Date()
+    
+    override func setUp() {
+        identifer = "RESULT"
+        result = ORKEnvironmentSPLMeterResult(identifier: identifer)
+        result.sensitivityOffset = 40
+        result.recordedSPLMeterSamples = [2]
+    }
+    
+    func testProperties() {
+        XCTAssertEqual(result.identifier, identifer)
+        XCTAssertEqual(result.sensitivityOffset, 40)
+        XCTAssertEqual(result.recordedSPLMeterSamples, [2])
+    }
+    
+    func testIsEqual() {
+        result.startDate = date
+        result.endDate = date
+        
+        let newResult = ORKEnvironmentSPLMeterResult(identifier: identifer)
+        newResult.sensitivityOffset = 40
+        newResult.recordedSPLMeterSamples = [2]
+        newResult.startDate = date
+        newResult.endDate = date
+        
+        XCTAssert(result.isEqual(newResult))
+    }
+}

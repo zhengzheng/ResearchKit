@@ -28,39 +28,33 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "ORKLineGraphAccessibilityElement.h"
+import XCTest
 
-
-@interface ORKLineGraphAccessibilityElement()
-
-@property (assign, nonatomic) NSInteger index;
-@property (assign, nonatomic) NSInteger maxIndex;
-
-@end
-
-
-@implementation ORKLineGraphAccessibilityElement
-
-- (nonnull instancetype)initWithAccessibilityContainer:(nonnull UIView *)container index:(NSInteger)index maxIndex:(NSInteger)maxIndex {
-    self = [super initWithAccessibilityContainer:container];
-    if (self) {
-        self.index = index;
-        self.maxIndex = maxIndex;
-    }
-    return self;
-}
-
-- (CGRect)accessibilityFrame {
-    if (self.maxIndex == 0) {
-        return [super accessibilityFrame];
-    }
+class ORKWebViewStepResultTests: XCTestCase {
+    var result: ORKWebViewStepResult!
+    var identifer: String!
+    let date = Date()
     
-    CGRect containerFrame = [self.accessibilityContainer frame];
-    CGFloat height = CGRectGetHeight(containerFrame);
-    CGFloat width = CGRectGetWidth(containerFrame) / self.maxIndex;
-    CGFloat x = self.index * width;
-    
-    return UIAccessibilityConvertFrameToScreenCoordinates(CGRectMake(x, 0, width, height), self.accessibilityContainer);
-}
+    override func setUp() {
+        identifer = "RESULT"
+        result = ORKWebViewStepResult(identifier: identifer)
+        result.result = "RESULTTORESULT"
+    }
 
-@end
+    func testProperties() {
+        XCTAssertEqual(result.identifier, identifer)
+        XCTAssertEqual(result.result, "RESULTTORESULT")
+    }
+
+    func testIsEqual() {
+        result.startDate = date
+        result.endDate = date
+        
+        let newResult = ORKWebViewStepResult(identifier: identifer)
+        newResult.startDate = date
+        newResult.endDate = date
+        newResult.result = "RESULTTORESULT"
+        
+        XCTAssert(result.isEqual(newResult))
+    }
+}
