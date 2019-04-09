@@ -68,7 +68,7 @@
 		14A92C6A22444F93007547F2 /* ORKPasscodeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A92C6922444F93007547F2 /* ORKPasscodeViewControllerTests.swift */; };
 		1B4B95B81F5F012E006B629F /* ORKWeightPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B4B95B71F5F012E006B629F /* ORKWeightPicker.m */; };
 		1B4B95BA1F5F014E006B629F /* ORKWeightPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B4B95B91F5F014E006B629F /* ORKWeightPicker.h */; };
-		241A2E871B94FD8800ED3B39 /* ORKPasscodeStepViewController_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 241A2E861B94FD8800ED3B39 /* ORKPasscodeStepViewController_Internal.h */; };
+		241A2E871B94FD8800ED3B39 /* ORKPasscodeStepViewController_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 241A2E861B94FD8800ED3B39 /* ORKPasscodeStepViewController_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		2429D5721BBB5397003A512F /* ORKRegistrationStep.h in Headers */ = {isa = PBXBuildFile; fileRef = 2429D5701BBB5397003A512F /* ORKRegistrationStep.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2429D5731BBB5397003A512F /* ORKRegistrationStep.m in Sources */ = {isa = PBXBuildFile; fileRef = 2429D5711BBB5397003A512F /* ORKRegistrationStep.m */; };
 		242C9E051BBDFDAC0088B7F4 /* ORKVerificationStep.h in Headers */ = {isa = PBXBuildFile; fileRef = 242C9E031BBDFDAC0088B7F4 /* ORKVerificationStep.h */; settings = {ATTRIBUTES = (Public, ); }; };
