@@ -364,7 +364,7 @@
     ORKTextChoice *choiceOne = [ORKTextChoice choiceWithText:@"Choice One" value:[NSNumber numberWithInteger:1]];
     ORKTextChoice *choiceTwo = [ORKTextChoice choiceWithText:@"Choice Two" value:[NSNumber numberWithInteger:2]];
 
-    NSArray *choices = @[choiceOne, choiceTwo];
+    NSArray *choices = [NSArray arrayWithObjects:choiceOne, choiceTwo, nil];
     ORKTextScaleAnswerFormat *answerFormat = [ORKAnswerFormat textScaleAnswerFormatWithTextChoices:choices defaultIndex:0 vertical:YES];
     
     XCTAssertEqual([[[answerFormat textChoices] objectAtIndex:0] value],[NSNumber numberWithInteger:1]);
@@ -458,8 +458,10 @@
 }
 - (void)testImageChoiceAnswerFormat {
     
-    UIImage *imageOne = [UIImage imageNamed:@"heart-fitness" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
-    UIImage *imageTwo = [UIImage imageNamed:@"phoneshake" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
+    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"org.researchkit.ResearchKit"];
+    
+    UIImage *imageOne = [UIImage imageNamed:@"heart-fitness" inBundle:bundle compatibleWithTraitCollection:nil];
+    UIImage *imageTwo = [UIImage imageNamed:@"phoneshake" inBundle:bundle compatibleWithTraitCollection:nil];
     
     ORKImageChoice *choiceOne = [ORKImageChoice choiceWithNormalImage:imageOne selectedImage:imageOne text:@"Heart" value:@"ImageTwo"];
     ORKImageChoice *choiceTwo = [ORKImageChoice choiceWithNormalImage:imageTwo selectedImage:imageTwo text:@"Phone Shake" value:@"ImageOne"];
