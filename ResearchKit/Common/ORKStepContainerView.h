@@ -48,6 +48,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, nullable) UIImage * stepTopContentImage;
 
+@property (nonatomic, nullable) UIImage * auxiliaryImage; // Only underlayed when stepTopContentImage is added.
+
 @property (nonatomic) NSString * stepTitle;
 
 @property (nonatomic, nullable) UIImage * titleIconImage;

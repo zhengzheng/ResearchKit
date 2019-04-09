@@ -158,15 +158,39 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
     //    2.) First Image; updateConstraints
     if (stepTopContentImage && !_topContentImageView) {
         [self setupTopContentImageView];
-        _topContentImageView.image = stepTopContentImage;
+        _topContentImageView.image = [self topContentAndAuxiliaryImage];
         [self updateScrollViewTopConstraint];
         [self setNeedsUpdateConstraints];
     }
     
     //    3.) >= second Image;
     if (stepTopContentImage && _topContentImageView) {
-        _topContentImageView.image = stepTopContentImage;
+        _topContentImageView.image = [self topContentAndAuxiliaryImage];
     }
+}
+
+- (void)setAuxiliaryImage:(UIImage *)auxiliaryImage {
+    _auxiliaryImage = auxiliaryImage;
+    if (_stepTopContentImage) {
+        _topContentImageView.image = [self topContentAndAuxiliaryImage];
+    }
+}
+
+- (UIImage *)topContentAndAuxiliaryImage {
+    if (!_auxiliaryImage) {
+        return _stepTopContentImage;
+    }
+    CGSize size = _auxiliaryImage.size;
+    UIGraphicsBeginImageContext(size);
+    
+    CGRect rect = CGRectMake(0.0, 0.0, size.width, size.height);
+    
+    [_auxiliaryImage drawInRect:rect];
+    [_stepTopContentImage drawInRect:rect blendMode:kCGBlendModeNormal alpha:1.0];
+    UIImage * image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
 }
 
 - (void)setStepTitle:(NSString *)stepTitle {
