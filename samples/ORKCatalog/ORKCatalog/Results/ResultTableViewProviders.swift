@@ -529,7 +529,7 @@ class ConsentSignatureResultTableViewProvider: ResultTableViewProvider {
             return 200
         }
         
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
 }
 
@@ -556,7 +556,7 @@ class AmslerGridResultTableViewProvider: ResultTableViewProvider {
             return 300
         }
         
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
 }
 
@@ -620,7 +620,7 @@ class FileResultTableViewProvider: ResultTableViewProvider {
             }
         }
         
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
 }
 
