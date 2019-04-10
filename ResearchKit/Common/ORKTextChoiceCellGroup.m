@@ -136,7 +136,10 @@
         [self didSelectCellAtIndexPath:indexPath];
     }
     else {
-        touchedCell.textView.text = textChoice.textViewText;
+        textChoice.textViewText = nil;
+        touchedCell.cellSelected = NO;
+        _answer = [_helper answerForSelectedIndexes:[self selectedIndexes]];
+        [self.delegate answerChangedForIndexPath:indexPath];
     }
 }
 
