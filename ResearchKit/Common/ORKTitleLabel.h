@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2015, Apple Inc. All rights reserved.
+ Copyright (c) 2019, Apple Inc. All rights reserved.
  
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
@@ -29,39 +29,16 @@
  */
 
 
-#import "ORKConsentSharingStepViewController.h"
-
-#import "ORKConsentLearnMoreViewController.h"
-
-#import "ORKConsentSharingStep.h"
-#import "ORKStepViewController_Internal.h"
-
-#import "ORKHelpers_Internal.h"
+@import UIKit;
+#import "ORKLabel.h"
 
 
-@implementation ORKConsentSharingStepViewController
+NS_ASSUME_NONNULL_BEGIN
 
-- (instancetype)initWithStep:(ORKStep *)step {
-    self = [super initWithStep:step];
-    if (self) {
-        [super setLearnMoreButtonItem:[[UIBarButtonItem alloc] initWithTitle:ORKLocalizedString(@"LEARN_MORE_CONSENT_SHARING", nil) style:UIBarButtonItemStylePlain target:self action:@selector(consentLearnMoreAction:)]];
-    }
-    return self;
-}
-
-- (void)setLearnMoreButtonItem:(UIBarButtonItem *)learnMoreButtonItem {
-    // Override to ignore, so we keep our "private" learn more button item
-    return;
-}
-
-- (void)consentLearnMoreAction:(id)sender {
-    ORKConsentSharingStep *step = (ORKConsentSharingStep *)self.step;
-    
-    ORKConsentLearnMoreViewController *viewController = [[ORKConsentLearnMoreViewController alloc] initWithHTMLContent:step.localizedLearnMoreHTMLContent];
-    viewController.title = ORKLocalizedString(@"CONSENT_LEARN_MORE_TITLE", nil);
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self presentViewController:navigationController animated:YES completion:nil];
-}
+ORK_CLASS_AVAILABLE
+@interface ORKTitleLabel : ORKLabel
 
 @end
+
+NS_ASSUME_NONNULL_END
+

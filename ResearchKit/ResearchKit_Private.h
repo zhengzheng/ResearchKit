@@ -106,6 +106,7 @@
 #import <ResearchKit/ORKWalkingTaskStepViewController.h>
 #import <ResearchKit/ORKVideoInstructionStepViewController.h>
 #import <ResearchKit/ORKSpeechRecognitionStepViewController.h>
+#import <ResearchKit/ORKLearnMoreStepViewController.h>
 
 #import <ResearchKit/ORKAccelerometerRecorder.h>
 #import <ResearchKit/ORKAudioRecorder.h>
@@ -123,6 +124,7 @@
 #import <ResearchKit/ORKTappingContentView.h>
 #import <ResearchKit/ORKVerticalContainerView.h>
 #import <ResearchKit/ORKVerticalContainerView_Internal.h>
+#import <ResearchKit/ORKStepContainerView.h>
 #import <ResearchKit/ORKNavigationContainerView.h>
 #import <ResearchKit/ORKNavigationContainerView_Internal.h>
 #import <ResearchKit/ORKStepHeaderView.h>
@@ -161,3 +163,7 @@
 #import <ResearchKit/ORKSkin.h>
 #import <ResearchKit/ORKDefaultFont.h>
 #import <ResearchKit/ORKVoiceEngine.h>
+
+#import <ResearchKit/ORKLearnMoreView.h>
+#import <ResearchKit/ORKBodyContainerView.h>
+#import <ResearchKit/ORKBodyItem.h>

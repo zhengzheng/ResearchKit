@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2015, Apple Inc. All rights reserved.
+ Copyright (c) 2019, Apple Inc. All rights reserved.
  
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
@@ -28,40 +28,52 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+@import UIKit;
+#import <Foundation/Foundation.h>
 
-#import "ORKConsentSharingStepViewController.h"
+NS_ASSUME_NONNULL_BEGIN
 
-#import "ORKConsentLearnMoreViewController.h"
-
-#import "ORKConsentSharingStep.h"
-#import "ORKStepViewController_Internal.h"
-
-#import "ORKHelpers_Internal.h"
-
-
-@implementation ORKConsentSharingStepViewController
-
-- (instancetype)initWithStep:(ORKStep *)step {
-    self = [super initWithStep:step];
-    if (self) {
-        [super setLearnMoreButtonItem:[[UIBarButtonItem alloc] initWithTitle:ORKLocalizedString(@"LEARN_MORE_CONSENT_SHARING", nil) style:UIBarButtonItemStylePlain target:self action:@selector(consentLearnMoreAction:)]];
-    }
-    return self;
-}
-
-- (void)setLearnMoreButtonItem:(UIBarButtonItem *)learnMoreButtonItem {
-    // Override to ignore, so we keep our "private" learn more button item
-    return;
-}
-
-- (void)consentLearnMoreAction:(id)sender {
-    ORKConsentSharingStep *step = (ORKConsentSharingStep *)self.step;
+typedef NS_ENUM(NSInteger, ORKBodyItemStyle) {
+    /**
+     text style body item
+     */
+    ORKBodyItemStyleText,
     
-    ORKConsentLearnMoreViewController *viewController = [[ORKConsentLearnMoreViewController alloc] initWithHTMLContent:step.localizedLearnMoreHTMLContent];
-    viewController.title = ORKLocalizedString(@"CONSENT_LEARN_MORE_TITLE", nil);
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self presentViewController:navigationController animated:YES completion:nil];
-}
+    /**
+     bullet style body item
+     */
+    ORKBodyItemStyleBulletPoint
+} ORK_ENUM_AVAILABLE;
+
+@class ORKLearnMoreInstructionStep;
+@interface ORKLearnMoreItem : NSObject
+
++ (instancetype)learnMoreLinkItemWithText:(NSString *)text learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep;
+
++ (instancetype)learnMoreDetailDisclosureItemWithLearnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep;
+
+@property (nonatomic, nonnull) ORKLearnMoreInstructionStep * learnMoreInstructionStep;
+
+- (nullable NSString *)getText;
 
 @end
+
+
+@interface ORKBodyItem : NSObject
+
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+
+- (instancetype)initWithTitle:(nullable NSString *)title text:(nullable NSString *)text learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem bodyItemStyle:(ORKBodyItemStyle)bodyItemStyle NS_DESIGNATED_INITIALIZER;
+
+@property (nonatomic) NSString * title;
+
+@property (nonatomic) NSString * text;
+
+@property (nonatomic) ORKLearnMoreItem * learnMoreItem;
+
+@property (nonatomic) ORKBodyItemStyle bodyItemStyle;
+
+@end
+
+NS_ASSUME_NONNULL_END
