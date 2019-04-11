@@ -29,28 +29,37 @@
  */
 
 
-#import "ORKLearnMoreStepViewController.h"
-#import "ORKInstructionStepViewController_Internal.h"
-#import "ORKInstructionStepContainerView.h"
-#import "ORKNavigationContainerView.h"
+@import UIKit;
 
-@implementation ORKLearnMoreStepViewController
+NS_ASSUME_NONNULL_BEGIN
 
-- (void)stepDidChange {
-    [super stepDidChange];
-    [self.stepView.navigationFooterView setHidden:YES];
-}
+@class ORKLearnMoreItem;
+@class ORKLearnMoreInstructionStep;
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-//    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style: UIBarButtonItemStylePlain target:self action:@selector(back)];
-//    self.navigationItem.leftBarButtonItem = backButton;
-}
+@protocol ORKGDPRViewLearnMoreDelegate <NSObject>
 
-- (void)back
-{
-    [self dismissViewControllerAnimated:YES completion:nil]; // ios 6
-}
+@required
+- (void)gdprViewLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep;
 
 @end
+
+@interface ORKGDPRView : UIStackView
+
+- (instancetype)initWithFrame:(CGRect)frame NS_UNAVAILABLE;
+
+- (instancetype)initWithIconImage:(UIImage *)iconImage
+                             text:(NSString *)text
+                    learnMoreItem:(ORKLearnMoreItem *)learnMoreItem;
+
+@property (nonatomic) UIImage * iconImage;
+
+@property (nonatomic) NSString * text;
+
+@property (nonatomic) ORKLearnMoreItem * learnMoreItem;
+
+@property (nonatomic, weak) id<ORKGDPRViewLearnMoreDelegate> delegate;
+
+
+@end
+
+NS_ASSUME_NONNULL_END

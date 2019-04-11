@@ -34,7 +34,60 @@
 #import "ORKBodyItem.h"
 #import "ORKBodyContainerView.h"
 #import "ORKSkin.h"
+#import "ORKGDPRView.h"
+#import "ORKNavigationContainerView_Internal.h"
 
+/**
+ 
+ +---------------------------------------+
+ | +-----------------------------------+ |<---_stepContainerView
+ | |        _topContentImageView       | |
+ | |                                   | |
+ | |                                   | |
+ | |___________________________________| |
+ | +-----------------------------------+ |
+ | |    +_________________________+    |<-----_scrollView
+ | |    |                         |    | |
+ | |    |       +-------+         |<----------_scrollContainerView
+ | |    |       | _icon |         |    | |
+ | |    |       |       |         |    | |
+ | |    |       +-------+         |    | |
+ | |    |                         |    | |
+ | |    | +---------------------+ |    | |
+ | |    | |    _titleLabel      | |    | |
+ | |    | |_____________________| |    | |
+ | |    |                         |    | |
+ | |    | +---------------------+ |    | |
+ | |    | |                     |<------------_bodyContainerView: UIstackView
+ | |    | | +-----------------+ | |    | |
+ | |    | | |                 | | |    | |
+ | |    | | |--Title          | | |    | |
+ | |    | | |--Text           |<------------- BodyItemStyleText
+ | |    | | |--LearnMore      | | |    | |
+ | |    | | |_________________| | |    | |
+ | |    | |                     | |    | |
+ | |    | | +---+-------------+ | |    | |
+ | |    | | |   |--Title      | | |    | |
+ | |    | | | o |--Text       |<------------- BodyItemStyleBullet
+ | |    | | |   |--LearnMore  | | |    | |
+ | |    | | |___|_____________| | |    | |
+ | |    | |_____________________| |    | |
+ | |    |                         |    | |
+ | |    | +---------------------+ |    | |
+ | |    | |  _CustomContentView | |    | |
+ | |    | |_____________________| |    | |
+ | |____|_________________________|____| |
+ |______|_________________________|______|
+        |                         |
+        |                         |
+        | +---------------------+ |
+        | |      _gdprView      | |
+        | |_____________________| |
+        | +---------------------+ |
+        | |  _navigationFooter  | |
+        | |_____________________| |
+        vvvvvvvvvvvvvvvvvvvvvvvvvvv
+ */
 
 static const CGFloat ORKStepContainerIconImageViewDimension = 80.0;
 static const CGFloat ORKStepContainerIconImageViewToTitleLabelPadding = 20.0;
@@ -42,7 +95,7 @@ static const CGFloat ORKStepContainerIconToBodyTopPaddingStandard = 20.0;
 static const CGFloat ORKStepContainerIconToBulletTopPaddingStandard = 20.0;
 static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
 
-@interface ORKStepContainerView()<ORKBodyContainerViewDelegate>
+@interface ORKStepContainerView()<ORKBodyContainerViewDelegate, ORKGDPRViewLearnMoreDelegate>
 
 @end
 
@@ -55,9 +108,13 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
     UIImageView *_topContentImageView;
     UIImageView *_iconImageView;
     ORKBodyContainerView *_bodyContainerView;
+    BOOL _isNavigationContainerScrollable;
+    
+    ORKGDPRView *_gdprView;
     
 //    variable constraints:
     NSLayoutConstraint *_scrollViewTopConstraint;
+    NSLayoutConstraint *_scrollViewBottomConstraint;
     NSLayoutConstraint *_titleLabelTopConstraint;
     NSLayoutConstraint *_bodyContainerViewTopConstraint;
     NSLayoutConstraint *_customContentViewTopConstraint;
@@ -65,6 +122,9 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
     NSLayoutConstraint *_scrollContainerContentSizeConstraint;
     NSArray<NSLayoutConstraint *> *_topContentImageViewConstraints;
     NSArray<NSLayoutConstraint *> *_iconImageViewConstraints;
+    
+    NSLayoutConstraint *_gdprViewBottomConstraint;
+    NSArray<NSLayoutConstraint *> *_navigationContainerViewConstraints;
     
     NSMutableArray<NSLayoutConstraint *> *_updatedConstraints;
 }
@@ -74,8 +134,10 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
     if (self) {
         [self setupScrollView];
         [self setupScrollContainerView];
+        _isNavigationContainerScrollable = YES;
         [self setupConstraints];
         [self setupUpdatedConstraints];
+        [self setupNavigationContainerView];
     }
     return self;
 }
@@ -96,15 +158,39 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
     //    2.) First Image; updateConstraints
     if (stepTopContentImage && !_topContentImageView) {
         [self setupTopContentImageView];
-        _topContentImageView.image = stepTopContentImage;
+        _topContentImageView.image = [self topContentAndAuxiliaryImage];
         [self updateScrollViewTopConstraint];
         [self setNeedsUpdateConstraints];
     }
     
     //    3.) >= second Image;
     if (stepTopContentImage && _topContentImageView) {
-        _topContentImageView.image = stepTopContentImage;
+        _topContentImageView.image = [self topContentAndAuxiliaryImage];
     }
+}
+
+- (void)setAuxiliaryImage:(UIImage *)auxiliaryImage {
+    _auxiliaryImage = auxiliaryImage;
+    if (_stepTopContentImage) {
+        _topContentImageView.image = [self topContentAndAuxiliaryImage];
+    }
+}
+
+- (UIImage *)topContentAndAuxiliaryImage {
+    if (!_auxiliaryImage) {
+        return _stepTopContentImage;
+    }
+    CGSize size = _auxiliaryImage.size;
+    UIGraphicsBeginImageContext(size);
+    
+    CGRect rect = CGRectMake(0.0, 0.0, size.width, size.height);
+    
+    [_auxiliaryImage drawInRect:rect];
+    [_stepTopContentImage drawInRect:rect blendMode:kCGBlendModeNormal alpha:1.0];
+    UIImage * image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
 }
 
 - (void)setStepTitle:(NSString *)stepTitle {
@@ -167,6 +253,65 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
     _scrollView.showsVerticalScrollIndicator = showScrollIndicator;
 }
 
+- (void)addGDPRViewWithIconImage:(UIImage *)iconImage text:(NSString *)text
+                   learnMoreText:(NSString *)learnMoreText
+        learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep {
+    
+    if (!_gdprView) {
+        _gdprView = [[ORKGDPRView alloc] initWithIconImage:iconImage
+                                                      text:text
+                                             learnMoreItem:[ORKLearnMoreItem learnMoreLinkItemWithText:learnMoreText
+                                                                              learnMoreInstructionStep:learnMoreInstructionStep]];
+    }
+    _gdprView.delegate = self;
+    [_scrollContainerView addSubview:_gdprView];
+    [self addGDPRViewConstraints];
+    [self setNeedsUpdateConstraints];
+}
+
+- (void)deactivateGDPRViewBottomConstraint {
+    if (_gdprViewBottomConstraint) {
+        [NSLayoutConstraint deactivateConstraints:@[_gdprViewBottomConstraint]];
+        if ([_updatedConstraints containsObject:_gdprViewBottomConstraint]) {
+            [_updatedConstraints removeObject:_gdprViewBottomConstraint];
+        }
+    }
+}
+
+- (void)setGDPRViewBottomConstraint {
+    _gdprViewBottomConstraint = [NSLayoutConstraint constraintWithItem:_gdprView
+                                                             attribute:NSLayoutAttributeBottom
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:_isNavigationContainerScrollable ? _navigationFooterView : _scrollContainerView
+                                                             attribute:_isNavigationContainerScrollable ? NSLayoutAttributeTop : NSLayoutAttributeBottom
+                                                            multiplier:1.0
+                                                              constant:0.0];
+}
+
+- (void)addGDPRViewConstraints {
+    _gdprView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self setGDPRViewBottomConstraint];
+    
+    [_updatedConstraints addObjectsFromArray:@[
+                                               [NSLayoutConstraint constraintWithItem:_gdprView
+                                                                            attribute:NSLayoutAttributeLeft
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:_scrollContainerView
+                                                                            attribute:NSLayoutAttributeLeft
+                                                                           multiplier:1.0
+                                                                             constant:0.0],
+                                               [NSLayoutConstraint constraintWithItem:_gdprView
+                                                                            attribute:NSLayoutAttributeRight
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:_scrollContainerView
+                                                                            attribute:NSLayoutAttributeRight
+                                                                           multiplier:1.0
+                                                                             constant:0.0],
+                                               _gdprViewBottomConstraint
+                                               ]];
+}
+
 - (void)setupScrollContainerView {
     if (!_scrollContainerView) {
         _scrollContainerView = [UIView new];
@@ -219,6 +364,93 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
     _customContentView = customContentView;
     [_scrollContainerView addSubview:_customContentView];
     [self setupCustomContentViewConstraints];
+}
+
+- (void)setupNavigationContainerView {
+    if (!_navigationFooterView) {
+        _navigationFooterView = [ORKNavigationContainerView new];
+    }
+    [_navigationFooterView removeStyling];
+    [self placeNavigationContainerView];
+}
+
+- (void)removeNavigationFooterView {
+    [_navigationFooterView removeFromSuperview];
+    if (_navigationContainerViewConstraints) {
+        [NSLayoutConstraint deactivateConstraints:_navigationContainerViewConstraints];
+        for (NSLayoutConstraint *constraint in _navigationContainerViewConstraints) {
+            if ([_updatedConstraints containsObject:constraint]) {
+                [_updatedConstraints removeObject:constraint];
+            }
+        }
+        _navigationContainerViewConstraints = nil;
+    }
+}
+
+- (void)placeNavigationContainerView {
+    [self removeNavigationFooterView];
+    if (_isNavigationContainerScrollable) {
+        [_scrollContainerView addSubview:_navigationFooterView];
+    }
+    else {
+        [self addSubview:_navigationFooterView];
+    }
+    [self setupNavigationContainerViewConstraints];
+}
+
+- (void)setupNavigationContainerViewConstraints {
+    _navigationFooterView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    _navigationContainerViewConstraints = @[
+                                              [NSLayoutConstraint constraintWithItem:_navigationFooterView
+                                                                           attribute:NSLayoutAttributeBottom
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:_isNavigationContainerScrollable ? _scrollContainerView : self
+                                                                           attribute:NSLayoutAttributeBottom
+                                                                          multiplier:1.0
+                                                                            constant:0.0],
+                                              [NSLayoutConstraint constraintWithItem:_navigationFooterView
+                                                                           attribute:NSLayoutAttributeLeft
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:_isNavigationContainerScrollable ? _scrollContainerView : self
+                                                                           attribute:NSLayoutAttributeLeft
+                                                                          multiplier:1.0
+                                                                            constant:0.0],
+                                              [NSLayoutConstraint constraintWithItem:_navigationFooterView
+                                                                           attribute:NSLayoutAttributeRight
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:_isNavigationContainerScrollable ? _scrollContainerView : self
+                                                                           attribute:NSLayoutAttributeRight
+                                                                          multiplier:1.0
+                                                                            constant:0.0]];
+    [_updatedConstraints addObjectsFromArray:_navigationContainerViewConstraints];
+
+    if (!_isNavigationContainerScrollable) {
+        [NSLayoutConstraint deactivateConstraints:@[_scrollViewBottomConstraint]];
+        if ([_updatedConstraints containsObject:_scrollViewBottomConstraint]) {
+            [_updatedConstraints removeObject:_scrollViewBottomConstraint];
+        }
+        _scrollViewBottomConstraint = [NSLayoutConstraint constraintWithItem:_scrollView
+                                                                   attribute:NSLayoutAttributeBottom
+                                                                   relatedBy:NSLayoutRelationEqual
+                                                                      toItem:_navigationFooterView
+                                                                   attribute:NSLayoutAttributeTop
+                                                                  multiplier:1.0
+                                                                    constant:0.0];
+        [_updatedConstraints addObject:_scrollViewBottomConstraint];
+    }
+    if (_gdprView) {
+        [self deactivateGDPRViewBottomConstraint];
+        [self setGDPRViewBottomConstraint];
+        [_updatedConstraints addObject:_gdprViewBottomConstraint];
+    }
+    
+    [self setNeedsUpdateConstraints];
+}
+
+- (void)pinNavigationContainerToBottom {
+    _isNavigationContainerScrollable = NO;
+    [self placeNavigationContainerView];
 }
 
 - (void)setupCustomContentViewConstraints {
@@ -418,6 +650,13 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
 
 - (NSArray<NSLayoutConstraint *> *)scrollViewStaticConstraints {
     CGFloat leftRightPadding = ORKStepContainerLeftRightPaddingForWindow(self.window);
+    _scrollViewBottomConstraint = [NSLayoutConstraint constraintWithItem:_scrollView
+                                                               attribute:NSLayoutAttributeBottom
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:self
+                                                               attribute:NSLayoutAttributeBottom
+                                                              multiplier:1.0
+                                                                constant:0.0];
     return @[
              [NSLayoutConstraint constraintWithItem:_scrollView
                                           attribute:NSLayoutAttributeLeft
@@ -433,13 +672,7 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
                                           attribute:NSLayoutAttributeRight
                                          multiplier:1.0
                                            constant:-leftRightPadding],
-             [NSLayoutConstraint constraintWithItem:_scrollView
-                                          attribute:NSLayoutAttributeBottom
-                                          relatedBy:NSLayoutRelationEqual
-                                             toItem:self
-                                          attribute:NSLayoutAttributeBottom
-                                         multiplier:1.0
-                                           constant:0.0]
+             _scrollViewBottomConstraint
              ];
 }
 
@@ -491,11 +724,15 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
                                                                      attribute:_topContentImageView ? NSLayoutAttributeBottom : NSLayoutAttributeTop
                                                                     multiplier:1.0
                                                                       constant:_topContentImageView ? 0.0 : ORKStepContainerTopPaddingForWindow(self.window)];
+    [_updatedConstraints addObject:_scrollViewTopConstraint];
 }
 
 - (void)updateScrollViewTopConstraint {
     if (_scrollViewTopConstraint) {
         [NSLayoutConstraint deactivateConstraints:@[_scrollViewTopConstraint]];
+    }
+    if ([_updatedConstraints containsObject:_scrollViewTopConstraint]) {
+        [_updatedConstraints removeObject:_scrollViewTopConstraint];
     }
     [self setScrollViewTopConstraint];
 }
@@ -563,6 +800,7 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
                                                                     multiplier:1.0
                                                                       constant:ORKStepContainerTopContentHeightForWindow(self.window)]
                                         ];
+    [_updatedConstraints addObjectsFromArray:_topContentImageViewConstraints];
 }
 
 - (void)deactivateTopContentImageViewConstraints {
@@ -587,22 +825,49 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
     if (_scrollContainerContentSizeConstraint) {
         [NSLayoutConstraint deactivateConstraints:@[_scrollContainerContentSizeConstraint]];
     }
-    //    FIXME: set bottom Instead of height.
-    _scrollContainerContentSizeConstraint = [NSLayoutConstraint constraintWithItem:_scrollContainerView
-                                                                         attribute:NSLayoutAttributeHeight
+    //    FIXME: set bottom with Min height.
+    //    TODO: Optimize.
+    id topItem;
+    id bottomItem;
+    NSLayoutAttribute topItemAttribute;
+    NSLayoutAttribute bottomItemAttribute;
+    if (_customContentView) {
+        topItem = _customContentView;
+        topItemAttribute = NSLayoutAttributeBottom;
+    }
+    else if(_bodyContainerView) {
+        topItem = _bodyContainerView;
+        topItemAttribute = NSLayoutAttributeBottom;
+    }
+    else {
+        topItem = _titleLabel;
+        topItemAttribute = NSLayoutAttributeBottom;
+    }
+    
+    if (_gdprView) {
+        bottomItem = _gdprView;
+        bottomItemAttribute = NSLayoutAttributeTop;
+    }
+    else if(_navigationFooterView) {
+        bottomItem = _navigationFooterView;
+        bottomItemAttribute = NSLayoutAttributeTop;
+    }
+    else {
+        bottomItem = _scrollContainerView;
+        bottomItemAttribute = NSLayoutAttributeBottom;
+    }
+    
+    
+    _scrollContainerContentSizeConstraint = [NSLayoutConstraint constraintWithItem:bottomItem
+                                                                         attribute:bottomItemAttribute
                                                                          relatedBy:NSLayoutRelationEqual
-                                                                            toItem:nil
-                                                                         attribute:NSLayoutAttributeNotAnAttribute
+                                                                            toItem:topItem
+                                                                         attribute:topItemAttribute
                                                                         multiplier:1.0
-                                                                          constant:3000.0];
+                                                                          constant:0.0];
 }
 
 - (void)updateContainerConstraints {
-    
-    if (_topContentImageViewConstraints) {
-        [_updatedConstraints addObjectsFromArray:_topContentImageViewConstraints];
-    }
-    [_updatedConstraints addObject:_scrollViewTopConstraint];
     [self updateScrollContainerContentSizeConstraint];
     [_updatedConstraints addObject:_scrollContainerContentSizeConstraint];
     [NSLayoutConstraint activateConstraints:_updatedConstraints];
@@ -617,6 +882,12 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
 #pragma mark - ORKBodyContainerViewDelegate
 
 - (void)bodyContainerLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep {
+    [_delegate stepContainerLearnMoreButtonPressed:learnMoreStep];
+}
+
+#pragma mark - ORKGDPRViewLearnMoreDelegate
+
+- (void)gdprViewLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep {
     [_delegate stepContainerLearnMoreButtonPressed:learnMoreStep];
 }
 

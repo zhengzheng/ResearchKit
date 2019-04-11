@@ -29,28 +29,30 @@
  */
 
 
-#import "ORKLearnMoreStepViewController.h"
-#import "ORKInstructionStepViewController_Internal.h"
 #import "ORKInstructionStepContainerView.h"
-#import "ORKNavigationContainerView.h"
+#import "ORKBodyItem.h"
 
-@implementation ORKLearnMoreStepViewController
+@implementation ORKInstructionStepContainerView
 
-- (void)stepDidChange {
-    [super stepDidChange];
-    [self.stepView.navigationFooterView setHidden:YES];
+
+- (instancetype)initWithInstructionStep:(ORKInstructionStep *)instructionStep {
+    self = [super init];
+    if (self) {
+        self.instructionStep = instructionStep;
+    }
+    [self setVariables];
+    return self;
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-//    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style: UIBarButtonItemStylePlain target:self action:@selector(back)];
-//    self.navigationItem.leftBarButtonItem = backButton;
-}
-
-- (void)back
-{
-    [self dismissViewControllerAnimated:YES completion:nil]; // ios 6
+- (void)setVariables {
+    self.stepTitle = _instructionStep.title;
+    self.bodyItems = @[[[ORKBodyItem alloc] initWithTitle:_instructionStep.text
+                                                     text:_instructionStep.detailText
+                                            learnMoreItem:_instructionStep.learnMoreItem
+                                            bodyItemStyle:ORKBodyItemStyleText]];
+    self.stepTopContentImage = _instructionStep.image;
+    self.auxiliaryImage = _instructionStep.auxiliaryImage;
+    self.titleIconImage = _instructionStep.iconImage;
 }
 
 @end
