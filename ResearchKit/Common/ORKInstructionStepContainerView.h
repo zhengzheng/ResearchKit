@@ -29,28 +29,19 @@
  */
 
 
-#import "ORKLearnMoreStepViewController.h"
-#import "ORKInstructionStepViewController_Internal.h"
-#import "ORKInstructionStepContainerView.h"
-#import "ORKNavigationContainerView.h"
+#import <ResearchKit/ResearchKit.h>
+#import "ORKStepContainerView.h"
 
-@implementation ORKLearnMoreStepViewController
 
-- (void)stepDidChange {
-    [super stepDidChange];
-    [self.stepView.navigationFooterView setHidden:YES];
-}
+NS_ASSUME_NONNULL_BEGIN
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-//    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style: UIBarButtonItemStylePlain target:self action:@selector(back)];
-//    self.navigationItem.leftBarButtonItem = backButton;
-}
+@class ORKInstructionStep;
+@interface ORKInstructionStepContainerView : ORKStepContainerView
 
-- (void)back
-{
-    [self dismissViewControllerAnimated:YES completion:nil]; // ios 6
-}
+- (instancetype)initWithInstructionStep:(ORKInstructionStep *)instructionStep;
+
+@property (nonatomic) ORKInstructionStep * instructionStep;
 
 @end
+
+NS_ASSUME_NONNULL_END

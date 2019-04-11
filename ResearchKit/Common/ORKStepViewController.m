@@ -110,11 +110,6 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
     [super viewDidLoad];
 
     self.view.backgroundColor = ORKColor(ORKBackgroundColorKey);
-    if ([self step].title) {
-        self.title = [self step].title;
-    } else {
-        self.title = @"";
-    }
     if (!_shouldIgnoreiPadDesign && ORKNeedWideScreenDesign(self.view)) {
         [self setupiPadBackgroundView];
         [self setupiPadContentView];

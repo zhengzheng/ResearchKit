@@ -825,14 +825,46 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
     if (_scrollContainerContentSizeConstraint) {
         [NSLayoutConstraint deactivateConstraints:@[_scrollContainerContentSizeConstraint]];
     }
-    //    FIXME: set bottom Instead of height.
-    _scrollContainerContentSizeConstraint = [NSLayoutConstraint constraintWithItem:_scrollContainerView
-                                                                         attribute:NSLayoutAttributeHeight
+    //    FIXME: set bottom with Min height.
+    //    TODO: Optimize.
+    id topItem;
+    id bottomItem;
+    NSLayoutAttribute topItemAttribute;
+    NSLayoutAttribute bottomItemAttribute;
+    if (_customContentView) {
+        topItem = _customContentView;
+        topItemAttribute = NSLayoutAttributeBottom;
+    }
+    else if(_bodyContainerView) {
+        topItem = _bodyContainerView;
+        topItemAttribute = NSLayoutAttributeBottom;
+    }
+    else {
+        topItem = _titleLabel;
+        topItemAttribute = NSLayoutAttributeBottom;
+    }
+    
+    if (_gdprView) {
+        bottomItem = _gdprView;
+        bottomItemAttribute = NSLayoutAttributeTop;
+    }
+    else if(_navigationFooterView) {
+        bottomItem = _navigationFooterView;
+        bottomItemAttribute = NSLayoutAttributeTop;
+    }
+    else {
+        bottomItem = _scrollContainerView;
+        bottomItemAttribute = NSLayoutAttributeBottom;
+    }
+    
+    
+    _scrollContainerContentSizeConstraint = [NSLayoutConstraint constraintWithItem:bottomItem
+                                                                         attribute:bottomItemAttribute
                                                                          relatedBy:NSLayoutRelationEqual
-                                                                            toItem:nil
-                                                                         attribute:NSLayoutAttributeNotAnAttribute
+                                                                            toItem:topItem
+                                                                         attribute:topItemAttribute
                                                                         multiplier:1.0
-                                                                          constant:1800.0];
+                                                                          constant:0.0];
 }
 
 - (void)updateContainerConstraints {

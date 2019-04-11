@@ -598,6 +598,8 @@
 		BAD9E9132255E9750014FA29 /* ORKLearnMoreInstructionStep.m in Sources */ = {isa = PBXBuildFile; fileRef = BAD9E9112255E9750014FA29 /* ORKLearnMoreInstructionStep.m */; };
 		BAD9E9162255E9CE0014FA29 /* ORKLearnMoreStepViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = BAD9E9142255E9CE0014FA29 /* ORKLearnMoreStepViewController.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BAD9E9172255E9CE0014FA29 /* ORKLearnMoreStepViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BAD9E9152255E9CE0014FA29 /* ORKLearnMoreStepViewController.m */; };
+		BADA2F26225DA54B005D2255 /* ORKInstructionStepContainerView.h in Headers */ = {isa = PBXBuildFile; fileRef = BADA2F24225DA54B005D2255 /* ORKInstructionStepContainerView.h */; };
+		BADA2F27225DA54B005D2255 /* ORKInstructionStepContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = BADA2F25225DA54B005D2255 /* ORKInstructionStepContainerView.m */; };
 		BC01B0FB1B0EB99700863803 /* ORKTintedImageView_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = BC01B0FA1B0EB99700863803 /* ORKTintedImageView_Internal.h */; };
 		BC13CE391B0660220044153C /* ORKNavigableOrderedTask.h in Headers */ = {isa = PBXBuildFile; fileRef = BC13CE371B0660220044153C /* ORKNavigableOrderedTask.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BC13CE3A1B0660220044153C /* ORKNavigableOrderedTask.m in Sources */ = {isa = PBXBuildFile; fileRef = BC13CE381B0660220044153C /* ORKNavigableOrderedTask.m */; };
@@ -1394,6 +1396,8 @@
 		BAD9E9112255E9750014FA29 /* ORKLearnMoreInstructionStep.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKLearnMoreInstructionStep.m; sourceTree = "<group>"; };
 		BAD9E9142255E9CE0014FA29 /* ORKLearnMoreStepViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKLearnMoreStepViewController.h; sourceTree = "<group>"; };
 		BAD9E9152255E9CE0014FA29 /* ORKLearnMoreStepViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKLearnMoreStepViewController.m; sourceTree = "<group>"; };
+		BADA2F24225DA54B005D2255 /* ORKInstructionStepContainerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKInstructionStepContainerView.h; sourceTree = "<group>"; };
+		BADA2F25225DA54B005D2255 /* ORKInstructionStepContainerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKInstructionStepContainerView.m; sourceTree = "<group>"; };
 		BC01B0FA1B0EB99700863803 /* ORKTintedImageView_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ORKTintedImageView_Internal.h; sourceTree = "<group>"; };
 		BC13CE371B0660220044153C /* ORKNavigableOrderedTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ORKNavigableOrderedTask.h; sourceTree = "<group>"; };
 		BC13CE381B0660220044153C /* ORKNavigableOrderedTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ORKNavigableOrderedTask.m; sourceTree = "<group>"; };
@@ -2352,6 +2356,8 @@
 			isa = PBXGroup;
 			children = (
 				BAD9E90F2255E94F0014FA29 /* LearnMore Step */,
+				BADA2F24225DA54B005D2255 /* ORKInstructionStepContainerView.h */,
+				BADA2F25225DA54B005D2255 /* ORKInstructionStepContainerView.m */,
 				86C40B921A8D7C5C00081FAC /* ORKInstructionStep.h */,
 				86C40B931A8D7C5C00081FAC /* ORKInstructionStep.m */,
 				86C40B941A8D7C5C00081FAC /* ORKInstructionStepViewController.h */,
@@ -3541,6 +3547,7 @@
 				BA8078E3224A8D6E0013B554 /* ORKTitleLabel.h in Headers */,
 				D442397D1AF17F7600559D96 /* ORKImageCaptureStepViewController.h in Headers */,
 				86C40C4A1A8D7C5C00081FAC /* ORKSpatialSpanTargetView.h in Headers */,
+				BADA2F26225DA54B005D2255 /* ORKInstructionStepContainerView.h in Headers */,
 				866DA5221D63D04700C9AF3F /* ORKDataCollectionManager_Internal.h in Headers */,
 				86C40C1A1A8D7C5C00081FAC /* ORKAudioStep.h in Headers */,
 			);
@@ -3877,6 +3884,7 @@
 				71BD9EA620969BE1007B436E /* ORKEnvironmentSPLMeterStep.m in Sources */,
 				250F94091B4C5AA400FA23EB /* ORKTowerOfHanoiStepViewController.m in Sources */,
 				FF72B1F01F5F10CD004C6F15 /* ORKStroopResult.m in Sources */,
+				BADA2F27225DA54B005D2255 /* ORKInstructionStepContainerView.m in Sources */,
 				BC1C032D1CA301E300869355 /* ORKHeightPicker.m in Sources */,
 				86C40CF81A8D7C5C00081FAC /* ORKBorderedButton.m in Sources */,
 				86C40E201A8D7C5C00081FAC /* ORKConsentSignature.m in Sources */,
