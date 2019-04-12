@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) UIView * customContentView;
 
-@property (nonatomic) ORKNavigationContainerView * navigationFooterView;
+@property (nonatomic, nullable) ORKNavigationContainerView * navigationFooterView;
 
 @end
 
