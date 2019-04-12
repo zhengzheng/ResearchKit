@@ -53,8 +53,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) BOOL shouldTintImages;
 
-// Override whether to show progress for this step in the default task.
-@property (nonatomic, assign, readonly) BOOL showsProgress;
+// Override whether to show progress for this step in the default task. The default is YES.
+@property (nonatomic, assign) BOOL showsProgress;
 
 // Whether to allow navigation back from this step.
 @property (nonatomic, assign, readonly) BOOL allowsBackNavigation;

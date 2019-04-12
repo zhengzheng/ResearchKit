@@ -55,6 +55,7 @@
     if (self) {
         ORKThrowInvalidArgumentExceptionIfNil(identifier);
         _identifier = [identifier copy];
+        _showsProgress = YES;
     }
     return self;
 }
@@ -150,9 +151,9 @@
     return [NSString stringWithFormat:@"<%@ %@ %@>", super.description, self.identifier, self.title];
 }
 
-- (BOOL)showsProgress {
-    return YES;
-}
+//- (BOOL)showsProgress {
+//    return _showsProgress;
+//}
 
 - (BOOL)allowsBackNavigation {
     return YES;
