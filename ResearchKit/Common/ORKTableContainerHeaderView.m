@@ -29,42 +29,25 @@
  */
 
 
-@import UIKit;
+#import "ORKTableContainerHeaderView.h"
+#import "ORKStepContainerView_Private.h"
+#import "ORKNavigationContainerView.h"
 
+@implementation ORKTableContainerHeaderView
 
-NS_ASSUME_NONNULL_BEGIN
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        
+    }
+    return self;
+}
 
-@class ORKLearnMoreInstructionStep;
-@protocol ORKStepContainerLearnMoreItemDelegate <NSObject>
-
-@required
-- (void)stepContainerLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep;
-
-@end
-
-@class ORKBodyItem;
-@class ORKNavigationContainerView;
-@interface ORKStepContainerView : UIView
-
-@property (nonatomic, nullable) UIImage * stepTopContentImage;
-
-@property (nonatomic, nullable) UIImage * auxiliaryImage; // Only underlayed when stepTopContentImage is added.
-
-@property (nonatomic) NSString * stepTitle;
-
-@property (nonatomic, nullable) UIImage * titleIconImage;
-
-@property (nonatomic) BOOL showScrollIndicator;
-
-@property (nonatomic) NSArray<ORKBodyItem *> * bodyItems;
-
-
-@property (nonatomic, weak) id<ORKStepContainerLearnMoreItemDelegate> delegate;
-
-- (void) addGDPRViewWithIconImage:(UIImage *)iconImage text:(NSString *)text learnMoreText:(NSString *)learnMoreText learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep;
-
-- (void)pinNavigationContainerToBottom;
+- (void)removeNavigationFooterView {
+    [self.navigationFooterView removeFromSuperview];
+    self.navigationFooterView = nil;
+    [self setNeedsUpdateConstraints];
+}
 
 @end
-
-NS_ASSUME_NONNULL_END

@@ -30,6 +30,7 @@
 
 
 #import "ORKTableContainerView.h"
+#import "ORKTableContainerHeaderView.h"
 
 #import "ORKNavigationContainerView.h"
 #import "ORKStepHeaderView.h"

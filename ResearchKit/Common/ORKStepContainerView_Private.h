@@ -1,6 +1,6 @@
 /*
  Copyright (c) 2019, Apple Inc. All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
  
@@ -29,41 +29,16 @@
  */
 
 
-@import UIKit;
+#import <ResearchKit/ORKStepContainerView.h>
 
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class ORKLearnMoreInstructionStep;
-@protocol ORKStepContainerLearnMoreItemDelegate <NSObject>
+@interface ORKStepContainerView ()
 
-@required
-- (void)stepContainerLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep;
+@property (nonatomic) UIView * customContentView;
 
-@end
-
-@class ORKBodyItem;
-@class ORKNavigationContainerView;
-@interface ORKStepContainerView : UIView
-
-@property (nonatomic, nullable) UIImage * stepTopContentImage;
-
-@property (nonatomic, nullable) UIImage * auxiliaryImage; // Only underlayed when stepTopContentImage is added.
-
-@property (nonatomic) NSString * stepTitle;
-
-@property (nonatomic, nullable) UIImage * titleIconImage;
-
-@property (nonatomic) BOOL showScrollIndicator;
-
-@property (nonatomic) NSArray<ORKBodyItem *> * bodyItems;
-
-
-@property (nonatomic, weak) id<ORKStepContainerLearnMoreItemDelegate> delegate;
-
-- (void) addGDPRViewWithIconImage:(UIImage *)iconImage text:(NSString *)text learnMoreText:(NSString *)learnMoreText learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep;
-
-- (void)pinNavigationContainerToBottom;
+@property (nonatomic) ORKNavigationContainerView * navigationFooterView;
 
 @end
 
