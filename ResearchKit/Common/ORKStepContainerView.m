@@ -29,7 +29,7 @@
  */
 
 
-#import "ORKStepContainerView.h"
+#import "ORKStepContainerView_Private.h"
 #import "ORKTitleLabel.h"
 #import "ORKBodyItem.h"
 #import "ORKBodyContainerView.h"

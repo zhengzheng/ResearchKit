@@ -55,6 +55,8 @@
 #import <ResearchKit/ORKQuestionResult_Private.h>
 #import <ResearchKit/ORKSignatureResult_Private.h>
 #import <ResearchKit/ORKResult_Private.h>
+#import <ResearchKit/ORKStepContainerView_Private.h>
+#import <ResearchKit/ORKTableContainerHeaderView.h>
 
 #import <ResearchKit/ORKAudioStep.h>
 #import <ResearchKit/ORKAmslerGridStep.h>
