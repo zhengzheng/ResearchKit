@@ -52,6 +52,9 @@ static const CGFloat ORKBodyTextToLearnMoreButtonPaddingStandard = 15.0;
 static const CGFloat ORKBulletIconToBodyPadding = 14.0;
 static const CGFloat ORKBulletStackLeftRightPadding = 10.0;
 
+static const CGFloat ORKImageIconToBodyPadding = 14.0;
+static const CGFloat ORKImageStackLeftRightPadding = 10.0;
+
 static NSString * ORKBulletUniCode = @"\u2981";
 
 
@@ -181,10 +184,11 @@ static NSString * ORKBulletUniCode = @"\u2981";
 
 - (void)setupBodyStyleImage {
     self.axis = UILayoutConstraintAxisHorizontal;
-    self.layoutMargins = UIEdgeInsetsMake(0.0, ORKBulletStackLeftRightPadding, 0.0, ORKBulletStackLeftRightPadding);
+    self.layoutMargins = UIEdgeInsetsMake(0.0, ORKImageStackLeftRightPadding, 0.0, ORKImageStackLeftRightPadding);
     [self setLayoutMarginsRelativeArrangement:YES];
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:self.bodyItem.image];
-    [self setCustomSpacing:ORKBulletIconToBodyPadding afterView:imageView];
+    UIImageView *imageView = [self imageView];
+    [self addArrangedSubview:imageView];
+    [self setCustomSpacing:ORKImageIconToBodyPadding afterView:imageView];
     [self addSubStackView];
 }
 
@@ -195,6 +199,19 @@ static NSString * ORKBulletUniCode = @"\u2981";
     [bulletIconLabel setText:ORKBulletUniCode];
     bulletIconLabel.translatesAutoresizingMaskIntoConstraints = NO;
     return bulletIconLabel;
+}
+
+- (UIImageView *)imageView {
+    UIImageView *imageView = [UIImageView new];
+    
+    if (self.bodyItem.image != nil) {
+        imageView.image = self.bodyItem.image;
+    }
+   
+    imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [imageView.heightAnchor constraintEqualToConstant:40.0].active = YES;
+    [imageView.widthAnchor constraintEqualToConstant:40.0].active = YES;
+    return imageView;
 }
 
 - (void)addSubStackView {

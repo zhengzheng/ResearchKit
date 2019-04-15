@@ -746,12 +746,9 @@ enum TaskListRow: Int, CustomStringConvertible {
         instructionStep.text = exampleDescription
         instructionStep.detailText = NSLocalizedString("Please use this space to provide instructions for participants.  Please make sure to provide enough information so that users can progress through the survey and complete with ease.", comment: "")
         
-        let bodyItem1 = ORKBodyItem(title: instructionStep.title, text: instructionStep.text, learnMoreItem: instructionStep.learnMoreItem, bodyItemStyle: .text)
+        let bodyItem = ORKBodyItem.init(title: "Title 1", text: "Body for item", image: nil, learnMoreItem: nil, bodyItemStyle: .image)
         
-        let bodyItem2 = ORKBodyItem(title: "Test Body Item", text: "This is the text inside the body", learnMoreItem: nil, bodyItemStyle: .image)
-        bodyItem2.image = UIImage(named: "hand_solid.png")
-        instructionStep.bodyItems = [bodyItem1,bodyItem2]
-        
+        instructionStep.bodyItems = [bodyItem]
         
         // Add a question step.
         let question1StepAnswerFormat = ORKBooleanAnswerFormat()

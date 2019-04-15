@@ -76,16 +76,29 @@
     ORKThrowMethodUnavailableException();
 }
 
-- (instancetype)initWithTitle:(NSString *)title text:(NSString *)text learnMoreItem:(ORKLearnMoreItem *)learnMoreItem bodyItemStyle:(ORKBodyItemStyle)bodyItemStyle {
+- (instancetype)initWithTitle:(NSString *)title text:(NSString *)text image:(nullable UIImage *)image learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem bodyItemStyle:(ORKBodyItemStyle)bodyItemStyle {
     self = [super init];
     if (self) {
         self.title = title;
         self.text = text;
         self.learnMoreItem = learnMoreItem;
         self.bodyItemStyle = bodyItemStyle;
+        _image = image;
     }
     [self validateParameters];
     return self;
+}
+
++ (ORKBodyItem *)bulletPointItemWithTitle:(nullable NSString *)title text:(nullable NSString *)text {
+    return [[ORKBodyItem alloc] initWithTitle:title text:text image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleBulletPoint];
+}
+
++ (ORKBodyItem *)textItemWithTitle:(nullable NSString *)title text:(nullable NSString *)text {
+    return [[ORKBodyItem alloc] initWithTitle:title text:text image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText];
+}
+
++ (ORKBodyItem *)imageItemWithTitle:(nullable NSString *)title text:(nullable NSString *)text image:(nonnull UIImage *)image {
+     return [[ORKBodyItem alloc] initWithTitle:title text:text image:image learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleImage];
 }
 
 - (void)validateParameters {
