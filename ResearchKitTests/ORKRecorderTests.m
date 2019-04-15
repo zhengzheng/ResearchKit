@@ -92,6 +92,12 @@
 
 - (void)injectAccelerometerData:(CMAccelerometerData *)accelerometerData;
 
+- (void)startAccelerometerUpdates;
+
+- (void)startAccelerometerUpdatesToQueue:(NSOperationQueue *)queue withHandler:(CMAccelerometerHandler)handler;
+
+- (void)stopAccelerometerUpdates;
+
 @end
 
 
@@ -100,6 +106,13 @@
     CMAccelerometerHandler _accelerometerHandler;
 }
 
+- (void)startAccelerometerUpdates {
+    
+}
+
+- (void)stopAccelerometerUpdates {
+    
+}
 - (void)injectMotion:(CMDeviceMotion *)motion {
     _motionHandler(motion, nil);
 }
@@ -110,12 +123,10 @@
 
 - (void)startDeviceMotionUpdatesToQueue:(NSOperationQueue *)queue withHandler:(CMDeviceMotionHandler)handler {
     _motionHandler = handler;
-    [super startDeviceMotionUpdatesToQueue:queue withHandler:handler];
 }
 
 - (void)startAccelerometerUpdatesToQueue:(NSOperationQueue *)queue withHandler:(CMAccelerometerHandler)handler {
     _accelerometerHandler = handler;
-    [super startAccelerometerUpdatesToQueue:queue withHandler:handler];
 }
 
 - (BOOL)isAccelerometerAvailable {
@@ -449,19 +460,31 @@ static const NSInteger kNumberOfSamples = 5;
     XCTAssertTrue([recorder isKindOfClass:recorderClass], @"");
     XCTAssertTrue([recorder.identifier isEqualToString:recorderConfiguration.identifier], @"");
     
-    recorder = [[ORKMockAccelerometerRecorder alloc] initWithIdentifier:@"accelerometer" frequency:recorder.frequency step:recorder.step outputDirectory:recorder.outputDirectory];
-    recorder.delegate = self;
-    ORKMockMotionManager *manager = [ORKMockMotionManager new];
-    [(ORKMockAccelerometerRecorder*)recorder setMockManager:manager];
+    ORKMockAccelerometerRecorder *newRecorder = [[ORKMockAccelerometerRecorder alloc] initWithIdentifier:@"accelerometer" frequency:recorder.frequency step:recorder.step outputDirectory:recorder.outputDirectory];
     
-    [recorder start];
+    newRecorder.delegate = self;
+    ORKMockMotionManager *manager = [ORKMockMotionManager new];
+    [newRecorder setMockManager:manager];
     
     ORKMockAccelerometerData *data = [ORKMockAccelerometerData new];
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Dummy expectation"];
+    
+    [newRecorder start];
+    
     for (NSInteger i = 0; i < kNumberOfSamples; i++) {
         [manager injectAccelerometerData:data];
     }
     
-    [recorder stop];
+    [newRecorder stop];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        XCTAssert(self->_result!=nil, @"Data source has populated array after initializing and, you know, giving it some time to breath, man.");
+        [expectation fulfill];
+    });
+    
+    
+    [self waitForExpectationsWithTimeout:20.0 handler:nil];
     [self checkResult];
     
     for (NSDictionary *sample in _items) {
