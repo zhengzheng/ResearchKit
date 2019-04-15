@@ -31,12 +31,12 @@
 import XCTest
 @testable import ResearchKit
 import ResearchKit.Private
-import ResearchKit.Internal
+//import ResearchKit.Internal
 
 class ORKPasscodeViewControllerTests: XCTestCase {
     
     var testController: ORKPasscodeViewController!
-    var resultController: ORKPasscodeViewController?
+    var resultController: ORKPasscodeStepViewController?
     var asyncExpectation: XCTestExpectation?
     
     func testPasscodeAuthenticationView() {
@@ -73,25 +73,54 @@ class ORKPasscodeViewControllerTests: XCTestCase {
     func testPasscodeViewControllerDelegateCalls() {
         testController = ORKPasscodeViewController.passcodeEditingViewController(withText: "TEST", delegate: self, passcodeType: .type4Digit)
         
-        let testExpectation = expectation(description: "ORKPasscodeViewController calls the delegate as the result of an async method completion")
+        let stepController = testController.viewControllers.first as! ORKPasscodeStepViewController
+        
+        var testExpectation = expectation(description: "ORKPasscodeViewController calls the delegate as the result of the user authenticating or finishing editing")
         self.asyncExpectation = testExpectation
-
+        
+        stepController.passcodeDelegate?.passcodeViewControllerDidFinish(withSuccess: stepController)
+        
         waitForExpectations(timeout: 19) { (error) in
             if let error = error {
                 XCTFail("waitForExpectationWithTimeout error: \(error)")
             }
-            
-            guard let result = self.resultController else {
-                XCTFail("Expected delegate to be called")
-                return
-            }
-            
-            XCTAssertEqual(self, result)
         }
         
+        testExpectation = expectation(description: "ORKPasscodeViewController calls the delegate as the result of the user cancelling")
+        self.asyncExpectation = testExpectation
+        
+        stepController.passcodeDelegate?.passcodeViewControllerDidCancel?(stepController)
+        
+        waitForExpectations(timeout: 19) { (error) in
+            if let error = error {
+                XCTFail("waitForExpectationWithTimeout error: \(error)")
+            }
+        }
+        
+        testExpectation = expectation(description: "ORKPasscodeViewController calls the delegate as the result of failed authentication")
+        self.asyncExpectation = testExpectation
+        
+        stepController.passcodeDelegate?.passcodeViewControllerDidFailAuthentication(stepController)
+        
+        waitForExpectations(timeout: 19) { (error) in
+            if let error = error {
+                XCTFail("waitForExpectationWithTimeout error: \(error)")
+            }
+        }
+        
+        
+        testExpectation = expectation(description: "ORKPasscodeViewController calls the delegate as the result of user forgetting passcode")
+        self.asyncExpectation = testExpectation
+        
+        stepController.passcodeDelegate?.passcodeViewControllerForgotPasscodeTapped?(stepController)
+        
+        waitForExpectations(timeout: 19) { (error) in
+            if let error = error {
+                XCTFail("waitForExpectationWithTimeout error: \(error)")
+            }
+        }
     }
 }
-
 
 extension ORKPasscodeViewControllerTests: ORKPasscodeDelegate {
     func passcodeViewControllerDidFinish(withSuccess viewController: UIViewController) {
@@ -99,11 +128,30 @@ extension ORKPasscodeViewControllerTests: ORKPasscodeDelegate {
             XCTFail("Delegate was not setup correclty. Missing XCTExpectation reference")
             return
         }
-//        completion = true
         expectation.fulfill()
     }
     
     func passcodeViewControllerDidFailAuthentication(_ viewController: UIViewController) {
-        // pass
+        guard let expectation = asyncExpectation else {
+            XCTFail("Delegate was not setup correclty. Missing XCTExpectation reference")
+            return
+        }
+        expectation.fulfill()
+    }
+    
+    func passcodeViewControllerDidCancel(_ viewController: UIViewController) {
+        guard let expectation = asyncExpectation else {
+            XCTFail("Delegate was not setup correclty. Missing XCTExpectation reference")
+            return
+        }
+        expectation.fulfill()
+    }
+    
+    func passcodeViewControllerForgotPasscodeTapped(_ viewController: UIViewController) {
+        guard let expectation = asyncExpectation else {
+            XCTFail("Delegate was not setup correclty. Missing XCTExpectation reference")
+            return
+        }
+        expectation.fulfill()
     }
 }
