@@ -96,13 +96,12 @@ class TaskListViewController: UITableViewController, ORKTaskViewControllerDelega
         // Create a task from the `TaskListRow` to present in the `ORKTaskViewController`.
         let task = taskListRow.representedTask
         
-        
         /*
             Passing `nil` for the `taskRunUUID` lets the task view controller
             generate an identifier for this run of the task.
         */
         let taskViewController = ORKTaskViewController(task: task, taskRun: nil)
-//        taskViewController.showsProgressInNavigationBar = false
+        taskViewController.showsProgressInNavigationBar = false
 
         // Make sure we receive events from `taskViewController`.
         taskViewController.delegate = self

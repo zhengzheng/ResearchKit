@@ -43,7 +43,6 @@ class RootViewController: UIViewController, OnboardingManagerDelegate {
         
         if (OnboardingStateManager.shared.getOnboardingCompletedState() == false) {
             let onboardingViewController = OnboardingViewController(task: nil, taskRun: nil)
-            onboardingViewController.showsProgressInNavigationBar = true
             onboardingViewController.onboardingManagerDelegate = self
             
             self.present(onboardingViewController, animated: false, completion: nil)
