@@ -28,47 +28,37 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import XCTest
 
-@import Foundation;
-@import UIKit;
-
-NS_ASSUME_NONNULL_BEGIN
-
-@class ORKChoiceViewCell;
-@class ORKTextChoiceAnswerFormat;
-
-@protocol ORKTextChoiceCellGroupDelegate <NSObject>
-
-@required
-- (void)answerChangedForIndexPath:(NSIndexPath *)indexPath;
-
-- (void)tableViewCellHeightUpdated;
-
-@end
-
-@interface ORKTextChoiceCellGroup : NSObject
-
-- (instancetype)initWithTextChoiceAnswerFormat:(ORKTextChoiceAnswerFormat *)answerFormat
-                                        answer:(nullable id)answer
-                            beginningIndexPath:(NSIndexPath *)indexPath
-                           immediateNavigation:(BOOL)immediateNavigation;
-
-@property (nonatomic, strong, nullable) id answer;
-
-@property (nonatomic, weak) id<ORKTextChoiceCellGroupDelegate> delegate;
-
-- (void)textViewDidResignResponderForCellAtIndexPath:(NSIndexPath *)indexPath;
-
-- (nullable ORKChoiceViewCell *)cellAtIndexPath:(NSIndexPath *)indexPath withReuseIdentifier:(nullable NSString *)identifier;
-
-- (BOOL)containsIndexPath:(NSIndexPath *)indexPath;
-
-- (void)didSelectCellAtIndexPath:(NSIndexPath *)indexPath;
-
-- (nullable id)answerForBoolean;
-
-- (NSUInteger)size;
-
-@end
-
-NS_ASSUME_NONNULL_END
+class ORKEnvironmentSPLMeterResultTests: XCTestCase {
+    
+    var result: ORKEnvironmentSPLMeterResult!
+    var identifer: String!
+    let date = Date()
+    
+    override func setUp() {
+        identifer = "RESULT"
+        result = ORKEnvironmentSPLMeterResult(identifier: identifer)
+        result.sensitivityOffset = 40
+        result.recordedSPLMeterSamples = [2]
+    }
+    
+    func testProperties() {
+        XCTAssertEqual(result.identifier, identifer)
+        XCTAssertEqual(result.sensitivityOffset, 40)
+        XCTAssertEqual(result.recordedSPLMeterSamples, [2])
+    }
+    
+    func testIsEqual() {
+        result.startDate = date
+        result.endDate = date
+        
+        let newResult = ORKEnvironmentSPLMeterResult(identifier: identifer)
+        newResult.sensitivityOffset = 40
+        newResult.recordedSPLMeterSamples = [2]
+        newResult.startDate = date
+        newResult.endDate = date
+        
+        XCTAssert(result.isEqual(newResult))
+    }
+}

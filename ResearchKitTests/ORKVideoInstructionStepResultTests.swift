@@ -28,47 +28,37 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import XCTest
 
-@import Foundation;
-@import UIKit;
+class ORKVideoInstructionStepResultTests: XCTestCase {
+    
+    var result: ORKVideoInstructionStepResult!
+    var identifier: String!
+    let date = Date()
 
-NS_ASSUME_NONNULL_BEGIN
-
-@class ORKChoiceViewCell;
-@class ORKTextChoiceAnswerFormat;
-
-@protocol ORKTextChoiceCellGroupDelegate <NSObject>
-
-@required
-- (void)answerChangedForIndexPath:(NSIndexPath *)indexPath;
-
-- (void)tableViewCellHeightUpdated;
-
-@end
-
-@interface ORKTextChoiceCellGroup : NSObject
-
-- (instancetype)initWithTextChoiceAnswerFormat:(ORKTextChoiceAnswerFormat *)answerFormat
-                                        answer:(nullable id)answer
-                            beginningIndexPath:(NSIndexPath *)indexPath
-                           immediateNavigation:(BOOL)immediateNavigation;
-
-@property (nonatomic, strong, nullable) id answer;
-
-@property (nonatomic, weak) id<ORKTextChoiceCellGroupDelegate> delegate;
-
-- (void)textViewDidResignResponderForCellAtIndexPath:(NSIndexPath *)indexPath;
-
-- (nullable ORKChoiceViewCell *)cellAtIndexPath:(NSIndexPath *)indexPath withReuseIdentifier:(nullable NSString *)identifier;
-
-- (BOOL)containsIndexPath:(NSIndexPath *)indexPath;
-
-- (void)didSelectCellAtIndexPath:(NSIndexPath *)indexPath;
-
-- (nullable id)answerForBoolean;
-
-- (NSUInteger)size;
-
-@end
-
-NS_ASSUME_NONNULL_END
+    override func setUp() {
+        identifier = "RESULT"
+        result = ORKVideoInstructionStepResult(identifier: identifier)
+        result.playbackCompleted = true
+        result.playbackStoppedTime = 20.00
+    }
+    
+    func testProperties() {
+        XCTAssertEqual(result.identifier, identifier)
+        XCTAssertEqual(result.playbackCompleted, true)
+        XCTAssertEqual(result.playbackStoppedTime, 20.00)
+    }
+    
+    func testIsEqual() {
+        result.startDate = date
+        result.endDate = date
+        
+        let newResult = ORKVideoInstructionStepResult(identifier: identifier)
+        newResult.startDate = date
+        newResult.endDate = date
+        newResult.playbackCompleted = true
+        newResult.playbackStoppedTime = 20.00
+        
+        XCTAssert(result.isEqual(newResult))
+    }
+}

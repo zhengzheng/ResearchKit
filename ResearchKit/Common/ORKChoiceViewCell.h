@@ -34,11 +34,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class ORKAnswerTextView;
+
 @interface ORKChoiceViewCell : UITableViewCell
 
 @property (nonatomic, assign, getter=isImmediateNavigation) BOOL immediateNavigation;
 
-@property (nonatomic, assign, getter=isSelectedItem) BOOL selectedItem;
+@property (nonatomic, assign, getter=isCellSelected) BOOL cellSelected;
 
 @property (nonatomic) bool useCardView;
 
@@ -50,6 +52,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setPrimaryAttributedText: (NSAttributedString *)primaryAttributedText;
 - (void)setDetailText:(NSString *)detailText;
 - (void)setDetailAttributedText:(NSAttributedString *)detailAttributedText;
+
+@end
+
+@interface ORKChoiceOtherViewCell : ORKChoiceViewCell <UITextViewDelegate>
+
+@property (nonatomic, strong, readonly) ORKAnswerTextView *textView;
+
+@property (nonatomic, assign, setter=hideTextView:) BOOL textViewHidden;
 
 @end
 

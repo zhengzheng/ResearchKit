@@ -756,7 +756,6 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     PROPERTY(initialdBHLValue, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(dBHLStepUpSize, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(dBHLStepDownSize, NSNumber, NSObject, YES, nil, nil),
-                    PROPERTY(presetSystemVolumeLevel, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(headphoneType, NSString, NSObject, YES, nil, nil),
                     PROPERTY(earPreference, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(frequencyList, NSArray, NSObject, YES, nil, nil)
@@ -1203,6 +1202,15 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     PROPERTY(detailText, NSString, NSObject, NO, nil, nil),
                     PROPERTY(exclusive, NSNumber, NSObject, NO, nil, nil),
                     })),
+           ENTRY(ORKTextChoiceOther,
+                 ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
+                     return [[ORKTextChoiceOther alloc] initWithText:GETPROP(dict, text) primaryTextAttributedString:nil detailText:GETPROP(dict, detailText) detailTextAttributedString:nil value:GETPROP(dict, value) exclusive:((NSNumber *)GETPROP(dict, exclusive)).boolValue textViewPlaceholderText:GETPROP(dict, textViewPlaceholderText) textViewInputOptional:((NSNumber *)GETPROP(dict, textViewInputOptional)).boolValue textViewStartsHidden:((NSNumber *)GETPROP(dict, textViewStartsHidden)).boolValue];
+                 },
+                 (@{
+                    PROPERTY(textViewPlaceholderText, NSString, NSObject, NO, nil, nil),
+                    PROPERTY(textViewInputOptional, NSNumber, NSObject, NO, nil, nil),
+                    PROPERTY(textViewStartsHidden, NSNumber, NSObject, NO, nil, nil),
+                    })),
            ENTRY(ORKImageChoice,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
                      return [[ORKImageChoice alloc] initWithNormalImage:nil selectedImage:nil text:GETPROP(dict, text) value:GETPROP(dict, value)];
@@ -1245,7 +1253,9 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     })),
            ENTRY(ORKNumericAnswerFormat,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
-                     return [[ORKNumericAnswerFormat alloc] initWithStyle:((NSNumber *)GETPROP(dict, style)).integerValue unit:GETPROP(dict, unit) minimum:GETPROP(dict, minimum) maximum:GETPROP(dict, maximum) maximumFractionDigits:GETPROP(dict, maximumFractionDigits)];
+                     ORKNumericAnswerFormat *format = [[ORKNumericAnswerFormat alloc] initWithStyle:((NSNumber *)GETPROP(dict, style)).integerValue unit:GETPROP(dict, unit) minimum:GETPROP(dict, minimum) maximum:GETPROP(dict, maximum) maximumFractionDigits:GETPROP(dict, maximumFractionDigits)];
+                     format.defaultNumericAnswer = GETPROP(dict, defaultNumericAnswer);
+                     return format;
                  },
                  (@{
                     PROPERTY(style, NSNumber, NSObject, NO,
@@ -1255,6 +1265,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     PROPERTY(minimum, NSNumber, NSObject, NO, nil, nil),
                     PROPERTY(maximum, NSNumber, NSObject, NO, nil, nil),
                     PROPERTY(maximumFractionDigits, NSNumber, NSObject, NO, nil, nil),
+                    PROPERTY(defaultNumericAnswer, NSNumber, NSObject, NO, nil, nil),
                     })),
            ENTRY(ORKScaleAnswerFormat,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {

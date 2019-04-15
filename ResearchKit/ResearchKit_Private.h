@@ -38,6 +38,8 @@
 #import <ResearchKit/ORKDataLogger.h>
 #import <ResearchKit/ORKErrors.h>
 
+#import <ResearchKit/ORKChoiceViewCell.h>
+#import <ResearchKit/ORKChoiceViewCell_Internal.h>
 #import <ResearchKit/ORKAnswerFormat_Private.h>
 #import <ResearchKit/ORKConsentDocument_Private.h>
 #import <ResearchKit/ORKConsentSection_Private.h>
@@ -80,6 +82,7 @@
 
 #import <ResearchKit/ORKTaskViewController_Private.h>
 #import <ResearchKit/ORKQuestionStepViewController_Private.h>
+#import <ResearchKit/ORKPasscodeStepViewController_Internal.h>
 
 #import <ResearchKit/ORKAudioStepViewController.h>
 #import <ResearchKit/ORKAmslerGridStepViewController.h>

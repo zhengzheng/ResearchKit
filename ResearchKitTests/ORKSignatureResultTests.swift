@@ -28,47 +28,34 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import XCTest
 
-@import Foundation;
-@import UIKit;
+class ORKSignatureResultTests: XCTestCase {
+    var result: ORKSignatureResult!
+    var image: UIImage!
+    var path: UIBezierPath!
+    let date = Date()
 
-NS_ASSUME_NONNULL_BEGIN
+    override func setUp() {
+        let bundle = Bundle(identifier: "org.researchkit.ResearchKit")
+        image = UIImage(named: "heartbeat", in: bundle, compatibleWith: .none)
+        path = UIBezierPath(rect: CGRect(x: 0, y: 0, width: 50, height: 50))
+        result = ORKSignatureResult(signatureImage: image, signaturePath: [path])
+    }
 
-@class ORKChoiceViewCell;
-@class ORKTextChoiceAnswerFormat;
-
-@protocol ORKTextChoiceCellGroupDelegate <NSObject>
-
-@required
-- (void)answerChangedForIndexPath:(NSIndexPath *)indexPath;
-
-- (void)tableViewCellHeightUpdated;
-
-@end
-
-@interface ORKTextChoiceCellGroup : NSObject
-
-- (instancetype)initWithTextChoiceAnswerFormat:(ORKTextChoiceAnswerFormat *)answerFormat
-                                        answer:(nullable id)answer
-                            beginningIndexPath:(NSIndexPath *)indexPath
-                           immediateNavigation:(BOOL)immediateNavigation;
-
-@property (nonatomic, strong, nullable) id answer;
-
-@property (nonatomic, weak) id<ORKTextChoiceCellGroupDelegate> delegate;
-
-- (void)textViewDidResignResponderForCellAtIndexPath:(NSIndexPath *)indexPath;
-
-- (nullable ORKChoiceViewCell *)cellAtIndexPath:(NSIndexPath *)indexPath withReuseIdentifier:(nullable NSString *)identifier;
-
-- (BOOL)containsIndexPath:(NSIndexPath *)indexPath;
-
-- (void)didSelectCellAtIndexPath:(NSIndexPath *)indexPath;
-
-- (nullable id)answerForBoolean;
-
-- (NSUInteger)size;
-
-@end
-
-NS_ASSUME_NONNULL_END
+    func testProperties() {
+        XCTAssertEqual(result.signatureImage, image)
+        XCTAssertEqual(result.signaturePath, [path])
+    }
+    
+    func testIsEqual() {
+        result.startDate = date
+        result.endDate = date
+        
+        let newResult = ORKSignatureResult(signatureImage: image, signaturePath: [path])
+        newResult.startDate = date
+        newResult.endDate = date
+        
+        XCTAssert(result.isEqual(newResult))
+    }
+}
