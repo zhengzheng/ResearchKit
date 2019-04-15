@@ -4,4 +4,3 @@
 
 #import "ResearchKit.h"
 #import "ResearchKit_Private.h"
-#import "ORKActiveStep_Internal.h"
