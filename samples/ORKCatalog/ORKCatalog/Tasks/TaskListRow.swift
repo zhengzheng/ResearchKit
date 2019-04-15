@@ -744,7 +744,6 @@ enum TaskListRow: Int, CustomStringConvertible {
         let instructionStep = ORKInstructionStep(identifier: String(describing:Identifier.introStep))
         instructionStep.title = NSLocalizedString("Simple Survey", comment: "")
         instructionStep.text = exampleDescription
-        instructionStep.showsProgress = false
         instructionStep.detailText = NSLocalizedString("Please use this space to provide instructions for participants.  Please make sure to provide enough information so that users can progress through the survey and complete with ease.", comment: "")
         
         // Add a question step.
@@ -1456,7 +1455,6 @@ enum TaskListRow: Int, CustomStringConvertible {
         
         The passcode is stored in the keychain.
         */
-        
         let passcodeConsentStep = ORKPasscodeStep(identifier: String(describing:Identifier.passcodeStep))
         passcodeConsentStep.title = NSLocalizedString("Passcode", comment: "")
         return ORKOrderedTask(identifier: String(describing:Identifier.passcodeTask), steps: [passcodeConsentStep])
