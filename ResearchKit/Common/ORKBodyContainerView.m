@@ -91,8 +91,10 @@ static NSString * ORKBulletUniCode = @"\u2981";
     if (_bodyItem.bodyItemStyle == ORKBodyItemStyleText) {
         [self setupBodyStyleTextView];
     }
-    else {
+    else if (_bodyItem.bodyItemStyle == ORKBodyItemStyleBulletPoint) {
         [self setupBodyStyleBulletPointView];
+    } else {
+        [self setupBodyStyleImage];
     }
 }
 
@@ -174,6 +176,15 @@ static NSString * ORKBulletUniCode = @"\u2981";
     UILabel *bulletIcon = [self bulletIcon];
     [self addArrangedSubview:bulletIcon]; // Stack this in substack for vertical bullet icon.
     [self setCustomSpacing:ORKBulletIconToBodyPadding afterView:bulletIcon];
+    [self addSubStackView];
+}
+
+- (void)setupBodyStyleImage {
+    self.axis = UILayoutConstraintAxisHorizontal;
+    self.layoutMargins = UIEdgeInsetsMake(0.0, ORKBulletStackLeftRightPadding, 0.0, ORKBulletStackLeftRightPadding);
+    [self setLayoutMarginsRelativeArrangement:YES];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:self.bodyItem.image];
+    [self setCustomSpacing:ORKBulletIconToBodyPadding afterView:imageView];
     [self addSubStackView];
 }
 

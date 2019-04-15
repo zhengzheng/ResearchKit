@@ -42,7 +42,12 @@ typedef NS_ENUM(NSInteger, ORKBodyItemStyle) {
     /**
      bullet style body item
      */
-    ORKBodyItemStyleBulletPoint
+    ORKBodyItemStyleBulletPoint,
+    
+    /**
+     image style body item
+     */
+    ORKBodyItemStyleImage
 } ORK_ENUM_AVAILABLE;
 
 @class ORKLearnMoreInstructionStep;
@@ -69,6 +74,8 @@ typedef NS_ENUM(NSInteger, ORKBodyItemStyle) {
 @property (nonatomic) NSString * title;
 
 @property (nonatomic) NSString * text;
+
+@property (nonatomic, nullable) UIImage * image;
 
 @property (nonatomic) ORKLearnMoreItem * learnMoreItem;
 

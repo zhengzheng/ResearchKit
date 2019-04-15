@@ -46,6 +46,7 @@ To indicate the completion of a task, consider using an `ORKCompletionStep` obje
  */
 
 @class ORKLearnMoreItem;
+@class ORKBodyItem;
 
 ORK_CLASS_AVAILABLE
 @interface ORKInstructionStep : ORKStep
@@ -98,6 +99,8 @@ ORK_CLASS_AVAILABLE
 @property (nonatomic, copy, nullable) UIImage *iconImage;
 
 @property (nonatomic, nullable) ORKLearnMoreItem *learnMoreItem;
+
+@property (nonatomic) NSArray<ORKBodyItem *> * bodyItems;
 
 @end
 
