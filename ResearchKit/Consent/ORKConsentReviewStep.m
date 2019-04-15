@@ -104,8 +104,4 @@
     return super.hash ^ self.consentDocument.hash ^ self.signature.hash ^ self.reasonForConsent.hash ^ (_requiresScrollToBottom ? 0xf : 0x0);
 }
 
-//- (BOOL)showsProgress {
-//    return self.showsProgress;
-//}
-
 @end

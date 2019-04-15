@@ -88,8 +88,4 @@
     return super.hash ^ self.consentDocument.hash;
 }
 
-//- (BOOL)showsProgress {
-//    return self.showsProgress;
-//}
-
 @end

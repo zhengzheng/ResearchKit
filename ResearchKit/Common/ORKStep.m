@@ -151,10 +151,6 @@
     return [NSString stringWithFormat:@"<%@ %@ %@>", super.description, self.identifier, self.title];
 }
 
-//- (BOOL)showsProgress {
-//    return _showsProgress;
-//}
-
 - (BOOL)allowsBackNavigation {
     return YES;
 }

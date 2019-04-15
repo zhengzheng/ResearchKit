@@ -82,10 +82,6 @@
     return NO;
 }
 
-//- (BOOL)showsProgress {
-//    return self.showsProgress;
-//}
-
 + (BOOL)supportsSecureCoding {
     return YES;
 }

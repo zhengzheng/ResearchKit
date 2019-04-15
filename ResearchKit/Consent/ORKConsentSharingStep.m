@@ -45,10 +45,6 @@
     return [ORKConsentSharingStepViewController class];
 }
 
-//- (BOOL)showsProgress {
-//    return self.showsProgress;
-//}
-
 - (BOOL)useSurveyMode {
     return NO;
 }

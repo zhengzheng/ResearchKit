@@ -130,10 +130,6 @@ NSString *const ORKLoginFormItemIdentifierPassword = @"ORKLoginFormItemPassword"
     return YES;
 }
 
-//- (BOOL)showsProgress {
-//    return self.showsProgress;
-//}
-
 + (BOOL)supportsSecureCoding {
     return YES;
 }
