@@ -42,8 +42,6 @@
     return [ORKPasscodeStepViewController class];
 }
 
-// FIXME: passcode step is the only class that overrides the showsProgress to NO that doesnt have its own intializer
-
 + (instancetype)passcodeStepWithIdentifier:(NSString *)identifier
                               passcodeFlow:(ORKPasscodeFlow)passcodeFlow {
     

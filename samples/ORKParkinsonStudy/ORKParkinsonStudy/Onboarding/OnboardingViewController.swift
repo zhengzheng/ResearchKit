@@ -57,7 +57,6 @@ class OnboardingViewController: ORKTaskViewController, ORKTaskViewControllerDele
         
         // Welcome View Controller
         let welcomeStep = ORKInstructionStep(identifier: "welcomeStepIdentifier")
-        welcomeStep.showsProgress = false
         welcomeStep.title = NSLocalizedString("ONBOARDING_WELCOME_INTRO_TITLE", comment: "")
         welcomeStep.detailText = NSLocalizedString("ONBOARDING_WELCOME_INTRO_DETAIL", comment: "")
         welcomeStep.iconImage = UIImage(named: "graph")!.withRenderingMode(.alwaysTemplate)
