@@ -98,8 +98,6 @@ ORK_CLASS_AVAILABLE
  */
 @property (nonatomic, copy, nullable) UIImage *iconImage;
 
-@property (nonatomic, nullable) ORKLearnMoreItem *learnMoreItem;
-
 @property (nonatomic) NSArray<ORKBodyItem *> * bodyItems;
 
 @end

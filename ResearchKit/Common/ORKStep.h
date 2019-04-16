@@ -61,7 +61,12 @@ ORK_EXTERN NSString *const ORKNullStepIdentifier ORK_AVAILABLE_DECL;
  you should consider subclassing `ORKActiveStep` and `ORKActiveStepViewController`
  instead.
  */
+
+
+@class ORKLearnMoreItem;
+@class ORKBodyItem;
 ORK_CLASS_AVAILABLE
+
 @interface ORKStep : NSObject <NSSecureCoding, NSCopying>
 
 + (instancetype)new NS_UNAVAILABLE;
@@ -217,6 +222,8 @@ ORK_CLASS_AVAILABLE
  @return A newly initialized step view controller.
  */
 - (ORKStepViewController *)instantiateStepViewControllerWithResult:(ORKResult *)result;
+
+@property (nonatomic, nullable) ORKLearnMoreItem *learnMoreItem;
 
 @end
 

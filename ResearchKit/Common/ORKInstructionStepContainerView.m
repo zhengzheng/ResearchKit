@@ -46,7 +46,17 @@
 
 - (void)setVariables {
     self.stepTitle = _instructionStep.title;
-    self.bodyItems = _instructionStep.bodyItems;
+    
+    if (_instructionStep.text || _instructionStep.detailText || _instructionStep.learnMoreItem) {
+        
+        self.bodyItems = @[[[ORKBodyItem alloc] initWithTitle:_instructionStep.text
+                                                         text:_instructionStep.detailText
+                                                        image:_instructionStep.image
+                                                learnMoreItem:_instructionStep.learnMoreItem
+                                                bodyItemStyle:ORKBodyItemStyleText]];
+    }
+    
+    [self.bodyItems arrayByAddingObjectsFromArray:_instructionStep.bodyItems];
     self.stepTopContentImage = _instructionStep.image;
     self.auxiliaryImage = _instructionStep.auxiliaryImage;
     self.titleIconImage = _instructionStep.iconImage;

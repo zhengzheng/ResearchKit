@@ -43,6 +43,7 @@
 #import "ORKTableContainerView.h"
 #import "ORKSurveyCardHeaderView.h"
 #import "ORKTextChoiceCellGroup.h"
+#import "ORKBodyItem.h"
 
 #import "ORKNavigationContainerView_Internal.h"
 #import "ORKStepViewController_Internal.h"
@@ -54,6 +55,7 @@
 #import "ORKQuestionStep_Internal.h"
 #import "ORKResult_Private.h"
 #import "ORKStep_Private.h"
+#import "ORKTableContainerHeaderView.h"
 
 #import "ORKHelpers_Internal.h"
 #import "ORKSkin.h"
@@ -69,7 +71,7 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
     id _answer;
     
     ORKTableContainerView *_tableContainer;
-    ORKStepHeaderView *_headerView;
+    ORKTableContainerHeaderView *_headerView;
     ORKNavigationContainerView *_navigationFooterView;
     ORKAnswerDefaultSource *_defaultSource;
     
@@ -160,6 +162,7 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
         _questionView = nil;
         
         _navigationFooterView = [ORKNavigationContainerView new];
+        [_navigationFooterView removeStyling];
         _navigationFooterView.skipButtonItem = self.skipButtonItem;
         _navigationFooterView.continueEnabled = [self continueButtonEnabled];
         _navigationFooterView.continueButtonItem = self.continueButtonItem;
@@ -178,21 +181,18 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
             [self.view insertSubview:_tableContainer belowSubview:_navigationFooterView];
             _tableContainer.tapOffView = self.view;
             
-            _headerView = _tableContainer.stepHeaderView;
-            _headerView.captionLabel.useSurveyMode = self.step.useSurveyMode;
+            _headerView = _tableContainer.tableContainerHeaderView;
             if (self.questionStep.useCardView) {
                 _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
                 [_tableView setBackgroundColor:ORKColor(ORKBackgroundColorKey)];
                 [self.taskViewController.navigationBar setBarTintColor:[_tableView backgroundColor]];
                 [self.view setBackgroundColor:[_tableView backgroundColor]];
             }
-            else {
-                _headerView.captionLabel.text = self.questionStep.question;
+            _headerView.stepTitle = self.questionStep.title;
+            if (self.questionStep.text || self.questionStep.learnMoreItem) {
+                _headerView.bodyItems = @[[[ORKBodyItem alloc] initWithTitle:self.questionStep.text text:nil image:nil learnMoreItem:self.questionStep.learnMoreItem bodyItemStyle:ORKBodyItemStyleText]];
             }
-            _headerView.instructionLabel.text = self.questionStep.text;
-            _headerView.learnMoreButtonItem = self.learnMoreButtonItem;
             
-
             _navigationFooterView.optional = self.step.optional;
             if (self.readOnlyMode) {
                 _navigationFooterView.optional = YES;
@@ -208,7 +208,6 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
             [_tableContainer setNeedsLayout];
         } else if (self.step) {
             _questionView = [ORKQuestionStepView new];
-            _questionView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
             
             ORKQuestionStep *step = [self questionStep];
             _navigationFooterView.useNextForSkip = (step ? NO : YES);
@@ -241,7 +240,6 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
             }
             
             _questionView.translatesAutoresizingMaskIntoConstraints = NO;
-            _questionView.headerView.learnMoreButtonItem = self.learnMoreButtonItem;
             
             if (self.readOnlyMode) {
                 _navigationFooterView.optional = YES;
@@ -266,54 +264,55 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
     if (_constraints) {
         [NSLayoutConstraint deactivateConstraints:_constraints];
     }
+    CGFloat leftRightPadding = ORKStepContainerLeftRightPaddingForWindow(self.view.window);
+
     view.translatesAutoresizingMaskIntoConstraints = NO;
     _navigationFooterView.translatesAutoresizingMaskIntoConstraints = NO;
     _constraints = nil;
-    UIView *viewForiPad = [self viewForiPadLayoutConstraints];
 
     _constraints = @[
                      [NSLayoutConstraint constraintWithItem:view
                                                   attribute:NSLayoutAttributeTop
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view.safeAreaLayoutGuide
+                                                     toItem:self.view
                                                   attribute:NSLayoutAttributeTop
                                                  multiplier:1.0
                                                    constant:0.0],
                      [NSLayoutConstraint constraintWithItem:view
-                                                  attribute:NSLayoutAttributeLeftMargin
+                                                  attribute:NSLayoutAttributeLeft
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view.safeAreaLayoutGuide
-                                                  attribute:NSLayoutAttributeLeftMargin
+                                                     toItem:self.view
+                                                  attribute:NSLayoutAttributeLeft
                                                  multiplier:1.0
-                                                   constant:ORKSurveyTableContainerLeftRightPadding],
+                                                   constant:0.0],
                      [NSLayoutConstraint constraintWithItem:view
-                                                  attribute:NSLayoutAttributeRightMargin
+                                                  attribute:NSLayoutAttributeRight
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view.safeAreaLayoutGuide
-                                                  attribute:NSLayoutAttributeRightMargin
+                                                     toItem:self.view
+                                                  attribute:NSLayoutAttributeRight
                                                  multiplier:1.0
-                                                   constant:-ORKSurveyTableContainerLeftRightPadding],
+                                                   constant:0.0],
                      [NSLayoutConstraint constraintWithItem:_navigationFooterView
                                                   attribute:NSLayoutAttributeBottom
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view
+                                                     toItem:self.view
                                                   attribute:NSLayoutAttributeBottom
                                                  multiplier:1.0
                                                    constant:0.0],
                      [NSLayoutConstraint constraintWithItem:_navigationFooterView
                                                   attribute:NSLayoutAttributeLeft
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view
+                                                     toItem:self.view
                                                   attribute:NSLayoutAttributeLeft
                                                  multiplier:1.0
-                                                   constant:0.0],
+                                                   constant:leftRightPadding],
                      [NSLayoutConstraint constraintWithItem:_navigationFooterView
                                                   attribute:NSLayoutAttributeRight
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view
+                                                     toItem:self.view
                                                   attribute:NSLayoutAttributeRight
                                                  multiplier:1.0
-                                                   constant:0.0],
+                                                   constant:-leftRightPadding],
                      [NSLayoutConstraint constraintWithItem:view
                                                   attribute:NSLayoutAttributeBottom
                                                   relatedBy:NSLayoutRelationEqual
@@ -323,34 +322,6 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
                                                    constant:0.0]
                      ];
     [NSLayoutConstraint activateConstraints:_constraints];
-    [self setupCellHolderViewConstraints];
-}
-
-- (void)setupCellHolderViewConstraints {
-    UIView *viewForiPad = [self viewForiPadLayoutConstraints];
-    if (_cellHolderView) {
-        NSArray *cellHolderConstraints = @[
-                                           
-                                           [NSLayoutConstraint constraintWithItem:_cellHolderView
-                                                                        attribute:NSLayoutAttributeLeftMargin
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:viewForiPad ? : self.view.safeAreaLayoutGuide
-                                                                        attribute:NSLayoutAttributeLeftMargin
-                                                                       multiplier:1.0
-                                                                         constant:ORKSurveyTableContainerLeftRightPadding],
-                                           [NSLayoutConstraint constraintWithItem:_cellHolderView
-                                                                        attribute:NSLayoutAttributeRightMargin
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:viewForiPad ? : self.view.safeAreaLayoutGuide
-                                                                        attribute:NSLayoutAttributeRightMargin
-                                                                       multiplier:1.0
-                                                                         constant:-ORKSurveyTableContainerLeftRightPadding]
-                                           ];
-        for (NSLayoutConstraint *constraint in cellHolderConstraints) {
-            constraint.priority = UILayoutPriorityRequired;
-        }
-        [NSLayoutConstraint activateConstraints:cellHolderConstraints];
-    }
 }
 
 - (void)viewDidLoad {
@@ -375,9 +346,7 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
     if (_tableView) {
         [self.taskViewController setRegisteredScrollView:_tableView];
     }
-    if (_questionView) {
-        [self.taskViewController setRegisteredScrollView:_questionView];
-    }
+    
     
     NSMutableSet *types = [NSMutableSet set];
     ORKAnswerFormat *format = [[self questionStep] answerFormat];
@@ -471,14 +440,6 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
         _customQuestionView.translatesAutoresizingMaskIntoConstraints = NO;
 
         CGSize requiredSize = [_customQuestionView sizeThatFits:(CGSize){self.view.bounds.size.width, CGFLOAT_MAX}];
-        
-        NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:_customQuestionView
-                                                                           attribute:NSLayoutAttributeWidth
-                                                                           relatedBy:NSLayoutRelationEqual
-                                                                              toItem:nil
-                                                                           attribute:NSLayoutAttributeNotAnAttribute
-                                                                          multiplier:1.0
-                                                                            constant:requiredSize.width];
         NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:_customQuestionView
                                                                             attribute:NSLayoutAttributeHeight
                                                                             relatedBy:NSLayoutRelationEqual
@@ -487,9 +448,8 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
                                                                            multiplier:1.0
                                                                              constant:requiredSize.height];
         
-        widthConstraint.priority = UILayoutPriorityDefaultLow;
         heightConstraint.priority = UILayoutPriorityDefaultLow;
-        [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint]];
+        [NSLayoutConstraint activateConstraints:@[heightConstraint]];
     }
     [self stepDidChange];
 }
@@ -510,11 +470,6 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
     [self updateButtonStates];
 }
 
-- (void)setLearnMoreButtonItem:(UIBarButtonItem *)learnMoreButtonItem {
-    [super setLearnMoreButtonItem:learnMoreButtonItem];
-    _headerView.learnMoreButtonItem = self.learnMoreButtonItem;
-    _questionView.headerView.learnMoreButtonItem = self.learnMoreButtonItem;
-}
 
 - (void)setCancelButtonItem:(UIBarButtonItem *)cancelButtonItem {
     [super setCancelButtonItem:cancelButtonItem];

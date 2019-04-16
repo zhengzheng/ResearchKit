@@ -44,7 +44,6 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 
-@class ORKStepHeaderView;
 @class ORKNavigationContainerView;
 @class ORKTableContainerHeaderView;
 
@@ -53,7 +52,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak, nullable) id<ORKTableContainerViewDelegate> delegate;
 
 @property (nonatomic, strong, readonly) UITableView *tableView;
-@property (nonatomic, strong, readonly) ORKStepHeaderView *stepHeaderView;
 @property (nonatomic) ORKTableContainerHeaderView *tableContainerHeaderView;
 
 /*
@@ -64,7 +62,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)scrollCellVisible:(UITableViewCell *)cell animated:(BOOL)animated;
     
-- (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style;
+- (instancetype)initWithStyle:(UITableViewStyle)style;
+
+- (void)sizeHeaderToFit;
 
 @end
 
