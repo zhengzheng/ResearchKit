@@ -4138,7 +4138,12 @@
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
 				TOOLCHAINS = default;
-				WARNING_CFLAGS = "-Wunreachable-code";
+				WARNING_CFLAGS = (
+					"-Wunreachable-code",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-sign-compare",
+				);
 			};
 			name = Debug;
 		};
@@ -4202,7 +4207,12 @@
 				TARGETED_DEVICE_FAMILY = 1;
 				TOOLCHAINS = default;
 				VALIDATE_PRODUCT = YES;
-				WARNING_CFLAGS = "-Wunreachable-code";
+				WARNING_CFLAGS = (
+					"-Wunreachable-code",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-sign-compare",
+				);
 			};
 			name = Release;
 		};
@@ -4320,7 +4330,12 @@
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
 				TOOLCHAINS = default;
-				WARNING_CFLAGS = "-Wunreachable-code";
+				WARNING_CFLAGS = (
+					"-Wunreachable-code",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-sign-compare",
+				);
 			};
 			name = ATP;
 		};
