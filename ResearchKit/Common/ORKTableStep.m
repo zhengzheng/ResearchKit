@@ -41,11 +41,7 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
 
 @implementation ORKTableStep {
     UIImage * _circleBulletImage;
-    
 }
-
-
-
 
 + (Class)stepViewControllerClass {
     return [ORKTableStepViewController class];
@@ -91,40 +87,23 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
     UILabel *numberLabel = nil;
     
     
-    if (self.bulletType == BulletTypeBullets) {
+    if (self.bulletType == ORKBulletTypeBullets) {
         if (!_circleBulletImage) {
             _circleBulletImage = [self circleImage];
         }
         bullet = [_circleBulletImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    } else if (self.bulletType == BulletTypeImages && _bulletIconNames != nil) {
+    } else if (self.bulletType == ORKBulletTypeImages && _bulletIconNames != nil) {
         if (indexPath.row < self.bulletIconNames.count) {
             NSString *iconName = [self.bulletIconNames objectAtIndex:indexPath.row];
             bullet = [[UIImage imageNamed:iconName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         }
-    } else if (self.bulletType == BulletTypeNumbers) {
-        
+    } else if (self.bulletType == ORKBulletTypeNumbers) {
         numberLabel = [[UILabel alloc] init];
         numberLabel.text = [NSString stringWithFormat: @"%ld.)", indexPath.row + 1];
         numberLabel.numberOfLines = 0;
         numberLabel.translatesAutoresizingMaskIntoConstraints = NO;
         [cell addSubview:numberLabel];
-        
     }
-    
-    //code planned to be removed
-//    if (self.isBulleted) {
-//        if (self.bulletIconNames != nil) {
-//            if (indexPath.row < self.bulletIconNames.count) {
-//                NSString *iconName = [self.bulletIconNames objectAtIndex:indexPath.row];
-//                bullet = [[UIImage imageNamed:iconName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-//            }
-//        } else {
-//            if (!_circleBulletImage) {
-//                _circleBulletImage = [self circleImage];
-//            }
-//            bullet = [_circleBulletImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-//        }
-//    }
     
     if (bullet != nil) {
         UIImageView *bulletView = [[UIImageView alloc] initWithImage:bullet];

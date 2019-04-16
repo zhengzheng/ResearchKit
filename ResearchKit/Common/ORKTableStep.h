@@ -137,14 +137,12 @@ ORK_CLASS_AVAILABLE
  */
 @property (nonatomic) BOOL isBulleted;
 
-//Pariece
 typedef NS_ENUM(NSInteger, ORKBulletType) {
     ORKBulletTypeNone,
     ORKBulletTypeBullets,
     ORKBulletTypeImages,
     ORKBulletTypeNumbers
 } ORK_ENUM_AVAILABLE;
-
 
 @property (nonatomic) ORKBulletType bulletType;
 

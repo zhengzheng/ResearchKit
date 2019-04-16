@@ -46,10 +46,6 @@
 
 - (void)setVariables {
     self.stepTitle = _instructionStep.title;
-//    self.bodyItems = @[[[ORKBodyItem alloc] initWithTitle:_instructionStep.text
-//                                                     text:_instructionStep.detailText
-//                                            learnMoreItem:_instructionStep.learnMoreItem
-//                                            bodyItemStyle:ORKBodyItemStyleText]];
     self.bodyItems = _instructionStep.bodyItems;
     self.stepTopContentImage = _instructionStep.image;
     self.auxiliaryImage = _instructionStep.auxiliaryImage;
