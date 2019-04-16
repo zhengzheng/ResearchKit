@@ -4135,6 +4135,7 @@
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
 				TOOLCHAINS = default;
+				WARNING_CFLAGS = "-Wunreachable-code";
 			};
 			name = Debug;
 		};
@@ -4195,6 +4196,7 @@
 				TARGETED_DEVICE_FAMILY = 1;
 				TOOLCHAINS = default;
 				VALIDATE_PRODUCT = YES;
+				WARNING_CFLAGS = "-Wunreachable-code";
 			};
 			name = Release;
 		};
@@ -4309,6 +4311,7 @@
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
 				TOOLCHAINS = default;
+				WARNING_CFLAGS = "-Wunreachable-code";
 			};
 			name = ATP;
 		};
@@ -4345,7 +4348,6 @@
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WARNING_CFLAGS = "-Wunreachable-code";
 			};
 			name = ATP;
 		};
@@ -4426,7 +4428,6 @@
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WARNING_CFLAGS = "-Wunreachable-code";
 			};
 			name = Debug;
 		};
@@ -4472,7 +4473,6 @@
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WARNING_CFLAGS = "-Wunreachable-code";
 			};
 			name = Release;
 		};
