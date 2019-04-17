@@ -33,7 +33,7 @@
 #import "ORKHelpers_Internal.h"
 #import "ORKSkin.h"
 
-static const CGFloat ORKStackViewSpacing = 10.0;
+static const CGFloat ORKStackViewSpacing = 5.0;
 static const CGFloat shadowHeight = 0.75;
 static const CGFloat shadowOpacity = 0.2;
 static const CGFloat shadowRadius = 1.0;
