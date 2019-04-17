@@ -48,7 +48,7 @@
 
 - (void)setLayerAndFadeDelay {
     self.layer.borderWidth = 0.0f;
-    self.layer.cornerRadius = 10.0f;
+    self.layer.cornerRadius = 14.0f;
     self.fadeDelay = 0.0;
 }
 
