@@ -98,8 +98,6 @@ ORK_CLASS_AVAILABLE
  */
 @property (nonatomic, copy, nullable) UIImage *iconImage;
 
-@property (nonatomic) NSArray<ORKBodyItem *> * bodyItems;
-
 @end
 
 NS_ASSUME_NONNULL_END
