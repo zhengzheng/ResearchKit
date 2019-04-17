@@ -857,6 +857,11 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
         bottomItemAttribute = NSLayoutAttributeBottom;
     }
     
+    CGFloat gap = 0.0;
+    
+    if (_scrollContainerView.bounds.size.height < _scrollView.bounds.size.height) {
+        gap = _scrollView.bounds.size.height - _scrollContainerView.bounds.size.height;
+    }
     
     _scrollContainerContentSizeConstraint = [NSLayoutConstraint constraintWithItem:bottomItem
                                                                          attribute:bottomItemAttribute
@@ -864,7 +869,7 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
                                                                             toItem:topItem
                                                                          attribute:topItemAttribute
                                                                         multiplier:1.0
-                                                                          constant:0.0];
+                                                                          constant:gap];
 }
 
 - (void)updateContainerConstraints {

@@ -174,6 +174,7 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
             
             // Create a new one (with correct style)
             _tableView = _tableContainer.tableView;
+            [_tableView setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
             _tableView.delegate = self;
             _tableView.dataSource = self;
             _tableView.clipsToBounds = YES;
