@@ -49,6 +49,7 @@
     if (_instructionStep.text || _instructionStep.detailText || _instructionStep.learnMoreItem) {
         self.bodyItems = @[[[ORKBodyItem alloc] initWithTitle:_instructionStep.text
                                                          text:_instructionStep.detailText
+                                                        image:nil
                                                 learnMoreItem:_instructionStep.learnMoreItem
                                                 bodyItemStyle:ORKBodyItemStyleText]];
     }
