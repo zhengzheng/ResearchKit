@@ -52,8 +52,7 @@ static const CGFloat ORKBodyTextToLearnMoreButtonPaddingStandard = 15.0;
 static const CGFloat ORKBulletIconToBodyPadding = 14.0;
 static const CGFloat ORKBulletStackLeftRightPadding = 10.0;
 
-static const CGFloat ORKImageIconToBodyPadding = 14.0;
-static const CGFloat ORKImageStackLeftRightPadding = 10.0;
+static const CGFloat ORKBulletIconDimension = 40.0;
 
 static NSString * ORKBulletUniCode = @"\u2981";
 
@@ -93,10 +92,13 @@ static NSString * ORKBulletUniCode = @"\u2981";
 - (void)setupBodyStyleView {
     if (_bodyItem.bodyItemStyle == ORKBodyItemStyleText) {
         [self setupBodyStyleTextView];
-    } else if (_bodyItem.bodyItemStyle == ORKBodyItemStyleBulletPoint) {
-        [self setupBodyStyleBulletPointView];
     } else if (_bodyItem.bodyItemStyle == ORKBodyItemStyleImage) {
+        [self setupBulletPointStackView];
         [self setupBodyStyleImage];
+    }
+    else {
+        [self setupBulletPointStackView];
+        [self setupBodyStyleBulletPointView];
     }
 }
 
@@ -171,10 +173,13 @@ static NSString * ORKBulletUniCode = @"\u2981";
     }
 }
 
-- (void)setupBodyStyleBulletPointView {
+- (void)setupBulletPointStackView {
     self.axis = UILayoutConstraintAxisHorizontal;
     self.layoutMargins = UIEdgeInsetsMake(0.0, ORKBulletStackLeftRightPadding, 0.0, ORKBulletStackLeftRightPadding);
     [self setLayoutMarginsRelativeArrangement:YES];
+}
+
+- (void)setupBodyStyleBulletPointView {
     UILabel *bulletIcon = [self bulletIcon];
     [self addArrangedSubview:bulletIcon]; // Stack this in substack for vertical bullet icon.
     [self setCustomSpacing:ORKBulletIconToBodyPadding afterView:bulletIcon];
@@ -182,12 +187,9 @@ static NSString * ORKBulletUniCode = @"\u2981";
 }
 
 - (void)setupBodyStyleImage {
-    self.axis = UILayoutConstraintAxisHorizontal;
-    self.layoutMargins = UIEdgeInsetsMake(0.0, ORKImageStackLeftRightPadding, 0.0, ORKImageStackLeftRightPadding);
-    [self setLayoutMarginsRelativeArrangement:YES];
     UIImageView *imageView = [self imageView];
     [self addArrangedSubview:imageView];
-    [self setCustomSpacing:ORKImageIconToBodyPadding afterView:imageView];
+    [self setCustomSpacing:ORKBulletIconToBodyPadding afterView:imageView];
     [self addSubStackView];
 }
 
@@ -202,14 +204,10 @@ static NSString * ORKBulletUniCode = @"\u2981";
 
 - (UIImageView *)imageView {
     UIImageView *imageView = [UIImageView new];
-    
-    if (self.bodyItem.image != nil) {
-        imageView.image = self.bodyItem.image;
-    }
-   
+    imageView.image = self.bodyItem.image;
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
-    [imageView.heightAnchor constraintEqualToConstant:40.0].active = YES;
-    [imageView.widthAnchor constraintEqualToConstant:40.0].active = YES;
+    [imageView.heightAnchor constraintEqualToConstant:ORKBulletIconDimension].active = YES;
+    [imageView.widthAnchor constraintEqualToConstant:ORKBulletIconDimension].active = YES;
     return imageView;
 }
 

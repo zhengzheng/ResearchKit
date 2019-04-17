@@ -99,6 +99,11 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
     return [self numSections] > 1 ? UITableViewStyleGrouped : UITableViewStylePlain;
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [_tableContainer sizeHeaderToFit];
+}
+
 - (void)stepDidChange {
     [super stepDidChange];
     _tableViewColor = ORKNeedWideScreenDesign(self.view) ? [UIColor clearColor] : (ORKColor(ORKBackgroundColorKey));
@@ -137,7 +142,7 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
         if ([[self step] text] || [self step].learnMoreItem) {
             _headerView.bodyItems = @[[[ORKBodyItem alloc] initWithTitle:[[self step] text] text:nil image:nil learnMoreItem:[self step].learnMoreItem bodyItemStyle:ORKBodyItemStyleText]];
         }
-       
+    
         _navigationFooterView = [ORKNavigationContainerView new];
         _navigationFooterView.skipButtonItem = self.skipButtonItem;
         _navigationFooterView.continueEnabled = [self continueButtonEnabled];

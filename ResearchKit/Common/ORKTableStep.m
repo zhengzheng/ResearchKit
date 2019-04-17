@@ -30,10 +30,12 @@
 
 
 #import "ORKTableStep.h"
-
 #import "ORKTableStepViewController.h"
-
 #import "ORKHelpers_Internal.h"
+
+static const CGFloat CellPadding = 20.0;
+static const CGFloat BulletNumberMaxWidth = 24.0 ;
+static const CGFloat BulletNumberToTextPadding = 20.0;
 
 
 ORKDefineStringKey(ORKBasicCellReuseIdentifier);
@@ -71,33 +73,32 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
     for (UIView *view in cell.subviews) {
         [view removeFromSuperview];
     }
-        
+    
     UILabel *textLabel = [[UILabel alloc] init];
     textLabel.text = [[self objectForRowAtIndexPath:indexPath] description];
     textLabel.numberOfLines = 0;
     textLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [cell addSubview:textLabel];
     
-    [textLabel.topAnchor constraintEqualToAnchor:cell.topAnchor constant:20.0].active = YES;
-    [textLabel.bottomAnchor constraintEqualToAnchor:cell.bottomAnchor constant:-20.0].active = YES;
+    [textLabel.topAnchor constraintEqualToAnchor:cell.topAnchor constant:CellPadding].active = YES;
+    [cell.bottomAnchor constraintEqualToAnchor:textLabel.bottomAnchor constant:CellPadding].active = YES;
     [textLabel.trailingAnchor constraintEqualToAnchor:cell.trailingAnchor constant:-24.0].active = YES;
-    
     
     UIImage *bullet = nil;
     UILabel *numberLabel = nil;
     
     
-    if (self.bulletType == ORKBulletTypeBullets) {
+    if (self.bulletType == ORKBulletTypeBulletPoint) {
         if (!_circleBulletImage) {
             _circleBulletImage = [self circleImage];
         }
         bullet = [_circleBulletImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    } else if (self.bulletType == ORKBulletTypeImages && _bulletIconNames != nil) {
+    } else if (self.bulletType == ORKBulletTypeImage && _bulletIconNames != nil) {
         if (indexPath.row < self.bulletIconNames.count) {
             NSString *iconName = [self.bulletIconNames objectAtIndex:indexPath.row];
             bullet = [[UIImage imageNamed:iconName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         }
-    } else if (self.bulletType == ORKBulletTypeNumbers) {
+    } else if (self.bulletType == ORKBulletTypeNumber) {
         numberLabel = [[UILabel alloc] init];
         numberLabel.text = [NSString stringWithFormat: @"%ld.)", indexPath.row + 1];
         numberLabel.numberOfLines = 0;
@@ -110,7 +111,7 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
         bulletView.translatesAutoresizingMaskIntoConstraints = NO;
         [cell addSubview:bulletView];
         
-        CGFloat size = self.bulletIconNames != nil ? 40.0 : 8.0;
+        CGFloat size = (self.bulletIconNames && self.bulletType == ORKBulletTypeImage) ? 40.0 : 8.0;
         CGFloat topPadding = self.bulletIconNames != nil ? 20.0 : (20 + (size * .5));
         CGFloat leadingPadding = self.bulletIconNames != nil ? 24.0 : (24 + (size * .5));
         
@@ -120,20 +121,15 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
         [bulletView.widthAnchor constraintEqualToConstant:size].active = YES;
         [bulletView.leadingAnchor constraintEqualToAnchor:cell.leadingAnchor constant:leadingPadding].active = YES;
         [textLabel.leadingAnchor constraintEqualToAnchor:bulletView.trailingAnchor constant:20.0].active = YES;
-        
-    } else if (numberLabel != nil) {
-        CGFloat size = 40.0 ;
-        CGFloat topPadding = 20.0;
-        CGFloat leadingPadding = 24.0 ;
-        
-        [numberLabel.topAnchor constraintEqualToAnchor:cell.topAnchor constant:topPadding].active = YES;
-        [numberLabel.bottomAnchor constraintLessThanOrEqualToAnchor:cell.bottomAnchor constant:-20.0].active = YES;
-        [numberLabel.heightAnchor constraintEqualToConstant:size].active = YES;
-        [numberLabel.widthAnchor constraintEqualToConstant:size].active = YES;
-        [numberLabel.leadingAnchor constraintEqualToAnchor:cell.leadingAnchor constant:leadingPadding].active = YES;
-        [textLabel.leadingAnchor constraintEqualToAnchor:numberLabel.trailingAnchor constant:20.0].active = YES;
-    } else {
+    }
+    else if (numberLabel != nil) {
 
+        [numberLabel.topAnchor constraintEqualToAnchor:textLabel.topAnchor constant:0.0].active = YES;
+        [numberLabel.widthAnchor constraintEqualToConstant:BulletNumberMaxWidth].active = YES;
+        numberLabel.textAlignment = NSTextAlignmentRight;
+        [numberLabel.leadingAnchor constraintEqualToAnchor:cell.leadingAnchor constant:0.0].active = YES;
+        [textLabel.leadingAnchor constraintEqualToAnchor:numberLabel.trailingAnchor constant:BulletNumberToTextPadding].active = YES;
+    } else {
         [textLabel.leadingAnchor constraintEqualToAnchor:cell.leadingAnchor constant:24.0].active = YES;
     }
 }

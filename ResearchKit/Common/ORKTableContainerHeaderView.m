@@ -490,11 +490,15 @@ static const CGFloat ORKTableContainerHeaderIconToBulletTopPaddingStandard = 20.
         topItem = _bodyContainerView;
         topItemAttribute = NSLayoutAttributeBottom;
     }
-    else {
+    else if (_titleLabel) {
         topItem = _titleLabel;
         topItemAttribute = NSLayoutAttributeBottom;
     }
     
+    else {
+        topItem = self;
+        topItemAttribute = NSLayoutAttributeTop;
+    }
     
     _scrollContainerContentSizeConstraint = [NSLayoutConstraint constraintWithItem:_scrollContainerView
                                                                          attribute:NSLayoutAttributeBottom

@@ -57,7 +57,7 @@ typedef NS_ENUM(NSInteger, ORKBodyItemStyle) {
 
 + (instancetype)learnMoreDetailDisclosureItemWithLearnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep;
 
-@property (nonatomic, nonnull) ORKLearnMoreInstructionStep * learnMoreInstructionStep;
+@property (nonatomic, nonnull) ORKLearnMoreInstructionStep *learnMoreInstructionStep;
 
 - (nullable NSString *)getText;
 
@@ -71,19 +71,19 @@ typedef NS_ENUM(NSInteger, ORKBodyItemStyle) {
 
 - (instancetype)initWithTitle:(nullable NSString *)title text:(nullable NSString *)text image:(nullable UIImage *)image learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem bodyItemStyle:(ORKBodyItemStyle)bodyItemStyle NS_DESIGNATED_INITIALIZER;
 
-+ (instancetype)bulletPointItemWithTitle:(nullable NSString *)title text:(nullable NSString *)text;
++ (instancetype)bulletPointItemWithTitle:(nullable NSString *)title text:(nullable NSString *)text learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem;
 
-+ (instancetype)textItemWithTitle:(nullable NSString *)title text:(nullable NSString *)text;
++ (instancetype)textItemWithTitle:(nullable NSString *)title text:(nullable NSString *)text learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem;
 
-+ (instancetype)imageItemWithTitle:(nullable NSString *)title text:(nullable NSString *)text image:(nonnull UIImage *)image;
++ (instancetype)imageItemWithTitle:(nullable NSString *)title text:(nullable NSString *)text image:(nonnull UIImage *)image learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem;
 
-@property (nonatomic) NSString * title;
+@property (nonatomic) NSString *title;
 
-@property (nonatomic) NSString * text;
+@property (nonatomic) NSString *text;
 
-@property (nonatomic, nullable, readonly) UIImage * image;
+@property (nonatomic, nullable) UIImage *image;
 
-@property (nonatomic, nullable) ORKLearnMoreItem * learnMoreItem;
+@property (nonatomic, nullable) ORKLearnMoreItem *learnMoreItem;
 
 @property (nonatomic) ORKBodyItemStyle bodyItemStyle;
 

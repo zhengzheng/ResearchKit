@@ -83,22 +83,22 @@
         self.text = text;
         self.learnMoreItem = learnMoreItem;
         self.bodyItemStyle = bodyItemStyle;
-        _image = image;
+        self.image = image;
     }
     [self validateParameters];
     return self;
 }
 
-+ (ORKBodyItem *)bulletPointItemWithTitle:(nullable NSString *)title text:(nullable NSString *)text {
-    return [[ORKBodyItem alloc] initWithTitle:title text:text image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleBulletPoint];
++ (ORKBodyItem *)bulletPointItemWithTitle:(nullable NSString *)title text:(nullable NSString *)text learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem{
+    return [[ORKBodyItem alloc] initWithTitle:title text:text image:nil learnMoreItem:learnMoreItem bodyItemStyle:ORKBodyItemStyleBulletPoint];
 }
 
-+ (ORKBodyItem *)textItemWithTitle:(nullable NSString *)title text:(nullable NSString *)text {
-    return [[ORKBodyItem alloc] initWithTitle:title text:text image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText];
++ (ORKBodyItem *)textItemWithTitle:(nullable NSString *)title text:(nullable NSString *)text learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem{
+    return [[ORKBodyItem alloc] initWithTitle:title text:text image:nil learnMoreItem:learnMoreItem bodyItemStyle:ORKBodyItemStyleText];
 }
 
-+ (ORKBodyItem *)imageItemWithTitle:(nullable NSString *)title text:(nullable NSString *)text image:(nonnull UIImage *)image {
-     return [[ORKBodyItem alloc] initWithTitle:title text:text image:image learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleImage];
++ (ORKBodyItem *)imageItemWithTitle:(nullable NSString *)title text:(nullable NSString *)text image:(nonnull UIImage *)image learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem{
+     return [[ORKBodyItem alloc] initWithTitle:title text:text image:image learnMoreItem:learnMoreItem bodyItemStyle:ORKBodyItemStyleImage];
 }
 
 - (void)validateParameters {

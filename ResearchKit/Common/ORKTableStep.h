@@ -35,6 +35,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSInteger, ORKBulletType) {
+    ORKBulletTypeNone,
+    ORKBulletTypeBulletPoint,
+    ORKBulletTypeImage,
+    ORKBulletTypeNumber
+} ORK_ENUM_AVAILABLE;
+
 /**
  The `ORKTableStepSource` is a protocol that can be used for presenting a list of model
  objects in a UITableView. Any `ORKStep` subclass that implements this protocol can be used with
@@ -136,13 +143,6 @@ ORK_CLASS_AVAILABLE
  Boolean flag representing if the table data should be displayed in a bulleted format.
  */
 @property (nonatomic) BOOL isBulleted;
-
-typedef NS_ENUM(NSInteger, ORKBulletType) {
-    ORKBulletTypeNone,
-    ORKBulletTypeBullets,
-    ORKBulletTypeImages,
-    ORKBulletTypeNumbers
-} ORK_ENUM_AVAILABLE;
 
 @property (nonatomic) ORKBulletType bulletType;
 
