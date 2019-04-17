@@ -53,9 +53,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) BOOL shouldTintImages;
 
-// Whether to show progress for this step when it is presented. The default is YES.
-@property (nonatomic, assign) BOOL showsProgress;
-
 // Whether to allow navigation back from this step.
 @property (nonatomic, assign, readonly) BOOL allowsBackNavigation;
 

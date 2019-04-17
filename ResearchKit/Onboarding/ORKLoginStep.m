@@ -68,6 +68,7 @@ NSString *const ORKLoginFormItemIdentifierPassword = @"ORKLoginFormItemPassword"
     if (self) {
         _loginViewControllerString = NSStringFromClass(loginViewControllerClass);
         self.formItems = [self loginFormItems];
+        self.showsProgress = NO;
         
         [self validateParameters];
     }

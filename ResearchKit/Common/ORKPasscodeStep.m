@@ -47,6 +47,7 @@
     
     ORKPasscodeStep *step = [[ORKPasscodeStep alloc] initWithIdentifier:identifier];
     step.passcodeFlow = passcodeFlow;
+    step.showsProgress = NO;
     return step;
 }
 

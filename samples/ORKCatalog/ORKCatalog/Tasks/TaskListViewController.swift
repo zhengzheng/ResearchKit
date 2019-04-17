@@ -101,7 +101,6 @@ class TaskListViewController: UITableViewController, ORKTaskViewControllerDelega
             generate an identifier for this run of the task.
         */
         let taskViewController = ORKTaskViewController(task: task, taskRun: nil)
-        taskViewController.showsProgressInNavigationBar = false
 
         // Make sure we receive events from `taskViewController`.
         taskViewController.delegate = self

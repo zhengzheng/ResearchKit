@@ -53,6 +53,7 @@
         _consentDocument = consentDocument;
         _signature = signature;
         _requiresScrollToBottom = NO;
+        self.showsProgress = NO;
     }
     return self;
 }

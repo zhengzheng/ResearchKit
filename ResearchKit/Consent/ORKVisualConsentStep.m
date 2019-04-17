@@ -49,6 +49,7 @@
     self = [super initWithIdentifier:identifier];
     if (self) {
         self.consentDocument = consentDocument;
+        self.showsProgress = NO;
     }
     return self;
 }
