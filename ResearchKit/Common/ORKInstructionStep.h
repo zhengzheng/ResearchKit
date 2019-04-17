@@ -46,7 +46,6 @@ To indicate the completion of a task, consider using an `ORKCompletionStep` obje
  */
 
 @class ORKLearnMoreItem;
-@class ORKBodyItem;
 
 ORK_CLASS_AVAILABLE
 @interface ORKInstructionStep : ORKStep
