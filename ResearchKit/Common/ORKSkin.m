@@ -255,7 +255,7 @@ static CGFloat ORKGetMetricForScreenType(ORKScreenMetric metric, ORKScreenType s
         {         44,        44,        44,        40,        40,        44,        44,        44},      // ORKScreenMetricIllustrationToCaptionBaseline
         {        198,       198,       198,       194,       152,       297,       297,       297},      // ORKScreenMetricIllustrationHeight
         {        300,       300,       300,       176,       152,       300,       300,       300},      // ORKScreenMetricInstructionImageHeight
-        {         50,        50,        50,        44,        44,        44,        44,        44},      // ORKScreenMetricContinueButtonHeightRegular
+        {         50,        50,        50,        50,        50,        50,        50,        50},      // ORKScreenMetricContinueButtonHeightRegular
         {         32,        44,        32,        32,        32,        44,        44,        44},      // ORKScreenMetricContinueButtonHeightCompact
         {        150,       150,       150,       146,       146,       150,       150,       150},      // ORKScreenMetricContinueButtonWidth
         {        162,       162,       162,       120,       116,       240,       240,       240},      // ORKScreenMetricMinimumStepHeaderHeightForMemoryGame
