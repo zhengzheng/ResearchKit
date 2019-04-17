@@ -144,6 +144,9 @@ ORK_CLASS_AVAILABLE
  */
 @property (nonatomic) BOOL isBulleted;
 
+/**
+ The bullet type to use for bullet items.
+ */
 @property (nonatomic) ORKBulletType bulletType;
 
 /**
