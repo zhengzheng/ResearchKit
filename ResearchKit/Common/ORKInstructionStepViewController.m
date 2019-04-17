@@ -132,6 +132,12 @@
     [self stepDidChange];
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [_stepView setNeedsUpdateConstraints];
+}
+
+
 - (void)useAppropriateButtonTitleAsLastBeginningInstructionStep {
     self.internalContinueButtonItem.title = ORKLocalizedString(@"BUTTON_GET_STARTED", nil);
 }

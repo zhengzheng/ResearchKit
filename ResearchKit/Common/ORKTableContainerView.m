@@ -62,39 +62,22 @@ static const CGFloat CellBottomPadding = 20.0;
     
     UITapGestureRecognizer *_tapOffGestureRecognizer;
 }
-    
-- (instancetype)initWithFrame:(CGRect)frame {
-    return [self initWithFrame:frame style:UITableViewStyleGrouped];
+
+- (instancetype)init {
+    return [self initWithStyle:UITableViewStyleGrouped];
 }
 
-- (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style {
-    self = [super initWithFrame:frame];
+- (instancetype)initWithStyle:(UITableViewStyle)style {
+    self = [super init];
     if (self) {
-        self.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-        
-        _tableView = [[UITableView alloc] initWithFrame:self.bounds style:style];
-        _tableView.backgroundColor = ORKColor(ORKBackgroundColorKey);
-        _tableView.allowsSelection = YES;
-        _tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
-        _tableView.preservesSuperviewLayoutMargins = YES;
-        _tableView.clipsToBounds = NO; // Do not clip scroll indicators on iPad
-        _tableView.layer.masksToBounds = YES;
-        _tableView.scrollIndicatorInsets = ORKScrollIndicatorInsetsForScrollView(self);
-        [self addSubview:_tableView];
+        [self setupTableViewWithStyle:style];
+
         
         _scrollView = _tableView;
-        
-        _realFooterView = [UIView new];
-        _realFooterView.layoutMargins = UIEdgeInsetsZero;
-#ifdef LAYOUT_DEBUG
-        _realFooterView.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.3];
-#endif
-        _tableView.tableFooterView = _realFooterView;
-        
-        _stepHeaderView = [ORKStepHeaderView new];
-#ifdef LAYOUT_DEBUG
-        _stepHeaderView.backgroundColor = [[UIColor blueColor] colorWithAlphaComponent:0.3];
-#endif
+        [self setupRealFooterView];
+        [self setupTableContainerHeaderView];
+        [self setupTableViewConstraints];
+
         
         _tapOffGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOffAction:)];
         _tapOffGestureRecognizer.delegate = self;
@@ -102,6 +85,43 @@ static const CGFloat CellBottomPadding = 20.0;
     }
     return self;
 }
+
+- (void)setupTableViewWithStyle:(UITableViewStyle)style {
+    if (!_tableView) {
+        _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:style];
+    }
+    _tableView.backgroundColor = ORKColor(ORKBackgroundColorKey);
+    _tableView.allowsSelection = YES;
+    _tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
+    _tableView.preservesSuperviewLayoutMargins = YES;
+    _tableView.layer.masksToBounds = YES;
+    _tableView.scrollIndicatorInsets = ORKScrollIndicatorInsetsForScrollView(self);
+    [self addSubview:_tableView];
+}
+
+- (void)setupTableContainerHeaderView {
+    if (!_tableContainerHeaderView) {
+        _tableContainerHeaderView = [[ORKTableContainerHeaderView alloc] init];
+    }
+    _tableView.tableHeaderView = _tableContainerHeaderView;
+}
+
+- (void)setupRealFooterView {
+    if (!_realFooterView) {
+        _realFooterView = [UIView new];
+    }
+    _realFooterView.layoutMargins = UIEdgeInsetsZero;
+    _tableView.tableFooterView = _realFooterView;
+}
+
+
+- (void)sizeHeaderToFit {
+    CGFloat estimatedHeight = [_tableContainerHeaderView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+    CGRect bounds = CGRectMake(0.0, 0.0, _tableContainerHeaderView.bounds.size.width, _tableContainerHeaderView.bounds.size.height);
+    bounds.size.height = estimatedHeight;
+    [_tableContainerHeaderView setBounds:bounds];
+}
+
 
 - (void)setTapOffView:(UIView *)tapOffView {
     _tapOffView = tapOffView;
@@ -113,42 +133,55 @@ static const CGFloat CellBottomPadding = 20.0;
     [(tapOffView ? : _tableView) addGestureRecognizer:_tapOffGestureRecognizer];
 }
 
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    
-    CGRect bounds = self.bounds;
-    _tableView.frame = UIEdgeInsetsInsetRect(bounds, ORKStandardFullScreenLayoutMarginsForView(self));
-    // make the contentSize to be correct after changing the frame
-    [_tableView layoutIfNeeded];
-    {
-        _stepHeaderView.frame = (CGRect){{0,0},{_tableView.bounds.size.width,30}};
-        _tableView.tableHeaderView = _stepHeaderView;
-        // Do the layout with the view in the hierarchy; otherwise it won't
-        // get the right margins.
-        [_stepHeaderView setNeedsLayout];
-        [_stepHeaderView layoutIfNeeded];
-        CGSize headerSize = [_stepHeaderView systemLayoutSizeFittingSize:(CGSize){_tableView.bounds.size.width,0} withHorizontalFittingPriority:UILayoutPriorityRequired verticalFittingPriority:UILayoutPriorityFittingSizeLevel];
-        _stepHeaderView.bounds = (CGRect){{0,0},headerSize};
-        _tableView.tableHeaderView = nil;
-        _tableView.tableHeaderView = _stepHeaderView;
-    }
-    
-    {
-        _tableView.tableFooterView = nil;
-        [_realFooterView removeFromSuperview];
-        CGSize footerSize = CGSizeZero;
-        CGRect footerBounds = (CGRect){{0,0},footerSize};
-        
-        CGFloat boundsHeightUnused = _tableView.bounds.size.height - _tableView.contentSize.height;
-        if (boundsHeightUnused > footerBounds.size.height) {
-            _tableView.scrollEnabled = YES;
-            footerBounds.size.height = boundsHeightUnused;
-        } else {
-            _tableView.scrollEnabled = YES;
-        }
-        _realFooterView.frame = footerBounds;
-        _tableView.tableFooterView = _realFooterView;
-    }
+- (void)setupTableViewConstraints {
+    _tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    _tableContainerHeaderView.translatesAutoresizingMaskIntoConstraints = NO;
+    CGFloat leftRightPadding = ORKStepContainerLeftRightPaddingForWindow(self.window);
+    [NSLayoutConstraint activateConstraints:@[
+                                              
+                                              [NSLayoutConstraint constraintWithItem:_tableView
+                                                                           attribute:NSLayoutAttributeTop
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:self
+                                                                           attribute:NSLayoutAttributeTop
+                                                                          multiplier:1.0
+                                                                            constant:0.0],
+                                              [NSLayoutConstraint constraintWithItem:_tableView
+                                                                           attribute:NSLayoutAttributeLeft
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:self
+                                                                           attribute:NSLayoutAttributeLeft
+                                                                          multiplier:1.0
+                                                                            constant:leftRightPadding],
+                                              [NSLayoutConstraint constraintWithItem:_tableView
+                                                                           attribute:NSLayoutAttributeRight
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:self
+                                                                           attribute:NSLayoutAttributeRight
+                                                                          multiplier:1.0
+                                                                            constant:-leftRightPadding],
+                                              [NSLayoutConstraint constraintWithItem:_tableView
+                                                                           attribute:NSLayoutAttributeBottom
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:self
+                                                                           attribute:NSLayoutAttributeBottom
+                                                                          multiplier:1.0
+                                                                            constant:0.0],
+                                                                                            [NSLayoutConstraint constraintWithItem:_tableContainerHeaderView
+                                                                                                                         attribute:NSLayoutAttributeCenterX
+                                                                                                                         relatedBy:NSLayoutRelationEqual
+                                                                                                                            toItem:_tableView
+                                                                                                                         attribute:NSLayoutAttributeCenterX
+                                                                                                                        multiplier:1.0
+                                                                                                                          constant:0.0],
+                                                                                            [NSLayoutConstraint constraintWithItem:_tableContainerHeaderView
+                                                                                                                         attribute:NSLayoutAttributeWidth
+                                                                                                                         relatedBy:NSLayoutRelationEqual
+                                                                                                                            toItem:_tableView
+                                                                                                                         attribute:NSLayoutAttributeWidth
+                                                                                                                        multiplier:1.0
+                                                                                                                          constant:0.0]
+                                              ]];
 }
 
 - (void)updateBottomConstraintConstant {
