@@ -79,9 +79,9 @@
 		14B407A92267A90E0015ADD7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14B407A72267A90E0015ADD7 /* Main.storyboard */; };
 		14B407AB2267A90F0015ADD7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14B407AA2267A90F0015ADD7 /* Assets.xcassets */; };
 		14B407AE2267A90F0015ADD7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14B407AC2267A90F0015ADD7 /* LaunchScreen.storyboard */; };
-		14B407CC2267E9600015ADD7 /* ORKStepViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B407CB2267E9600015ADD7 /* ORKStepViewControllerTests.swift */; };
 		14BE7091220A201E005DEF07 /* ORKDataLoggerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 86CC8EAC1AC09383001CCD89 /* ORKDataLoggerTests.m */; };
 		14BE7092220A206B005DEF07 /* ORKDataLoggerManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 86CC8EAB1AC09383001CCD89 /* ORKDataLoggerManagerTests.m */; };
+		14F7AC8B2269035200D52F41 /* ORKStepViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F7AC8A2269035200D52F41 /* ORKStepViewControllerTests.swift */; };
 		1B4B95B81F5F012E006B629F /* ORKWeightPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B4B95B71F5F012E006B629F /* ORKWeightPicker.m */; };
 		1B4B95BA1F5F014E006B629F /* ORKWeightPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B4B95B91F5F014E006B629F /* ORKWeightPicker.h */; };
 		241A2E871B94FD8800ED3B39 /* ORKPasscodeStepViewController_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 241A2E861B94FD8800ED3B39 /* ORKPasscodeStepViewController_Internal.h */; };
@@ -827,7 +827,7 @@
 		14B407AA2267A90F0015ADD7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		14B407AD2267A90F0015ADD7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		14B407AF2267A90F0015ADD7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		14B407CB2267E9600015ADD7 /* ORKStepViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORKStepViewControllerTests.swift; sourceTree = "<group>"; };
+		14F7AC8A2269035200D52F41 /* ORKStepViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORKStepViewControllerTests.swift; sourceTree = "<group>"; };
 		1B4B95B71F5F012E006B629F /* ORKWeightPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ORKWeightPicker.m; sourceTree = "<group>"; };
 		1B4B95B91F5F014E006B629F /* ORKWeightPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ORKWeightPicker.h; sourceTree = "<group>"; };
 		241A2E861B94FD8800ED3B39 /* ORKPasscodeStepViewController_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ORKPasscodeStepViewController_Internal.h; sourceTree = "<group>"; };
@@ -2165,7 +2165,7 @@
 				1483DBB3220125BE004C26B6 /* ResearchKitTests-Bridging-Header.h */,
 				1490DD01224D6A21003FEEDA /* ORKResultPredicateTests.swift */,
 				1490DD03224D6A61003FEEDA /* ORKTestResultPredicateType.swift */,
-				14B407CB2267E9600015ADD7 /* ORKStepViewControllerTests.swift */,
+				14F7AC8A2269035200D52F41 /* ORKStepViewControllerTests.swift */,
 			);
 			path = ResearchKitTests;
 			sourceTree = "<group>";
@@ -3771,7 +3771,7 @@
 				14A92C6E224531A2007547F2 /* ORKActiveTaskResultTests.swift in Sources */,
 				86CC8EB51AC09383001CCD89 /* ORKConsentTests.m in Sources */,
 				1490DD04224D6A61003FEEDA /* ORKTestResultPredicateType.swift in Sources */,
-				14B407CC2267E9600015ADD7 /* ORKStepViewControllerTests.swift in Sources */,
+				14F7AC8B2269035200D52F41 /* ORKStepViewControllerTests.swift in Sources */,
 				14BE7092220A206B005DEF07 /* ORKDataLoggerManagerTests.m in Sources */,
 				1483DBB5220125BE004C26B6 /* ORKActiveStepTests.swift in Sources */,
 				1490DCF6224D426B003FEEDA /* ORKSignatureResultTests.swift in Sources */,
