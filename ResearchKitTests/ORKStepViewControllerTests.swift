@@ -72,6 +72,73 @@ class ORKStepViewControllerTests: XCTestCase {
         XCTAssertEqual(testController.cancelButtonItem, cancelButton)
     }
     
+    func testiPhoneViewDidLoad() {
+        var step = ORKStep(identifier: "STEP")
+        let title = "TEST"
+        
+        step.title = title
+        testController = ORKStepViewController(step: step)
+        testController.viewDidLoad()
+        XCTAssertEqual(testController.title, title)
+        
+        step = ORKStep(identifier: "STEP")
+        testController = ORKStepViewController(step: step)
+        testController.viewDidLoad()
+        XCTAssertEqual(testController.title, "")
+    }
+    
+    func testViewWillAppear() {
+        
+        XCTAssertEqual(testController.continueButtonItem, testController.internalDoneButtonItem)
+        XCTAssertEqual(testController.backButtonItem, nil)
+        
+        appearExpectation = expectation(description: "ORKStepViewController notifies delegate its status(Will Appear)")
+        testController.viewWillAppear(false)
+        
+        waitForExpectations(timeout: 10) { (error) in
+            if let error = error {
+                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
+            }
+        }
+        
+        XCTAssertEqual(testController.continueButtonItem, testController.internalContinueButtonItem)
+        XCTAssertEqual(testController.backButtonItem, testController.internalBackButtonItem)
+        
+//        Test currently fails since navigationBar is not initialized
+//        guard let navigationBar = testController.taskViewController?.navigationBar else {
+//            XCTFail()
+//            return
+//        }
+//
+//        XCTAssertEqual(navigationBar.backgroundColor, ORKColor(ORKBackgroundColorKey))
+        
+        XCTAssertEqual(testController.hasBeenPresented, true)
+        XCTAssert(testController.presentedDate != nil)
+        XCTAssertNil(testController.dismissedDate)
+        
+//        Swift cant catch Exceptions only errors
+//        let otherStep = ORKStep(identifier: "HEY")
+//        XCTAssertThrowsError(testController.step = otherStep)
+//        let exceptionController = ORKStepViewController(step: nil)
+//        XCTAssertThrowsError(exceptionController.viewWillAppear(false))
+    }
+    
+    func testShowValidityAlertWithTitle() {
+        testController.loadView()
+        appearExpectation = expectation(description: "ORKStepViewController notifies delegate its status(Will Appear)")
+        
+        UIApplication.shared.keyWindow?.rootViewController = testController
+        
+        waitForExpectations(timeout: 10) { (error) in
+            if let error = error {
+                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
+            }
+        }
+        
+        testController.showValidityAlert(withMessage: "TEST")
+        testController.
+    }
+    
     func testiPadSetUp() {
         testController.shouldIgnoreiPadDesign = false
         let iPadScreenSize = CGRect(x: 0, y: 0, width: 768, height: 1024)
@@ -79,14 +146,44 @@ class ORKStepViewControllerTests: XCTestCase {
         UIApplication.shared.windows.first?.bounds = iPadScreenSize
         testController.viewDidLoad()
         
-        let navigationBar = testController.navigationController?.navigationBar
+        //        Can't verify this since navigation bar has not been initialized
+        //        XCTAssertFalse(navigationBar!.prefersLargeTitles)
         
-        XCTAssertFalse(navigationBar!.prefersLargeTitles)
-        //        [self.navigationController.navigationBar setPrefersLargeTitles:NO];
-        //        [self setupiPadBackgroundView];
-        //        [self setupiPadContentView];
-        //        [self setupiPadStepTitleLabel];
-        //        [self setupiPadConstraints];
+        guard let iPadBackgroundView = testController.view!.subviews.first else{
+            XCTFail()
+            return
+        }
+        
+        XCTAssertEqual(iPadBackgroundView.backgroundColor, ORKColor(ORKiPadBackgroundViewColorKey))
+        XCTAssertEqual(iPadBackgroundView.layer.cornerRadius, ORKiPadBackgroundViewCornerRadius)
+        
+        guard let iPadContentView = iPadBackgroundView.subviews.first else{
+            XCTFail()
+            return
+        }
+        
+        XCTAssertEqual(iPadContentView.backgroundColor, UIColor.clear)
+        
+        guard let iPadStepTitleLabel = iPadBackgroundView.subviews.last as? UILabel else {
+            XCTFail()
+            return
+        }
+        let iPadStepTitleLabelFontSize = CGFloat(50.0)
+        
+        XCTAssertEqual(iPadStepTitleLabel.numberOfLines, 0)
+        XCTAssertEqual(iPadStepTitleLabel.textAlignment, NSTextAlignment.natural)
+        XCTAssertEqual(iPadStepTitleLabel.font, UIFont.systemFont(ofSize: iPadStepTitleLabelFontSize, weight: UIFont.Weight.bold))
+        XCTAssertEqual(iPadStepTitleLabel.adjustsFontSizeToFitWidth, true)
+        XCTAssertEqual(iPadStepTitleLabel.text, testController.step?.title)
+        
+        
+        let text = "TEST"
+        testController.setiPadStepTitleLabelText(text)
+        XCTAssertEqual(iPadStepTitleLabel.text, text)
+        
+        let backgroundColor = UIColor.red
+        testController.setiPadBackgroundViewColor(backgroundColor)
+        XCTAssertEqual(iPadBackgroundView.backgroundColor, backgroundColor)
     }
     
     func testNavigation() {
@@ -159,15 +256,6 @@ class ORKStepViewControllerTests: XCTestCase {
     }
     
     func testViewDelegates() {
-        appearExpectation = expectation(description: "ORKStepViewController notifies delegate its status(Will Appear)")
-        testController.delegate?.stepViewControllerWillAppear?(testController)
-        
-        waitForExpectations(timeout: 10) { (error) in
-            if let error = error {
-                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
-            }
-        }
-        
         failExpectation = expectation(description: "ORKStepViewController notifies delegate it did fail")
         testController.delegate?.stepViewControllerDidFail(testController, withError: nil)
         
