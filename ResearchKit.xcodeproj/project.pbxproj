@@ -74,6 +74,12 @@
 		1490DD04224D6A61003FEEDA /* ORKTestResultPredicateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1490DD03224D6A61003FEEDA /* ORKTestResultPredicateType.swift */; };
 		14A92C4822440195007547F2 /* ORKHelpers_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 86C40B8C1A8D7C5C00081FAC /* ORKHelpers_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		14A92C6E224531A2007547F2 /* ORKActiveTaskResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A92C6D224531A2007547F2 /* ORKActiveTaskResultTests.swift */; };
+		14B407A42267A90E0015ADD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B407A32267A90E0015ADD7 /* AppDelegate.swift */; };
+		14B407A62267A90E0015ADD7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B407A52267A90E0015ADD7 /* ViewController.swift */; };
+		14B407A92267A90E0015ADD7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14B407A72267A90E0015ADD7 /* Main.storyboard */; };
+		14B407AB2267A90F0015ADD7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14B407AA2267A90F0015ADD7 /* Assets.xcassets */; };
+		14B407AE2267A90F0015ADD7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14B407AC2267A90F0015ADD7 /* LaunchScreen.storyboard */; };
+		14B407CC2267E9600015ADD7 /* ORKStepViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B407CB2267E9600015ADD7 /* ORKStepViewControllerTests.swift */; };
 		14BE7091220A201E005DEF07 /* ORKDataLoggerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 86CC8EAC1AC09383001CCD89 /* ORKDataLoggerTests.m */; };
 		14BE7092220A206B005DEF07 /* ORKDataLoggerManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 86CC8EAB1AC09383001CCD89 /* ORKDataLoggerManagerTests.m */; };
 		1B4B95B81F5F012E006B629F /* ORKWeightPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B4B95B71F5F012E006B629F /* ORKWeightPicker.m */; };
@@ -738,6 +744,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		14B407CD2267E98C0015ADD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3FFF18351829DB1D00167070 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 14B407A02267A90E0015ADD7;
+			remoteInfo = ORKTestHost;
+		};
 		86CC8EA11AC09332001CCD89 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3FFF18351829DB1D00167070 /* Project object */;
@@ -807,6 +820,14 @@
 		1490DD01224D6A21003FEEDA /* ORKResultPredicateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORKResultPredicateTests.swift; sourceTree = "<group>"; };
 		1490DD03224D6A61003FEEDA /* ORKTestResultPredicateType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORKTestResultPredicateType.swift; sourceTree = "<group>"; };
 		14A92C6D224531A2007547F2 /* ORKActiveTaskResultTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORKActiveTaskResultTests.swift; sourceTree = "<group>"; };
+		14B407A12267A90E0015ADD7 /* ORKTestHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ORKTestHost.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		14B407A32267A90E0015ADD7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		14B407A52267A90E0015ADD7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		14B407A82267A90E0015ADD7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		14B407AA2267A90F0015ADD7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		14B407AD2267A90F0015ADD7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		14B407AF2267A90F0015ADD7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		14B407CB2267E9600015ADD7 /* ORKStepViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORKStepViewControllerTests.swift; sourceTree = "<group>"; };
 		1B4B95B71F5F012E006B629F /* ORKWeightPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ORKWeightPicker.m; sourceTree = "<group>"; };
 		1B4B95B91F5F014E006B629F /* ORKWeightPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ORKWeightPicker.h; sourceTree = "<group>"; };
 		241A2E861B94FD8800ED3B39 /* ORKPasscodeStepViewController_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ORKPasscodeStepViewController_Internal.h; sourceTree = "<group>"; };
@@ -1517,6 +1538,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		14B4079E2267A90E0015ADD7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		86CC8E971AC09332001CCD89 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1649,6 +1677,19 @@
 				14A92C6D224531A2007547F2 /* ORKActiveTaskResultTests.swift */,
 			);
 			name = ORKResultTests;
+			sourceTree = "<group>";
+		};
+		14B407A22267A90E0015ADD7 /* ORKTestHost */ = {
+			isa = PBXGroup;
+			children = (
+				14B407A32267A90E0015ADD7 /* AppDelegate.swift */,
+				14B407A52267A90E0015ADD7 /* ViewController.swift */,
+				14B407A72267A90E0015ADD7 /* Main.storyboard */,
+				14B407AA2267A90F0015ADD7 /* Assets.xcassets */,
+				14B407AC2267A90F0015ADD7 /* LaunchScreen.storyboard */,
+				14B407AF2267A90F0015ADD7 /* Info.plist */,
+			);
+			path = ORKTestHost;
 			sourceTree = "<group>";
 		};
 		2429D56D1BBB52E4003A512F /* Onboarding */ = {
@@ -1851,6 +1892,7 @@
 				B11DF3B21AA109C8009E76D2 /* docs */,
 				86B623AF19520B770074CD3C /* ResearchKit */,
 				86CC8EA61AC09383001CCD89 /* ResearchKitTests */,
+				14B407A22267A90E0015ADD7 /* ORKTestHost */,
 				3FFF183F1829DB1D00167070 /* Frameworks */,
 				3FFF183E1829DB1D00167070 /* Products */,
 				8419D66A1FB73C5A0088D7E5 /* Recovered References */,
@@ -1862,6 +1904,7 @@
 			children = (
 				B183A5951A8535D100C76870 /* ResearchKit.framework */,
 				86CC8E9A1AC09332001CCD89 /* ResearchKitTests.xctest */,
+				14B407A12267A90E0015ADD7 /* ORKTestHost.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2122,6 +2165,7 @@
 				1483DBB3220125BE004C26B6 /* ResearchKitTests-Bridging-Header.h */,
 				1490DD01224D6A21003FEEDA /* ORKResultPredicateTests.swift */,
 				1490DD03224D6A61003FEEDA /* ORKTestResultPredicateType.swift */,
+				14B407CB2267E9600015ADD7 /* ORKStepViewControllerTests.swift */,
 			);
 			path = ResearchKitTests;
 			sourceTree = "<group>";
@@ -3461,6 +3505,23 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		14B407A02267A90E0015ADD7 /* ORKTestHost */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 14B407BB2267A90F0015ADD7 /* Build configuration list for PBXNativeTarget "ORKTestHost" */;
+			buildPhases = (
+				14B4079D2267A90E0015ADD7 /* Sources */,
+				14B4079E2267A90E0015ADD7 /* Frameworks */,
+				14B4079F2267A90E0015ADD7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ORKTestHost;
+			productName = ORKTestHost;
+			productReference = 14B407A12267A90E0015ADD7 /* ORKTestHost.app */;
+			productType = "com.apple.product-type.application";
+		};
 		86CC8E991AC09332001CCD89 /* ResearchKitTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 86CC8EA31AC09332001CCD89 /* Build configuration list for PBXNativeTarget "ResearchKitTests" */;
@@ -3473,6 +3534,7 @@
 			);
 			dependencies = (
 				86CC8EA21AC09332001CCD89 /* PBXTargetDependency */,
+				14B407CE2267E98C0015ADD7 /* PBXTargetDependency */,
 			);
 			name = ResearchKitTests;
 			productName = "ResearchKit Tests";
@@ -3505,13 +3567,19 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = ORK;
-				LastSwiftUpdateCheck = 0700;
+				LastSwiftUpdateCheck = 1020;
 				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = researchkit.org;
 				TargetAttributes = {
+					14B407A02267A90E0015ADD7 = {
+						CreatedOnToolsVersion = 10.2;
+						DevelopmentTeam = 7JYUG8QGJ3;
+						ProvisioningStyle = Automatic;
+					};
 					86CC8E991AC09332001CCD89 = {
 						CreatedOnToolsVersion = 6.2;
 						LastSwiftMigration = 1020;
+						TestTargetID = 14B407A02267A90E0015ADD7;
 					};
 					B183A4731A8535D100C76870 = {
 						LastSwiftMigration = 1020;
@@ -3583,11 +3651,22 @@
 				B183A4731A8535D100C76870 /* ResearchKit */,
 				86CC8E991AC09332001CCD89 /* ResearchKitTests */,
 				B18FF3A41A9FE25700C0C3B0 /* docs */,
+				14B407A02267A90E0015ADD7 /* ORKTestHost */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		14B4079F2267A90E0015ADD7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				14B407AE2267A90F0015ADD7 /* LaunchScreen.storyboard in Resources */,
+				14B407AB2267A90F0015ADD7 /* Assets.xcassets in Resources */,
+				14B407A92267A90E0015ADD7 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		86CC8E981AC09332001CCD89 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3671,6 +3750,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		14B4079D2267A90E0015ADD7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				14B407A62267A90E0015ADD7 /* ViewController.swift in Sources */,
+				14B407A42267A90E0015ADD7 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		86CC8E961AC09332001CCD89 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3683,6 +3771,7 @@
 				14A92C6E224531A2007547F2 /* ORKActiveTaskResultTests.swift in Sources */,
 				86CC8EB51AC09383001CCD89 /* ORKConsentTests.m in Sources */,
 				1490DD04224D6A61003FEEDA /* ORKTestResultPredicateType.swift in Sources */,
+				14B407CC2267E9600015ADD7 /* ORKStepViewControllerTests.swift in Sources */,
 				14BE7092220A206B005DEF07 /* ORKDataLoggerManagerTests.m in Sources */,
 				1483DBB5220125BE004C26B6 /* ORKActiveStepTests.swift in Sources */,
 				1490DCF6224D426B003FEEDA /* ORKSignatureResultTests.swift in Sources */,
@@ -4012,6 +4101,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		14B407CE2267E98C0015ADD7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 14B407A02267A90E0015ADD7 /* ORKTestHost */;
+			targetProxy = 14B407CD2267E98C0015ADD7 /* PBXContainerItemProxy */;
+		};
 		86CC8EA21AC09332001CCD89 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = B183A4731A8535D100C76870 /* ResearchKit */;
@@ -4025,6 +4119,22 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		14B407A72267A90E0015ADD7 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				14B407A82267A90E0015ADD7 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		14B407AC2267A90F0015ADD7 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				14B407AD2267A90F0015ADD7 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
 		B1C0F4E11A9BA65F0022C153 /* ResearchKit.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -4074,6 +4184,98 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		14B407BC2267A90F0015ADD7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 7JYUG8QGJ3;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = ORKTestHost/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apple.internal.ORKTestHost;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		14B407BD2267A90F0015ADD7 /* ATP */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 7JYUG8QGJ3;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = ORKTestHost/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apple.internal.ORKTestHost;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = ATP;
+		};
+		14B407BE2267A90F0015ADD7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 7JYUG8QGJ3;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = ORKTestHost/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apple.internal.ORKTestHost;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		3FFF18691829DB1E00167070 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4210,6 +4412,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "ResearchKitTests/ResearchKitTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ORKTestHost.app/ORKTestHost";
 			};
 			name = Debug;
 		};
@@ -4233,6 +4436,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ResearchKitTests/ResearchKitTests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ORKTestHost.app/ORKTestHost";
 			};
 			name = Release;
 		};
@@ -4349,6 +4553,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.researchkit.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ORKTestHost.app/ORKTestHost";
 			};
 			name = ATP;
 		};
@@ -4470,6 +4675,16 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		14B407BB2267A90F0015ADD7 /* Build configuration list for PBXNativeTarget "ORKTestHost" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				14B407BC2267A90F0015ADD7 /* Debug */,
+				14B407BD2267A90F0015ADD7 /* ATP */,
+				14B407BE2267A90F0015ADD7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = ATP;
+		};
 		3FFF18381829DB1D00167070 /* Build configuration list for PBXProject "ResearchKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
