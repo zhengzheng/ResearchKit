@@ -154,6 +154,11 @@ ORK_CLASS_AVAILABLE
 @property (nonatomic, copy, nullable) NSString *text;
 
 /**
+Whether to show progress for this step when it is presented. The default is YES.
+ */
+@property (nonatomic, assign) BOOL showsProgress;
+
+/**
  The task that contains the step.
  
  The value of `task` is usually set when a step is added to the `ORKOrderedTask` object.
