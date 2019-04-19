@@ -71,7 +71,6 @@ class ORKStepViewControllerTests: XCTestCase {
         testController.skipButtonTitle = skipString
         testController.backButtonItem = backButton
         testController.cancelButtonItem = cancelButton
-//        Test currently fails since navigationBar is not initialized
 //        XCTAssertEqual(testController.learnMoreButtonTitle, learnMoreString)
         XCTAssertEqual(testController.continueButtonTitle, countinueString)
         XCTAssertEqual(testController.skipButtonTitle, skipString)
@@ -125,29 +124,24 @@ class ORKStepViewControllerTests: XCTestCase {
         XCTAssertEqual(testController.hasBeenPresented, true)
         XCTAssert(testController.presentedDate != nil)
         XCTAssertNil(testController.dismissedDate)
-        
-//        Swift cant catch Exceptions only errors
-//        let otherStep = ORKStep(identifier: "HEY")
-//        testController.step = otherStep
-//        XCTAssertEqual(testController.step, step)
-//        let exceptionController = ORKStepViewController(step: nil)
-//        XCTAssertThrowsError(exceptionController.viewWillAppear(false))
+    }
     
-    THIS METHOD IS NOT TESTABLE
+        
     func testShowValidityAlertWithTitle() {
-        testController.loadView()
-        appearExpectation = expectation(description: "ORKStepViewController notifies delegate its status(Will Appear)")
-//
-//        UIApplication.shared.keyWindow?.rootViewController = testController
-//
-//        waitForExpectations(timeout: 10) { (error) in
-//            if let error = error {
-//                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
-//            }
-//        }
-//
-//        testController.showValidityAlert(withMessage: "TEST")
-//    }
+
+        var completed = testController.showValidityAlert(withMessage: "HELLO")
+        XCTAssert(completed, "Alert should display")
+        
+        completed = testController.showValidityAlert(withTitle: "", message: "")
+        XCTAssertFalse(completed, "Alert should not display")
+        
+        _ = testController.showValidityAlert(withMessage: "HELLO")
+        completed = testController.showValidityAlert(withMessage: "HELLO")
+        XCTAssertFalse(completed, "Alert should not display")
+        
+        testController.viewDidDisappear(true)
+        completed = testController.showValidityAlert(withMessage: "HELLO")
+        XCTAssertFalse(completed, "Alert should not display")
     }
 
     
@@ -214,16 +208,12 @@ class ORKStepViewControllerTests: XCTestCase {
         
         XCTAssertEqual(testController.result?.results, [resultOne])
         
-        // Verify result is added to the array not replaced
         let resultTwo = ORKResult(identifier: "RESULT TWO")
         testController.addResult(resultTwo)
         XCTAssertEqual(testController.result?.results, [resultOne, resultTwo])
         
         testController.addResult(resultOne)
-        
-        
-        testController.addResult(resultOne)
-        
+        XCTAssertEqual(testController.result?.results, [resultOne,resultOne, resultTwo])
     }
     
     func testGoForward() {
