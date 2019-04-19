@@ -360,13 +360,13 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
     
 }
 
-- (void)showValidityAlertWithMessage:(NSString *)text {
+- (BOOL)showValidityAlertWithMessage:(NSString *)text {
     // Ignore if our answer is null
     if (self.answer == ORKNullAnswerValue()) {
-        return;
+        return NO;
     }
     
-    [super showValidityAlertWithMessage:text];
+    return [super showValidityAlertWithMessage:text];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
