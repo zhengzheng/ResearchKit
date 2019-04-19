@@ -100,7 +100,7 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
         }
     } else if (self.bulletType == ORKBulletTypeNumber) {
         numberLabel = [[UILabel alloc] init];
-        numberLabel.text = [NSString stringWithFormat: @"%ld.)", indexPath.row + 1];
+        numberLabel.text = [NSString stringWithFormat: @"%ld.", indexPath.row + 1];
         numberLabel.numberOfLines = 0;
         numberLabel.translatesAutoresizingMaskIntoConstraints = NO;
         [cell addSubview:numberLabel];
