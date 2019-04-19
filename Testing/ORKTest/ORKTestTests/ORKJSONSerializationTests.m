@@ -929,6 +929,7 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
                                        @"ORKFormStep.useCardView",
                                        @"ORKSpeechRecognitionStep.shouldHideTranscript",
                                        @"ORKTableStep.isBulleted",
+                                       @"ORKTableStep.allowsSelection",
                                        @"ORKPDFViewerStep.actionBarOption"
                                        ];
     
