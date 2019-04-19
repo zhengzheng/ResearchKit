@@ -136,7 +136,7 @@
         _tableContainer.tapOffView = self.view;
         
         if ([self reviewStep].text || [self reviewStep].learnMoreItem) {
-            _tableContainer.tableContainerHeaderView.bodyItems = @[[[ORKBodyItem alloc] initWithTitle:[self reviewStep].text text:nil learnMoreItem:[self reviewStep].learnMoreItem bodyItemStyle:ORKBodyItemStyleText]];
+            _tableContainer.tableContainerHeaderView.bodyItems = @[[[ORKBodyItem alloc] initWithText:[self reviewStep].text detailText:nil image:nil learnMoreItem:[self reviewStep].learnMoreItem bodyItemStyle:ORKBodyItemStyleText]];
         }
         
         [_tableContainer.tableView setBackgroundColor:ORKNeedWideScreenDesign(self.view) ? [UIColor clearColor] : ORKColor(ORKBackgroundColorKey)];

@@ -99,6 +99,11 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
     return [self numSections] > 1 ? UITableViewStyleGrouped : UITableViewStylePlain;
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [_tableContainer sizeHeaderToFit];
+}
+
 - (void)stepDidChange {
     [super stepDidChange];
     _tableViewColor = ORKNeedWideScreenDesign(self.view) ? [UIColor clearColor] : (ORKColor(ORKBackgroundColorKey));
@@ -130,14 +135,14 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
         _tableView.estimatedSectionHeaderHeight = [self numSections] > 1 ? 30.0 : 0.0;
         _tableView.allowsSelection = NO;
         
-        _tableView.separatorColor = self.tableStepRef.isBulleted ? [UIColor clearColor] : nil;
+        _tableView.separatorColor = self.tableStepRef.bulletType == ORKBulletTypeNone ? [UIColor clearColor] : nil;
         [_tableView setBackgroundColor:_tableViewColor];
         _tableView.alwaysBounceVertical = NO;
         _headerView = _tableContainer.tableContainerHeaderView;
         if ([[self step] text] || [self step].learnMoreItem) {
-            _headerView.bodyItems = @[[[ORKBodyItem alloc] initWithTitle:[[self step] text] text:nil learnMoreItem:[self step].learnMoreItem bodyItemStyle:ORKBodyItemStyleText]];
+            _headerView.bodyItems = @[[[ORKBodyItem alloc] initWithText:[[self step] text] detailText:nil image:nil learnMoreItem:[self step].learnMoreItem bodyItemStyle:ORKBodyItemStyleText]];
         }
-        
+    
         _navigationFooterView = [ORKNavigationContainerView new];
         _navigationFooterView.skipButtonItem = self.skipButtonItem;
         _navigationFooterView.continueEnabled = [self continueButtonEnabled];

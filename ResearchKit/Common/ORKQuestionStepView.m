@@ -52,7 +52,7 @@
     _questionStep = step;
     self.stepTitle = step.title;
     if (step.text || step.learnMoreItem) {
-        self.bodyItems = @[[[ORKBodyItem alloc] initWithTitle:step.text text:nil learnMoreItem:step.learnMoreItem bodyItemStyle:ORKBodyItemStyleText]];
+        self.bodyItems = @[[[ORKBodyItem alloc] initWithText:step.text detailText:nil image:nil learnMoreItem:step.learnMoreItem bodyItemStyle:ORKBodyItemStyleText]];
     }
 }
 

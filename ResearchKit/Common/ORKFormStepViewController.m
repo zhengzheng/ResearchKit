@@ -539,7 +539,7 @@
         _headerView = _tableContainer.tableContainerHeaderView;
         _headerView.stepTitle = [self formStep].title;
         if ([[self formStep] text] || [[self formStep] learnMoreItem]) {
-            _headerView.bodyItems = @[[[ORKBodyItem alloc] initWithTitle:[[self formStep] text] text:nil learnMoreItem:[[self formStep] learnMoreItem] bodyItemStyle:ORKBodyItemStyleText]];
+            _headerView.bodyItems = @[[[ORKBodyItem alloc] initWithText:[[self formStep] text] detailText:nil image:nil learnMoreItem:[[self formStep] learnMoreItem] bodyItemStyle:ORKBodyItemStyleText]];
         }
         
         
