@@ -709,7 +709,34 @@ enum TaskListRow: Int, CustomStringConvertible {
     diastolic values.
     */
     private var formTask: ORKTask {
+//        let step = ORKFormStep(identifier: String(describing:Identifier.formStep), title: NSLocalizedString("Form Step", comment: ""), text: exampleDetailText)
+//
+//        // A first field, for entering an integer.
+//        let formItem01Text = NSLocalizedString("Field01", comment: "")
+//        let formItem01 = ORKFormItem(identifier: String(describing:Identifier.formItem01), text: formItem01Text, answerFormat: ORKAnswerFormat.integerAnswerFormat(withUnit: nil))
+//        formItem01.placeholder = NSLocalizedString("Your placeholder here", comment: "")
+//
+//        // A second field, for entering a time interval.
+//        let formItem02Text = NSLocalizedString("Field02", comment: "")
+//        let formItem02 = ORKFormItem(identifier: String(describing:Identifier.formItem02), text: formItem02Text, answerFormat: ORKTimeIntervalAnswerFormat())
+//        formItem02.placeholder = NSLocalizedString("Your placeholder here", comment: "")
+//
+//        let formItem03Text = NSLocalizedString(exampleQuestionText, comment: "")
+//        let scaleAnswerFormat = ORKContinuousScaleAnswerFormat.init(maximumValue: 10, minimumValue: 0, defaultValue: 0.0, maximumFractionDigits: 1)//ORKScaleAnswerFormat(maximumValue: 10, minimumValue: 0, defaultValue: 0, step: 1)
+//        let formItem03 = ORKFormItem(identifier: String(describing: Identifier.formItem03), text: formItem03Text, answerFormat: scaleAnswerFormat)
+//
+//        step.formItems = [
+//            formItem03,
+//            formItem01,
+//            formItem02
+//
+//        ]
+//
+//        return ORKOrderedTask(identifier: String(describing:Identifier.formTask), steps: [step])
+        
         let step = ORKFormStep(identifier: String(describing:Identifier.formStep), title: NSLocalizedString("Form Step", comment: ""), text: exampleDetailText)
+        
+        let sectionOne = ORKFormItem(sectionTitle: "Section 1 Title", detailText: "Detail text for section 1", learnMoreInstructionStep:nil)
         
         // A first field, for entering an integer.
         let formItem01Text = NSLocalizedString("Field01", comment: "")
@@ -721,15 +748,18 @@ enum TaskListRow: Int, CustomStringConvertible {
         let formItem02 = ORKFormItem(identifier: String(describing:Identifier.formItem02), text: formItem02Text, answerFormat: ORKTimeIntervalAnswerFormat())
         formItem02.placeholder = NSLocalizedString("Your placeholder here", comment: "")
         
+        let sectionTwo = ORKFormItem(sectionTitle: "Section 2 Title", detailText: nil, learnMoreInstructionStep:nil)
+        
         let formItem03Text = NSLocalizedString(exampleQuestionText, comment: "")
         let scaleAnswerFormat = ORKContinuousScaleAnswerFormat.init(maximumValue: 10, minimumValue: 0, defaultValue: 0.0, maximumFractionDigits: 1)//ORKScaleAnswerFormat(maximumValue: 10, minimumValue: 0, defaultValue: 0, step: 1)
         let formItem03 = ORKFormItem(identifier: String(describing: Identifier.formItem03), text: formItem03Text, answerFormat: scaleAnswerFormat)
         
         step.formItems = [
-            formItem03,
+            sectionOne,
             formItem01,
-            formItem02
-            
+            formItem02,
+            sectionTwo,
+            formItem03
         ]
         
         return ORKOrderedTask(identifier: String(describing:Identifier.formTask), steps: [step])

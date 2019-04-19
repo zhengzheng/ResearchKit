@@ -39,6 +39,7 @@
 #import "ORKTableContainerView.h"
 #import "ORKSurveyCardHeaderView.h"
 #import "ORKTextChoiceCellGroup.h"
+#import "ORKLearnMoreStepViewController.h"
 
 #import "ORKNavigationContainerView_Internal.h"
 #import "ORKStepViewController_Internal.h"
@@ -124,6 +125,10 @@
 @property (nonatomic, assign, readonly) NSUInteger index;
 
 @property (nonatomic, copy) NSString *title;
+
+@property (nonatomic, copy, nullable) NSString *detailText;
+
+@property (nonatomic, copy, nullable) ORKInstructionStep *learnMoreInstructionStep;
 
 // ORKTableCellItem
 @property (nonatomic, copy, readonly) NSArray *items;
@@ -624,59 +629,82 @@
 }
 
 - (void)buildSections {
-    NSArray *items = [self allFormItems];
     
+    NSArray *items = [self allFormItems];
     _sections = [NSMutableArray new];
     ORKTableSection *section = nil;
     
-    NSArray *singleSectionTypes = @[@(ORKQuestionTypeBoolean),
-                                    @(ORKQuestionTypeSingleChoice),
-                                    @(ORKQuestionTypeMultipleChoice),
-                                    @(ORKQuestionTypeLocation)];
-
     for (ORKFormItem *item in items) {
-        // Section header
-        if ([item impliedAnswerFormat] == nil) {
+        if (!item.answerFormat) {
             // Add new section
             section = [[ORKTableSection alloc] initWithSectionIndex:_sections.count];
             [_sections addObject:section];
             
             // Save title
             section.title = item.text;
-        // Actual item
+            section.detailText = item.detailText;
+            section.learnMoreInstructionStep = item.learnMoreInstructionStep;
+//            section.showSectionProgress = item.showSectionProgress;
         } else {
-            ORKAnswerFormat *answerFormat = [item impliedAnswerFormat];
-            
-            BOOL multiCellChoices = ([singleSectionTypes containsObject:@(answerFormat.questionType)] &&
-                                     NO == [answerFormat isKindOfClass:[ORKValuePickerAnswerFormat class]]);
-            
-            BOOL multilineTextEntry = (answerFormat.questionType == ORKQuestionTypeText && [(ORKTextAnswerFormat *)answerFormat multipleLines]);
-            
-            BOOL scale = (answerFormat.questionType == ORKQuestionTypeScale);
-            
-            // Items require individual section
-            if (multiCellChoices || multilineTextEntry || scale) {
-                // Add new section
-                section = [[ORKTableSection alloc]  initWithSectionIndex:_sections.count];
-                [_sections addObject:section];
-                
-                // Save title
-                section.title = item.text;
-    
-                [section addFormItem:item];
-
-                // following item should start a new section
-                section = nil;
-            } else {
-                // In case no section available, create new one.
-                if (section == nil) {
-                    section = [[ORKTableSection alloc]  initWithSectionIndex:_sections.count];
-                    [_sections addObject:section];
-                }
+            if (section) {
                 [section addFormItem:item];
             }
         }
     }
+    
+//    NSArray *items = [self allFormItems];
+//
+//    _sections = [NSMutableArray new];
+//    ORKTableSection *section = nil;
+//
+//    NSArray *singleSectionTypes = @[@(ORKQuestionTypeBoolean),
+//                                    @(ORKQuestionTypeSingleChoice),
+//                                    @(ORKQuestionTypeMultipleChoice),
+//                                    @(ORKQuestionTypeLocation)];
+//
+//    for (ORKFormItem *item in items) {
+//        // Section header
+//        if ([item impliedAnswerFormat] == nil) {
+//            // Add new section
+//            section = [[ORKTableSection alloc] initWithSectionIndex:_sections.count];
+//            [_sections addObject:section];
+//
+//            // Save title
+//            section.title = item.text;
+//        // Actual item
+//        } else {
+//            ORKAnswerFormat *answerFormat = [item impliedAnswerFormat];
+//
+//            BOOL multiCellChoices = ([singleSectionTypes containsObject:@(answerFormat.questionType)] &&
+//                                     NO == [answerFormat isKindOfClass:[ORKValuePickerAnswerFormat class]]);
+//
+//            BOOL multilineTextEntry = (answerFormat.questionType == ORKQuestionTypeText && [(ORKTextAnswerFormat *)answerFormat multipleLines]);
+//
+//            BOOL scale = (answerFormat.questionType == ORKQuestionTypeScale);
+//
+//            // Items require individual section
+//            if (multiCellChoices || multilineTextEntry || scale) {
+//                // Add new section
+//                section = [[ORKTableSection alloc]  initWithSectionIndex:_sections.count];
+//                [_sections addObject:section];
+//
+//                // Save title
+//                section.title = item.text;
+//
+//                [section addFormItem:item];
+//
+//                // following item should start a new section
+//                section = nil;
+//            } else {
+//                // In case no section available, create new one.
+//                if (section == nil) {
+//                    section = [[ORKTableSection alloc]  initWithSectionIndex:_sections.count];
+//                    [_sections addObject:section];
+//                }
+//                [section addFormItem:item];
+//            }
+//        }
+//    }
 }
 
 - (NSInteger)numberOfAnsweredFormItemsInDictionary:(NSDictionary *)dictionary {
@@ -733,10 +761,19 @@
     return enabled;
 }
 
-
 - (void)updateButtonStates {
     _navigationFooterView.continueEnabled = [self continueButtonEnabled];
     _navigationFooterView.skipEnabled = [self skipButtonEnabled];
+}
+
+- (void)learnMoreButtonPressed:(id)sender {
+    UIButton *selectedButton = (UIButton *)sender;
+    NSInteger buttonTag = selectedButton.tag;
+    ORKInstructionStep *stepToPresent = _sections[buttonTag].learnMoreInstructionStep;
+    
+    ORKLearnMoreStepViewController *learnMoreViewController = [[ORKLearnMoreStepViewController alloc] initWithStep:stepToPresent];
+    
+    [self presentViewController:learnMoreViewController animated:YES completion:nil];
 }
 
 #pragma mark Helpers
@@ -1036,6 +1073,19 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     NSString *title = _sections[section].title;
+    NSString *detailText = _sections[section].detailText;
+    ORKInstructionStep *learnMoreInstructionStep = _sections[section].learnMoreInstructionStep;
+    
+    if (learnMoreInstructionStep) {
+        UIButton *learnMoreInstructionButton = [UIButton new];
+        [learnMoreInstructionButton setTitle:@"Learn More" forState:UIControlStateNormal];
+        [learnMoreInstructionButton setTitleColor:UIColor.blueColor forState:UIControlStateNormal];
+        learnMoreInstructionButton.backgroundColor = UIColor.whiteColor;
+        learnMoreInstructionButton.tag = section;
+        
+        [learnMoreInstructionButton addTarget:self action:@selector(learnMoreButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
     ORKFormStep *formStep = [self formStep];
     
     if (formStep.useCardView && _sections[section].items.count > 0) {
@@ -1043,7 +1093,7 @@
         ORKSurveyCardHeaderView *cardHeaderView = (ORKSurveyCardHeaderView *)[tableView dequeueReusableHeaderFooterViewWithIdentifier:@(section).stringValue];
         
         if (cardHeaderView == nil && title) {
-            cardHeaderView = [[ORKSurveyCardHeaderView alloc] initWithTitle:title];
+            cardHeaderView = [[ORKSurveyCardHeaderView alloc] initWithTitle:title detailText:detailText];
         }
         
         return cardHeaderView;

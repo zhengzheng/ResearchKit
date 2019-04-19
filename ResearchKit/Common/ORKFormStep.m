@@ -188,6 +188,16 @@
     return self;
 }
 
+- (instancetype)initWithSectionTitle:(nullable NSString *)sectionTitle detailText:(nullable NSString *)text learnMoreInstructionStep:(nullable NSString *)learnMoreInstructionStep {
+    self = [super init];
+    if (self) {
+        _text = [sectionTitle copy];
+        _detailText = [text copy];
+        _learnMoreInstructionStep = [learnMoreInstructionStep copy];
+    }
+    return self;
+}
+
 - (ORKFormItem *)confirmationAnswerFormItemWithIdentifier:(NSString *)identifier
                                                      text:(nullable NSString *)text
                                              errorMessage:(NSString *)errorMessage {
@@ -225,6 +235,7 @@
         ORK_DECODE_OBJ_CLASS(aDecoder, identifier, NSString);
         ORK_DECODE_BOOL(aDecoder, optional);
         ORK_DECODE_OBJ_CLASS(aDecoder, text, NSString);
+        ORK_DECODE_OBJ_CLASS(aDecoder, detailText, NSString);
         ORK_DECODE_OBJ_CLASS(aDecoder, placeholder, NSString);
         ORK_DECODE_OBJ_CLASS(aDecoder, answerFormat, ORKAnswerFormat);
         ORK_DECODE_OBJ_CLASS(aDecoder, step, ORKFormStep);

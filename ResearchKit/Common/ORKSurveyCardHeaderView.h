@@ -37,6 +37,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype) initWithTitle:(NSString *)title;
 
+- (instancetype) initWithTitle:(NSString *)title
+                    detailText:(nullable NSString *)text;
+
 @end
 
 NS_ASSUME_NONNULL_END

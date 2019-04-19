@@ -39,6 +39,8 @@ static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
     UIView *_headlineView;
     NSString *_title;
     UILabel *_titleLabel;
+    NSString *_detailText;
+    UILabel *_detailTextLabel;
     CAShapeLayer *_headlineMaskLayer;
     NSArray<NSLayoutConstraint *> *_headerViewConstraints;
 }
@@ -55,21 +57,39 @@ static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
     return self;
 }
 
-- (void)setupHeaderView {
-    [self setupHeadlineView];
-    [self setupTitleLabel];
+- (instancetype)initWithTitle:(NSString *)title detailText:(nullable NSString *)text {
     
-    [_headlineView addSubview:_titleLabel];
-    [self addSubview:_headlineView];
+    self = [super init];
+    if (self) {
+        _title = title;
+        _detailText = text;
+        [self setBackgroundColor:[UIColor clearColor]];
+        [self setupHeaderView];
+        [self setupConstraints];
+    }
+    return self;
 }
 
-- (void) setupHeadlineView {
+- (void)setupHeaderView {
+    [self setupHeadlineView];
+    [self addSubview:_headlineView];
+    
+    [self setupTitleLabel];
+    [_headlineView addSubview:_titleLabel];
+    
+    if (_detailText) {
+        [self setUpDetailTextLabel];
+        [_headlineView addSubview:_detailTextLabel];
+    }
+}
+
+- (void)setupHeadlineView {
     if (!_headlineView) {
         _headlineView = [UIView new];
     }
 }
 
-- (void) setupTitleLabel {
+- (void)setupTitleLabel {
     if (!_titleLabel) {
         _titleLabel = [UILabel new];
     }
@@ -78,6 +98,19 @@ static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
     _titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     _titleLabel.text = _title;
     [_titleLabel setFont:[UIFont systemFontOfSize:ORKCardDefaultFontSize weight:UIFontWeightBold]];
+}
+
+- (void)setUpDetailTextLabel {
+    if (!_detailTextLabel) {
+        _detailTextLabel = [UILabel new];
+    }
+    
+    _detailTextLabel.numberOfLines = 0;
+    _detailTextLabel.textColor = [UIColor blackColor];
+    _detailTextLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    _detailTextLabel.text = _detailText ? _detailText : @"";
+    //ToDo: create constant for detail text font size
+    [_detailTextLabel setFont:[UIFont systemFontOfSize:ORKCardDefaultFontSize weight:UIFontWeightThin]];
 }
 
 - (void)layoutSubviews {
@@ -127,17 +160,41 @@ static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
     }
     _headlineView.translatesAutoresizingMaskIntoConstraints = NO;
     _titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    _headerViewConstraints = @[
-                               [NSLayoutConstraint constraintWithItem:_headlineView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0],
-                               [NSLayoutConstraint constraintWithItem:_headlineView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1.0 constant:ORKCardLeftRightMargin],
-                               [NSLayoutConstraint constraintWithItem:_headlineView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1.0 constant: -ORKCardLeftRightMargin],
-                               
-                               [NSLayoutConstraint constraintWithItem:_titleLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeTop multiplier:1.0 constant:ORKCardTopBottomMargin],
-                               [NSLayoutConstraint constraintWithItem:_titleLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:HeadlineViewTitleLeftRightPadding],
-                               [NSLayoutConstraint constraintWithItem:_titleLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeRight multiplier:1.0 constant:-HeadlineViewTitleLeftRightPadding],
-                               [NSLayoutConstraint constraintWithItem:_headlineView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_titleLabel attribute:NSLayoutAttributeBottom multiplier:1.0 constant:ORKCardTopBottomMargin],
-                               [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]
-                               ];
+    
+    if (_detailTextLabel) {
+        _detailTextLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    }
+    
+    if (!_detailTextLabel) {
+        _headerViewConstraints = @[
+                                   [NSLayoutConstraint constraintWithItem:_headlineView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0],
+                                   [NSLayoutConstraint constraintWithItem:_headlineView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1.0 constant:ORKCardLeftRightMargin],
+                                   [NSLayoutConstraint constraintWithItem:_headlineView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1.0 constant: -ORKCardLeftRightMargin],
+                                   
+                                   [NSLayoutConstraint constraintWithItem:_titleLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeTop multiplier:1.0 constant:ORKCardTopBottomMargin],
+                                   [NSLayoutConstraint constraintWithItem:_titleLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:HeadlineViewTitleLeftRightPadding],
+                                   [NSLayoutConstraint constraintWithItem:_titleLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeRight multiplier:1.0 constant:-HeadlineViewTitleLeftRightPadding],
+                                   [NSLayoutConstraint constraintWithItem:_headlineView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_titleLabel attribute:NSLayoutAttributeBottom multiplier:1.0 constant:ORKCardTopBottomMargin],
+                                   [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]
+                                   ];
+    } else {
+        _headerViewConstraints = @[
+                                   [NSLayoutConstraint constraintWithItem:_headlineView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0],
+                                   [NSLayoutConstraint constraintWithItem:_headlineView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1.0 constant:ORKCardLeftRightMargin],
+                                   [NSLayoutConstraint constraintWithItem:_headlineView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1.0 constant: -ORKCardLeftRightMargin],
+                                   
+                                   [NSLayoutConstraint constraintWithItem:_titleLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeTop multiplier:1.0 constant:ORKCardTopBottomMargin],
+                                   [NSLayoutConstraint constraintWithItem:_titleLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:HeadlineViewTitleLeftRightPadding],
+                                   
+                                   [NSLayoutConstraint constraintWithItem:_detailTextLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_titleLabel attribute:NSLayoutAttributeBottom multiplier:1.0 constant:ORKCardTopBottomMargin],
+                                   [NSLayoutConstraint constraintWithItem:_detailTextLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:HeadlineViewTitleLeftRightPadding],
+                                   [NSLayoutConstraint constraintWithItem:_detailTextLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeRight multiplier:1.0 constant:-HeadlineViewTitleLeftRightPadding],
+                                   
+                                   [NSLayoutConstraint constraintWithItem:_titleLabel attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_detailTextLabel attribute:NSLayoutAttributeTop multiplier:1.0 constant:-ORKCardTopBottomMargin],
+                                   [NSLayoutConstraint constraintWithItem:_headlineView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_detailTextLabel attribute:NSLayoutAttributeBottom multiplier:1.0 constant:ORKCardTopBottomMargin],
+                                   [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]
+                                   ];
+    }
     
     [NSLayoutConstraint activateConstraints:_headerViewConstraints];
 }
