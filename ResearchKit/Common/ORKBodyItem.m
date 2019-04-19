@@ -91,7 +91,7 @@
 
 - (void)validateParameters {
     if (!_text && !_detailText && !_learnMoreItem) {
-        NSAssert(NO, @"Parameters text and detailText cannot be both nil.");
+        NSAssert(NO, @"Parameters text, detailText and learnMoreItem cannot be nil at the same time.");
     }
 }
 
