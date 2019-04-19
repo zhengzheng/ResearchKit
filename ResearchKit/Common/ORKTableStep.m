@@ -86,8 +86,7 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
     
     UIImage *bullet = nil;
     UILabel *numberLabel = nil;
-    
-    
+
     if (self.bulletType == ORKBulletTypeCircle) {
         if (!_circleBulletImage) {
             _circleBulletImage = [self circleImage];
@@ -123,7 +122,6 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
         [textLabel.leadingAnchor constraintEqualToAnchor:bulletView.trailingAnchor constant:20.0].active = YES;
     }
     else if (numberLabel != nil) {
-
         [numberLabel.topAnchor constraintEqualToAnchor:textLabel.topAnchor constant:0.0].active = YES;
         [numberLabel.widthAnchor constraintEqualToConstant:BulletNumberMaxWidth].active = YES;
         numberLabel.textAlignment = NSTextAlignmentRight;
