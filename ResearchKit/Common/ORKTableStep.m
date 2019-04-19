@@ -88,7 +88,7 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
     UILabel *numberLabel = nil;
     
     
-    if (self.bulletType == ORKBulletTypeBulletPoint) {
+    if (self.bulletType == ORKBulletTypeCircle) {
         if (!_circleBulletImage) {
             _circleBulletImage = [self circleImage];
         }

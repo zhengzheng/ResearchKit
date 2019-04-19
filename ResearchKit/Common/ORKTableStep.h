@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSInteger, ORKBulletType) {
     ORKBulletTypeNone = 0,
-    ORKBulletTypeBulletPoint,
+    ORKBulletTypeCircle,
     ORKBulletTypeImage,
     ORKBulletTypeNumber
 } ORK_ENUM_AVAILABLE;
