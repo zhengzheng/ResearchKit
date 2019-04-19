@@ -304,14 +304,13 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
     // only modify the title of the button.
     [self setupButtons];
     
-    if (!_step) {
-        @throw [NSException exceptionWithName:NSGenericException reason:@"Cannot present step view controller without a step" userInfo:nil];
-    }
-    
     if ([self.delegate respondsToSelector:@selector(stepViewControllerWillAppear:)]) {
         [self.delegate stepViewControllerWillAppear:self];
     }
     
+    if (!_step) {
+        @throw [NSException exceptionWithName:NSGenericException reason:@"Cannot present step view controller without a step" userInfo:nil];
+    }
     _hasBeenPresented = YES;
     
     // Set presentedDate on first time viewWillAppear

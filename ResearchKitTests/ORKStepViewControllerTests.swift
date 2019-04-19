@@ -43,13 +43,20 @@ class ORKStepViewControllerTests: XCTestCase {
     var appearExpectation: XCTestExpectation!
     var failExpectation: XCTestExpectation!
     var recorderExpectation: XCTestExpectation!
+    var testingWillExpectation: Bool!
+    var utilities: TopLevelUIUtilities<ORKStepViewController>!
     
     override func setUp() {
+        negativeTest = false
+        testingWillExpectation = false
+        
         step = ORKStep(identifier: "STEP")
         result = ORKResult(identifier: "RESULT")
         testController = ORKStepViewController(step: step, result: result)
         testController.delegate = self
-        negativeTest = false
+        
+        utilities = TopLevelUIUtilities<ORKStepViewController>()
+        utilities.setupTopLevelUI(withViewController: testController)
     }
     
     func testAttributes() {
@@ -64,8 +71,8 @@ class ORKStepViewControllerTests: XCTestCase {
         testController.skipButtonTitle = skipString
         testController.backButtonItem = backButton
         testController.cancelButtonItem = cancelButton
-        
-        //        XCTAssertEqual(testController.learnMoreButtonTitle, learnMoreString)
+//        Test currently fails since navigationBar is not initialized
+//        XCTAssertEqual(testController.learnMoreButtonTitle, learnMoreString)
         XCTAssertEqual(testController.continueButtonTitle, countinueString)
         XCTAssertEqual(testController.skipButtonTitle, skipString)
         XCTAssertEqual(testController.backButtonItem, backButton)
@@ -88,13 +95,10 @@ class ORKStepViewControllerTests: XCTestCase {
     }
     
     func testViewWillAppear() {
-        
-        XCTAssertEqual(testController.continueButtonItem, testController.internalDoneButtonItem)
-        XCTAssertEqual(testController.backButtonItem, nil)
-        
+        testingWillExpectation = true
         appearExpectation = expectation(description: "ORKStepViewController notifies delegate its status(Will Appear)")
-        testController.viewWillAppear(false)
         
+        testController.viewWillAppear(false)
         waitForExpectations(timeout: 10) { (error) in
             if let error = error {
                 XCTFail("waitForExpectationsWithTimeout errored: \(error)")
@@ -103,6 +107,12 @@ class ORKStepViewControllerTests: XCTestCase {
         
         XCTAssertEqual(testController.continueButtonItem, testController.internalContinueButtonItem)
         XCTAssertEqual(testController.backButtonItem, testController.internalBackButtonItem)
+        
+        testController.delegate = nil
+        testController.viewWillAppear(false)
+
+        XCTAssertEqual(testController.continueButtonItem, testController.internalDoneButtonItem)
+        XCTAssertEqual(testController.backButtonItem, nil)
         
 //        Test currently fails since navigationBar is not initialized
 //        guard let navigationBar = testController.taskViewController?.navigationBar else {
@@ -118,32 +128,34 @@ class ORKStepViewControllerTests: XCTestCase {
         
 //        Swift cant catch Exceptions only errors
 //        let otherStep = ORKStep(identifier: "HEY")
-//        XCTAssertThrowsError(testController.step = otherStep)
+//        testController.step = otherStep
+//        XCTAssertEqual(testController.step, step)
 //        let exceptionController = ORKStepViewController(step: nil)
 //        XCTAssertThrowsError(exceptionController.viewWillAppear(false))
-    }
     
+    THIS METHOD IS NOT TESTABLE
     func testShowValidityAlertWithTitle() {
         testController.loadView()
         appearExpectation = expectation(description: "ORKStepViewController notifies delegate its status(Will Appear)")
-        
-        UIApplication.shared.keyWindow?.rootViewController = testController
-        
-        waitForExpectations(timeout: 10) { (error) in
-            if let error = error {
-                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
-            }
-        }
-        
-        testController.showValidityAlert(withMessage: "TEST")
-        testController.
+//
+//        UIApplication.shared.keyWindow?.rootViewController = testController
+//
+//        waitForExpectations(timeout: 10) { (error) in
+//            if let error = error {
+//                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
+//            }
+//        }
+//
+//        testController.showValidityAlert(withMessage: "TEST")
+//    }
     }
+
     
     func testiPadSetUp() {
         testController.shouldIgnoreiPadDesign = false
         let iPadScreenSize = CGRect(x: 0, y: 0, width: 768, height: 1024)
         
-        UIApplication.shared.windows.first?.bounds = iPadScreenSize
+        testController.view.window!.bounds = iPadScreenSize
         testController.viewDidLoad()
         
         //        Can't verify this since navigation bar has not been initialized
@@ -206,6 +218,12 @@ class ORKStepViewControllerTests: XCTestCase {
         let resultTwo = ORKResult(identifier: "RESULT TWO")
         testController.addResult(resultTwo)
         XCTAssertEqual(testController.result?.results, [resultOne, resultTwo])
+        
+        testController.addResult(resultOne)
+        
+        
+        testController.addResult(resultOne)
+        
     }
     
     func testGoForward() {
@@ -244,15 +262,31 @@ class ORKStepViewControllerTests: XCTestCase {
     
     
     func testSkip() {
+        
         forwardExpectation = expectation(description: "ORKStepViewController notifies delegate with Forward Direction")
-        let skipButton = testController.skipButtonItem
-        UIApplication.shared.sendAction(skipButton!.action!, to: skipButton!.target, from: self, for: nil)
+        
+        guard let skipButton = testController.skipButtonItem else {
+            XCTFail()
+            return
+        }
+        
+        let _ = skipButton.target?.perform(skipButton.action, with: testController.view)
         
         waitForExpectations(timeout: 10) { (error) in
             if let error = error {
                 XCTFail("waitForExpectationsWithTimeout errored: \(error)")
             }
         }
+        
+        let reviewStep = ORKReviewStep(identifier: "REVIEW STEP")
+        testController.parentReviewStep = reviewStep
+        let _ = skipButton.target?.perform(skipButton.action, with: testController.view)
+        
+        guard let _ = testController.presentedViewController as? UIAlertController else {
+            XCTFail("ALERT WAS NOT PRESENTED")
+            return
+        }
+    
     }
     
     func testViewDelegates() {
@@ -288,7 +322,9 @@ extension ORKStepViewControllerTests: ORKStepViewControllerDelegate {
     }
     
     func stepViewControllerWillAppear(_ stepViewController: ORKStepViewController) {
-        appearExpectation.fulfill()
+        if testingWillExpectation {
+            appearExpectation.fulfill()
+        }
     }
     
     func stepViewControllerResultDidChange(_ stepViewController: ORKStepViewController) {
