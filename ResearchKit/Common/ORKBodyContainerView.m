@@ -95,8 +95,7 @@ static NSString * ORKBulletUniCode = @"\u2981";
     } else if (_bodyItem.bodyItemStyle == ORKBodyItemStyleImage) {
         [self setupBulletPointStackView];
         [self setupBodyStyleImage];
-    }
-    else if (_bodyItem.bodyItemStyle == ORKBodyItemStyleBulletPoint) {
+    } else if (_bodyItem.bodyItemStyle == ORKBodyItemStyleBulletPoint) {
         [self setupBulletPointStackView];
         [self setupBodyStyleBulletPointView];
     }
