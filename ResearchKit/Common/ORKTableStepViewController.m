@@ -135,12 +135,12 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
         _tableView.estimatedSectionHeaderHeight = [self numSections] > 1 ? 30.0 : 0.0;
         _tableView.allowsSelection = NO;
         
-        _tableView.separatorColor = self.tableStepRef.isBulleted ? [UIColor clearColor] : nil;
+        _tableView.separatorColor = self.tableStepRef.bulletType == ORKBulletTypeNone ? [UIColor clearColor] : nil;
         [_tableView setBackgroundColor:_tableViewColor];
         _tableView.alwaysBounceVertical = NO;
         _headerView = _tableContainer.tableContainerHeaderView;
         if ([[self step] text] || [self step].learnMoreItem) {
-            _headerView.bodyItems = @[[[ORKBodyItem alloc] initWithTitle:[[self step] text] text:nil image:nil learnMoreItem:[self step].learnMoreItem bodyItemStyle:ORKBodyItemStyleText]];
+            _headerView.bodyItems = @[[[ORKBodyItem alloc] initWithText:[[self step] text] detailText:nil image:nil learnMoreItem:[self step].learnMoreItem bodyItemStyle:ORKBodyItemStyleText]];
         }
     
         _navigationFooterView = [ORKNavigationContainerView new];

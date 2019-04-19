@@ -45,9 +45,9 @@ static const CGFloat ORKBodyToBulletPaddingStandard = 37.0;
 static const CGFloat ORKBulletToBulletPaddingStandard = 26.0;
 //static const CGFloat ORKBulletToBulletPaddingShort = 22.0;
 
-static const CGFloat ORKBodyTitleToBodyTextPaddingStandard = 6.0;
-static const CGFloat ORKBodyTitleToLearnMoreButtonPaddingStandard = 15.0;
+static const CGFloat ORKBodyTextToBodyDetailTextPaddingStandard = 6.0;
 static const CGFloat ORKBodyTextToLearnMoreButtonPaddingStandard = 15.0;
+static const CGFloat ORKBodyDetailTextToLearnMoreButtonPaddingStandard = 15.0;
 
 static const CGFloat ORKBulletIconToBodyPadding = 14.0;
 static const CGFloat ORKBulletStackLeftRightPadding = 10.0;
@@ -119,13 +119,13 @@ static NSString * ORKBulletUniCode = @"\u2981";
     return [UIFont fontWithDescriptor:descriptor size:0];
 }
 
-+ (UIFont *)bulletTitleFont {
++ (UIFont *)bulletTextFont {
     UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleSubheadline];
     UIFontDescriptor *fontDescriptor = [descriptor fontDescriptorWithSymbolicTraits:(UIFontDescriptorTraitBold | UIFontDescriptorTraitLooseLeading)];
     return [UIFont fontWithDescriptor:fontDescriptor size:[[fontDescriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue]];
 }
 
-+ (UIFont *)bulletTextFont {
++ (UIFont *)bulletDetailTextFont {
     UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleSubheadline];
     UIFontDescriptor *fontDescriptor = [descriptor fontDescriptorWithSymbolicTraits:(UIFontDescriptorTraitLooseLeading)];
     return [UIFont fontWithDescriptor:fontDescriptor size:[[descriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue]];
@@ -136,26 +136,26 @@ static NSString * ORKBulletUniCode = @"\u2981";
     self.axis = UILayoutConstraintAxisVertical;
     self.distribution = UIStackViewDistributionFill;
     self.alignment = UIStackViewAlignmentLeading;
-    UILabel *titleLabel;
     UILabel *textLabel;
+    UILabel *detailTextLabel;
     
-    if (_bodyItem.title) {
-        titleLabel = [UILabel new];
-        titleLabel.numberOfLines = 0;
-        titleLabel.font = [ORKBodyItemView bodyTitleFont];
-        titleLabel.text = _bodyItem.title;
-        titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        [self addArrangedSubview:titleLabel];
-    }
     if (_bodyItem.text) {
         textLabel = [UILabel new];
         textLabel.numberOfLines = 0;
-        textLabel.font = [ORKBodyItemView bodyTextFont];
+        textLabel.font = [ORKBodyItemView bodyTitleFont];
         textLabel.text = _bodyItem.text;
         textLabel.translatesAutoresizingMaskIntoConstraints = NO;
         [self addArrangedSubview:textLabel];
-        if (titleLabel) {
-            [self setCustomSpacing:ORKBodyTitleToBodyTextPaddingStandard afterView:titleLabel];
+    }
+    if (_bodyItem.detailText) {
+        detailTextLabel = [UILabel new];
+        detailTextLabel.numberOfLines = 0;
+        detailTextLabel.font = [ORKBodyItemView bodyTextFont];
+        detailTextLabel.text = _bodyItem.detailText;
+        detailTextLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        [self addArrangedSubview:detailTextLabel];
+        if (textLabel) {
+            [self setCustomSpacing:ORKBodyTextToBodyDetailTextPaddingStandard afterView:textLabel];
         }
     }
     if (_bodyItem.learnMoreItem) {
@@ -164,11 +164,11 @@ static NSString * ORKBulletUniCode = @"\u2981";
         learnMoreView.delegate = self;
         learnMoreView.translatesAutoresizingMaskIntoConstraints = NO;
         [self addArrangedSubview:learnMoreView];
-        if (textLabel) {
-            [self setCustomSpacing:ORKBodyTextToLearnMoreButtonPaddingStandard afterView:textLabel];
+        if (detailTextLabel) {
+            [self setCustomSpacing:ORKBodyDetailTextToLearnMoreButtonPaddingStandard afterView:detailTextLabel];
         }
-        else if (titleLabel) {
-            [self setCustomSpacing:ORKBodyTitleToLearnMoreButtonPaddingStandard afterView:textLabel];
+        else if (textLabel) {
+            [self setCustomSpacing:ORKBodyTextToLearnMoreButtonPaddingStandard afterView:detailTextLabel];
         }
     }
 }
@@ -205,6 +205,7 @@ static NSString * ORKBulletUniCode = @"\u2981";
 - (UIImageView *)imageView {
     UIImageView *imageView = [UIImageView new];
     imageView.image = self.bodyItem.image;
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
     [imageView.heightAnchor constraintEqualToConstant:ORKBulletIconDimension].active = YES;
     [imageView.widthAnchor constraintEqualToConstant:ORKBulletIconDimension].active = YES;
@@ -218,29 +219,29 @@ static NSString * ORKBulletUniCode = @"\u2981";
     subStackView.alignment = UIStackViewAlignmentLeading;
     subStackView.translatesAutoresizingMaskIntoConstraints = NO;
     [self addArrangedSubview:subStackView];
-    UILabel *titleLabel;
     UILabel *textLabel;
+    UILabel *detailTextLabel;
     
-    if (_bodyItem.title) {
-        titleLabel = [UILabel new];
-        titleLabel.numberOfLines = 0;
-        titleLabel.font = [ORKBodyItemView bulletTitleFont];
-        titleLabel.text = _bodyItem.title;
-        titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        [subStackView addArrangedSubview:titleLabel];
-    }
     if (_bodyItem.text) {
         textLabel = [UILabel new];
         textLabel.numberOfLines = 0;
         textLabel.font = [ORKBodyItemView bulletTextFont];
         textLabel.text = _bodyItem.text;
-        [textLabel setTextColor:ORKColor(ORKBulletItemTextColorKey)];
         textLabel.translatesAutoresizingMaskIntoConstraints = NO;
         [subStackView addArrangedSubview:textLabel];
     }
+    if (_bodyItem.detailText) {
+        detailTextLabel = [UILabel new];
+        detailTextLabel.numberOfLines = 0;
+        detailTextLabel.font = [ORKBodyItemView bulletDetailTextFont];
+        detailTextLabel.text = _bodyItem.detailText;
+        [detailTextLabel setTextColor:ORKColor(ORKBulletItemTextColorKey)];
+        detailTextLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        [subStackView addArrangedSubview:detailTextLabel];
+    }
     if (_bodyItem.learnMoreItem) {
         ORKLearnMoreView *learnMoreView = [_bodyItem.learnMoreItem getText] ? [ORKLearnMoreView learnMoreCustomButtonViewWithText:[_bodyItem.learnMoreItem getText] LearnMoreInstructionStep:_bodyItem.learnMoreItem.learnMoreInstructionStep] : [ORKLearnMoreView learnMoreDetailDisclosureButtonViewWithLearnMoreInstructionStep:_bodyItem.learnMoreItem.learnMoreInstructionStep];
-        [learnMoreView setLearnMoreButtonFont:[ORKBodyItemView bulletTextFont]];
+        [learnMoreView setLearnMoreButtonFont:[ORKBodyItemView bulletDetailTextFont]];
         learnMoreView.delegate = self;
         learnMoreView.translatesAutoresizingMaskIntoConstraints = NO;
         [subStackView addArrangedSubview:learnMoreView];

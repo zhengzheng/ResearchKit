@@ -69,17 +69,11 @@ typedef NS_ENUM(NSInteger, ORKBodyItemStyle) {
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-- (instancetype)initWithTitle:(nullable NSString *)title text:(nullable NSString *)text image:(nullable UIImage *)image learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem bodyItemStyle:(ORKBodyItemStyle)bodyItemStyle NS_DESIGNATED_INITIALIZER;
-
-+ (instancetype)bulletPointItemWithTitle:(nullable NSString *)title text:(nullable NSString *)text learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem;
-
-+ (instancetype)textItemWithTitle:(nullable NSString *)title text:(nullable NSString *)text learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem;
-
-+ (instancetype)imageItemWithTitle:(nullable NSString *)title text:(nullable NSString *)text image:(nonnull UIImage *)image learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem;
-
-@property (nonatomic) NSString *title;
+- (instancetype)initWithText:(nullable NSString *)text detailText:(nullable NSString *)detailText image:(nullable UIImage *)image learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem bodyItemStyle:(ORKBodyItemStyle)bodyItemStyle NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic) NSString *text;
+
+@property (nonatomic) NSString *detailText;
 
 @property (nonatomic, nullable) UIImage *image;
 

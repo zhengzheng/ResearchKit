@@ -191,7 +191,7 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
             }
             _headerView.stepTitle = self.questionStep.title;
             if (self.questionStep.text || self.questionStep.learnMoreItem) {
-                _headerView.bodyItems = @[[[ORKBodyItem alloc] initWithTitle:self.questionStep.text text:nil image:nil learnMoreItem:self.questionStep.learnMoreItem bodyItemStyle:ORKBodyItemStyleText]];
+                _headerView.bodyItems = @[[[ORKBodyItem alloc] initWithText:self.questionStep.text detailText:nil image:nil learnMoreItem:self.questionStep.learnMoreItem bodyItemStyle:ORKBodyItemStyleText]];
             }
             
             _navigationFooterView.optional = self.step.optional;

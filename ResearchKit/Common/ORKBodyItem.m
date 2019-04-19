@@ -76,11 +76,11 @@
     ORKThrowMethodUnavailableException();
 }
 
-- (instancetype)initWithTitle:(NSString *)title text:(NSString *)text image:(nullable UIImage *)image learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem bodyItemStyle:(ORKBodyItemStyle)bodyItemStyle {
+- (instancetype)initWithText:(NSString *)text detailText:(NSString *)detailText image:(nullable UIImage *)image learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem bodyItemStyle:(ORKBodyItemStyle)bodyItemStyle {
     self = [super init];
     if (self) {
-        self.title = title;
         self.text = text;
+        self.detailText = detailText;
         self.learnMoreItem = learnMoreItem;
         self.bodyItemStyle = bodyItemStyle;
         self.image = image;
@@ -89,21 +89,9 @@
     return self;
 }
 
-+ (ORKBodyItem *)bulletPointItemWithTitle:(nullable NSString *)title text:(nullable NSString *)text learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem{
-    return [[ORKBodyItem alloc] initWithTitle:title text:text image:nil learnMoreItem:learnMoreItem bodyItemStyle:ORKBodyItemStyleBulletPoint];
-}
-
-+ (ORKBodyItem *)textItemWithTitle:(nullable NSString *)title text:(nullable NSString *)text learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem{
-    return [[ORKBodyItem alloc] initWithTitle:title text:text image:nil learnMoreItem:learnMoreItem bodyItemStyle:ORKBodyItemStyleText];
-}
-
-+ (ORKBodyItem *)imageItemWithTitle:(nullable NSString *)title text:(nullable NSString *)text image:(nonnull UIImage *)image learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem{
-     return [[ORKBodyItem alloc] initWithTitle:title text:text image:image learnMoreItem:learnMoreItem bodyItemStyle:ORKBodyItemStyleImage];
-}
-
 - (void)validateParameters {
-    if (!_title && !_text) {
-        NSAssert(NO, @"Parameters title and text cannot be both nil.");
+    if (!_text && !_detailText && !_learnMoreItem) {
+        NSAssert(NO, @"Parameters text and detailText cannot be both nil.");
     }
 }
 

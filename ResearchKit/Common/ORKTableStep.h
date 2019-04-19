@@ -36,7 +36,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSInteger, ORKBulletType) {
-    ORKBulletTypeNone,
+    ORKBulletTypeNone = 0,
     ORKBulletTypeBulletPoint,
     ORKBulletTypeImage,
     ORKBulletTypeNumber
@@ -142,7 +142,7 @@ ORK_CLASS_AVAILABLE
 /**
  Boolean flag representing if the table data should be displayed in a bulleted format.
  */
-@property (nonatomic) BOOL isBulleted;
+@property (nonatomic) BOOL isBulleted DEPRECATED_MSG_ATTRIBUTE("isBulleted property has been deprecated. Please use 'bulletType' property to indicate `ORKBulletType` enum.");
 
 /**
  The bullet type to use for bullet items.
