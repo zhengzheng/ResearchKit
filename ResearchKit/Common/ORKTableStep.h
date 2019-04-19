@@ -146,7 +146,7 @@ ORK_CLASS_AVAILABLE
 @property (nonatomic, copy, nullable) NSArray <NSString *> *bulletIconNames;
 
 /**
- Boolena flag representing if the table rows should be selectable.
+ Boolean flag representing if the table rows should be selectable.
  
  Default value is NO
  */
