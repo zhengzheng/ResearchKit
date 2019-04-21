@@ -842,7 +842,8 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                  ((@{
                      PROPERTY(items, NSObject, NSArray, YES, nil, nil),
                      PROPERTY(isBulleted, NSNumber, NSObject, YES, nil, nil),
-                     PROPERTY(bulletIconNames, NSString, NSArray, YES, nil, nil)
+                     PROPERTY(bulletIconNames, NSString, NSArray, YES, nil, nil),
+                     PROPERTY(allowsSelection, NSNumber, NSObject, YES, nil, nil)
                      }))),
            ENTRY(ORKTimedWalkStep,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
