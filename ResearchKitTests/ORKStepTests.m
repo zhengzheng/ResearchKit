@@ -376,6 +376,14 @@
     XCTAssert([step isEqual:step]);
 }
 
+- (void)testLearnMoreInstructionStep {
+    NSString *identifier = @"STEP";
+    ORKLearnMoreInstructionStep *step = [[ORKLearnMoreInstructionStep alloc] initWithIdentifier:identifier];
+
+    //TODO: update per specs
+    XCTAssertEqual([step identifier], identifier);
+}
+
 @end
 
 
