@@ -51,7 +51,7 @@ static const CGFloat ORKBulletStackLeftRightPadding = 10.0;
 
 static const CGFloat ORKBulletIconDimension = 40.0;
 
-static NSString *ORKBulletUniCode = @"\u2981";
+static NSString *ORKBulletUnicode = @"\u2981";
 
 //  FIXME: Short and Compact paddings
 //static const CGFloat ORKBulletToBulletPaddingShort = 22.0;
@@ -198,7 +198,7 @@ static NSString *ORKBulletUniCode = @"\u2981";
     UILabel *bulletIconLabel = [UILabel new];
     bulletIconLabel.numberOfLines = 1;
     bulletIconLabel.font = [ORKBodyItemView bulletIconFont];
-    [bulletIconLabel setText:ORKBulletUniCode];
+    [bulletIconLabel setText:ORKBulletUnicode];
     bulletIconLabel.translatesAutoresizingMaskIntoConstraints = NO;
     return bulletIconLabel;
 }
