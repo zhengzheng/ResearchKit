@@ -163,9 +163,7 @@
 #pragma mark - ORKStepContainerLearnMoreItemDelegate
 
 - (void)stepContainerLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep {
-    [self presentViewController:[[ORKLearnMoreStepViewController alloc] initWithStep:learnMoreStep] animated:YES completion:^{
-        
-    }];
+    [self presentViewController:[[ORKLearnMoreStepViewController alloc] initWithStep:learnMoreStep] animated:YES completion:nil];
 }
 
 @end
