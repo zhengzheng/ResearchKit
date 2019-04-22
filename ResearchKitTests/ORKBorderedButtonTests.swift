@@ -29,6 +29,7 @@
  */
 
 import XCTest
+@testable import ResearchKit
 
 class ORKBorderedButtonTests: XCTestCase {
     
