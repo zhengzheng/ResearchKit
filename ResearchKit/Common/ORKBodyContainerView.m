@@ -39,11 +39,8 @@
 static const CGFloat ORKBodyToBodyPaddingStandard = 22.0;
 
 static const CGFloat ORKBodyToBulletPaddingStandard = 37.0;
-//static const CGFloat ORKBodyToBulletPaddingShort = 22.0;
-//
-//static const CGFloat ORKBulletToBulletPaddingGenerous = 36.0;
+
 static const CGFloat ORKBulletToBulletPaddingStandard = 26.0;
-//static const CGFloat ORKBulletToBulletPaddingShort = 22.0;
 
 static const CGFloat ORKBodyTextToBodyDetailTextPaddingStandard = 6.0;
 static const CGFloat ORKBodyTextToLearnMoreButtonPaddingStandard = 15.0;
@@ -55,6 +52,11 @@ static const CGFloat ORKBulletStackLeftRightPadding = 10.0;
 static const CGFloat ORKBulletIconDimension = 40.0;
 
 static NSString *ORKBulletUniCode = @"\u2981";
+
+//  FIXME: Short and Compact paddings
+//static const CGFloat ORKBulletToBulletPaddingShort = 22.0;
+//static const CGFloat ORKBulletToBulletPaddingGenerous = 36.0;
+//static const CGFloat ORKBodyToBulletPaddingShort = 22.0;
 
 
 @protocol ORKBodyItemViewDelegate <NSObject>
