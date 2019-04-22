@@ -770,10 +770,10 @@
     UIButton *selectedButton = (UIButton *)sender;
     NSInteger buttonTag = selectedButton.tag;
     ORKInstructionStep *stepToPresent = _sections[buttonTag].learnMoreInstructionStep;
-    
+   
     ORKLearnMoreStepViewController *learnMoreViewController = [[ORKLearnMoreStepViewController alloc] initWithStep:stepToPresent];
-    
-    [self presentViewController:learnMoreViewController animated:YES completion:nil];
+     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:learnMoreViewController];
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 #pragma mark Helpers
@@ -1075,9 +1075,10 @@
     NSString *title = _sections[section].title;
     NSString *detailText = _sections[section].detailText;
     ORKInstructionStep *learnMoreInstructionStep = _sections[section].learnMoreInstructionStep;
+    UIButton *learnMoreInstructionButton;
     
     if (learnMoreInstructionStep) {
-        UIButton *learnMoreInstructionButton = [UIButton new];
+        learnMoreInstructionButton = [UIButton new];
         [learnMoreInstructionButton setTitle:@"Learn More" forState:UIControlStateNormal];
         [learnMoreInstructionButton setTitleColor:UIColor.blueColor forState:UIControlStateNormal];
         learnMoreInstructionButton.backgroundColor = UIColor.whiteColor;
@@ -1093,7 +1094,7 @@
         ORKSurveyCardHeaderView *cardHeaderView = (ORKSurveyCardHeaderView *)[tableView dequeueReusableHeaderFooterViewWithIdentifier:@(section).stringValue];
         
         if (cardHeaderView == nil && title) {
-            cardHeaderView = [[ORKSurveyCardHeaderView alloc] initWithTitle:title detailText:detailText];
+            cardHeaderView = [[ORKSurveyCardHeaderView alloc] initWithTitle:title detailText:detailText learnMoreButton:learnMoreInstructionButton];
         }
         
         return cardHeaderView;

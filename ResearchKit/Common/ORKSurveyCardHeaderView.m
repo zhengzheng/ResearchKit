@@ -41,6 +41,7 @@ static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
     UILabel *_titleLabel;
     NSString *_detailText;
     UILabel *_detailTextLabel;
+    UIButton *_learnMoreButton;
     CAShapeLayer *_headlineMaskLayer;
     NSArray<NSLayoutConstraint *> *_headerViewConstraints;
 }
@@ -57,12 +58,13 @@ static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
     return self;
 }
 
-- (instancetype)initWithTitle:(NSString *)title detailText:(nullable NSString *)text {
+- (instancetype)initWithTitle:(NSString *)title detailText:(nullable NSString *)text learnMoreButton:(nullable UIButton *)button {
     
     self = [super init];
     if (self) {
         _title = title;
         _detailText = text;
+        _learnMoreButton = button;
         [self setBackgroundColor:[UIColor clearColor]];
         [self setupHeaderView];
         [self setupConstraints];
@@ -80,6 +82,10 @@ static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
     if (_detailText) {
         [self setUpDetailTextLabel];
         [_headlineView addSubview:_detailTextLabel];
+    }
+    
+    if (_learnMoreButton) {
+        [self addSubview:_learnMoreButton];
     }
 }
 
@@ -165,6 +171,10 @@ static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
         _detailTextLabel.translatesAutoresizingMaskIntoConstraints = NO;
     }
     
+    if (_learnMoreButton) {
+        _learnMoreButton.translatesAutoresizingMaskIntoConstraints = NO;
+    }
+    
     if (!_detailTextLabel) {
         _headerViewConstraints = @[
                                    [NSLayoutConstraint constraintWithItem:_headlineView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0],
@@ -175,6 +185,23 @@ static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
                                    [NSLayoutConstraint constraintWithItem:_titleLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:HeadlineViewTitleLeftRightPadding],
                                    [NSLayoutConstraint constraintWithItem:_titleLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeRight multiplier:1.0 constant:-HeadlineViewTitleLeftRightPadding],
                                    [NSLayoutConstraint constraintWithItem:_headlineView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_titleLabel attribute:NSLayoutAttributeBottom multiplier:1.0 constant:ORKCardTopBottomMargin],
+                                   [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]
+                                   ];
+    } else if (!_learnMoreButton) {
+        _headerViewConstraints = @[
+                                   [NSLayoutConstraint constraintWithItem:_headlineView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0],
+                                   [NSLayoutConstraint constraintWithItem:_headlineView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1.0 constant:ORKCardLeftRightMargin],
+                                   [NSLayoutConstraint constraintWithItem:_headlineView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1.0 constant: -ORKCardLeftRightMargin],
+                                   
+                                   [NSLayoutConstraint constraintWithItem:_titleLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeTop multiplier:1.0 constant:ORKCardTopBottomMargin],
+                                   [NSLayoutConstraint constraintWithItem:_titleLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:HeadlineViewTitleLeftRightPadding],
+                                   
+                                   [NSLayoutConstraint constraintWithItem:_detailTextLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_titleLabel attribute:NSLayoutAttributeBottom multiplier:1.0 constant:ORKCardTopBottomMargin],
+                                   [NSLayoutConstraint constraintWithItem:_detailTextLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:HeadlineViewTitleLeftRightPadding],
+                                   [NSLayoutConstraint constraintWithItem:_detailTextLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeRight multiplier:1.0 constant:-HeadlineViewTitleLeftRightPadding],
+                                   
+                                   [NSLayoutConstraint constraintWithItem:_titleLabel attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_detailTextLabel attribute:NSLayoutAttributeTop multiplier:1.0 constant:-ORKCardTopBottomMargin],
+                                   [NSLayoutConstraint constraintWithItem:_headlineView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_detailTextLabel attribute:NSLayoutAttributeBottom multiplier:1.0 constant:ORKCardTopBottomMargin],
                                    [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]
                                    ];
     } else {
@@ -190,8 +217,12 @@ static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
                                    [NSLayoutConstraint constraintWithItem:_detailTextLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:HeadlineViewTitleLeftRightPadding],
                                    [NSLayoutConstraint constraintWithItem:_detailTextLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeRight multiplier:1.0 constant:-HeadlineViewTitleLeftRightPadding],
                                    
+                                   [NSLayoutConstraint constraintWithItem:_learnMoreButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_detailTextLabel attribute:NSLayoutAttributeBottom multiplier:1.0 constant:ORKCardTopBottomMargin],
+                                   [NSLayoutConstraint constraintWithItem:_learnMoreButton attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:HeadlineViewTitleLeftRightPadding],
+                                   [NSLayoutConstraint constraintWithItem:_detailTextLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeRight multiplier:1.0 constant:-HeadlineViewTitleLeftRightPadding],
+                                   
                                    [NSLayoutConstraint constraintWithItem:_titleLabel attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_detailTextLabel attribute:NSLayoutAttributeTop multiplier:1.0 constant:-ORKCardTopBottomMargin],
-                                   [NSLayoutConstraint constraintWithItem:_headlineView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_detailTextLabel attribute:NSLayoutAttributeBottom multiplier:1.0 constant:ORKCardTopBottomMargin],
+                                   [NSLayoutConstraint constraintWithItem:_headlineView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_learnMoreButton attribute:NSLayoutAttributeBottom multiplier:1.0 constant:ORKCardTopBottomMargin],
                                    [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]
                                    ];
     }

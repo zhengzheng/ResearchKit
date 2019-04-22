@@ -162,7 +162,7 @@ ORK_CLASS_AVAILABLE
  */
 - (instancetype)initWithSectionTitle:(nullable NSString *)sectionTitle
                           detailText:(nullable NSString *)text
-            learnMoreInstructionStep:(nullable NSString *)learnMoreInstructionStep;
+            learnMoreInstructionStep:(nullable ORKInstructionStep *)learnMoreInstructionStep;
 /**
  A string that identifies the form item.
  

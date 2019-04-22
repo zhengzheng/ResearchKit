@@ -32,6 +32,7 @@
 #import "ORKFormStep.h"
 
 #import "ORKFormStepViewController.h"
+#import "ORKInstructionStep.h"
 
 #import "ORKAnswerFormat_Internal.h"
 #import "ORKFormItem_Internal.h"
@@ -188,7 +189,7 @@
     return self;
 }
 
-- (instancetype)initWithSectionTitle:(nullable NSString *)sectionTitle detailText:(nullable NSString *)text learnMoreInstructionStep:(nullable NSString *)learnMoreInstructionStep {
+- (instancetype)initWithSectionTitle:(nullable NSString *)sectionTitle detailText:(nullable NSString *)text learnMoreInstructionStep:(nullable ORKInstructionStep *)learnMoreInstructionStep {
     self = [super init];
     if (self) {
         _text = [sectionTitle copy];
