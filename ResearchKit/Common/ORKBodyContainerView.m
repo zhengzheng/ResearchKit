@@ -54,7 +54,7 @@ static const CGFloat ORKBulletStackLeftRightPadding = 10.0;
 
 static const CGFloat ORKBulletIconDimension = 40.0;
 
-static NSString * ORKBulletUniCode = @"\u2981";
+static NSString *ORKBulletUniCode = @"\u2981";
 
 
 @protocol ORKBodyItemViewDelegate <NSObject>

@@ -45,8 +45,6 @@ NS_ASSUME_NONNULL_BEGIN
 To indicate the completion of a task, consider using an `ORKCompletionStep` object instead.
  */
 
-@class ORKLearnMoreItem;
-
 ORK_CLASS_AVAILABLE
 @interface ORKInstructionStep : ORKStep
 

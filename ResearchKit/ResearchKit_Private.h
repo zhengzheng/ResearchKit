@@ -168,4 +168,3 @@
 
 #import <ResearchKit/ORKLearnMoreView.h>
 #import <ResearchKit/ORKBodyContainerView.h>
-#import <ResearchKit/ORKBodyItem.h>

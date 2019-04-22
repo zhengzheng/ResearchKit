@@ -51,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithBodyItems:(NSArray<ORKBodyItem *> *)bodyItems
                          delegate:(id<ORKBodyContainerViewDelegate>)delegate;
 
-@property (nonatomic, nonnull) NSArray<ORKBodyItem *> * bodyItems;
+@property (nonatomic, nonnull) NSArray<ORKBodyItem *> *bodyItems;
 
 @property (nonatomic, weak) id<ORKBodyContainerViewDelegate> delegate;
 

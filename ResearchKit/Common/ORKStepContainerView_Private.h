@@ -36,9 +36,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ORKStepContainerView ()
 
-@property (nonatomic) UIView * customContentView;
+@property (nonatomic) UIView *customContentView;
 
-@property (nonatomic, nullable) ORKNavigationContainerView * navigationFooterView;
+@property (nonatomic, nullable) ORKNavigationContainerView *navigationFooterView;
 
 @end
 
