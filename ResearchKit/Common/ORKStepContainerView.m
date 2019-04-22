@@ -181,7 +181,7 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
     
     [_auxiliaryImage drawInRect:rect];
     [_stepTopContentImage drawInRect:rect blendMode:kCGBlendModeNormal alpha:1.0];
-    UIImage * image = UIGraphicsGetImageFromCurrentImageContext();
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
     return image;

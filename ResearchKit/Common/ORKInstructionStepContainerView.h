@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithInstructionStep:(ORKInstructionStep *)instructionStep;
 
-@property (nonatomic) ORKInstructionStep * instructionStep;
+@property (nonatomic) ORKInstructionStep *instructionStep;
 
 @end
 

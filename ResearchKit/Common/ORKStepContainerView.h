@@ -46,17 +46,17 @@ NS_ASSUME_NONNULL_BEGIN
 @class ORKNavigationContainerView;
 @interface ORKStepContainerView : UIView
 
-@property (nonatomic, nullable) UIImage * stepTopContentImage;
+@property (nonatomic, nullable) UIImage *stepTopContentImage;
 
-@property (nonatomic, nullable) UIImage * auxiliaryImage; // Only underlayed when stepTopContentImage is added.
+@property (nonatomic, nullable) UIImage *auxiliaryImage; // Only underlayed when stepTopContentImage is added.
 
-@property (nonatomic) NSString * stepTitle;
+@property (nonatomic) NSString *stepTitle;
 
-@property (nonatomic, nullable) UIImage * titleIconImage;
+@property (nonatomic, nullable) UIImage *titleIconImage;
 
 @property (nonatomic) BOOL showScrollIndicator;
 
-@property (nonatomic) NSArray<ORKBodyItem *> * bodyItems;
+@property (nonatomic) NSArray<ORKBodyItem *> *bodyItems;
 
 
 @property (nonatomic, weak) id<ORKStepContainerLearnMoreItemDelegate> delegate;
