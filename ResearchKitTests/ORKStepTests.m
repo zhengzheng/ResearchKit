@@ -192,6 +192,7 @@
     [step setTitle:@"Title"];
     [step setText:@"Text"];
     [step setTask:task];
+    step.showsProgress = NO;
     
     ORKStepViewController *controller = [step instantiateStepViewControllerWithResult:result];
     
@@ -203,6 +204,7 @@
     XCTAssertEqual([controller step], step);
     XCTAssertEqual([step stepViewControllerClass], [ORKStepViewController class]);
     XCTAssertEqual([step isRestorable], YES);
+    XCTAssertEqual([step showsProgress], NO);
     XCTAssert([step.identifier isEqualToString:@"STEP"]);
     XCTAssert([step isEqual:step]);
     XCTAssertEqual([step requestedPermissions], ORKPermissionNone);
