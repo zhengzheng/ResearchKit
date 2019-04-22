@@ -34,7 +34,6 @@
 #import "ORKBodyItem.h"
 #import "ORKBodyContainerView.h"
 #import "ORKSkin.h"
-#import "ORKGDPRView.h"
 #import "ORKNavigationContainerView_Internal.h"
 
 
