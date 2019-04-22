@@ -190,8 +190,8 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
                 [self.view setBackgroundColor:[_tableView backgroundColor]];
             }
             _headerView.stepTitle = self.questionStep.title;
-            if (self.questionStep.text || self.questionStep.learnMoreItem) {
-                _headerView.bodyItems = @[[[ORKBodyItem alloc] initWithText:self.questionStep.text detailText:nil image:nil learnMoreItem:self.questionStep.learnMoreItem bodyItemStyle:ORKBodyItemStyleText]];
+            if (self.questionStep.text) {
+                _headerView.bodyItems = @[[[ORKBodyItem alloc] initWithText:self.questionStep.text detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]];
             }
             
             _navigationFooterView.optional = self.step.optional;

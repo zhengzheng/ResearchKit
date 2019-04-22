@@ -51,8 +51,8 @@
 - (void)setQuestionStep:(ORKQuestionStep *)step {
     _questionStep = step;
     self.stepTitle = step.title;
-    if (step.text || step.learnMoreItem) {
-        self.bodyItems = @[[[ORKBodyItem alloc] initWithText:step.text detailText:nil image:nil learnMoreItem:step.learnMoreItem bodyItemStyle:ORKBodyItemStyleText]];
+    if (step.text) {
+        self.bodyItems = @[[[ORKBodyItem alloc] initWithText:step.text detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]];
     }
 }
 

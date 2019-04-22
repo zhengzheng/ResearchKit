@@ -63,8 +63,6 @@ ORK_EXTERN NSString *const ORKNullStepIdentifier ORK_AVAILABLE_DECL;
  */
 
 
-@class ORKLearnMoreItem;
-@class ORKBodyItem;
 ORK_CLASS_AVAILABLE
 
 @interface ORKStep : NSObject <NSSecureCoding, NSCopying>
@@ -227,8 +225,6 @@ Whether to show progress for this step when it is presented. The default is YES.
  @return A newly initialized step view controller.
  */
 - (ORKStepViewController *)instantiateStepViewControllerWithResult:(ORKResult *)result;
-
-@property (nonatomic, nullable) ORKLearnMoreItem *learnMoreItem;
 
 @end
 
