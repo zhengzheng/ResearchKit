@@ -80,7 +80,7 @@ class ORKPasscodeViewControllerTests: XCTestCase {
         
         stepController.passcodeDelegate?.passcodeViewControllerDidFinish(withSuccess: stepController)
         
-        waitForExpectations(timeout: 19) { (error) in
+        waitForExpectations(timeout: 10) { (error) in
             if let error = error {
                 XCTFail("waitForExpectationWithTimeout error: \(error)")
             }
@@ -91,7 +91,7 @@ class ORKPasscodeViewControllerTests: XCTestCase {
         
         stepController.passcodeDelegate?.passcodeViewControllerDidCancel?(stepController)
         
-        waitForExpectations(timeout: 19) { (error) in
+        waitForExpectations(timeout: 10) { (error) in
             if let error = error {
                 XCTFail("waitForExpectationWithTimeout error: \(error)")
             }
@@ -102,7 +102,7 @@ class ORKPasscodeViewControllerTests: XCTestCase {
         
         stepController.passcodeDelegate?.passcodeViewControllerDidFailAuthentication(stepController)
         
-        waitForExpectations(timeout: 19) { (error) in
+        waitForExpectations(timeout: 10) { (error) in
             if let error = error {
                 XCTFail("waitForExpectationWithTimeout error: \(error)")
             }
@@ -114,7 +114,7 @@ class ORKPasscodeViewControllerTests: XCTestCase {
         
         stepController.passcodeDelegate?.passcodeViewControllerForgotPasscodeTapped?(stepController)
         
-        waitForExpectations(timeout: 19) { (error) in
+        waitForExpectations(timeout: 10) { (error) in
             if let error = error {
                 XCTFail("waitForExpectationWithTimeout error: \(error)")
             }
