@@ -128,6 +128,8 @@
 
 @property (nonatomic, copy, nullable) NSString *detailText;
 
+@property (nonatomic) BOOL showsProgress;
+
 @property (nonatomic, copy, nullable) ORKInstructionStep *learnMoreInstructionStep;
 
 // ORKTableCellItem
@@ -644,7 +646,7 @@
             section.title = item.text;
             section.detailText = item.detailText;
             section.learnMoreInstructionStep = item.learnMoreInstructionStep;
-//            section.showSectionProgress = item.showSectionProgress;
+            section.showsProgress = item.showsProgress;
         } else {
             if (section) {
                 [section addFormItem:item];
@@ -1074,10 +1076,14 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     NSString *title = _sections[section].title;
     NSString *detailText = _sections[section].detailText;
-    ORKInstructionStep *learnMoreInstructionStep = _sections[section].learnMoreInstructionStep;
+    NSString *sectionProgressText;
     UIButton *learnMoreInstructionButton;
     
-    if (learnMoreInstructionStep) {
+    if (_sections[section].showsProgress) {
+        sectionProgressText = [NSString stringWithFormat:@"%li of %li", section + 1, [_sections count]];
+    }
+    
+    if (_sections[section].learnMoreInstructionStep) {
         learnMoreInstructionButton = [UIButton new];
         [learnMoreInstructionButton setTitle:@"Learn More" forState:UIControlStateNormal];
         [learnMoreInstructionButton setTitleColor:UIColor.blueColor forState:UIControlStateNormal];
@@ -1094,7 +1100,7 @@
         ORKSurveyCardHeaderView *cardHeaderView = (ORKSurveyCardHeaderView *)[tableView dequeueReusableHeaderFooterViewWithIdentifier:@(section).stringValue];
         
         if (cardHeaderView == nil && title) {
-            cardHeaderView = [[ORKSurveyCardHeaderView alloc] initWithTitle:title detailText:detailText learnMoreButton:learnMoreInstructionButton];
+            cardHeaderView = [[ORKSurveyCardHeaderView alloc] initWithTitle:title detailText:detailText learnMoreButton:learnMoreInstructionButton progressText:sectionProgressText];
         }
         
         return cardHeaderView;

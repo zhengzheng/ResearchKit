@@ -189,12 +189,13 @@
     return self;
 }
 
-- (instancetype)initWithSectionTitle:(nullable NSString *)sectionTitle detailText:(nullable NSString *)text learnMoreInstructionStep:(nullable ORKInstructionStep *)learnMoreInstructionStep {
+- (instancetype)initWithSectionTitle:(nullable NSString *)sectionTitle detailText:(nullable NSString *)text learnMoreInstructionStep:(nullable ORKInstructionStep *)learnMoreInstructionStep showsProgress:(BOOL)showsProgress {
     self = [super init];
     if (self) {
         _text = [sectionTitle copy];
         _detailText = [text copy];
         _learnMoreInstructionStep = [learnMoreInstructionStep copy];
+        _showsProgress = showsProgress;
     }
     return self;
 }

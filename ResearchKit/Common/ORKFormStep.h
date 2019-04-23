@@ -162,7 +162,8 @@ ORK_CLASS_AVAILABLE
  */
 - (instancetype)initWithSectionTitle:(nullable NSString *)sectionTitle
                           detailText:(nullable NSString *)text
-            learnMoreInstructionStep:(nullable ORKInstructionStep *)learnMoreInstructionStep;
+            learnMoreInstructionStep:(nullable ORKInstructionStep *)learnMoreInstructionStep
+                       showsProgress:(BOOL)showsProgress;
 /**
  A string that identifies the form item.
  
@@ -192,6 +193,11 @@ ORK_CLASS_AVAILABLE
  Detail Text
  */
 @property (nonatomic, copy, readonly, nullable) NSString *detailText;
+
+/**
+ Shows Progress
+ */
+@property (nonatomic, readonly) BOOL showsProgress;
 
 /**
  Learn more intro step

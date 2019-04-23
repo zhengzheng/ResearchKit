@@ -39,7 +39,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype) initWithTitle:(NSString *)title
                     detailText:(nullable NSString *)text
-               learnMoreButton:(nullable UIButton *)button;
+               learnMoreButton:(nullable UIButton *)button
+                 progressText:(nullable NSString *)progressText;
 
 @end
 
