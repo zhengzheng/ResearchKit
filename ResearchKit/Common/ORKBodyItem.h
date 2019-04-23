@@ -42,7 +42,12 @@ typedef NS_ENUM(NSInteger, ORKBodyItemStyle) {
     /**
      bullet style body item
      */
-    ORKBodyItemStyleBulletPoint
+    ORKBodyItemStyleBulletPoint,
+    
+    /**
+     image style body item
+     */
+    ORKBodyItemStyleImage
 } ORK_ENUM_AVAILABLE;
 
 @class ORKLearnMoreInstructionStep;
@@ -52,7 +57,7 @@ typedef NS_ENUM(NSInteger, ORKBodyItemStyle) {
 
 + (instancetype)learnMoreDetailDisclosureItemWithLearnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep;
 
-@property (nonatomic, nonnull) ORKLearnMoreInstructionStep * learnMoreInstructionStep;
+@property (nonatomic, nonnull) ORKLearnMoreInstructionStep *learnMoreInstructionStep;
 
 - (nullable NSString *)getText;
 
@@ -64,13 +69,15 @@ typedef NS_ENUM(NSInteger, ORKBodyItemStyle) {
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-- (instancetype)initWithTitle:(nullable NSString *)title text:(nullable NSString *)text learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem bodyItemStyle:(ORKBodyItemStyle)bodyItemStyle NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithText:(nullable NSString *)text detailText:(nullable NSString *)detailText image:(nullable UIImage *)image learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem bodyItemStyle:(ORKBodyItemStyle)bodyItemStyle NS_DESIGNATED_INITIALIZER;
 
-@property (nonatomic) NSString * title;
+@property (nonatomic) NSString *text;
 
-@property (nonatomic) NSString * text;
+@property (nonatomic) NSString *detailText;
 
-@property (nonatomic) ORKLearnMoreItem * learnMoreItem;
+@property (nonatomic, nullable) UIImage *image;
+
+@property (nonatomic, nullable) ORKLearnMoreItem *learnMoreItem;
 
 @property (nonatomic) ORKBodyItemStyle bodyItemStyle;
 

@@ -35,13 +35,13 @@
 
 @class ORKTableContainerView;
 @class ORKNavigationContainerView;
-@class ORKStepHeaderView;
+@class ORKTableContainerHeaderView;
 
 @interface ORKTableStepViewController ()
 
 @property (nonatomic, strong, readonly) ORKTableContainerView *tableContainer;
 @property (nonatomic, strong, readonly) ORKNavigationContainerView *navigationFooterView;
-@property (nonatomic, strong, readonly) ORKStepHeaderView *headerView;
+@property (nonatomic, strong, readonly) ORKTableContainerHeaderView *headerView;
     
 /**
  @return   The style to use for the tableView. default = `UITableViewStyleGrouped` if more than one section

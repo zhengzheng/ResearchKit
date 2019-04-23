@@ -47,11 +47,12 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ORKBodyContainerView : UIStackView
 
 - (instancetype)initWithFrame:(CGRect)frame NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
 
 - (instancetype)initWithBodyItems:(NSArray<ORKBodyItem *> *)bodyItems
                          delegate:(id<ORKBodyContainerViewDelegate>)delegate;
 
-@property (nonatomic, nonnull) NSArray<ORKBodyItem *> * bodyItems;
+@property (nonatomic, nonnull) NSArray<ORKBodyItem *> *bodyItems;
 
 @property (nonatomic, weak) id<ORKBodyContainerViewDelegate> delegate;
 

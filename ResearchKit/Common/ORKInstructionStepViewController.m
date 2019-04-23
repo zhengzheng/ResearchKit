@@ -132,6 +132,12 @@
     [self stepDidChange];
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [_stepView setNeedsUpdateConstraints];
+}
+
+
 - (void)useAppropriateButtonTitleAsLastBeginningInstructionStep {
     self.internalContinueButtonItem.title = ORKLocalizedString(@"BUTTON_GET_STARTED", nil);
 }
@@ -157,9 +163,7 @@
 #pragma mark - ORKStepContainerLearnMoreItemDelegate
 
 - (void)stepContainerLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep {
-    [self presentViewController:[[ORKLearnMoreStepViewController alloc] initWithStep:learnMoreStep] animated:YES completion:^{
-        
-    }];
+    [self presentViewController:[[ORKLearnMoreStepViewController alloc] initWithStep:learnMoreStep] animated:YES completion:nil];
 }
 
 @end

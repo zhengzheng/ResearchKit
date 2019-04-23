@@ -37,6 +37,9 @@
 #import "ORKFormSectionTitleLabel.h"
 #import "ORKStepHeaderView_Internal.h"
 #import "ORKTableContainerView.h"
+#import "ORKTableContainerHeaderView.h"
+#import "ORKBodyItem.h"
+
 #import "ORKSurveyCardHeaderView.h"
 #import "ORKTextChoiceCellGroup.h"
 #import "ORKLearnMoreStepViewController.h"
@@ -285,7 +288,7 @@
 
 @property (nonatomic, strong) ORKTableContainerView *tableContainer;
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) ORKStepHeaderView *headerView;
+@property (nonatomic, strong) ORKTableContainerHeaderView *headerView;
 
 @property (nonatomic, strong) NSMutableDictionary *savedAnswers;
 @property (nonatomic, strong) NSMutableDictionary *savedAnswerDates;
@@ -337,6 +340,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self stepDidChange];
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [_tableContainer sizeHeaderToFit];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -483,12 +491,6 @@
     _navigationFooterView.cancelButtonItem = cancelButtonItem;
 }
 
-- (void)setLearnMoreButtonItem:(UIBarButtonItem *)learnMoreButtonItem {
-    [super setLearnMoreButtonItem:learnMoreButtonItem];
-    _headerView.learnMoreButtonItem = self.learnMoreButtonItem;
-    [_tableContainer setNeedsLayout];
-}
-
 - (void)setSkipButtonItem:(UIBarButtonItem *)skipButtonItem {
     [super setSkipButtonItem:skipButtonItem];
     
@@ -542,12 +544,15 @@
                 [self.view setBackgroundColor:[_tableView backgroundColor]];
             }
         }
-        _headerView = _tableContainer.stepHeaderView;
-        _headerView.captionLabel.useSurveyMode = [[self formStep] useSurveyMode];
-        _headerView.instructionLabel.text = [[self formStep] text];
-        _headerView.learnMoreButtonItem = self.learnMoreButtonItem;
+        _headerView = _tableContainer.tableContainerHeaderView;
+        _headerView.stepTitle = [self formStep].title;
+        if ([[self formStep] text]) {
+            _headerView.bodyItems = @[[[ORKBodyItem alloc] initWithText:[[self formStep] text] detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]];
+        }
+        
         
         _navigationFooterView = [ORKNavigationContainerView new];
+        [_navigationFooterView removeStyling];
         _navigationFooterView.skipButtonItem = self.skipButtonItem;
         _navigationFooterView.continueEnabled = [self continueButtonEnabled];
         _navigationFooterView.continueButtonItem = self.continueButtonItem;
@@ -572,53 +577,52 @@
     _tableContainer.translatesAutoresizingMaskIntoConstraints = NO;
     _navigationFooterView.translatesAutoresizingMaskIntoConstraints = NO;
     _constraints = nil;
-    
-    UIView *viewForiPad = [self viewForiPadLayoutConstraints];
-    CGFloat margin = ORKNeedWideScreenDesign(self.view) ? 0.0 : ORKSurveyTableContainerLeftRightPadding;
+    CGFloat leftRightPadding = ORKStepContainerLeftRightPaddingForWindow(self.view.window);
+
     
     _constraints = @[
                      [NSLayoutConstraint constraintWithItem:_tableContainer
                                                   attribute:NSLayoutAttributeTop
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view.safeAreaLayoutGuide
+                                                     toItem:self.view
                                                   attribute:NSLayoutAttributeTop
                                                  multiplier:1.0
                                                    constant:0.0],
                      [NSLayoutConstraint constraintWithItem:_tableContainer
-                                                  attribute:NSLayoutAttributeLeftMargin
+                                                  attribute:NSLayoutAttributeLeft
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view.safeAreaLayoutGuide
-                                                  attribute:NSLayoutAttributeLeftMargin
+                                                     toItem:self.view
+                                                  attribute:NSLayoutAttributeLeft
                                                  multiplier:1.0
-                                                   constant:margin],
+                                                   constant:0.0],
                      [NSLayoutConstraint constraintWithItem:_tableContainer
-                                                  attribute:NSLayoutAttributeRightMargin
+                                                  attribute:NSLayoutAttributeRight
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view.safeAreaLayoutGuide
-                                                  attribute:NSLayoutAttributeRightMargin
+                                                     toItem:self.view
+                                                  attribute:NSLayoutAttributeRight
                                                  multiplier:1.0
-                                                   constant:-margin],
+                                                   constant:0.0],
                      [NSLayoutConstraint constraintWithItem:_navigationFooterView
                                                   attribute:NSLayoutAttributeBottom
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view
+                                                     toItem:self.view
                                                   attribute:NSLayoutAttributeBottom
                                                  multiplier:1.0
                                                    constant:0.0],
                      [NSLayoutConstraint constraintWithItem:_navigationFooterView
                                                   attribute:NSLayoutAttributeLeft
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view
+                                                     toItem:self.view
                                                   attribute:NSLayoutAttributeLeft
                                                  multiplier:1.0
-                                                   constant:0.0],
+                                                   constant:leftRightPadding],
                      [NSLayoutConstraint constraintWithItem:_navigationFooterView
                                                   attribute:NSLayoutAttributeRight
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view
+                                                     toItem:self.view
                                                   attribute:NSLayoutAttributeRight
                                                  multiplier:1.0
-                                                   constant:0.0],
+                                                   constant:-leftRightPadding],
                      [NSLayoutConstraint constraintWithItem:_tableContainer
                                                   attribute:NSLayoutAttributeBottom
                                                   relatedBy:NSLayoutRelationEqual

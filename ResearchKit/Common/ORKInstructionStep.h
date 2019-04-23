@@ -44,9 +44,6 @@ NS_ASSUME_NONNULL_BEGIN
  
 To indicate the completion of a task, consider using an `ORKCompletionStep` object instead.
  */
-
-@class ORKLearnMoreItem;
-
 ORK_CLASS_AVAILABLE
 @interface ORKInstructionStep : ORKStep
 
@@ -96,8 +93,6 @@ ORK_CLASS_AVAILABLE
  Optional icon image to show above the title and text.
  */
 @property (nonatomic, copy, nullable) UIImage *iconImage;
-
-@property (nonatomic, nullable) ORKLearnMoreItem *learnMoreItem;
 
 @end
 

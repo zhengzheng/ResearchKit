@@ -28,20 +28,25 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import XCTest
+@testable import ResearchKit
 
-#import <ResearchKit/ResearchKit.h>
-#import "ORKStepContainerView_Private.h"
-
-
-NS_ASSUME_NONNULL_BEGIN
-
-@class ORKInstructionStep;
-@interface ORKInstructionStepContainerView : ORKStepContainerView
-
-- (instancetype)initWithInstructionStep:(ORKInstructionStep *)instructionStep;
-
-@property (nonatomic) ORKInstructionStep *instructionStep;
-
-@end
-
-NS_ASSUME_NONNULL_END
+class ORKBorderedButtonTests: XCTestCase {
+    
+    let button = ORKBorderedButton(type: .custom)
+    
+    override func setUp() {
+        button.normalTintColor = UIColor.black
+        button.normalHighlightOrSelectTintColor  = UIColor.red
+        button.disableTintColor = UIColor.blue
+        button.fadeDelay = 20.0
+    }
+    
+    func testProperties() {
+        XCTAssertEqual(button.buttonType, UIButton.ButtonType.custom)
+        XCTAssertEqual(button.normalTintColor, UIColor.black)
+        XCTAssertEqual(button.normalHighlightOrSelectTintColor, UIColor.red)
+        XCTAssertEqual(button.disableTintColor, UIColor.blue)
+        XCTAssertEqual(button.fadeDelay, 20.0)
+    }
+}

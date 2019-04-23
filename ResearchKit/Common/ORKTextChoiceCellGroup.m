@@ -90,7 +90,7 @@
     if (cell == nil) {
         ORKTextChoice *textChoice = [_helper textChoiceAtIndex:index];
         if ([textChoice isKindOfClass:[ORKTextChoiceOther class]]) {
-            ORKChoiceOtherViewCell * choiceOtherViewCell = [[ORKChoiceOtherViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            ORKChoiceOtherViewCell *choiceOtherViewCell = [[ORKChoiceOtherViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             ORKTextChoiceOther *textChoiceOther = (ORKTextChoiceOther *)textChoice;
             choiceOtherViewCell.textView.placeholder = textChoiceOther.textViewPlaceholderText;
             choiceOtherViewCell.textView.text = textChoiceOther.textViewText;
@@ -131,12 +131,16 @@
     ORKChoiceOtherViewCell *touchedCell = (ORKChoiceOtherViewCell *) [self cellAtIndex:index withReuseIdentifier:nil];
     ORKTextChoiceOther *textChoice = (ORKTextChoiceOther *) [_helper textChoiceAtIndex:index];
     
-    if (textChoice.textViewInputOptional || !touchedCell.isCellSelected || (!textChoice.textViewInputOptional && touchedCell.textView.text.length > 0)) {
+    if (touchedCell.textView.text.length > 0) {
         textChoice.textViewText = touchedCell.textView.text;
         [self didSelectCellAtIndexPath:indexPath];
-    }
-    else {
-        touchedCell.textView.text = textChoice.textViewText;
+    } else {
+        textChoice.textViewText = nil;
+        if (!textChoice.textViewInputOptional) {
+            touchedCell.cellSelected = NO;
+        }
+        _answer = [_helper answerForSelectedIndexes:[self selectedIndexes]];
+        [self.delegate answerChangedForIndexPath:indexPath];
     }
 }
 
