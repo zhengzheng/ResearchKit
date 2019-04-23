@@ -38,6 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class ORKAnswerFormat;
 @class ORKFormItem;
 @class ORKInstructionStep;
+@class ORKLearnMoreItem;
 
 /**
  The `ORKFormStep` class is a concrete subclass of `ORKStep`, used for presenting multiple questions
@@ -162,7 +163,7 @@ ORK_CLASS_AVAILABLE
  */
 - (instancetype)initWithSectionTitle:(nullable NSString *)sectionTitle
                           detailText:(nullable NSString *)text
-            learnMoreInstructionStep:(nullable ORKInstructionStep *)learnMoreInstructionStep
+                       learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem
                        showsProgress:(BOOL)showsProgress;
 /**
  A string that identifies the form item.
@@ -200,9 +201,9 @@ ORK_CLASS_AVAILABLE
 @property (nonatomic, readonly) BOOL showsProgress;
 
 /**
- Learn more intro step
+ Learn more item
  */
-@property (nonatomic, copy, readonly, nullable) ORKInstructionStep *learnMoreInstructionStep;
+@property (nonatomic, copy, readonly, nullable) ORKLearnMoreItem *learnMoreItem;
 
 /**
  A localized string that displays placeholder information for the form item.

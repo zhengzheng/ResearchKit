@@ -35,7 +35,6 @@
 static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
 
 @implementation ORKSurveyCardHeaderView {
-    
     UIView *_headlineView;
     NSString *_title;
     UILabel *_titleLabel;

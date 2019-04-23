@@ -40,6 +40,7 @@
 #import "ORKSurveyCardHeaderView.h"
 #import "ORKTextChoiceCellGroup.h"
 #import "ORKLearnMoreStepViewController.h"
+#import "ORKBodyItem.h"
 
 #import "ORKNavigationContainerView_Internal.h"
 #import "ORKStepViewController_Internal.h"
@@ -130,7 +131,7 @@
 
 @property (nonatomic) BOOL showsProgress;
 
-@property (nonatomic, copy, nullable) ORKInstructionStep *learnMoreInstructionStep;
+@property (nonatomic, nullable) ORKLearnMoreItem *learnMoreItem;
 
 // ORKTableCellItem
 @property (nonatomic, copy, readonly) NSArray *items;
@@ -645,7 +646,7 @@
             // Save title
             section.title = item.text;
             section.detailText = item.detailText;
-            section.learnMoreInstructionStep = item.learnMoreInstructionStep;
+            section.learnMoreItem = item.learnMoreItem;
             section.showsProgress = item.showsProgress;
         } else {
             if (section) {
@@ -771,7 +772,7 @@
 - (void)learnMoreButtonPressed:(id)sender {
     UIButton *selectedButton = (UIButton *)sender;
     NSInteger buttonTag = selectedButton.tag;
-    ORKInstructionStep *stepToPresent = _sections[buttonTag].learnMoreInstructionStep;
+    ORKInstructionStep *stepToPresent = _sections[buttonTag].learnMoreItem.learnMoreInstructionStep;
    
     ORKLearnMoreStepViewController *learnMoreViewController = [[ORKLearnMoreStepViewController alloc] initWithStep:stepToPresent];
      UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:learnMoreViewController];
@@ -1083,9 +1084,9 @@
         sectionProgressText = [NSString stringWithFormat:@"%li of %li", section + 1, [_sections count]];
     }
     
-    if (_sections[section].learnMoreInstructionStep) {
+    if (_sections[section].learnMoreItem) {
         learnMoreInstructionButton = [UIButton new];
-        [learnMoreInstructionButton setTitle:@"Learn More" forState:UIControlStateNormal];
+        [learnMoreInstructionButton setTitle:[_sections[section].learnMoreItem getText] forState:UIControlStateNormal];
         [learnMoreInstructionButton setTitleColor:UIColor.blueColor forState:UIControlStateNormal];
         learnMoreInstructionButton.backgroundColor = UIColor.whiteColor;
         learnMoreInstructionButton.tag = section;
