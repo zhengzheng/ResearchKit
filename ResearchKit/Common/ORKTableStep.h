@@ -158,6 +158,13 @@ ORK_CLASS_AVAILABLE
 @property (nonatomic, copy, nullable) NSArray <NSString *> *bulletIconNames;
 
 /**
+ Boolean flag representing if the table rows should be selectable.
+ 
+ Default value is NO
+ */
+@property (nonatomic) BOOL allowsSelection;
+
+/**
  Returns the number of sections in the tableview used to display this step. Default = `1`.
  
  @return                The number of sections in the tableview.
