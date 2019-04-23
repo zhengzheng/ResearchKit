@@ -124,7 +124,7 @@ class ORKPasscodeViewControllerTests: XCTestCase {
 extension ORKPasscodeViewControllerTests: ORKPasscodeDelegate {
     func passcodeViewControllerDidFinish(withSuccess viewController: UIViewController) {
         guard let expectation = asyncExpectation else {
-            XCTFail("Delegate was not setup correclty. Missing XCTExpectation reference")
+            XCTFail("Delegate was not setup correctly. Missing XCTExpectation reference")
             return
         }
         expectation.fulfill()
@@ -132,7 +132,7 @@ extension ORKPasscodeViewControllerTests: ORKPasscodeDelegate {
     
     func passcodeViewControllerDidFailAuthentication(_ viewController: UIViewController) {
         guard let expectation = asyncExpectation else {
-            XCTFail("Delegate was not setup correclty. Missing XCTExpectation reference")
+            XCTFail("Delegate was not setup correctly. Missing XCTExpectation reference")
             return
         }
         expectation.fulfill()
@@ -140,7 +140,7 @@ extension ORKPasscodeViewControllerTests: ORKPasscodeDelegate {
     
     func passcodeViewControllerDidCancel(_ viewController: UIViewController) {
         guard let expectation = asyncExpectation else {
-            XCTFail("Delegate was not setup correclty. Missing XCTExpectation reference")
+            XCTFail("Delegate was not setup correctly. Missing XCTExpectation reference")
             return
         }
         expectation.fulfill()
@@ -148,7 +148,7 @@ extension ORKPasscodeViewControllerTests: ORKPasscodeDelegate {
     
     func passcodeViewControllerForgotPasscodeTapped(_ viewController: UIViewController) {
         guard let expectation = asyncExpectation else {
-            XCTFail("Delegate was not setup correclty. Missing XCTExpectation reference")
+            XCTFail("Delegate was not setup correctly. Missing XCTExpectation reference")
             return
         }
         expectation.fulfill()
