@@ -296,8 +296,8 @@
 /* Audio active task. */
 "AUDIO_TASK_TITLE" = "Glas";
 "AUDIO_CALL_TO_ACTION" = "Dodirnite Pokreni za početak.";
-"AUDIO_INSTRUCTION" = "Izgovarajte \"Aaaaaa\" u mikrofon što dulje možete.";
-"AUDIO_INTRO_TEXT" = "Duboko udahnite i izgovorite \"Aaaaaa\" u mikrofon što dulje možete. Održavajte ujednačenu glasnoću glasa tako da audio stupci ostanu plavi.";
+"AUDIO_INSTRUCTION" = "Izgovarajte \“Aaaaaa\” u mikrofon što dulje možete.";
+"AUDIO_INTRO_TEXT" = "Duboko udahnite i izgovorite \“Aaaaaa\” u mikrofon što dulje možete. Održavajte ujednačenu glasnoću glasa tako da audio stupci ostanu plavi.";
 "AUDIO_INTENDED_USE" = "Ovom se aktivnošću procjenjuje vaš glas tako što se on snimi mikrofonom na dnu vašeg uređaja.";
 "AUDIO_TOO_LOUD_LABEL" = "Preglasno";
 "AUDIO_GENERIC_ERROR_LABEL" = "Zvuk se ne može snimati";
