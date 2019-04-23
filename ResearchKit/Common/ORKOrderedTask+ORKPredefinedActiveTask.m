@@ -2028,7 +2028,15 @@ NSString *const ORKPSATStepIdentifier = @"psat";
         {
             ORKInstructionStep *step = [[ORKInstructionStep alloc] initWithIdentifier:ORKInstruction1StepIdentifier];
             step.title = versionTitle;
-            step.text = [NSString localizedStringWithFormat:ORKLocalizedString(@"PSAT_INTRO_TEXT_2_%@", nil), [NSNumberFormatter localizedStringFromNumber:@(interStimulusInterval) numberStyle:NSNumberFormatterDecimalStyle]];
+            
+            NSDateComponentsFormatter *secondsFormatter = [NSDateComponentsFormatter new];
+            secondsFormatter.unitsStyle = NSDateFormatterFullStyle;
+            secondsFormatter.allowedUnits = NSCalendarUnitSecond;
+            secondsFormatter.formattingContext = NSFormattingContextDynamic;
+            secondsFormatter.maximumUnitCount = 1;
+            
+            NSString *seconds = [secondsFormatter stringFromTimeInterval:interStimulusInterval];
+            step.text = [NSString localizedStringWithFormat:ORKLocalizedString(@"PSAT_INTRO_TEXT_2_%@", nil), seconds];
             step.detailText = ORKLocalizedString(@"PSAT_CALL_TO_ACTION", nil);
             
             ORKStepArrayAddStep(steps, step);

@@ -222,7 +222,7 @@
 "COUNTDOWN_LABEL" = "Starting activity in";
 "TASK_COMPLETE_TITLE" = "Activity Complete";
 "TASK_COMPLETE_TEXT" = "Your data will be analyzed and you will be notified when your results are ready.";
-"COUNTDOWN_SPOKEN_REMAINING_%@" = "%@ seconds remaining.";
+"COUNTDOWN_SPOKEN_REMAINING_%@" = "%@ remaining.";
 "TOUCH_ANYWHERE_LABEL" = "Touch anywhere to continue";
 
 /* Image capture step. */
@@ -446,7 +446,7 @@
 "PASAT_INTRO_TEXT" = "The Paced Auditory Serial Addition Test measures your auditory information processing speed and calculation ability.";
 "PVSAT_INTRO_TEXT" = "The Paced Visual Serial Addition Test measures your visual information processing speed and calculation ability.";
 "PAVSAT_INTRO_TEXT" = "The Paced Auditory and Visual Serial Addition Test measures your auditory and visual information processing speed and calculation ability.";
-"PSAT_INTRO_TEXT_2_%@" = "Single digits are presented every %@ seconds.\nYou must add each new digit to the one immediately prior to it.\nAttention, you mustn't calculate a running total, but only the sum of the last two numbers.";
+"PSAT_INTRO_TEXT_2_%@" = "Single digits are presented every %@.\nYou must add each new digit to the one immediately prior to it.\nAttention, you mustn't calculate a running total, but only the sum of the last two numbers.";
 "PSAT_CALL_TO_ACTION" = "Tap Get Started to begin.";
 "PSAT_INITIAL_INSTRUCTION" = "Remember this first digit.";
 "PSAT_INSTRUCTION" = "Add this new digit to the previous one.";
