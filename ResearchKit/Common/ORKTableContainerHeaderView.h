@@ -29,12 +29,37 @@
  */
 
 
-#import <ResearchKit/ResearchKit.h>
-#import "ORKStepContainerView.h"
+@import UIKit;
+
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ORKTableContainerHeaderView : ORKStepContainerView
+@class ORKLearnMoreInstructionStep;
+@protocol ORKTableContainerHeaderLearnMoreItemDelegate <NSObject>
+
+@required
+- (void)tableContainerHeaderLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep;
+
+@end
+
+@class ORKBodyItem;
+@class ORKNavigationContainerView;
+@interface ORKTableContainerHeaderView : UIView
+
+@property (nonatomic, nullable) UIImage *stepTopContentImage;
+
+@property (nonatomic, nullable) UIImage *auxiliaryImage; // Only underlayed when stepTopContentImage is added.
+
+@property (nonatomic) NSString *stepTitle;
+
+@property (nonatomic, nullable) UIImage *titleIconImage;
+
+@property (nonatomic) BOOL showScrollIndicator;
+
+@property (nonatomic) NSArray<ORKBodyItem *> *bodyItems;
+
+
+@property (nonatomic, weak) id<ORKTableContainerHeaderLearnMoreItemDelegate> delegate;
 
 @end
 

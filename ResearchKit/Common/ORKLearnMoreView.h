@@ -58,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)learnMoreViewWithItem:(ORKLearnMoreItem *)learnMoreItem;
 
-@property (nonatomic, nonnull) ORKLearnMoreInstructionStep * learnMoreInstructionStep;
+@property (nonatomic, nonnull) ORKLearnMoreInstructionStep *learnMoreInstructionStep;
 
 @property (nonatomic, weak) id<ORKLearnMoreViewDelegate> delegate;
 

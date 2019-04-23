@@ -33,7 +33,7 @@
 #import "ORKHelpers_Internal.h"
 #import "ORKSkin.h"
 
-static const CGFloat ORKStackViewSpacing = 10.0;
+static const CGFloat ORKStackViewSpacing = 5.0;
 static const CGFloat shadowHeight = 0.75;
 static const CGFloat shadowOpacity = 0.2;
 static const CGFloat shadowRadius = 1.0;
@@ -54,7 +54,7 @@ static const CGFloat shadowRadius = 1.0;
     UIColor *_appTintColor;
     
     BOOL _continueButtonJustTapped;
-    BOOL _removeStyling;
+    BOOL _removeVisualEffect;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -75,7 +75,7 @@ static const CGFloat shadowRadius = 1.0;
 }
 
 - (void)removeStyling {
-    _removeStyling = YES;
+    _removeVisualEffect = YES;
     if (effectView) {
         [effectView removeFromSuperview];
         effectView = nil;
@@ -83,7 +83,7 @@ static const CGFloat shadowRadius = 1.0;
 }
 
 - (void)setupVisualEffectView {
-    if (!effectView && !_removeStyling) {
+    if (!effectView && !_removeVisualEffect) {
         UIVisualEffect *blurEffect;
         blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
         
@@ -371,7 +371,7 @@ static const CGFloat shadowRadius = 1.0;
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    if (!_removeStyling) {
+    if (!_removeVisualEffect) {
         UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:CGRectMake(self.bounds.origin.x, self.bounds.origin.y - shadowHeight, self.bounds.size.width, shadowHeight)];
         self.layer.shadowPath = shadowPath.CGPath;
         self.layer.shadowColor = ORKColor(ORKNavigationContainerShadowColorKey).CGColor;

@@ -76,9 +76,10 @@
 		14A92C6E224531A2007547F2 /* ORKActiveTaskResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A92C6D224531A2007547F2 /* ORKActiveTaskResultTests.swift */; };
 		14BE7091220A201E005DEF07 /* ORKDataLoggerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 86CC8EAC1AC09383001CCD89 /* ORKDataLoggerTests.m */; };
 		14BE7092220A206B005DEF07 /* ORKDataLoggerManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 86CC8EAB1AC09383001CCD89 /* ORKDataLoggerManagerTests.m */; };
+		14D3F09C225BCA8100A3962D /* ORKBorderedButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D3F09B225BCA8100A3962D /* ORKBorderedButtonTests.swift */; };
 		1B4B95B81F5F012E006B629F /* ORKWeightPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B4B95B71F5F012E006B629F /* ORKWeightPicker.m */; };
 		1B4B95BA1F5F014E006B629F /* ORKWeightPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B4B95B91F5F014E006B629F /* ORKWeightPicker.h */; };
-		241A2E871B94FD8800ED3B39 /* ORKPasscodeStepViewController_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 241A2E861B94FD8800ED3B39 /* ORKPasscodeStepViewController_Internal.h */; };
+		241A2E871B94FD8800ED3B39 /* ORKPasscodeStepViewController_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 241A2E861B94FD8800ED3B39 /* ORKPasscodeStepViewController_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		2429D5721BBB5397003A512F /* ORKRegistrationStep.h in Headers */ = {isa = PBXBuildFile; fileRef = 2429D5701BBB5397003A512F /* ORKRegistrationStep.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2429D5731BBB5397003A512F /* ORKRegistrationStep.m in Sources */ = {isa = PBXBuildFile; fileRef = 2429D5711BBB5397003A512F /* ORKRegistrationStep.m */; };
 		242C9E051BBDFDAC0088B7F4 /* ORKVerificationStep.h in Headers */ = {isa = PBXBuildFile; fileRef = 242C9E031BBDFDAC0088B7F4 /* ORKVerificationStep.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -172,6 +173,7 @@
 		713D4B1020FE4702002BE28D /* volume_curve_WIRED.plist in Resources */ = {isa = PBXBuildFile; fileRef = 713D4B0F20FE4702002BE28D /* volume_curve_WIRED.plist */; };
 		713D4B1C20FE5464002BE28D /* frequency_dBSPL_EARPODS.plist in Resources */ = {isa = PBXBuildFile; fileRef = 713D4B1B20FE5464002BE28D /* frequency_dBSPL_EARPODS.plist */; };
 		713D4B1E20FE5480002BE28D /* retspl_EARPODS.plist in Resources */ = {isa = PBXBuildFile; fileRef = 713D4B1D20FE5480002BE28D /* retspl_EARPODS.plist */; };
+		714151D0225C4A23002CA33B /* ORKPasscodeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A92C6922444F93007547F2 /* ORKPasscodeViewControllerTests.swift */; };
 		716B126520A78C6B00590264 /* ORKEnvironmentSPLMeterResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 716B126320A78C6B00590264 /* ORKEnvironmentSPLMeterResult.m */; };
 		716B126820A7A40400590264 /* ORKdBHLToneAudiometryAudioGenerator.h in Headers */ = {isa = PBXBuildFile; fileRef = 716B126620A7A40400590264 /* ORKdBHLToneAudiometryAudioGenerator.h */; };
 		716B126920A7A40400590264 /* ORKdBHLToneAudiometryAudioGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 716B126720A7A40400590264 /* ORKdBHLToneAudiometryAudioGenerator.m */; };
@@ -585,6 +587,7 @@
 		BAB3942F22601CAB00E59B0B /* ORKStepContainerView_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = BAB3942E22601CAB00E59B0B /* ORKStepContainerView_Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BAB39432226021AB00E59B0B /* ORKTableContainerHeaderView.h in Headers */ = {isa = PBXBuildFile; fileRef = BAB39430226021AB00E59B0B /* ORKTableContainerHeaderView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BAB39433226021AB00E59B0B /* ORKTableContainerHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = BAB39431226021AB00E59B0B /* ORKTableContainerHeaderView.m */; };
+		BAB96755226E5D67006AAC56 /* ORKStepContainerViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BAB96754226E5D67006AAC56 /* ORKStepContainerViewTests.m */; };
 		BABBB19D2093299A00CB29E5 /* ORKSurveyCardHeaderView.h in Headers */ = {isa = PBXBuildFile; fileRef = BABBB19B2093299A00CB29E5 /* ORKSurveyCardHeaderView.h */; };
 		BABBB19E2093299A00CB29E5 /* ORKSurveyCardHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = BABBB19C2093299A00CB29E5 /* ORKSurveyCardHeaderView.m */; };
 		BABBB1AE2097D97200CB29E5 /* ORKPDFViewerStep.h in Headers */ = {isa = PBXBuildFile; fileRef = BABBB1AC2097D97200CB29E5 /* ORKPDFViewerStep.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -595,8 +598,6 @@
 		BABBB1B72097E58300CB29E5 /* ORKPDFViewerStepView.m in Sources */ = {isa = PBXBuildFile; fileRef = BABBB1B52097E58300CB29E5 /* ORKPDFViewerStepView.m */; };
 		BABBB1BA2097EF3800CB29E5 /* ORKFreehandDrawingView.h in Headers */ = {isa = PBXBuildFile; fileRef = BABBB1B82097EF3800CB29E5 /* ORKFreehandDrawingView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BABBB1BB2097EF3800CB29E5 /* ORKFreehandDrawingView.m in Sources */ = {isa = PBXBuildFile; fileRef = BABBB1B92097EF3800CB29E5 /* ORKFreehandDrawingView.m */; };
-		BAC919FC225A9C48002AFA6F /* ORKGDPRView.h in Headers */ = {isa = PBXBuildFile; fileRef = BAC919FA225A9C48002AFA6F /* ORKGDPRView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BAC919FD225A9C48002AFA6F /* ORKGDPRView.m in Sources */ = {isa = PBXBuildFile; fileRef = BAC919FB225A9C48002AFA6F /* ORKGDPRView.m */; };
 		BAD9E9122255E9750014FA29 /* ORKLearnMoreInstructionStep.h in Headers */ = {isa = PBXBuildFile; fileRef = BAD9E9102255E9750014FA29 /* ORKLearnMoreInstructionStep.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BAD9E9132255E9750014FA29 /* ORKLearnMoreInstructionStep.m in Sources */ = {isa = PBXBuildFile; fileRef = BAD9E9112255E9750014FA29 /* ORKLearnMoreInstructionStep.m */; };
 		BAD9E9162255E9CE0014FA29 /* ORKLearnMoreStepViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = BAD9E9142255E9CE0014FA29 /* ORKLearnMoreStepViewController.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -827,7 +828,9 @@
 		1490DCFB224D4867003FEEDA /* ORKEnvironmentSPLMeterResultTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORKEnvironmentSPLMeterResultTests.swift; sourceTree = "<group>"; };
 		1490DD01224D6A21003FEEDA /* ORKResultPredicateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORKResultPredicateTests.swift; sourceTree = "<group>"; };
 		1490DD03224D6A61003FEEDA /* ORKTestResultPredicateType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORKTestResultPredicateType.swift; sourceTree = "<group>"; };
+		14A92C6922444F93007547F2 /* ORKPasscodeViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORKPasscodeViewControllerTests.swift; sourceTree = "<group>"; };
 		14A92C6D224531A2007547F2 /* ORKActiveTaskResultTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORKActiveTaskResultTests.swift; sourceTree = "<group>"; };
+		14D3F09B225BCA8100A3962D /* ORKBorderedButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORKBorderedButtonTests.swift; sourceTree = "<group>"; };
 		1B4B95B71F5F012E006B629F /* ORKWeightPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ORKWeightPicker.m; sourceTree = "<group>"; };
 		1B4B95B91F5F014E006B629F /* ORKWeightPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ORKWeightPicker.h; sourceTree = "<group>"; };
 		241A2E861B94FD8800ED3B39 /* ORKPasscodeStepViewController_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ORKPasscodeStepViewController_Internal.h; sourceTree = "<group>"; };
@@ -1386,6 +1389,7 @@
 		BAB3942E22601CAB00E59B0B /* ORKStepContainerView_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKStepContainerView_Private.h; sourceTree = "<group>"; };
 		BAB39430226021AB00E59B0B /* ORKTableContainerHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKTableContainerHeaderView.h; sourceTree = "<group>"; };
 		BAB39431226021AB00E59B0B /* ORKTableContainerHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKTableContainerHeaderView.m; sourceTree = "<group>"; };
+		BAB96754226E5D67006AAC56 /* ORKStepContainerViewTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKStepContainerViewTests.m; sourceTree = "<group>"; };
 		BABBB19B2093299A00CB29E5 /* ORKSurveyCardHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKSurveyCardHeaderView.h; sourceTree = "<group>"; };
 		BABBB19C2093299A00CB29E5 /* ORKSurveyCardHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKSurveyCardHeaderView.m; sourceTree = "<group>"; };
 		BABBB1AC2097D97200CB29E5 /* ORKPDFViewerStep.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKPDFViewerStep.h; sourceTree = "<group>"; };
@@ -1396,8 +1400,6 @@
 		BABBB1B52097E58300CB29E5 /* ORKPDFViewerStepView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKPDFViewerStepView.m; sourceTree = "<group>"; };
 		BABBB1B82097EF3800CB29E5 /* ORKFreehandDrawingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKFreehandDrawingView.h; sourceTree = "<group>"; };
 		BABBB1B92097EF3800CB29E5 /* ORKFreehandDrawingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKFreehandDrawingView.m; sourceTree = "<group>"; };
-		BAC919FA225A9C48002AFA6F /* ORKGDPRView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKGDPRView.h; sourceTree = "<group>"; };
-		BAC919FB225A9C48002AFA6F /* ORKGDPRView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKGDPRView.m; sourceTree = "<group>"; };
 		BAD9E9102255E9750014FA29 /* ORKLearnMoreInstructionStep.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKLearnMoreInstructionStep.h; sourceTree = "<group>"; };
 		BAD9E9112255E9750014FA29 /* ORKLearnMoreInstructionStep.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKLearnMoreInstructionStep.m; sourceTree = "<group>"; };
 		BAD9E9142255E9CE0014FA29 /* ORKLearnMoreStepViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKLearnMoreStepViewController.h; sourceTree = "<group>"; };
@@ -1693,10 +1695,25 @@
 			name = ORKResultTests;
 			sourceTree = "<group>";
 		};
+		14A92C6822444F30007547F2 /* ORKViewControllerTests */ = {
+			isa = PBXGroup;
+			children = (
+				14A92C6922444F93007547F2 /* ORKPasscodeViewControllerTests.swift */,
+			);
+			name = ORKViewControllerTests;
+			sourceTree = "<group>";
+		};
+		14D3F09D225BCA9100A3962D /* ORKButtonTests */ = {
+			isa = PBXGroup;
+			children = (
+				14D3F09B225BCA8100A3962D /* ORKBorderedButtonTests.swift */,
+			);
+			name = ORKButtonTests;
+			sourceTree = "<group>";
+		};
 		2429D56D1BBB52E4003A512F /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				BAC919F9225A9C2A002AFA6F /* ORKGDPRView */,
 				2429D56E1BBB5352003A512F /* Account */,
 			);
 			name = Onboarding;
@@ -2145,6 +2162,9 @@
 		86CC8EA61AC09383001CCD89 /* ResearchKitTests */ = {
 			isa = PBXGroup;
 			children = (
+				BAB96753226E5D21006AAC56 /* Views */,
+				14A92C6822444F30007547F2 /* ORKViewControllerTests */,
+				14D3F09D225BCA9100A3962D /* ORKButtonTests */,
 				1490DCF2224D3B71003FEEDA /* ORKResultTests */,
 				FA7A9D351B09362D005A2BEA /* Consent */,
 				86CC8EA71AC09383001CCD89 /* Info.plist */,
@@ -3036,6 +3056,14 @@
 			name = AmslerGrid;
 			sourceTree = "<group>";
 		};
+		BAB96753226E5D21006AAC56 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BAB96754226E5D67006AAC56 /* ORKStepContainerViewTests.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		BABBB1AB2097D94000CB29E5 /* PDFStep */ = {
 			isa = PBXGroup;
 			children = (
@@ -3050,15 +3078,6 @@
 				BABBB1B92097EF3800CB29E5 /* ORKFreehandDrawingView.m */,
 			);
 			name = PDFStep;
-			sourceTree = "<group>";
-		};
-		BAC919F9225A9C2A002AFA6F /* ORKGDPRView */ = {
-			isa = PBXGroup;
-			children = (
-				BAC919FA225A9C48002AFA6F /* ORKGDPRView.h */,
-				BAC919FB225A9C48002AFA6F /* ORKGDPRView.m */,
-			);
-			name = ORKGDPRView;
 			sourceTree = "<group>";
 		};
 		BAD9E90F2255E94F0014FA29 /* LearnMore Step */ = {
@@ -3446,7 +3465,6 @@
 				86C40CF61A8D7C5C00081FAC /* ORKBorderedButton.h in Headers */,
 				71769E2D208824D100A19914 /* ORKdBHLToneAudiometryOnboardingStep.h in Headers */,
 				FF919A6D1E81D3B0005C2A1E /* ORKPasscodeResult.h in Headers */,
-				BAC919FC225A9C48002AFA6F /* ORKGDPRView.h in Headers */,
 				86C40D4A1A8D7C5C00081FAC /* ORKLabel.h in Headers */,
 				250F94041B4C5A6600FA23EB /* ORKTowerOfHanoiStep.h in Headers */,
 				861D11A91AA691BB003C98A7 /* ORKScaleSliderView.h in Headers */,
@@ -3617,10 +3635,10 @@
 				TargetAttributes = {
 					86CC8E991AC09332001CCD89 = {
 						CreatedOnToolsVersion = 6.2;
-						LastSwiftMigration = 1010;
+						LastSwiftMigration = 1020;
 					};
 					B183A4731A8535D100C76870 = {
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1020;
 					};
 					B18FF3A41A9FE25700C0C3B0 = {
 						CreatedOnToolsVersion = 7.0;
@@ -3629,10 +3647,9 @@
 			};
 			buildConfigurationList = 3FFF18381829DB1D00167070 /* Build configuration list for PBXProject "ResearchKit" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				Base,
 				tr,
@@ -3790,7 +3807,9 @@
 				14A92C6E224531A2007547F2 /* ORKActiveTaskResultTests.swift in Sources */,
 				86CC8EB51AC09383001CCD89 /* ORKConsentTests.m in Sources */,
 				1490DD04224D6A61003FEEDA /* ORKTestResultPredicateType.swift in Sources */,
+				BAB96755226E5D67006AAC56 /* ORKStepContainerViewTests.m in Sources */,
 				14BE7092220A206B005DEF07 /* ORKDataLoggerManagerTests.m in Sources */,
+				14D3F09C225BCA8100A3962D /* ORKBorderedButtonTests.swift in Sources */,
 				1483DBB5220125BE004C26B6 /* ORKActiveStepTests.swift in Sources */,
 				1490DCF6224D426B003FEEDA /* ORKSignatureResultTests.swift in Sources */,
 				2EBFE11D1AE1B32D00CB8254 /* ORKUIViewAccessibilityTests.m in Sources */,
@@ -3802,6 +3821,7 @@
 				86CC8EBB1AC09383001CCD89 /* ORKTextChoiceCellGroupTests.m in Sources */,
 				FA7A9D2B1B082688005A2BEA /* ORKConsentDocumentTests.m in Sources */,
 				FA7A9D371B09365F005A2BEA /* ORKConsentSectionFormatterTests.m in Sources */,
+				714151D0225C4A23002CA33B /* ORKPasscodeViewControllerTests.swift in Sources */,
 				86D348021AC161B0006DB02B /* ORKRecorderTests.m in Sources */,
 				1490DCFC224D4867003FEEDA /* ORKEnvironmentSPLMeterResultTests.swift in Sources */,
 				1490DCF4224D3C20003FEEDA /* ORKPasscodeResultTests.swift in Sources */,
@@ -4037,7 +4057,6 @@
 				FF919A371E81AD9C005C2A1E /* ORKSpatialSpanMemoryResult.m in Sources */,
 				86C40CF41A8D7C5C00081FAC /* ORKBodyLabel.m in Sources */,
 				FF919A4C1E81BB7E005C2A1E /* ORKTimedWalkResult.m in Sources */,
-				BAC919FD225A9C48002AFA6F /* ORKGDPRView.m in Sources */,
 				106FF29F1B663FCE004EACF2 /* ORKHolePegTestPlaceStep.m in Sources */,
 				FFAE71411DAEC66200AE82B4 /* ORKFootnoteLabel.m in Sources */,
 				86C40C941A8D7C5C00081FAC /* ORKAudioRecorder.m in Sources */,
@@ -4197,9 +4216,13 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ADDRESS_SANITIZER_CONTAINER_OVERFLOW = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_SECURITY_FLOATLOOPCOUNTER = YES;
+				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_UNDEFINED_BEHAVIOR_SANITIZER_INTEGER = YES;
+				CLANG_UNDEFINED_BEHAVIOR_SANITIZER_NULLABILITY = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -4231,12 +4254,18 @@
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_SHADOW = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				ONLY_ACTIVE_ARCH = NO;
@@ -4246,6 +4275,12 @@
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
 				TOOLCHAINS = default;
+				WARNING_CFLAGS = (
+					"-Wunreachable-code",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-sign-compare",
+				);
 			};
 			name = Debug;
 		};
@@ -4255,9 +4290,13 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ADDRESS_SANITIZER_CONTAINER_OVERFLOW = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_SECURITY_FLOATLOOPCOUNTER = YES;
+				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_UNDEFINED_BEHAVIOR_SANITIZER_INTEGER = YES;
+				CLANG_UNDEFINED_BEHAVIOR_SANITIZER_NULLABILITY = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -4283,12 +4322,18 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_SHADOW = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				ONLY_ACTIVE_ARCH = NO;
@@ -4300,6 +4345,12 @@
 				TARGETED_DEVICE_FAMILY = 1;
 				TOOLCHAINS = default;
 				VALIDATE_PRODUCT = YES;
+				WARNING_CFLAGS = (
+					"-Wunreachable-code",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-sign-compare",
+				);
 			};
 			name = Release;
 		};
@@ -4317,6 +4368,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				GCC_WARN_SHADOW = NO;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "$(SRCROOT)/ResearchKitTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -4326,7 +4378,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ResearchKitTests/ResearchKitTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -4341,6 +4393,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_SHADOW = NO;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "$(SRCROOT)/ResearchKitTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -4349,7 +4402,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.researchkit.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ResearchKitTests/ResearchKitTests-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -4357,10 +4410,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ADDRESS_SANITIZER_CONTAINER_OVERFLOW = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_SECURITY_FLOATLOOPCOUNTER = YES;
+				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_UNDEFINED_BEHAVIOR_SANITIZER_INTEGER = YES;
+				CLANG_UNDEFINED_BEHAVIOR_SANITIZER_NULLABILITY = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -4376,6 +4434,7 @@
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_SEMICOLON_BEFORE_METHOD_BODY = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
@@ -4391,12 +4450,18 @@
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_SHADOW = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				ONLY_ACTIVE_ARCH = NO;
@@ -4406,6 +4471,12 @@
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
 				TOOLCHAINS = default;
+				WARNING_CFLAGS = (
+					"-Wunreachable-code",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-sign-compare",
+				);
 			};
 			name = ATP;
 		};
@@ -4439,8 +4510,8 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = ATP;
@@ -4458,6 +4529,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				GCC_WARN_SHADOW = NO;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "$(SRCROOT)/ResearchKitTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -4465,6 +4537,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.researchkit.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
 			};
 			name = ATP;
 		};
@@ -4518,8 +4591,8 @@
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -4563,8 +4636,8 @@
 				PRODUCT_NAME = ResearchKit;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

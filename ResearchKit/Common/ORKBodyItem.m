@@ -76,21 +76,22 @@
     ORKThrowMethodUnavailableException();
 }
 
-- (instancetype)initWithTitle:(NSString *)title text:(NSString *)text learnMoreItem:(ORKLearnMoreItem *)learnMoreItem bodyItemStyle:(ORKBodyItemStyle)bodyItemStyle {
+- (instancetype)initWithText:(NSString *)text detailText:(NSString *)detailText image:(nullable UIImage *)image learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem bodyItemStyle:(ORKBodyItemStyle)bodyItemStyle {
     self = [super init];
     if (self) {
-        self.title = title;
         self.text = text;
+        self.detailText = detailText;
         self.learnMoreItem = learnMoreItem;
         self.bodyItemStyle = bodyItemStyle;
+        self.image = image;
     }
     [self validateParameters];
     return self;
 }
 
 - (void)validateParameters {
-    if (!_title && !_text) {
-        NSAssert(NO, @"Parameters title and text cannot be both nil.");
+    if (!_text && !_detailText && !_learnMoreItem) {
+        NSAssert(NO, @"Parameters text, detailText and learnMoreItem cannot be nil at the same time.");
     }
 }
 
