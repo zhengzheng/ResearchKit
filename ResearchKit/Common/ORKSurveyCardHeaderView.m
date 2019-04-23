@@ -147,7 +147,6 @@ static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
     }
     _progressLabel.numberOfLines = 0;
     _progressLabel.textColor = [UIColor blackColor];
-//    _progressLabel.lineBreakMode = NSLineBreakByWordWrapping;
     _progressLabel.text = _progressText;
     _progressLabel.textAlignment = NSTextAlignmentRight;
     [_progressLabel setFont:[UIFont systemFontOfSize:ORKCardDefaultFontSize weight:UIFontWeightBold]];
@@ -295,7 +294,14 @@ static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
                                                                toItem: _headlineView
                                                             attribute:NSLayoutAttributeRight
                                                            multiplier:1.0
-                                                             constant:-HeadlineViewTitleLeftRightPadding]
+                                                             constant:-HeadlineViewTitleLeftRightPadding],
+                               [NSLayoutConstraint constraintWithItem:_progressLabel
+                                                            attribute:NSLayoutAttributeWidth
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem: nil
+                                                            attribute:NSLayoutAttributeNotAnAttribute
+                                                           multiplier:1.0
+                                                             constant:_progressLabel.frame.size.width]
                                ];
     [NSLayoutConstraint activateConstraints:_progressLabelConstraints];
 }

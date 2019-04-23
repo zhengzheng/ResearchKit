@@ -753,7 +753,7 @@ enum TaskListRow: Int, CustomStringConvertible {
         let formItem02 = ORKFormItem(identifier: String(describing:Identifier.formItem02), text: formItem02Text, answerFormat: ORKTimeIntervalAnswerFormat())
         formItem02.placeholder = NSLocalizedString("Your placeholder here", comment: "")
         
-        let sectionTwo = ORKFormItem(sectionTitle: "Section 2 Title", detailText: "Detail text for section 2", learnMoreInstructionStep:nil, showsProgress: true)
+        let sectionTwo = ORKFormItem(sectionTitle: "Section 2 Title", detailText: "Detail text for section 2 that happens to be very long.", learnMoreInstructionStep:nil, showsProgress: true)
         
         let formItem03Text = NSLocalizedString(exampleQuestionText, comment: "")
         let scaleAnswerFormat = ORKContinuousScaleAnswerFormat.init(maximumValue: 10, minimumValue: 0, defaultValue: 0.0, maximumFractionDigits: 1)//ORKScaleAnswerFormat(maximumValue: 10, minimumValue: 0, defaultValue: 0, step: 1)
