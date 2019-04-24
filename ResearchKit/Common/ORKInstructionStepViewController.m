@@ -65,6 +65,7 @@
     
     if (self.step && [self isViewLoaded]) {
         self.stepView = [[ORKInstructionStepContainerView alloc] initWithInstructionStep:[self instructionStep]];
+        _stepView.delegate = self;
         [self.view addSubview:self.stepView];
         [self setNavigationFooterView];
         [self setupConstraints];

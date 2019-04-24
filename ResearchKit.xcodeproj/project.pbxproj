@@ -578,6 +578,8 @@
 		BA8078F4224AC8AA0013B554 /* ORKStepContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA8078F2224AC8AA0013B554 /* ORKStepContainerView.m */; };
 		BA87E26D20A79FA100B375A9 /* ORKRingView.h in Headers */ = {isa = PBXBuildFile; fileRef = BA87E26B20A79FA100B375A9 /* ORKRingView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BA87E26E20A79FA100B375A9 /* ORKRingView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA87E26C20A79FA100B375A9 /* ORKRingView.m */; };
+		BA8C5021226FFB04001896D0 /* ORKLearnMoreItem.h in Headers */ = {isa = PBXBuildFile; fileRef = BA8C501F226FFB04001896D0 /* ORKLearnMoreItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BA8C5022226FFB04001896D0 /* ORKLearnMoreItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BA8C5020226FFB04001896D0 /* ORKLearnMoreItem.m */; };
 		BA95AA9620ACD07A00E7FF8E /* ORKAmslerGridStep.h in Headers */ = {isa = PBXBuildFile; fileRef = BA95AA9420ACD07A00E7FF8E /* ORKAmslerGridStep.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BA95AA9720ACD07A00E7FF8E /* ORKAmslerGridStep.m in Sources */ = {isa = PBXBuildFile; fileRef = BA95AA9520ACD07A00E7FF8E /* ORKAmslerGridStep.m */; };
 		BA95AA9A20ACD0BD00E7FF8E /* ORKAmslerGridStepViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = BA95AA9820ACD0BD00E7FF8E /* ORKAmslerGridStepViewController.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1380,6 +1382,8 @@
 		BA8078F2224AC8AA0013B554 /* ORKStepContainerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKStepContainerView.m; sourceTree = "<group>"; };
 		BA87E26B20A79FA100B375A9 /* ORKRingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKRingView.h; sourceTree = "<group>"; };
 		BA87E26C20A79FA100B375A9 /* ORKRingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKRingView.m; sourceTree = "<group>"; };
+		BA8C501F226FFB04001896D0 /* ORKLearnMoreItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKLearnMoreItem.h; sourceTree = "<group>"; };
+		BA8C5020226FFB04001896D0 /* ORKLearnMoreItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKLearnMoreItem.m; sourceTree = "<group>"; };
 		BA95AA9420ACD07A00E7FF8E /* ORKAmslerGridStep.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKAmslerGridStep.h; sourceTree = "<group>"; };
 		BA95AA9520ACD07A00E7FF8E /* ORKAmslerGridStep.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKAmslerGridStep.m; sourceTree = "<group>"; };
 		BA95AA9820ACD0BD00E7FF8E /* ORKAmslerGridStepViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKAmslerGridStepViewController.h; sourceTree = "<group>"; };
@@ -3028,6 +3032,8 @@
 			children = (
 				BA473FEB224DBA3700A362E3 /* ORKLearnMoreView.h */,
 				BA473FEC224DBA3700A362E3 /* ORKLearnMoreView.m */,
+				BA8C501F226FFB04001896D0 /* ORKLearnMoreItem.h */,
+				BA8C5020226FFB04001896D0 /* ORKLearnMoreItem.m */,
 			);
 			name = "Learn More";
 			sourceTree = "<group>";
@@ -3566,6 +3572,7 @@
 				106FF2A21B665B86004EACF2 /* ORKHolePegTestPlaceStepViewController.h in Headers */,
 				24A4DA101B8D0F21009C797A /* ORKPasscodeStepView.h in Headers */,
 				BABBB1AE2097D97200CB29E5 /* ORKPDFViewerStep.h in Headers */,
+				BA8C5021226FFB04001896D0 /* ORKLearnMoreItem.h in Headers */,
 				2489F7B11D65214D008DEF20 /* ORKVideoCaptureStep.h in Headers */,
 				861D11AD1AA7951F003C98A7 /* ORKChoiceAnswerFormatHelper.h in Headers */,
 				86C40C461A8D7C5C00081FAC /* ORKSpatialSpanMemoryStepViewController.h in Headers */,
@@ -3988,6 +3995,7 @@
 				147503B01AEE8071004B17F3 /* ORKAudioGenerator.m in Sources */,
 				86C40D7E1A8D7C5C00081FAC /* ORKScaleValueLabel.m in Sources */,
 				8056857A1C90C19500BF437A /* UIImage+ResearchKit.m in Sources */,
+				BA8C5022226FFB04001896D0 /* ORKLearnMoreItem.m in Sources */,
 				BC94EF321E962F7400143081 /* ORKDeprecated.m in Sources */,
 				BAD9E9132255E9750014FA29 /* ORKLearnMoreInstructionStep.m in Sources */,
 				86C40D901A8D7C5C00081FAC /* ORKStep.m in Sources */,

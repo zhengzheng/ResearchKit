@@ -28,46 +28,23 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-@import UIKit;
-#import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
+#import "ORKLearnMoreItem.h"
 
-typedef NS_ENUM(NSInteger, ORKBodyItemStyle) {
-    /**
-     text style body item
-     */
-    ORKBodyItemStyleText,
-    
-    /**
-     bullet style body item
-     */
-    ORKBodyItemStyleBulletPoint,
-    
-    /**
-     image style body item
-     */
-    ORKBodyItemStyleImage
-} ORK_ENUM_AVAILABLE;
 
-@class ORKLearnMoreItem;
-@interface ORKBodyItem : NSObject
+@implementation ORKLearnMoreItem
 
-+ (instancetype)new NS_UNAVAILABLE;
-- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithText:(nullable NSString *)text learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep {
+    self = [super init];
+    if (self) {
+        self.text = text;
+        self.learnMoreInstructionStep = learnMoreInstructionStep;
+    }
+    return self;
+}
 
-- (instancetype)initWithText:(nullable NSString *)text detailText:(nullable NSString *)detailText image:(nullable UIImage *)image learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem bodyItemStyle:(ORKBodyItemStyle)bodyItemStyle NS_DESIGNATED_INITIALIZER;
-
-@property (nonatomic) NSString *text;
-
-@property (nonatomic) NSString *detailText;
-
-@property (nonatomic, nullable) UIImage *image;
-
-@property (nonatomic, nullable) ORKLearnMoreItem *learnMoreItem;
-
-@property (nonatomic) ORKBodyItemStyle bodyItemStyle;
++ (instancetype)learnMoreLinkItemWithText:(NSString *)text learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep {
+    return [[ORKLearnMoreItem alloc] initWithText:text learnMoreInstructionStep:learnMoreInstructionStep];
+}
 
 @end
-
-NS_ASSUME_NONNULL_END

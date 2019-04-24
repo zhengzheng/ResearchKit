@@ -115,6 +115,7 @@
 #import <ResearchKit/ORKPieChartView.h>
 
 #import <ResearchKit/ORKBodyItem.h>
+#import <ResearchKit/ORKLearnMoreItem.h>
 
 #import <ResearchKit/ORKDataCollectionManager.h>
 #import <ResearchKit/ORKCollector.h>
