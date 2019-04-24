@@ -265,7 +265,11 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
     [self.tableStep configureCell:cell indexPath:indexPath tableView:tableView];
     
-    [cell setBackgroundColor:_tableViewColor];
+    // Only set the background color if it is using the default cell type
+    if ([reuseIdentifier isEqualToString:ORKBasicCellReuseIdentifier]) {
+        [cell setBackgroundColor:_tableViewColor];
+    }
+    
     return cell;
 }
 
