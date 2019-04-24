@@ -30,6 +30,7 @@
 
 
 #import "ORKLearnMoreView.h"
+#import "ORKLearnMoreItem.h"
 #import "ORKHelpers_Internal.h"
 #import "ORKBodyItem.h"
 

@@ -33,39 +33,6 @@
 #import "ORKLearnMoreInstructionStep.h"
 #import "ORKHelpers_Internal.h"
 
-
-@interface ORKLearnMoreItem()
-
-@property (nonatomic) NSString *text;
-
-@end
-
-@implementation ORKLearnMoreItem
-
-- (instancetype)initWithText:(NSString *)text learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep {
-    self = [super init];
-    if (self) {
-        self.text = text;
-        self.learnMoreInstructionStep = learnMoreInstructionStep;
-    }
-    return self;
-}
-
-+ (instancetype)learnMoreLinkItemWithText:(NSString *)text learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep {
-    return [[ORKLearnMoreItem alloc] initWithText:text learnMoreInstructionStep:learnMoreInstructionStep];
-}
-
-+ (instancetype)learnMoreDetailDisclosureItemWithLearnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep {
-    return [[ORKLearnMoreItem alloc] initWithText:nil learnMoreInstructionStep:learnMoreInstructionStep];
-}
-
-- (NSString *)getText {
-    return _text;
-}
-
-
-@end
-
 @implementation ORKBodyItem
 
 + (instancetype)new {

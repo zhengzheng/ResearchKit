@@ -28,46 +28,36 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-@import UIKit;
-#import <Foundation/Foundation.h>
+#import "ORKLearnMoreItem.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
-typedef NS_ENUM(NSInteger, ORKBodyItemStyle) {
-    /**
-     text style body item
-     */
-    ORKBodyItemStyleText,
-    
-    /**
-     bullet style body item
-     */
-    ORKBodyItemStyleBulletPoint,
-    
-    /**
-     image style body item
-     */
-    ORKBodyItemStyleImage
-} ORK_ENUM_AVAILABLE;
-
-@class ORKLearnMoreItem;
-@interface ORKBodyItem : NSObject
-
-+ (instancetype)new NS_UNAVAILABLE;
-- (instancetype)init NS_UNAVAILABLE;
-
-- (instancetype)initWithText:(nullable NSString *)text detailText:(nullable NSString *)detailText image:(nullable UIImage *)image learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem bodyItemStyle:(ORKBodyItemStyle)bodyItemStyle NS_DESIGNATED_INITIALIZER;
+@interface ORKLearnMoreItem()
 
 @property (nonatomic) NSString *text;
 
-@property (nonatomic) NSString *detailText;
-
-@property (nonatomic, nullable) UIImage *image;
-
-@property (nonatomic, nullable) ORKLearnMoreItem *learnMoreItem;
-
-@property (nonatomic) ORKBodyItemStyle bodyItemStyle;
-
 @end
 
-NS_ASSUME_NONNULL_END
+@implementation ORKLearnMoreItem
+
+- (instancetype)initWithText:(NSString *)text learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep {
+    self = [super init];
+    if (self) {
+        self.text = text;
+        self.learnMoreInstructionStep = learnMoreInstructionStep;
+    }
+    return self;
+}
+
++ (instancetype)learnMoreLinkItemWithText:(NSString *)text learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep {
+    return [[ORKLearnMoreItem alloc] initWithText:text learnMoreInstructionStep:learnMoreInstructionStep];
+}
+
++ (instancetype)learnMoreDetailDisclosureItemWithLearnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep {
+    return [[ORKLearnMoreItem alloc] initWithText:nil learnMoreInstructionStep:learnMoreInstructionStep];
+}
+
+- (NSString *)getText {
+    return _text;
+}
+
+
+@end

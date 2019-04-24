@@ -34,6 +34,7 @@
 #import "ORKSkin.h"
 #import "ORKBodyItem.h"
 #import "ORKLearnMoreView.h"
+#import "ORKLearnMoreInstructionStep.h"
 
 
 static const CGFloat ORKBodyToBodyPaddingStandard = 22.0;
