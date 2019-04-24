@@ -140,7 +140,9 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
         _tableView.alwaysBounceVertical = NO;
         _headerView = _tableContainer.tableContainerHeaderView;
         if ([[self step] text]) {
-            _headerView.bodyItems = @[[[ORKBodyItem alloc] initWithText:[[self step] text] detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]];
+            NSMutableArray *bodyItems = [[NSMutableArray alloc] initWithArray:@[[[ORKBodyItem alloc] initWithText:[[self step] text] detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]]];
+            [bodyItems addObjectsFromArray:self.step.bodyItems];
+            _headerView.bodyItems = [bodyItems copy];
         }
         else {
             _headerView.bodyItems = self.step.bodyItems;

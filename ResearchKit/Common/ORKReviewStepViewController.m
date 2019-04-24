@@ -136,7 +136,10 @@
         _tableContainer.tapOffView = self.view;
         
         if ([self reviewStep].text) {
-            _tableContainer.tableContainerHeaderView.bodyItems = @[[[ORKBodyItem alloc] initWithText:[self reviewStep].text detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]];
+            NSMutableArray *bodyItems = [[NSMutableArray alloc] initWithArray:@[[[ORKBodyItem alloc] initWithText:[self reviewStep].text detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]]];
+            [bodyItems addObjectsFromArray:self.step.bodyItems];
+            
+            _tableContainer.tableContainerHeaderView.bodyItems = [bodyItems copy];
         }
         else {
             _tableContainer.tableContainerHeaderView.bodyItems = self.step.bodyItems;

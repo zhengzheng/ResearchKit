@@ -539,7 +539,9 @@
         _headerView = _tableContainer.tableContainerHeaderView;
         _headerView.stepTitle = [self formStep].title;
         if ([[self formStep] text]) {
-            _headerView.bodyItems = @[[[ORKBodyItem alloc] initWithText:[[self formStep] text] detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]];
+            NSMutableArray *bodyItems = [[NSMutableArray alloc] initWithArray:@[[[ORKBodyItem alloc] initWithText:[[self formStep] text] detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]]];
+            [bodyItems addObjectsFromArray:self.step.bodyItems];
+            _headerView.bodyItems = [bodyItems copy];
         }
         else {
             _headerView.bodyItems = self.step.bodyItems;

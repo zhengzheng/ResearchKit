@@ -52,7 +52,9 @@
     _questionStep = step;
     self.stepTitle = step.title;
     if (step.text) {
-        self.bodyItems = @[[[ORKBodyItem alloc] initWithText:step.text detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]];
+        NSMutableArray *bodyItems = [[NSMutableArray alloc] initWithArray:@[[[ORKBodyItem alloc] initWithText:step.text detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]]];
+        [bodyItems addObjectsFromArray:step.bodyItems];
+        self.bodyItems = [bodyItems copy];
     }
     else {
         self.bodyItems = step.bodyItems;
