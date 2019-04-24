@@ -46,18 +46,13 @@
 
 - (void)setVariables {
     self.stepTitle = _instructionStep.title;
-    if (_instructionStep.text || _instructionStep.detailText) {
-        NSMutableArray *bodyItems = [[NSMutableArray alloc] initWithArray:@[[[ORKBodyItem alloc] initWithText:_instructionStep.text
-                                                                                                   detailText:_instructionStep.detailText
-                                                                                                        image:nil
-                                                                                                learnMoreItem:nil
-                                                                                                bodyItemStyle:ORKBodyItemStyleText]]];
-        [bodyItems addObjectsFromArray:_instructionStep.bodyItems];
-        self.bodyItems = [bodyItems copy];
-    }
-    else {
-        self.bodyItems = _instructionStep.bodyItems;
-    }
+    
+    self.bodyItems = (_instructionStep.text || _instructionStep.detailText) ? [@[[[ORKBodyItem alloc] initWithText:_instructionStep.text
+                                                                                                        detailText:_instructionStep.detailText
+                                                                                                             image:nil
+                                                                                                     learnMoreItem:nil
+                                                                                                     bodyItemStyle:ORKBodyItemStyleText]] arrayByAddingObjectsFromArray:_instructionStep.bodyItems] : _instructionStep.bodyItems;
+    
     self.stepTopContentImage = _instructionStep.image;
     self.auxiliaryImage = _instructionStep.auxiliaryImage;
     self.titleIconImage = _instructionStep.iconImage;

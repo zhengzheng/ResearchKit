@@ -51,14 +51,7 @@
 - (void)setQuestionStep:(ORKQuestionStep *)step {
     _questionStep = step;
     self.stepTitle = step.title;
-    if (step.text) {
-        NSMutableArray *bodyItems = [[NSMutableArray alloc] initWithArray:@[[[ORKBodyItem alloc] initWithText:step.text detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]]];
-        [bodyItems addObjectsFromArray:step.bodyItems];
-        self.bodyItems = [bodyItems copy];
-    }
-    else {
-        self.bodyItems = step.bodyItems;
-    }
+    self.bodyItems = (step.text) ? [@[[[ORKBodyItem alloc] initWithText:step.text detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]] arrayByAddingObjectsFromArray:step.bodyItems] : step.bodyItems;
 }
 
 - (void)setCustomHeaderTitle:(nullable NSString *)text {

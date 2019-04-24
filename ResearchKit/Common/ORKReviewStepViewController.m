@@ -135,15 +135,7 @@
         [self.view addSubview:_tableContainer];
         _tableContainer.tapOffView = self.view;
         
-        if ([self reviewStep].text) {
-            NSMutableArray *bodyItems = [[NSMutableArray alloc] initWithArray:@[[[ORKBodyItem alloc] initWithText:[self reviewStep].text detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]]];
-            [bodyItems addObjectsFromArray:self.step.bodyItems];
-            
-            _tableContainer.tableContainerHeaderView.bodyItems = [bodyItems copy];
-        }
-        else {
-            _tableContainer.tableContainerHeaderView.bodyItems = self.step.bodyItems;
-        }
+        _tableContainer.tableContainerHeaderView.bodyItems = ([self reviewStep].text) ? [@[[[ORKBodyItem alloc] initWithText:[self reviewStep].text detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]] arrayByAddingObjectsFromArray:self.step.bodyItems] : self.step.bodyItems;
         
         [_tableContainer.tableView setBackgroundColor:ORKNeedWideScreenDesign(self.view) ? [UIColor clearColor] : ORKColor(ORKBackgroundColorKey)];
         _navigationFooterView = [ORKNavigationContainerView new];
