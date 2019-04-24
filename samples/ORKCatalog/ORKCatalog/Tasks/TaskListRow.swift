@@ -729,7 +729,6 @@ enum TaskListRow: Int, CustomStringConvertible {
             formItem03,
             formItem01,
             formItem02
-
         ]
 
         return ORKOrderedTask(identifier: String(describing:Identifier.formTask), steps: [step])

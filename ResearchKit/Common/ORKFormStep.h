@@ -158,9 +158,6 @@ ORK_CLASS_AVAILABLE
  */
 - (instancetype)initWithSectionTitle:(nullable NSString *)sectionTitle;
 
-/**
-[WIP]
- */
 - (instancetype)initWithSectionTitle:(nullable NSString *)sectionTitle
                           detailText:(nullable NSString *)text
                        learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem
@@ -190,19 +187,10 @@ ORK_CLASS_AVAILABLE
  */
 @property (nonatomic, copy, readonly, nullable) NSString *text;
 
-/**
- Detail Text
- */
 @property (nonatomic, copy, readonly, nullable) NSString *detailText;
 
-/**
- Shows Progress
- */
 @property (nonatomic, readonly) BOOL showsProgress;
 
-/**
- Learn more item
- */
 @property (nonatomic, copy, readonly, nullable) ORKLearnMoreItem *learnMoreItem;
 
 /**

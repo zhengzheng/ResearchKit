@@ -36,6 +36,7 @@
 static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
 
 @implementation ORKSurveyCardHeaderView {
+    
     UIView *_headlineView;
     NSString *_title;
     UILabel *_titleLabel;
@@ -271,6 +272,7 @@ static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
                                                             attribute:NSLayoutAttributeBottom
                                                            multiplier:1.0 constant:0.0]
                                ];
+    
     [NSLayoutConstraint activateConstraints:_headerViewConstraints];
 }
 
@@ -303,6 +305,7 @@ static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
                                                            multiplier:1.0
                                                              constant:_progressLabel.frame.size.width]
                                ];
+    
     [NSLayoutConstraint activateConstraints:_progressLabelConstraints];
 }
 
