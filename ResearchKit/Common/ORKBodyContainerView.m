@@ -161,7 +161,7 @@ static NSString *ORKBulletUnicode = @"\u2981";
         }
     }
     if (_bodyItem.learnMoreItem) {
-        ORKLearnMoreView *learnMoreView = [_bodyItem.learnMoreItem getText] ? [ORKLearnMoreView learnMoreCustomButtonViewWithText:[_bodyItem.learnMoreItem getText] LearnMoreInstructionStep:_bodyItem.learnMoreItem.learnMoreInstructionStep] : [ORKLearnMoreView learnMoreDetailDisclosureButtonViewWithLearnMoreInstructionStep:_bodyItem.learnMoreItem.learnMoreInstructionStep];
+        ORKLearnMoreView *learnMoreView = _bodyItem.learnMoreItem.text ? [ORKLearnMoreView learnMoreCustomButtonViewWithText:_bodyItem.learnMoreItem.text LearnMoreInstructionStep:_bodyItem.learnMoreItem.learnMoreInstructionStep] : [ORKLearnMoreView learnMoreDetailDisclosureButtonViewWithLearnMoreInstructionStep:_bodyItem.learnMoreItem.learnMoreInstructionStep];
         [learnMoreView setLearnMoreButtonFont:[ORKBodyItemView bodyTextFont]];
         learnMoreView.delegate = self;
         learnMoreView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -242,7 +242,7 @@ static NSString *ORKBulletUnicode = @"\u2981";
         [subStackView addArrangedSubview:detailTextLabel];
     }
     if (_bodyItem.learnMoreItem) {
-        ORKLearnMoreView *learnMoreView = [_bodyItem.learnMoreItem getText] ? [ORKLearnMoreView learnMoreCustomButtonViewWithText:[_bodyItem.learnMoreItem getText] LearnMoreInstructionStep:_bodyItem.learnMoreItem.learnMoreInstructionStep] : [ORKLearnMoreView learnMoreDetailDisclosureButtonViewWithLearnMoreInstructionStep:_bodyItem.learnMoreItem.learnMoreInstructionStep];
+        ORKLearnMoreView *learnMoreView = _bodyItem.learnMoreItem.text ? [ORKLearnMoreView learnMoreCustomButtonViewWithText:_bodyItem.learnMoreItem.text LearnMoreInstructionStep:_bodyItem.learnMoreItem.learnMoreInstructionStep] : [ORKLearnMoreView learnMoreDetailDisclosureButtonViewWithLearnMoreInstructionStep:_bodyItem.learnMoreItem.learnMoreInstructionStep];
         [learnMoreView setLearnMoreButtonFont:[ORKBodyItemView bulletDetailTextFont]];
         learnMoreView.delegate = self;
         learnMoreView.translatesAutoresizingMaskIntoConstraints = NO;

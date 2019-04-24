@@ -28,17 +28,13 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+
 #import "ORKLearnMoreItem.h"
 
-@interface ORKLearnMoreItem()
-
-@property (nonatomic) NSString *text;
-
-@end
 
 @implementation ORKLearnMoreItem
 
-- (instancetype)initWithText:(NSString *)text learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep {
+- (instancetype)initWithText:(nullable NSString *)text learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep {
     self = [super init];
     if (self) {
         self.text = text;
@@ -50,14 +46,5 @@
 + (instancetype)learnMoreLinkItemWithText:(NSString *)text learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep {
     return [[ORKLearnMoreItem alloc] initWithText:text learnMoreInstructionStep:learnMoreInstructionStep];
 }
-
-+ (instancetype)learnMoreDetailDisclosureItemWithLearnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep {
-    return [[ORKLearnMoreItem alloc] initWithText:nil learnMoreInstructionStep:learnMoreInstructionStep];
-}
-
-- (NSString *)getText {
-    return _text;
-}
-
 
 @end

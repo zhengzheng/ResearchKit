@@ -35,13 +35,13 @@ NS_ASSUME_NONNULL_BEGIN
 @class ORKLearnMoreInstructionStep;
 @interface ORKLearnMoreItem : NSObject
 
-+ (instancetype)learnMoreLinkItemWithText:(NSString *)text learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep;
+- (instancetype)initWithText:(nullable NSString *)text learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep;
 
-+ (instancetype)learnMoreDetailDisclosureItemWithLearnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep;
++ (instancetype)learnMoreLinkItemWithText:(NSString *)text learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep;
 
 @property (nonatomic, nonnull) ORKLearnMoreInstructionStep *learnMoreInstructionStep;
 
-- (nullable NSString *)getText;
+@property (nonatomic, nullable) NSString *text;
 
 @end
 

@@ -41,6 +41,7 @@ static const NSString *LearnMoreStepIdentifierPrefix = @"ORKLearnMoreStepIdentif
 
 @implementation ORKStepContainerViewTests {
     int identifierNumber;
+    ORKLearnMoreItem *learnMoreItem;
 }
 
 - (NSString *)generateLearnMoreStepIdentifier {
@@ -52,6 +53,8 @@ static const NSString *LearnMoreStepIdentifierPrefix = @"ORKLearnMoreStepIdentif
 }
 
 - (NSArray<ORKBodyItem *> *)bodyItemsWithAllAttributes {
+    learnMoreItem = [[ORKLearnMoreItem alloc] initWithText:nil learnMoreInstructionStep:[[ORKLearnMoreInstructionStep alloc] initWithIdentifier:[self generateLearnMoreStepIdentifier]]];
+    
     return @[
              [[ORKBodyItem alloc] initWithText:@"Text1"
                                     detailText:@"DetailText1"
@@ -63,13 +66,13 @@ static const NSString *LearnMoreStepIdentifierPrefix = @"ORKLearnMoreStepIdentif
              [[ORKBodyItem alloc] initWithText:@"Text2"
                                     detailText:@"DetailText2"
                                          image:[UIImage new]
-                                 learnMoreItem:[ORKLearnMoreItem learnMoreDetailDisclosureItemWithLearnMoreInstructionStep:[[ORKLearnMoreInstructionStep alloc]
-                                                                                                                            initWithIdentifier:[self generateLearnMoreStepIdentifier]]]
+                                 learnMoreItem:learnMoreItem
                                  bodyItemStyle:ORKBodyItemStyleBulletPoint]
              ];
 }
 
 - (NSArray<ORKBodyItem *> *)bodyItemsWithoutText {
+    learnMoreItem = [[ORKLearnMoreItem alloc] initWithText:nil learnMoreInstructionStep:[[ORKLearnMoreInstructionStep alloc] initWithIdentifier:[self generateLearnMoreStepIdentifier]]];
     return @[
              [[ORKBodyItem alloc] initWithText:nil
                                     detailText:@"DetailText1"
@@ -81,13 +84,13 @@ static const NSString *LearnMoreStepIdentifierPrefix = @"ORKLearnMoreStepIdentif
              [[ORKBodyItem alloc] initWithText:nil
                                     detailText:@"DetailText2"
                                          image:[UIImage new]
-                                 learnMoreItem:[ORKLearnMoreItem learnMoreDetailDisclosureItemWithLearnMoreInstructionStep:[[ORKLearnMoreInstructionStep alloc]
-                                                                                                                            initWithIdentifier:[self generateLearnMoreStepIdentifier]]]
+                                 learnMoreItem:learnMoreItem
                                  bodyItemStyle:ORKBodyItemStyleImage]
              ];
 }
 
 - (NSArray<ORKBodyItem *> *)bodyItemsWithoutDetailText {
+    learnMoreItem = [[ORKLearnMoreItem alloc] initWithText:nil learnMoreInstructionStep:[[ORKLearnMoreInstructionStep alloc] initWithIdentifier:[self generateLearnMoreStepIdentifier]]];
     return @[
              [[ORKBodyItem alloc] initWithText:@"Text1"
                                     detailText:nil
@@ -99,13 +102,13 @@ static const NSString *LearnMoreStepIdentifierPrefix = @"ORKLearnMoreStepIdentif
              [[ORKBodyItem alloc] initWithText:@"Text2"
                                     detailText:nil
                                          image:[UIImage new]
-                                 learnMoreItem:[ORKLearnMoreItem learnMoreDetailDisclosureItemWithLearnMoreInstructionStep:[[ORKLearnMoreInstructionStep alloc]
-                                                                                                                            initWithIdentifier:[self generateLearnMoreStepIdentifier]]]
+                                 learnMoreItem:learnMoreItem
                                  bodyItemStyle:ORKBodyItemStyleText]
              ];
 }
 
 - (NSArray<ORKBodyItem *> *)bodyItemsWithoutImages {
+    learnMoreItem = [[ORKLearnMoreItem alloc] initWithText:nil learnMoreInstructionStep:[[ORKLearnMoreInstructionStep alloc] initWithIdentifier:[self generateLearnMoreStepIdentifier]]];
     return @[
              [[ORKBodyItem alloc] initWithText:@"Text1"
                                     detailText:@"DetailText1"
@@ -117,8 +120,7 @@ static const NSString *LearnMoreStepIdentifierPrefix = @"ORKLearnMoreStepIdentif
              [[ORKBodyItem alloc] initWithText:@"Text2"
                                     detailText:@"DetailText2"
                                          image:nil
-                                 learnMoreItem:[ORKLearnMoreItem learnMoreDetailDisclosureItemWithLearnMoreInstructionStep:[[ORKLearnMoreInstructionStep alloc]
-                                                                                                                            initWithIdentifier:[self generateLearnMoreStepIdentifier]]]
+                                 learnMoreItem:learnMoreItem
                                  bodyItemStyle:ORKBodyItemStyleBulletPoint]
              ];
 }
@@ -152,8 +154,8 @@ static const NSString *LearnMoreStepIdentifierPrefix = @"ORKLearnMoreStepIdentif
     }
     XCTAssertEqual(bodyItems[0].detailText, @"DetailText1");
     XCTAssertEqual(bodyItems[1].detailText, @"DetailText2");
-    XCTAssertEqual([bodyItems[0].learnMoreItem getText], @"LearnMore");
-    XCTAssertNil([bodyItems[1].learnMoreItem getText]);
+    XCTAssertEqual(bodyItems[0].learnMoreItem.text, @"LearnMore");
+    XCTAssertNil(bodyItems[1].learnMoreItem.text);
 
     
     bodyItems = [self bodyItemsWithoutDetailText];
@@ -167,8 +169,8 @@ static const NSString *LearnMoreStepIdentifierPrefix = @"ORKLearnMoreStepIdentif
     }
     XCTAssertEqual(bodyItems[0].text, @"Text1");
     XCTAssertEqual(bodyItems[1].text, @"Text2");
-    XCTAssertEqual([bodyItems[0].learnMoreItem getText], @"LearnMore");
-    XCTAssertNil([bodyItems[1].learnMoreItem getText]);
+    XCTAssertEqual(bodyItems[0].learnMoreItem.text, @"LearnMore");
+    XCTAssertNil(bodyItems[1].learnMoreItem.text);
     
     bodyItems = [self bodyItemsWithoutImages];
     for (ORKBodyItem *item in bodyItems) {
@@ -183,8 +185,8 @@ static const NSString *LearnMoreStepIdentifierPrefix = @"ORKLearnMoreStepIdentif
     XCTAssertEqual(bodyItems[1].text, @"Text2");
     XCTAssertEqual(bodyItems[0].detailText, @"DetailText1");
     XCTAssertEqual(bodyItems[1].detailText, @"DetailText2");
-    XCTAssertEqual([bodyItems[0].learnMoreItem getText], @"LearnMore");
-    XCTAssertNil([bodyItems[1].learnMoreItem getText]);
+    XCTAssertEqual(bodyItems[0].learnMoreItem.text, @"LearnMore");
+    XCTAssertNil(bodyItems[1].learnMoreItem.text);
     
     bodyItems = [self bodyItemsWithoutLearnMoreItems];
     for (ORKBodyItem *item in bodyItems) {
@@ -207,8 +209,8 @@ static const NSString *LearnMoreStepIdentifierPrefix = @"ORKLearnMoreStepIdentif
     XCTAssertEqual(bodyItems[1].text, @"Text2");
     XCTAssertEqual(bodyItems[0].detailText, @"DetailText1");
     XCTAssertEqual(bodyItems[1].detailText, @"DetailText2");
-    XCTAssertEqual([bodyItems[0].learnMoreItem getText], @"LearnMore");
-    XCTAssertNil([bodyItems[1].learnMoreItem getText]);
+    XCTAssertEqual(bodyItems[0].learnMoreItem.text, @"LearnMore");
+    XCTAssertNil(bodyItems[1].learnMoreItem.text);
 }
 
 @end
