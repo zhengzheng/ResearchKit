@@ -139,10 +139,7 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
         [_tableView setBackgroundColor:_tableViewColor];
         _tableView.alwaysBounceVertical = NO;
         _headerView = _tableContainer.tableContainerHeaderView;
-        if ([[self step] text]) {
-            _headerView.bodyItems = @[[[ORKBodyItem alloc] initWithText:[[self step] text] detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]];
-        }
-    
+        _headerView.bodyItems = ([[self step] text]) ? [@[[[ORKBodyItem alloc] initWithText:[[self step] text] detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]] arrayByAddingObjectsFromArray:self.step.bodyItems] : self.step.bodyItems;
         _navigationFooterView = [ORKNavigationContainerView new];
         _navigationFooterView.skipButtonItem = self.skipButtonItem;
         _navigationFooterView.continueEnabled = [self continueButtonEnabled];
