@@ -520,7 +520,15 @@
     BOOL isHalfway = !_hasSpokenHalfwayCountdown && timer.runtime > timer.duration / 2.0;
     if (!finished && self.activeStep.shouldSpeakRemainingTimeAtHalfway && !UIAccessibilityIsVoiceOverRunning() && isHalfway) {
         _hasSpokenHalfwayCountdown = YES;
-        NSString *text = [NSString localizedStringWithFormat:ORKLocalizedString(@"COUNTDOWN_SPOKEN_REMAINING_%@", nil), @(countDownValue)];
+        
+        NSDateComponentsFormatter *secondsFormatter = [NSDateComponentsFormatter new];
+        secondsFormatter.unitsStyle = NSDateFormatterFullStyle;
+        secondsFormatter.allowedUnits = NSCalendarUnitSecond;
+        secondsFormatter.formattingContext = NSFormattingContextDynamic;
+        secondsFormatter.maximumUnitCount = 1;
+        NSString *seconds = [secondsFormatter stringFromTimeInterval:countDownValue];
+        NSString *text = [NSString localizedStringWithFormat:ORKLocalizedString(@"COUNTDOWN_SPOKEN_REMAINING_%@", nil), seconds];
+        
         [voice speakText:text];
     }
 }

@@ -28,34 +28,21 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#import <Foundation/Foundation.h>
 
-#import "ORKInstructionStepContainerView.h"
-#import "ORKBodyItem.h"
+NS_ASSUME_NONNULL_BEGIN
 
-@implementation ORKInstructionStepContainerView
+@class ORKLearnMoreInstructionStep;
+@interface ORKLearnMoreItem : NSObject
 
+- (instancetype)initWithText:(nullable NSString *)text learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep;
 
-- (instancetype)initWithInstructionStep:(ORKInstructionStep *)instructionStep {
-    self = [super init];
-    if (self) {
-        self.instructionStep = instructionStep;
-    }
-    [self setVariables];
-    return self;
-}
++ (instancetype)learnMoreLinkItemWithText:(NSString *)text learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep;
 
-- (void)setVariables {
-    self.stepTitle = _instructionStep.title;
-    
-    self.bodyItems = (_instructionStep.text || _instructionStep.detailText) ? [@[[[ORKBodyItem alloc] initWithText:_instructionStep.text
-                                                                                                        detailText:_instructionStep.detailText
-                                                                                                             image:nil
-                                                                                                     learnMoreItem:nil
-                                                                                                     bodyItemStyle:ORKBodyItemStyleText]] arrayByAddingObjectsFromArray:_instructionStep.bodyItems] : _instructionStep.bodyItems;
-    
-    self.stepTopContentImage = _instructionStep.image;
-    self.auxiliaryImage = _instructionStep.auxiliaryImage;
-    self.titleIconImage = _instructionStep.iconImage;
-}
+@property (nonatomic, nonnull) ORKLearnMoreInstructionStep *learnMoreInstructionStep;
+
+@property (nonatomic, nullable) NSString *text;
 
 @end
+
+NS_ASSUME_NONNULL_END

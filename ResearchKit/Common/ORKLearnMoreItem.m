@@ -29,33 +29,22 @@
  */
 
 
-#import "ORKInstructionStepContainerView.h"
-#import "ORKBodyItem.h"
-
-@implementation ORKInstructionStepContainerView
+#import "ORKLearnMoreItem.h"
 
 
-- (instancetype)initWithInstructionStep:(ORKInstructionStep *)instructionStep {
+@implementation ORKLearnMoreItem
+
+- (instancetype)initWithText:(nullable NSString *)text learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep {
     self = [super init];
     if (self) {
-        self.instructionStep = instructionStep;
+        self.text = text;
+        self.learnMoreInstructionStep = learnMoreInstructionStep;
     }
-    [self setVariables];
     return self;
 }
 
-- (void)setVariables {
-    self.stepTitle = _instructionStep.title;
-    
-    self.bodyItems = (_instructionStep.text || _instructionStep.detailText) ? [@[[[ORKBodyItem alloc] initWithText:_instructionStep.text
-                                                                                                        detailText:_instructionStep.detailText
-                                                                                                             image:nil
-                                                                                                     learnMoreItem:nil
-                                                                                                     bodyItemStyle:ORKBodyItemStyleText]] arrayByAddingObjectsFromArray:_instructionStep.bodyItems] : _instructionStep.bodyItems;
-    
-    self.stepTopContentImage = _instructionStep.image;
-    self.auxiliaryImage = _instructionStep.auxiliaryImage;
-    self.titleIconImage = _instructionStep.iconImage;
++ (instancetype)learnMoreLinkItemWithText:(NSString *)text learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep {
+    return [[ORKLearnMoreItem alloc] initWithText:text learnMoreInstructionStep:learnMoreInstructionStep];
 }
 
 @end

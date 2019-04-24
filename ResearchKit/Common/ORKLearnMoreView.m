@@ -30,6 +30,7 @@
 
 
 #import "ORKLearnMoreView.h"
+#import "ORKLearnMoreItem.h"
 #import "ORKHelpers_Internal.h"
 #import "ORKBodyItem.h"
 
@@ -107,7 +108,7 @@
 }
 
 + (instancetype)learnMoreViewWithItem:(ORKLearnMoreItem *)learnMoreItem {
-    return [learnMoreItem getText] ? [ORKLearnMoreView learnMoreCustomButtonViewWithText:[learnMoreItem getText] LearnMoreInstructionStep:learnMoreItem.learnMoreInstructionStep] : [ORKLearnMoreView learnMoreDetailDisclosureButtonViewWithLearnMoreInstructionStep:learnMoreItem.learnMoreInstructionStep];
+    return learnMoreItem.text ? [ORKLearnMoreView learnMoreCustomButtonViewWithText:learnMoreItem.text LearnMoreInstructionStep:learnMoreItem.learnMoreInstructionStep] : [ORKLearnMoreView learnMoreDetailDisclosureButtonViewWithLearnMoreInstructionStep:learnMoreItem.learnMoreInstructionStep];
 }
 
 - (void)setupCustomButtonWithText:(NSString *)text {

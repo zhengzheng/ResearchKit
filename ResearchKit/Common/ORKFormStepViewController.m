@@ -546,9 +546,7 @@
         }
         _headerView = _tableContainer.tableContainerHeaderView;
         _headerView.stepTitle = [self formStep].title;
-        if ([[self formStep] text]) {
-            _headerView.bodyItems = @[[[ORKBodyItem alloc] initWithText:[[self formStep] text] detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]];
-        }
+        _headerView.bodyItems = ([[self formStep] text]) ? [@[[[ORKBodyItem alloc] initWithText:[[self formStep] text] detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]] arrayByAddingObjectsFromArray:self.step.bodyItems] : self.step.bodyItems;
         
         
         _navigationFooterView = [ORKNavigationContainerView new];

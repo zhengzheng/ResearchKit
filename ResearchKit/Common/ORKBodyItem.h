@@ -50,20 +50,7 @@ typedef NS_ENUM(NSInteger, ORKBodyItemStyle) {
     ORKBodyItemStyleImage
 } ORK_ENUM_AVAILABLE;
 
-@class ORKLearnMoreInstructionStep;
-@interface ORKLearnMoreItem : NSObject
-
-+ (instancetype)learnMoreLinkItemWithText:(NSString *)text learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep;
-
-+ (instancetype)learnMoreDetailDisclosureItemWithLearnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep;
-
-@property (nonatomic, nonnull) ORKLearnMoreInstructionStep *learnMoreInstructionStep;
-
-- (nullable NSString *)getText;
-
-@end
-
-
+@class ORKLearnMoreItem;
 @interface ORKBodyItem : NSObject
 
 + (instancetype)new NS_UNAVAILABLE;
