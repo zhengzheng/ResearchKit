@@ -193,6 +193,9 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
             if (self.questionStep.text) {
                 _headerView.bodyItems = @[[[ORKBodyItem alloc] initWithText:self.questionStep.text detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]];
             }
+            else {
+                _headerView.bodyItems = self.step.bodyItems;
+            }
             
             _navigationFooterView.optional = self.step.optional;
             if (self.readOnlyMode) {

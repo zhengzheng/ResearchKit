@@ -40,6 +40,7 @@ ORK_EXTERN NSString *const ORKNullStepIdentifier ORK_AVAILABLE_DECL;
 
 @class ORKStepViewController;
 @class ORKResult;
+@class ORKBodyItem;
 
 @protocol ORKTask;
 
@@ -149,7 +150,14 @@ ORK_CLASS_AVAILABLE
  long question, it can work well to keep the title short and put the additional content in
  the `text` property.
  */
+//  TODO: deprecate this property: DEPRECATED_MSG_ATTRIBUTE("text property has been deprecated. Please use the 'bodyItems' array to provide text in `ORKBodyItem`.");
+
 @property (nonatomic, copy, nullable) NSString *text;
+
+/**
+ Array of `ORKBodyItem` type items to display textual info.
+ */
+@property (nonatomic) NSArray<ORKBodyItem *> *bodyItems;
 
 /**
 Whether to show progress for this step when it is presented. The default is YES.

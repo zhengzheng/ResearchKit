@@ -53,6 +53,9 @@
                                                learnMoreItem:nil
                                                bodyItemStyle:ORKBodyItemStyleText]];
     }
+    else {
+        self.bodyItems = _instructionStep.bodyItems;
+    }
     self.stepTopContentImage = _instructionStep.image;
     self.auxiliaryImage = _instructionStep.auxiliaryImage;
     self.titleIconImage = _instructionStep.iconImage;

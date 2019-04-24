@@ -541,6 +541,9 @@
         if ([[self formStep] text]) {
             _headerView.bodyItems = @[[[ORKBodyItem alloc] initWithText:[[self formStep] text] detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]];
         }
+        else {
+            _headerView.bodyItems = self.step.bodyItems;
+        }
         
         
         _navigationFooterView = [ORKNavigationContainerView new];

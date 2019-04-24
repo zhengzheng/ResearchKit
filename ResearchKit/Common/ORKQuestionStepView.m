@@ -54,6 +54,9 @@
     if (step.text) {
         self.bodyItems = @[[[ORKBodyItem alloc] initWithText:step.text detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]];
     }
+    else {
+        self.bodyItems = step.bodyItems;
+    }
 }
 
 - (void)setCustomHeaderTitle:(nullable NSString *)text {

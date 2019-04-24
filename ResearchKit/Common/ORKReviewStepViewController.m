@@ -138,6 +138,9 @@
         if ([self reviewStep].text) {
             _tableContainer.tableContainerHeaderView.bodyItems = @[[[ORKBodyItem alloc] initWithText:[self reviewStep].text detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]];
         }
+        else {
+            _tableContainer.tableContainerHeaderView.bodyItems = self.step.bodyItems;
+        }
         
         [_tableContainer.tableView setBackgroundColor:ORKNeedWideScreenDesign(self.view) ? [UIColor clearColor] : ORKColor(ORKBackgroundColorKey)];
         _navigationFooterView = [ORKNavigationContainerView new];
