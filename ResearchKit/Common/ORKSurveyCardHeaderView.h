@@ -32,6 +32,7 @@
 
 
 NS_ASSUME_NONNULL_BEGIN
+@class ORKLearnMoreView;
 
 @interface ORKSurveyCardHeaderView: UIView
 
@@ -39,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype) initWithTitle:(NSString *)title
                     detailText:(nullable NSString *)text
-               learnMoreButton:(nullable UIButton *)button
+                 learnMoreView:(nullable ORKLearnMoreView *)learnMoreView
                  progressText:(nullable NSString *)progressText;
 
 @end

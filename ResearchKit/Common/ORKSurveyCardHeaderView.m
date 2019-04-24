@@ -31,6 +31,7 @@
 
 #import "ORKSurveyCardHeaderView.h"
 #import "ORKSkin.h"
+#import "ORKLearnMoreView.h"
 
 static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
 
@@ -40,7 +41,7 @@ static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
     UILabel *_titleLabel;
     NSString *_detailText;
     UILabel *_detailTextLabel;
-    UIButton *_learnMoreButton;
+    ORKLearnMoreView *_learnMoreView;
     NSString *_progressText;
     UILabel *_progressLabel;
     CAShapeLayer *_headlineMaskLayer;
@@ -62,13 +63,13 @@ static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
     return self;
 }
 
-- (instancetype)initWithTitle:(NSString *)title detailText:(nullable NSString *)text learnMoreButton:(nullable UIButton *)button progressText:(nullable NSString *)progressText {
+- (instancetype)initWithTitle:(NSString *)title detailText:(nullable NSString *)text learnMoreView:(nullable ORKLearnMoreView *)learnMoreView progressText:(nullable NSString *)progressText {
     
     self = [super init];
     if (self) {
         _title = title;
         _detailText = text;
-        _learnMoreButton = button;
+        _learnMoreView = learnMoreView;
         _progressText = progressText;
         [self setBackgroundColor:[UIColor clearColor]];
         [self setupStackView];
@@ -98,8 +99,8 @@ static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
         [_headlineStackView addArrangedSubview:_detailTextLabel];
     }
     
-    if (_learnMoreButton) {
-        [_headlineStackView addArrangedSubview:_learnMoreButton];
+    if (_learnMoreView) {
+        [_headlineStackView addArrangedSubview:_learnMoreView];
     }
     
     if (_progressText) {
@@ -205,8 +206,8 @@ static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
         _detailTextLabel.translatesAutoresizingMaskIntoConstraints = NO;
     }
     
-    if (_learnMoreButton) {
-        _learnMoreButton.translatesAutoresizingMaskIntoConstraints = NO;
+    if (_learnMoreView) {
+        _learnMoreView.translatesAutoresizingMaskIntoConstraints = NO;
     }
     
     if (_progressLabel) {
