@@ -515,9 +515,6 @@
 "TRAILMAKING_INTENDED_USE2_B" = "Tik na het aftellen op stippen, waarbij je afwisselend op cijfers en letters tikt. Begin door op het eerste cijfer '1' te tikken, gevolgd door een tik op de eerste letter 'A', en dan '2' – 'B' – '3' – 'C'… totdat je het cijfer '7' bereikt.";
 "TRAILMAKING_INTRO_TEXT" = "Doe dit zo snel als je kunt zonder fouten te maken. \n ";
 "TRAILMAKING_CALL_TO_ACTION" = "Tik op 'Start' om te beginnen.";
-"TRAILMAKING_TIMER" = "%.1f sec.";
-"TRAILMAKING_ERROR" = "%@ (%d fout)";
-"TRAILMAKING_ERROR_PLURAL" = "%@ (%d fouten)";
 "TRAILMAKING_LETTER_A" = "A";
 "TRAILMAKING_LETTER_B" = "B";
 "TRAILMAKING_LETTER_C" = "C";
