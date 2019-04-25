@@ -62,4 +62,32 @@
     }
 }
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+    self = [super init];
+    if (self) {
+        ORK_DECODE_OBJ_CLASS(aDecoder, text, NSString);
+        ORK_DECODE_OBJ_CLASS(aDecoder, detailText, NSString);
+        ORK_DECODE_OBJ_CLASS(aDecoder, learnMoreItem, ORKLearnMoreItem);
+        ORK_DECODE_INTEGER(aDecoder, bodyItemStyle);
+        ORK_DECODE_IMAGE(aDecoder, image);
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(nonnull NSCoder *)aCoder {
+    ORK_ENCODE_OBJ(aCoder, text);
+    ORK_ENCODE_OBJ(aCoder, detailText);
+    ORK_ENCODE_OBJ(aCoder, learnMoreItem);
+    ORK_ENCODE_INTEGER(aCoder, bodyItemStyle);
+    ORK_ENCODE_IMAGE(aCoder, image);
+}
+
+- (nonnull id)copyWithZone:(nullable NSZone *)zone {
+    return self;
+}
+
 @end
