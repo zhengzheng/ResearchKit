@@ -251,6 +251,9 @@
     ORK_ENCODE_OBJ(aCoder, identifier);
     ORK_ENCODE_BOOL(aCoder, optional);
     ORK_ENCODE_OBJ(aCoder, text);
+    ORK_ENCODE_OBJ(aCoder, detailText);
+    ORK_ENCODE_OBJ(aCoder, learnMoreItem);
+    ORK_ENCODE_BOOL(aCoder, showsProgress);
     ORK_ENCODE_OBJ(aCoder, placeholder);
     ORK_ENCODE_OBJ(aCoder, answerFormat);
     ORK_ENCODE_OBJ(aCoder, step);
@@ -267,13 +270,16 @@
     return (ORKEqualObjects(self.identifier, castObject.identifier)
             && self.optional == castObject.optional
             && ORKEqualObjects(self.text, castObject.text)
+            && ORKEqualObjects(self.detailText, castObject.detailText)
+            && ORKEqualObjects(self.learnMoreItem, castObject.learnMoreItem)
+            && self.showsProgress == castObject.showsProgress
             && ORKEqualObjects(self.placeholder, castObject.placeholder)
             && ORKEqualObjects(self.answerFormat, castObject.answerFormat));
 }
 
 - (NSUInteger)hash {
      // Ignore the step reference - it's not part of the content of this item
-    return _identifier.hash ^ _text.hash ^ _placeholder.hash ^ _answerFormat.hash ^ (_optional ? 0xf : 0x0);
+    return _identifier.hash ^ _text.hash ^ _placeholder.hash ^ _answerFormat.hash ^ (_optional ? 0xf : 0x0) ^ _detailText.hash ^ _learnMoreItem.hash ^ (_showsProgress ? 0xf : 0x0);
 }
 
 - (ORKAnswerFormat *)impliedAnswerFormat {
