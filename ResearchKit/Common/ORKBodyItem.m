@@ -87,7 +87,17 @@
 }
 
 - (nonnull id)copyWithZone:(nullable NSZone *)zone {
-    return self;
+    ORKBodyItem *bodyItem = [[[self class] allocWithZone:zone] init];
+    bodyItem->_text = [self.text copy];
+    bodyItem->_detailText = [self.detailText copy];
+    bodyItem->_learnMoreItem = [self.learnMoreItem copy];
+    bodyItem->_bodyItemStyle = self.bodyItemStyle;
+    bodyItem->_image = [self.image copy];
+    return bodyItem;
+}
+
+- (NSUInteger)hash {
+    return _text.hash ^ _detailText.hash ^ _learnMoreItem.hash ^ _image.hash;
 }
 
 @end
