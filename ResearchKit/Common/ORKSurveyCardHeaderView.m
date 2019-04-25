@@ -138,7 +138,7 @@ static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
     _detailTextLabel.textColor = [UIColor blackColor];
     _detailTextLabel.lineBreakMode = NSLineBreakByWordWrapping;
     _detailTextLabel.text = _detailText;
-    //ToDo: create constant for detail text font size
+    //TODO: create constant for detail text font size
     [_detailTextLabel setFont:[UIFont systemFontOfSize:ORKCardDefaultFontSize weight:UIFontWeightThin]];
 }
 
