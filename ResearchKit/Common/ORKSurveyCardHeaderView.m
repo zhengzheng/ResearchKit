@@ -31,6 +31,7 @@
 
 #import "ORKSurveyCardHeaderView.h"
 #import "ORKSkin.h"
+#import "ORKLearnMoreView.h"
 
 static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
 
@@ -39,8 +40,15 @@ static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
     UIView *_headlineView;
     NSString *_title;
     UILabel *_titleLabel;
+    NSString *_detailText;
+    UILabel *_detailTextLabel;
+    ORKLearnMoreView *_learnMoreView;
+    NSString *_progressText;
+    UILabel *_progressLabel;
     CAShapeLayer *_headlineMaskLayer;
+    UIStackView *_headlineStackView;
     NSArray<NSLayoutConstraint *> *_headerViewConstraints;
+    NSArray<NSLayoutConstraint *> *_progressLabelConstraints;
 }
 
 - (instancetype)initWithTitle:(NSString *)title {
@@ -49,27 +57,68 @@ static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
     if (self) {
         _title = title;
         [self setBackgroundColor:[UIColor clearColor]];
+        [self setupStackView];
         [self setupHeaderView];
         [self setupConstraints];
     }
     return self;
 }
 
-- (void)setupHeaderView {
-    [self setupHeadlineView];
-    [self setupTitleLabel];
+- (instancetype)initWithTitle:(NSString *)title detailText:(nullable NSString *)text learnMoreView:(nullable ORKLearnMoreView *)learnMoreView progressText:(nullable NSString *)progressText {
     
-    [_headlineView addSubview:_titleLabel];
-    [self addSubview:_headlineView];
+    self = [super init];
+    if (self) {
+        _title = title;
+        _detailText = text;
+        _learnMoreView = learnMoreView;
+        _progressText = progressText;
+        [self setBackgroundColor:[UIColor clearColor]];
+        [self setupStackView];
+        [self setupHeaderView];
+        [self setupConstraints];
+    }
+    return self;
 }
 
-- (void) setupHeadlineView {
+- (void)setupStackView {
+    _headlineStackView = [[UIStackView alloc] init];
+    _headlineStackView.axis = UILayoutConstraintAxisVertical;
+    _headlineStackView.distribution = UIStackViewDistributionEqualSpacing;
+    _headlineStackView.alignment = UIStackViewAlignmentLeading;
+    _headlineStackView.spacing = ORKCardTopBottomMargin;
+}
+
+- (void)setupHeaderView {
+    [self setupHeadlineView];
+    [self addSubview:_headlineView];
+    
+    [self setupTitleLabel];
+    [_headlineStackView addArrangedSubview:_titleLabel];
+    
+    if (_detailText) {
+        [self setUpDetailTextLabel];
+        [_headlineStackView addArrangedSubview:_detailTextLabel];
+    }
+    
+    if (_learnMoreView) {
+        [_headlineStackView addArrangedSubview:_learnMoreView];
+    }
+    
+    if (_progressText) {
+        [self setUpProgressLabel];
+        [_headlineView addSubview:_progressLabel];
+    }
+    
+    [_headlineView addSubview:_headlineStackView];
+}
+
+- (void)setupHeadlineView {
     if (!_headlineView) {
         _headlineView = [UIView new];
     }
 }
 
-- (void) setupTitleLabel {
+- (void)setupTitleLabel {
     if (!_titleLabel) {
         _titleLabel = [UILabel new];
     }
@@ -78,6 +127,31 @@ static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
     _titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     _titleLabel.text = _title;
     [_titleLabel setFont:[UIFont systemFontOfSize:ORKCardDefaultFontSize weight:UIFontWeightBold]];
+}
+
+- (void)setUpDetailTextLabel {
+    if (!_detailTextLabel) {
+        _detailTextLabel = [UILabel new];
+    }
+    
+    _detailTextLabel.numberOfLines = 0;
+    _detailTextLabel.textColor = [UIColor blackColor];
+    _detailTextLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    _detailTextLabel.text = _detailText;
+    //TODO: create constant for detail text font size
+    [_detailTextLabel setFont:[UIFont systemFontOfSize:ORKCardDefaultFontSize weight:UIFontWeightThin]];
+}
+
+- (void)setUpProgressLabel {
+    if (!_progressLabel) {
+        _progressLabel = [UILabel new];
+    }
+    _progressLabel.numberOfLines = 0;
+    _progressLabel.textColor = [UIColor blackColor];
+    _progressLabel.text = _progressText;
+    _progressLabel.textAlignment = NSTextAlignmentRight;
+    [_progressLabel setFont:[UIFont systemFontOfSize:ORKCardDefaultFontSize weight:UIFontWeightBold]];
+    [_progressLabel sizeToFit];
 }
 
 - (void)layoutSubviews {
@@ -126,20 +200,113 @@ static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
         [NSLayoutConstraint deactivateConstraints:_headerViewConstraints];
     }
     _headlineView.translatesAutoresizingMaskIntoConstraints = NO;
+    _headlineStackView.translatesAutoresizingMaskIntoConstraints = NO;
     _titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    if (_detailTextLabel) {
+        _detailTextLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    }
+    
+    if (_learnMoreView) {
+        _learnMoreView.translatesAutoresizingMaskIntoConstraints = NO;
+    }
+    
+    if (_progressLabel) {
+        [self setupProgressLabelConstraints];
+    }
+    
     _headerViewConstraints = @[
-                               [NSLayoutConstraint constraintWithItem:_headlineView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0],
-                               [NSLayoutConstraint constraintWithItem:_headlineView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1.0 constant:ORKCardLeftRightMargin],
-                               [NSLayoutConstraint constraintWithItem:_headlineView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1.0 constant: -ORKCardLeftRightMargin],
+                               [NSLayoutConstraint constraintWithItem:_headlineView
+                                                            attribute:NSLayoutAttributeTop
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:self
+                                                            attribute:NSLayoutAttributeTop
+                                                           multiplier:1.0 constant:0.0],
+                               [NSLayoutConstraint constraintWithItem:_headlineView
+                                                            attribute:NSLayoutAttributeLeft
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:self
+                                                            attribute:NSLayoutAttributeLeft
+                                                           multiplier:1.0
+                                                             constant:ORKCardLeftRightMargin],
+                               [NSLayoutConstraint constraintWithItem:_headlineView
+                                                            attribute:NSLayoutAttributeRight
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:self
+                                                            attribute:NSLayoutAttributeRight
+                                                           multiplier:1.0
+                                                             constant: -ORKCardLeftRightMargin],
                                
-                               [NSLayoutConstraint constraintWithItem:_titleLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeTop multiplier:1.0 constant:ORKCardTopBottomMargin],
-                               [NSLayoutConstraint constraintWithItem:_titleLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:HeadlineViewTitleLeftRightPadding],
-                               [NSLayoutConstraint constraintWithItem:_titleLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeRight multiplier:1.0 constant:-HeadlineViewTitleLeftRightPadding],
-                               [NSLayoutConstraint constraintWithItem:_headlineView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_titleLabel attribute:NSLayoutAttributeBottom multiplier:1.0 constant:ORKCardTopBottomMargin],
-                               [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_headlineView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]
+                               [NSLayoutConstraint constraintWithItem:_headlineStackView
+                                                            attribute:NSLayoutAttributeTop
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:_headlineView
+                                                            attribute:NSLayoutAttributeTop
+                                                           multiplier:1.0
+                                                             constant:ORKCardTopBottomMargin],
+                               [NSLayoutConstraint constraintWithItem:_headlineStackView
+                                                            attribute:NSLayoutAttributeLeft
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:_headlineView
+                                                            attribute:NSLayoutAttributeLeft
+                                                           multiplier:1.0
+                                                             constant:HeadlineViewTitleLeftRightPadding],
+                               [NSLayoutConstraint constraintWithItem:_headlineStackView
+                                                            attribute:NSLayoutAttributeRight
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem: _progressText ? _progressLabel : _headlineView
+                                                            attribute:_progressText ? NSLayoutAttributeLeft : NSLayoutAttributeRight
+                                                           multiplier:1.0
+                                                             constant:-HeadlineViewTitleLeftRightPadding],
+                               
+                               [NSLayoutConstraint constraintWithItem:_headlineView
+                                                            attribute:NSLayoutAttributeBottom
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:_headlineStackView
+                                                            attribute:NSLayoutAttributeBottom
+                                                           multiplier:1.0 constant:ORKCardTopBottomMargin],
+                               [NSLayoutConstraint constraintWithItem:self
+                                                            attribute:NSLayoutAttributeBottom
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:_headlineView
+                                                            attribute:NSLayoutAttributeBottom
+                                                           multiplier:1.0 constant:0.0]
                                ];
     
     [NSLayoutConstraint activateConstraints:_headerViewConstraints];
+}
+
+- (void) setupProgressLabelConstraints {
+    if (_progressLabelConstraints) {
+        [NSLayoutConstraint deactivateConstraints:_progressLabelConstraints];
+    }
+    _progressLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    //FIXME: UIlabel width should be sizeToFit.
+    _progressLabelConstraints = @[
+                               [NSLayoutConstraint constraintWithItem:_progressLabel
+                                                            attribute:NSLayoutAttributeTop
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:_headlineView
+                                                            attribute:NSLayoutAttributeTop
+                                                           multiplier:1.0
+                                                             constant:ORKCardTopBottomMargin],
+                               [NSLayoutConstraint constraintWithItem:_progressLabel
+                                                            attribute:NSLayoutAttributeRight
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem: _headlineView
+                                                            attribute:NSLayoutAttributeRight
+                                                           multiplier:1.0
+                                                             constant:-HeadlineViewTitleLeftRightPadding],
+                               [NSLayoutConstraint constraintWithItem:_progressLabel
+                                                            attribute:NSLayoutAttributeWidth
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem: nil
+                                                            attribute:NSLayoutAttributeNotAnAttribute
+                                                           multiplier:1.0
+                                                             constant:_progressLabel.frame.size.width]
+                               ];
+    
+    [NSLayoutConstraint activateConstraints:_progressLabelConstraints];
 }
 
 @end
