@@ -36,6 +36,7 @@
 
 #import "ORKOrderedTask.h"
 #import "ORKStepViewController_Internal.h"
+#import "ORKBodyItem.h"
 
 #import "ORKHelpers_Internal.h"
 
@@ -92,6 +93,8 @@
     step.title = _title;
     step.optional = _optional;
     step.text = _text;
+    step.bodyItems = [_bodyItems copy];
+    step.showsProgress = _showsProgress;
     step.shouldTintImages = _shouldTintImages;
     step.useSurveyMode = _useSurveyMode;
     return step;
@@ -107,6 +110,8 @@
     return (ORKEqualObjects(self.identifier, castObject.identifier)
             && ORKEqualObjects(self.title, castObject.title)
             && ORKEqualObjects(self.text, castObject.text)
+            && ORKEqualObjects(self.bodyItems, castObject.bodyItems)
+            && (self.showsProgress == castObject.showsProgress)
             && (self.optional == castObject.optional)
             && (self.shouldTintImages == castObject.shouldTintImages)
             && (self.useSurveyMode == castObject.useSurveyMode));
@@ -114,7 +119,7 @@
 
 - (NSUInteger)hash {
     // Ignore the task reference - it's not part of the content of the step.
-    return _identifier.hash ^ _title.hash ^ _text.hash ^ (_optional ? 0xf : 0x0);
+    return _identifier.hash ^ _title.hash ^ _text.hash ^ (_optional ? 0xf : 0x0) ^ _bodyItems.hash ^ (_showsProgress ? 0xf : 0x0);
 }
 
 + (BOOL)supportsSecureCoding {
@@ -127,6 +132,8 @@
         ORK_DECODE_OBJ_CLASS(aDecoder, identifier, NSString);
         ORK_DECODE_OBJ_CLASS(aDecoder, title, NSString);
         ORK_DECODE_OBJ_CLASS(aDecoder, text, NSString);
+        ORK_DECODE_OBJ_ARRAY(aDecoder, bodyItems, ORKBodyItem);
+        ORK_DECODE_BOOL(aDecoder, showsProgress);
         ORK_DECODE_BOOL(aDecoder, optional);
         ORK_DECODE_OBJ_CLASS(aDecoder, task, ORKOrderedTask);
         ORK_DECODE_BOOL(aDecoder, shouldTintImages);
@@ -139,6 +146,8 @@
     ORK_ENCODE_OBJ(aCoder, identifier);
     ORK_ENCODE_OBJ(aCoder, title);
     ORK_ENCODE_OBJ(aCoder, text);
+    ORK_ENCODE_OBJ(aCoder, bodyItems);
+    ORK_ENCODE_BOOL(aCoder, showsProgress);
     ORK_ENCODE_BOOL(aCoder, optional);
     ORK_ENCODE_BOOL(aCoder, shouldTintImages);
     ORK_ENCODE_BOOL(aCoder, useSurveyMode);
