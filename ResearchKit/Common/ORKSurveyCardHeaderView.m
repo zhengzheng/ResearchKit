@@ -281,7 +281,7 @@ static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
         [NSLayoutConstraint deactivateConstraints:_progressLabelConstraints];
     }
     _progressLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    
+    //FIXME: UIlabel width should be sizeToFit.
     _progressLabelConstraints = @[
                                [NSLayoutConstraint constraintWithItem:_progressLabel
                                                             attribute:NSLayoutAttributeTop
