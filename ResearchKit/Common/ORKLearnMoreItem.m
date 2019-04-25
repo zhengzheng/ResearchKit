@@ -30,6 +30,8 @@
 
 
 #import "ORKLearnMoreItem.h"
+#import "ORKLearnMoreInstructionStep.h"
+#import "ORKHelpers_Internal.h"
 
 
 @implementation ORKLearnMoreItem
@@ -45,6 +47,35 @@
 
 + (instancetype)learnMoreLinkItemWithText:(NSString *)text learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep {
     return [[ORKLearnMoreItem alloc] initWithText:text learnMoreInstructionStep:learnMoreInstructionStep];
+}
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
+- (nonnull id)copyWithZone:(nullable NSZone *)zone {
+    ORKLearnMoreItem *learnMoreItem = [[[self class] allocWithZone:zone] init];
+    learnMoreItem->_text = [self.text copy];
+    learnMoreItem->_learnMoreInstructionStep = [self.learnMoreInstructionStep copy];
+    return learnMoreItem;
+}
+
+- (void)encodeWithCoder:(nonnull NSCoder *)aCoder {
+    ORK_ENCODE_OBJ(aCoder, text);
+    ORK_ENCODE_OBJ(aCoder, learnMoreInstructionStep);
+}
+
+- (nullable instancetype)initWithCoder:(nonnull NSCoder *)aDecoder {
+    self = [super init];
+    if (self) {
+        ORK_DECODE_OBJ_CLASS(aDecoder, text, NSString);
+        ORK_DECODE_OBJ_CLASS(aDecoder, learnMoreInstructionStep, ORKLearnMoreInstructionStep);
+    }
+    return self;
+}
+
+- (NSUInteger)hash {
+    return _text.hash ^ _learnMoreInstructionStep.hash;
 }
 
 @end

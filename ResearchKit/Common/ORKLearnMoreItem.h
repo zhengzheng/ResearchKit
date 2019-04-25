@@ -33,7 +33,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class ORKLearnMoreInstructionStep;
-@interface ORKLearnMoreItem : NSObject
+@interface ORKLearnMoreItem : NSObject <NSCopying, NSSecureCoding>
 
 - (instancetype)initWithText:(nullable NSString *)text learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep;
 
