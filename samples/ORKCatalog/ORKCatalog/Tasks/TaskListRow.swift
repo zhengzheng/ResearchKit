@@ -61,6 +61,7 @@ class SystemSound {
 */
 enum TaskListRow: Int, CustomStringConvertible {
     case form = 0
+    case groupedForm
     case survey
     case booleanQuestion
     case customBooleanQuestion
@@ -128,6 +129,7 @@ enum TaskListRow: Int, CustomStringConvertible {
             TaskListRowSection(title: "Surveys", rows:
                 [
                     .form,
+                    .groupedForm,
                     .survey,
                 ]),
             TaskListRowSection(title: "Survey Questions", rows:
@@ -199,6 +201,9 @@ enum TaskListRow: Int, CustomStringConvertible {
         switch self {
         case .form:
             return NSLocalizedString("Form Survey Example", comment: "")
+            
+        case .groupedForm:
+            return NSLocalizedString("Grouped Form Survey Example", comment: "")
             
         case .survey:
             return NSLocalizedString("Simple Survey Example", comment: "")
@@ -370,6 +375,7 @@ enum TaskListRow: Int, CustomStringConvertible {
         // Task with a form, where multiple items appear on one page.
         case formTask
         case formStep
+        case groupedFormStep
         case formItem01
         case formItem02
         case formItem03
@@ -548,6 +554,9 @@ enum TaskListRow: Int, CustomStringConvertible {
         switch self {
         case .form:
             return formTask
+            
+        case .groupedForm:
+            return groupedFormTask
             
         case .survey:
             return surveyTask
@@ -731,6 +740,44 @@ enum TaskListRow: Int, CustomStringConvertible {
             formItem02
         ]
 
+        return ORKOrderedTask(identifier: String(describing:Identifier.formTask), steps: [step])
+    }
+    
+    private var groupedFormTask: ORKTask {
+        let step = ORKFormStep(identifier: String(describing:Identifier.groupedFormStep), title: NSLocalizedString("Form Step", comment: ""), text: exampleDetailText)
+        
+        //Start of first section
+        let learnMoreInstructionStep01 = ORKLearnMoreInstructionStep(identifier: "LearnMoreInstructionStep01")
+        learnMoreInstructionStep01.title = NSLocalizedString("Learn more title", comment: "")
+        learnMoreInstructionStep01.text = NSLocalizedString("Learn more text", comment: "")
+        let learnMoreItem01 = ORKLearnMoreItem(text: "Learn More", learnMoreInstructionStep: learnMoreInstructionStep01)
+        let section01 = ORKFormItem(sectionTitle: NSLocalizedString("Section title", comment: ""), detailText: NSLocalizedString("Section detail text", comment: ""), learnMoreItem: learnMoreItem01, showsProgress: true)
+        
+        // A first field, for entering an integer.
+        let formItem01Text = NSLocalizedString("Field01", comment: "")
+        let formItem01 = ORKFormItem(identifier: String(describing:Identifier.formItem01), text: formItem01Text, answerFormat: ORKAnswerFormat.integerAnswerFormat(withUnit: nil))
+        formItem01.placeholder = NSLocalizedString("Your placeholder here", comment: "")
+        
+        // A second field, for entering a time interval.
+        let formItem02Text = NSLocalizedString("Field02", comment: "")
+        let formItem02 = ORKFormItem(identifier: String(describing:Identifier.formItem02), text: formItem02Text, answerFormat: ORKTimeIntervalAnswerFormat())
+        formItem02.placeholder = NSLocalizedString("Your placeholder here", comment: "")
+        
+        //Start of second section
+        let section02 = ORKFormItem(sectionTitle: NSLocalizedString("Section title", comment: ""), detailText: nil, learnMoreItem: nil, showsProgress: true)
+        
+        let formItem03Text = NSLocalizedString(exampleQuestionText, comment: "")
+        let scaleAnswerFormat = ORKContinuousScaleAnswerFormat.init(maximumValue: 10, minimumValue: 0, defaultValue: 0.0, maximumFractionDigits: 1)//ORKScaleAnswerFormat(maximumValue: 10, minimumValue: 0, defaultValue: 0, step: 1)
+        let formItem03 = ORKFormItem(identifier: String(describing: Identifier.formItem03), text: formItem03Text, answerFormat: scaleAnswerFormat)
+        
+        step.formItems = [
+            section01,
+            formItem01,
+            formItem02,
+            section02,
+            formItem03
+        ]
+        
         return ORKOrderedTask(identifier: String(describing:Identifier.formTask), steps: [step])
     }
 

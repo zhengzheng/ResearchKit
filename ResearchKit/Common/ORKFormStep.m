@@ -33,6 +33,7 @@
 
 #import "ORKFormStepViewController.h"
 #import "ORKBodyItem.h"
+#import "ORKLearnMoreItem.h"
 
 #import "ORKAnswerFormat_Internal.h"
 #import "ORKFormItem_Internal.h"
@@ -70,7 +71,6 @@
     }
     return self;
 }
-
 
 - (void)validateParameters {
     [super validateParameters];
@@ -238,6 +238,8 @@
         ORK_DECODE_BOOL(aDecoder, optional);
         ORK_DECODE_OBJ_CLASS(aDecoder, text, NSString);
         ORK_DECODE_OBJ_CLASS(aDecoder, detailText, NSString);
+        ORK_DECODE_OBJ_CLASS(aDecoder, learnMoreItem, ORKLearnMoreItem);
+        ORK_DECODE_BOOL(aDecoder, showsProgress);
         ORK_DECODE_OBJ_CLASS(aDecoder, placeholder, NSString);
         ORK_DECODE_OBJ_CLASS(aDecoder, answerFormat, ORKAnswerFormat);
         ORK_DECODE_OBJ_CLASS(aDecoder, step, ORKFormStep);
