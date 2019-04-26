@@ -53,9 +53,6 @@ typedef NS_ENUM(NSInteger, ORKBodyItemStyle) {
 @class ORKLearnMoreItem;
 @interface ORKBodyItem : NSObject <NSSecureCoding, NSCopying>
 
-+ (instancetype)new NS_UNAVAILABLE;
-- (instancetype)init NS_UNAVAILABLE;
-
 - (instancetype)initWithText:(nullable NSString *)text detailText:(nullable NSString *)detailText image:(nullable UIImage *)image learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem bodyItemStyle:(ORKBodyItemStyle)bodyItemStyle;
 
 @property (nonatomic) NSString *text;

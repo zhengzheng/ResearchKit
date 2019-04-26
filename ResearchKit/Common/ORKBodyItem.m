@@ -35,14 +35,6 @@
 
 @implementation ORKBodyItem
 
-+ (instancetype)new {
-    ORKThrowMethodUnavailableException();
-}
-
-- (instancetype)init {
-    ORKThrowMethodUnavailableException();
-}
-
 - (instancetype)initWithText:(NSString *)text detailText:(NSString *)detailText image:(nullable UIImage *)image learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem bodyItemStyle:(ORKBodyItemStyle)bodyItemStyle {
     self = [super init];
     if (self) {
