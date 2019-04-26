@@ -100,4 +100,17 @@
     return _text.hash ^ _detailText.hash ^ _learnMoreItem.hash ^ _image.hash;
 }
 
+- (BOOL)isEqual:(id)object {
+    if ([self class] != [object class]) {
+        return NO;
+    }
+
+    __typeof(self) castObject = object;
+    return (ORKEqualObjects(self.text, castObject.text)
+            && ORKEqualObjects(self.detailText, castObject.detailText)
+            && ORKEqualObjects(self.learnMoreItem, castObject.learnMoreItem)
+            && (self.bodyItemStyle == castObject.bodyItemStyle)
+            && ORKEqualObjects(self.image, castObject.image));
+}
+
 @end
