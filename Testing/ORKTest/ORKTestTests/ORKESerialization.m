@@ -580,7 +580,8 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     PROPERTY(title, NSString, NSObject, YES, nil, nil),
                     PROPERTY(text, NSString, NSObject, YES, nil, nil),
                     PROPERTY(shouldTintImages, NSNumber, NSObject, YES, nil, nil),
-                    PROPERTY(useSurveyMode, NSNumber, NSObject, YES, nil, nil)
+                    PROPERTY(useSurveyMode, NSNumber, NSObject, YES, nil, nil),
+                    PROPERTY(bodyItems, ORKBodyItem, NSArray, YES, nil, nil)
                     })),
            ENTRY(ORKReviewStep,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
@@ -653,6 +654,20 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                  (@{
                     PROPERTY(detailText, NSString, NSObject, YES, nil, nil),
                     PROPERTY(footnote, NSString, NSObject, YES, nil, nil)
+                    })),
+           ENTRY(ORKLearnMoreInstructionStep,
+                 ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
+                     return [[ORKLearnMoreInstructionStep alloc] initWithIdentifier:GETPROP(dict, identifier)];
+                 },
+                 (@{
+                    })),
+           ENTRY(ORKLearnMoreItem,
+                 ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
+                     return [[ORKLearnMoreItem alloc] initWithText:GETPROP(dict, text) learnMoreInstructionStep:GETPROP(dict, learnMoreInstructionStep)];
+                 },
+                 (@{
+                    PROPERTY(text, NSString, NSObject, YES, nil, nil),
+                    PROPERTY(learnMoreInstructionStep, ORKLearnMoreInstructionStep, NSObject, YES, nil, nil)
                     })),
            ENTRY(ORKVideoInstructionStep,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
@@ -843,7 +858,8 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                      PROPERTY(items, NSObject, NSArray, YES, nil, nil),
                      PROPERTY(isBulleted, NSNumber, NSObject, YES, nil, nil),
                      PROPERTY(bulletIconNames, NSString, NSArray, YES, nil, nil),
-                     PROPERTY(allowsSelection, NSNumber, NSObject, YES, nil, nil)
+                     PROPERTY(allowsSelection, NSNumber, NSObject, YES, nil, nil),
+                     PROPERTY(bulletType, NSNumber, NSObject, YES, nil, nil)
                      }))),
            ENTRY(ORKTimedWalkStep,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
@@ -1098,8 +1114,10 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     PROPERTY(identifier, NSString, NSObject, NO, nil, nil),
                     PROPERTY(optional, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(text, NSString, NSObject, NO, nil, nil),
+                    PROPERTY(detailText, NSString, NSObject, NO, nil, nil),
                     PROPERTY(placeholder, NSString, NSObject, YES, nil, nil),
                     PROPERTY(answerFormat, ORKAnswerFormat, NSObject, NO, nil, nil),
+                    PROPERTY(learnMoreItem, ORKLearnMoreItem, NSObject, NO, nil, nil),
                     })),
            ENTRY(ORKPageStep,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
