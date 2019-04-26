@@ -1113,6 +1113,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                  (@{
                     PROPERTY(identifier, NSString, NSObject, NO, nil, nil),
                     PROPERTY(optional, NSNumber, NSObject, YES, nil, nil),
+                    PROPERTY(showsProgress, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(text, NSString, NSObject, NO, nil, nil),
                     PROPERTY(detailText, NSString, NSObject, NO, nil, nil),
                     PROPERTY(placeholder, NSString, NSObject, YES, nil, nil),
