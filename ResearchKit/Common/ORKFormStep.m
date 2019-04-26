@@ -194,7 +194,7 @@
     if (self) {
         _text = [sectionTitle copy];
         _detailText = [text copy];
-        _learnMoreItem = learnMoreItem;
+        _learnMoreItem = [learnMoreItem copy];
         _showsProgress = showsProgress;
     }
     return self;
@@ -226,8 +226,11 @@
 
 - (instancetype)copyWithZone:(NSZone *)zone {
     ORKFormItem *item = [[[self class] allocWithZone:zone] initWithIdentifier:[_identifier copy] text:[_text copy] answerFormat:[_answerFormat copy]];
-    item.optional = _optional;
-    item.placeholder = _placeholder;
+    item->_optional = _optional;
+    item->_placeholder = _placeholder;
+    item->_detailText = [_detailText copy];
+    item->_learnMoreItem = [_learnMoreItem copy];
+    item->_showsProgress = _showsProgress;
     return item;
 }
 
