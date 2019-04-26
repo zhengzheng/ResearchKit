@@ -78,4 +78,14 @@
     return _text.hash ^ _learnMoreInstructionStep.hash;
 }
 
+- (BOOL)isEqual:(id)object {
+    if ([self class] != [object class]) {
+        return NO;
+    }
+
+    __typeof(self) castObject = object;
+    return (ORKEqualObjects(self.text, castObject.text)
+            && ORKEqualObjects(self.learnMoreInstructionStep, castObject.learnMoreInstructionStep));
+}
+
 @end
