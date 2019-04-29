@@ -35,13 +35,36 @@ NS_ASSUME_NONNULL_BEGIN
 @class ORKLearnMoreInstructionStep;
 @interface ORKLearnMoreItem : NSObject <NSCopying, NSSecureCoding>
 
+
+/**
+ * Returns an initialized `ORKLearnMoreItem` using specified values.
+
+ @param text                        Text to be used in title label of button. If nil, the button is initialized with type `UIButtonTypeDetailDisclosure`.
+ @param learnMoreInstructionStep    The `ORKLearnMoreInstructionStep` to be presented when button is pressed.
+ @return An initialized learn more item.
+ */
 - (instancetype)initWithText:(nullable NSString *)text learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep;
 
+/**
+ * Convenience class initializer to create a button.
+ * Using this initializer initializes the button with type `UIButtonTypeCustom`, and assures that button's title label will have text.
+ * Returns an initialized `ORKLearnMoreItem` using specified values.
+
+ @param text                        Text to be used as title label of button.
+ @param learnMoreInstructionStep    The `ORKLearnMoreInstructionStep` to be used in `ORKLearnMoreStepViewController` to present when the button is pressed.
+ @return An inittialized learn more item.
+ */
 + (instancetype)learnMoreLinkItemWithText:(NSString *)text learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep;
 
-@property (nonatomic, nonnull) ORKLearnMoreInstructionStep *learnMoreInstructionStep;
-
+/**
+ Text to be used in title label of button.
+ */
 @property (nonatomic, nullable) NSString *text;
+
+/**
+ The `ORKLearnMoreInstructionStep` to be presented when the button is pressed.
+ */
+@property (nonatomic, nonnull) ORKLearnMoreInstructionStep *learnMoreInstructionStep;
 
 @end
 
