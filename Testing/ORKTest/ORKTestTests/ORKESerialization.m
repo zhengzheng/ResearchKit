@@ -1115,10 +1115,10 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     PROPERTY(optional, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(showsProgress, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(text, NSString, NSObject, NO, nil, nil),
-                    PROPERTY(detailText, NSString, NSObject, NO, nil, nil),
+                    PROPERTY(detailText, NSString, NSObject, YES, nil, nil),
                     PROPERTY(placeholder, NSString, NSObject, YES, nil, nil),
                     PROPERTY(answerFormat, ORKAnswerFormat, NSObject, NO, nil, nil),
-                    PROPERTY(learnMoreItem, ORKLearnMoreItem, NSObject, NO, nil, nil),
+                    PROPERTY(learnMoreItem, ORKLearnMoreItem, NSObject, YES, nil, nil),
                     })),
            ENTRY(ORKPageStep,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
