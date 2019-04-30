@@ -92,11 +92,6 @@
 
 - (void)injectAccelerometerData:(CMAccelerometerData *)accelerometerData;
 
-- (void)startAccelerometerUpdates;
-
-- (void)startAccelerometerUpdatesToQueue:(NSOperationQueue *)queue withHandler:(CMAccelerometerHandler)handler;
-
-- (void)stopAccelerometerUpdates;
 
 @end
 
@@ -107,12 +102,13 @@
 }
 
 - (void)startAccelerometerUpdates {
-    
+    // override implementation and do nothing, fake data will be added via the inject method
 }
 
 - (void)stopAccelerometerUpdates {
-    
+    // override implementation and do nothing
 }
+
 - (void)injectMotion:(CMDeviceMotion *)motion {
     _motionHandler(motion, nil);
 }
@@ -479,7 +475,7 @@ static const NSInteger kNumberOfSamples = 5;
     [newRecorder stop];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        XCTAssert(self->_result!=nil, @"Data source has populated array after initializing and, you know, giving it some time to breath, man.");
+        XCTAssert(self->_result!=nil, @"Data source has populated array after initializing");
         [expectation fulfill];
     });
     
