@@ -92,7 +92,6 @@
 
 - (void)injectAccelerometerData:(CMAccelerometerData *)accelerometerData;
 
-
 @end
 
 
