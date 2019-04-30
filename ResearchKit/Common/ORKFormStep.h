@@ -37,7 +37,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class ORKAnswerFormat;
 @class ORKFormItem;
-@class ORKInstructionStep;
 @class ORKLearnMoreItem;
 
 /**
