@@ -1,6 +1,6 @@
 /*
  Copyright (c) 2019, Apple Inc. All rights reserved.
-
+ 
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
  
@@ -29,19 +29,19 @@
  */
 
 
-#import <ResearchKit/ORKStepContainerView.h>
+#import <ResearchKit/ORKStepContentView.h>
 
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class ORKStepContentView;
-@interface ORKStepContainerView ()
+@class ORKTitleLabel;
+@class ORKBodyContainerView;
+@interface ORKStepContentView ()
 
-@property (nonatomic) UIView *customContentView;
-
-@property (nonatomic, nullable) ORKNavigationContainerView *navigationFooterView;
-
-@property (nonatomic, nullable) ORKStepContentView *stepContentView;
+@property (nonatomic, nullable) UIImageView *topContentImageView;
+@property (nonatomic) ORKTitleLabel *titleLabel;
+@property (nonatomic, nullable) UIImageView *iconImageView;
+@property (nonatomic) ORKBodyContainerView *bodyContainerView;
 
 @end
 
