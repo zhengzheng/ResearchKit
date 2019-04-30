@@ -67,7 +67,7 @@
     
     item = [[ORKFormItem alloc] initWithSectionTitle:@"formItem3"
                                           detailText:@"formItem3"
-                                       learnMoreItem:[ORKLearnMoreItem learnMoreLinkItemWithText:@"learnMoreItemText" learnMoreInstructionStep:[[ORKLearnMoreInstructionStep alloc] initWithIdentifier:@"instructionStepIdentifier"]]
+                                       learnMoreItem:[ORKLearnMoreItem learnMoreItemWithText:@"learnMoreItemText" learnMoreInstructionStep:[[ORKLearnMoreInstructionStep alloc] initWithIdentifier:@"instructionStepIdentifier"]]
                                        showsProgress:YES];
     [items addObject:item];
     

@@ -54,7 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param learnMoreInstructionStep    The `ORKLearnMoreInstructionStep` to be used in `ORKLearnMoreStepViewController` to present when the button is pressed.
  @return An inittialized learn more item.
  */
-+ (instancetype)learnMoreLinkItemWithText:(NSString *)text learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep;
++ (instancetype)learnMoreItemWithText:(NSString *)text learnMoreInstructionStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep;
 
 /**
  Text to be used in title label of button.

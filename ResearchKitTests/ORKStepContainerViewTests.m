@@ -59,7 +59,7 @@ static const NSString *LearnMoreStepIdentifierPrefix = @"ORKLearnMoreStepIdentif
              [[ORKBodyItem alloc] initWithText:@"Text1"
                                     detailText:@"DetailText1"
                                          image:[UIImage new]
-                                 learnMoreItem:[ORKLearnMoreItem learnMoreLinkItemWithText:@"LearnMore"
+                                 learnMoreItem:[ORKLearnMoreItem learnMoreItemWithText:@"LearnMore"
                                                                   learnMoreInstructionStep:[[ORKLearnMoreInstructionStep alloc]
                                                                                             initWithIdentifier:[self generateLearnMoreStepIdentifier]]]
                                  bodyItemStyle:ORKBodyItemStyleText],
@@ -77,7 +77,7 @@ static const NSString *LearnMoreStepIdentifierPrefix = @"ORKLearnMoreStepIdentif
              [[ORKBodyItem alloc] initWithText:nil
                                     detailText:@"DetailText1"
                                          image:[UIImage new]
-                                 learnMoreItem:[ORKLearnMoreItem learnMoreLinkItemWithText:@"LearnMore"
+                                 learnMoreItem:[ORKLearnMoreItem learnMoreItemWithText:@"LearnMore"
                                                                   learnMoreInstructionStep:[[ORKLearnMoreInstructionStep alloc]
                                                                                             initWithIdentifier:[self generateLearnMoreStepIdentifier]]]
                                  bodyItemStyle:ORKBodyItemStyleBulletPoint],
@@ -95,7 +95,7 @@ static const NSString *LearnMoreStepIdentifierPrefix = @"ORKLearnMoreStepIdentif
              [[ORKBodyItem alloc] initWithText:@"Text1"
                                     detailText:nil
                                          image:[UIImage new]
-                                 learnMoreItem:[ORKLearnMoreItem learnMoreLinkItemWithText:@"LearnMore"
+                                 learnMoreItem:[ORKLearnMoreItem learnMoreItemWithText:@"LearnMore"
                                                                   learnMoreInstructionStep:[[ORKLearnMoreInstructionStep alloc]
                                                                                             initWithIdentifier:[self generateLearnMoreStepIdentifier]]]
                                  bodyItemStyle:ORKBodyItemStyleImage],
@@ -113,7 +113,7 @@ static const NSString *LearnMoreStepIdentifierPrefix = @"ORKLearnMoreStepIdentif
              [[ORKBodyItem alloc] initWithText:@"Text1"
                                     detailText:@"DetailText1"
                                          image:nil
-                                 learnMoreItem:[ORKLearnMoreItem learnMoreLinkItemWithText:@"LearnMore"
+                                 learnMoreItem:[ORKLearnMoreItem learnMoreItemWithText:@"LearnMore"
                                                                   learnMoreInstructionStep:[[ORKLearnMoreInstructionStep alloc]
                                                                                             initWithIdentifier:[self generateLearnMoreStepIdentifier]]]
                                  bodyItemStyle:ORKBodyItemStyleImage],
