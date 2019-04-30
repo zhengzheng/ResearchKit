@@ -151,7 +151,6 @@ static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
     _progressLabel.text = _progressText;
     _progressLabel.textAlignment = NSTextAlignmentRight;
     [_progressLabel setFont:[UIFont systemFontOfSize:ORKCardDefaultFontSize weight:UIFontWeightBold]];
-    [_progressLabel sizeToFit];
 }
 
 - (void)layoutSubviews {
@@ -213,6 +212,7 @@ static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
     
     if (_progressLabel) {
         [self setupProgressLabelConstraints];
+        [_progressLabel invalidateIntrinsicContentSize];
     }
     
     _headerViewConstraints = @[
@@ -281,7 +281,6 @@ static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
         [NSLayoutConstraint deactivateConstraints:_progressLabelConstraints];
     }
     _progressLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    //FIXME: UIlabel width should be sizeToFit.
     _progressLabelConstraints = @[
                                [NSLayoutConstraint constraintWithItem:_progressLabel
                                                             attribute:NSLayoutAttributeTop
@@ -296,14 +295,7 @@ static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
                                                                toItem: _headlineView
                                                             attribute:NSLayoutAttributeRight
                                                            multiplier:1.0
-                                                             constant:-HeadlineViewTitleLeftRightPadding],
-                               [NSLayoutConstraint constraintWithItem:_progressLabel
-                                                            attribute:NSLayoutAttributeWidth
-                                                            relatedBy:NSLayoutRelationEqual
-                                                               toItem: nil
-                                                            attribute:NSLayoutAttributeNotAnAttribute
-                                                           multiplier:1.0
-                                                             constant:_progressLabel.frame.size.width]
+                                                             constant:-HeadlineViewTitleLeftRightPadding]
                                ];
     
     [NSLayoutConstraint activateConstraints:_progressLabelConstraints];
