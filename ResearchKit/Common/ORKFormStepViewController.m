@@ -37,8 +37,14 @@
 #import "ORKFormSectionTitleLabel.h"
 #import "ORKStepHeaderView_Internal.h"
 #import "ORKTableContainerView.h"
+#import "ORKTableContainerHeaderView.h"
+#import "ORKBodyItem.h"
+#import "ORKLearnMoreView.h"
+
 #import "ORKSurveyCardHeaderView.h"
 #import "ORKTextChoiceCellGroup.h"
+#import "ORKLearnMoreStepViewController.h"
+#import "ORKBodyItem.h"
 
 #import "ORKNavigationContainerView_Internal.h"
 #import "ORKStepViewController_Internal.h"
@@ -124,6 +130,12 @@
 @property (nonatomic, assign, readonly) NSUInteger index;
 
 @property (nonatomic, copy) NSString *title;
+
+@property (nonatomic, copy, nullable) NSString *detailText;
+
+@property (nonatomic) BOOL showsProgress;
+
+@property (nonatomic, nullable) ORKLearnMoreItem *learnMoreItem;
 
 // ORKTableCellItem
 @property (nonatomic, copy, readonly) NSArray *items;
@@ -273,11 +285,11 @@
 @end
 
 
-@interface ORKFormStepViewController () <UITableViewDataSource, UITableViewDelegate, ORKFormItemCellDelegate, ORKTableContainerViewDelegate, ORKTextChoiceCellGroupDelegate, ORKChoiceOtherViewCellDelegate>
+@interface ORKFormStepViewController () <UITableViewDataSource, UITableViewDelegate, ORKFormItemCellDelegate, ORKTableContainerViewDelegate, ORKTextChoiceCellGroupDelegate, ORKChoiceOtherViewCellDelegate, ORKLearnMoreViewDelegate>
 
 @property (nonatomic, strong) ORKTableContainerView *tableContainer;
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) ORKStepHeaderView *headerView;
+@property (nonatomic, strong) ORKTableContainerHeaderView *headerView;
 
 @property (nonatomic, strong) NSMutableDictionary *savedAnswers;
 @property (nonatomic, strong) NSMutableDictionary *savedAnswerDates;
@@ -329,6 +341,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self stepDidChange];
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [_tableContainer sizeHeaderToFit];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -475,12 +492,6 @@
     _navigationFooterView.cancelButtonItem = cancelButtonItem;
 }
 
-- (void)setLearnMoreButtonItem:(UIBarButtonItem *)learnMoreButtonItem {
-    [super setLearnMoreButtonItem:learnMoreButtonItem];
-    _headerView.learnMoreButtonItem = self.learnMoreButtonItem;
-    [_tableContainer setNeedsLayout];
-}
-
 - (void)setSkipButtonItem:(UIBarButtonItem *)skipButtonItem {
     [super setSkipButtonItem:skipButtonItem];
     
@@ -534,12 +545,13 @@
                 [self.view setBackgroundColor:[_tableView backgroundColor]];
             }
         }
-        _headerView = _tableContainer.stepHeaderView;
-        _headerView.captionLabel.useSurveyMode = [[self formStep] useSurveyMode];
-        _headerView.instructionLabel.text = [[self formStep] text];
-        _headerView.learnMoreButtonItem = self.learnMoreButtonItem;
+        _headerView = _tableContainer.tableContainerHeaderView;
+        _headerView.stepTitle = [self formStep].title;
+        _headerView.bodyItems = ([[self formStep] text]) ? [@[[[ORKBodyItem alloc] initWithText:[[self formStep] text] detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]] arrayByAddingObjectsFromArray:self.step.bodyItems] : self.step.bodyItems;
+        
         
         _navigationFooterView = [ORKNavigationContainerView new];
+        [_navigationFooterView removeStyling];
         _navigationFooterView.skipButtonItem = self.skipButtonItem;
         _navigationFooterView.continueEnabled = [self continueButtonEnabled];
         _navigationFooterView.continueButtonItem = self.continueButtonItem;
@@ -564,53 +576,52 @@
     _tableContainer.translatesAutoresizingMaskIntoConstraints = NO;
     _navigationFooterView.translatesAutoresizingMaskIntoConstraints = NO;
     _constraints = nil;
-    
-    UIView *viewForiPad = [self viewForiPadLayoutConstraints];
-    CGFloat margin = ORKNeedWideScreenDesign(self.view) ? 0.0 : ORKSurveyTableContainerLeftRightPadding;
+    CGFloat leftRightPadding = ORKStepContainerLeftRightPaddingForWindow(self.view.window);
+
     
     _constraints = @[
                      [NSLayoutConstraint constraintWithItem:_tableContainer
                                                   attribute:NSLayoutAttributeTop
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view.safeAreaLayoutGuide
+                                                     toItem:self.view
                                                   attribute:NSLayoutAttributeTop
                                                  multiplier:1.0
                                                    constant:0.0],
                      [NSLayoutConstraint constraintWithItem:_tableContainer
-                                                  attribute:NSLayoutAttributeLeftMargin
+                                                  attribute:NSLayoutAttributeLeft
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view.safeAreaLayoutGuide
-                                                  attribute:NSLayoutAttributeLeftMargin
+                                                     toItem:self.view
+                                                  attribute:NSLayoutAttributeLeft
                                                  multiplier:1.0
-                                                   constant:margin],
+                                                   constant:0.0],
                      [NSLayoutConstraint constraintWithItem:_tableContainer
-                                                  attribute:NSLayoutAttributeRightMargin
+                                                  attribute:NSLayoutAttributeRight
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view.safeAreaLayoutGuide
-                                                  attribute:NSLayoutAttributeRightMargin
+                                                     toItem:self.view
+                                                  attribute:NSLayoutAttributeRight
                                                  multiplier:1.0
-                                                   constant:-margin],
+                                                   constant:0.0],
                      [NSLayoutConstraint constraintWithItem:_navigationFooterView
                                                   attribute:NSLayoutAttributeBottom
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view
+                                                     toItem:self.view
                                                   attribute:NSLayoutAttributeBottom
                                                  multiplier:1.0
                                                    constant:0.0],
                      [NSLayoutConstraint constraintWithItem:_navigationFooterView
                                                   attribute:NSLayoutAttributeLeft
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view
+                                                     toItem:self.view
                                                   attribute:NSLayoutAttributeLeft
                                                  multiplier:1.0
-                                                   constant:0.0],
+                                                   constant:leftRightPadding],
                      [NSLayoutConstraint constraintWithItem:_navigationFooterView
                                                   attribute:NSLayoutAttributeRight
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view
+                                                     toItem:self.view
                                                   attribute:NSLayoutAttributeRight
                                                  multiplier:1.0
-                                                   constant:0.0],
+                                                   constant:-leftRightPadding],
                      [NSLayoutConstraint constraintWithItem:_tableContainer
                                                   attribute:NSLayoutAttributeBottom
                                                   relatedBy:NSLayoutRelationEqual
@@ -625,10 +636,42 @@
 
 - (void)buildSections {
     NSArray *items = [self allFormItems];
-    
     _sections = [NSMutableArray new];
     ORKTableSection *section = nil;
     
+    if (items.count > 0) {
+        ORKFormItem *firstFormItem = items.firstObject;
+        if (firstFormItem.answerFormat) {
+            [self buildSectionsWithoutGrouping];
+            return;
+        }
+    }
+    
+    for (ORKFormItem *item in items) {
+        if (!item.answerFormat) {
+            // Add new section
+            section = [[ORKTableSection alloc] initWithSectionIndex:_sections.count];
+            [_sections addObject:section];
+            
+            // Save title
+            section.title = item.text;
+            section.detailText = item.detailText;
+            section.learnMoreItem = item.learnMoreItem;
+            section.showsProgress = item.showsProgress;
+        } else {
+            if (section) {
+                [section addFormItem:item];
+            }
+        }
+    }
+}
+
+- (void)buildSectionsWithoutGrouping {
+    NSArray *items = [self allFormItems];
+
+    _sections = [NSMutableArray new];
+    ORKTableSection *section = nil;
+
     NSArray *singleSectionTypes = @[@(ORKQuestionTypeBoolean),
                                     @(ORKQuestionTypeSingleChoice),
                                     @(ORKQuestionTypeMultipleChoice),
@@ -640,29 +683,29 @@
             // Add new section
             section = [[ORKTableSection alloc] initWithSectionIndex:_sections.count];
             [_sections addObject:section];
-            
+
             // Save title
             section.title = item.text;
         // Actual item
         } else {
             ORKAnswerFormat *answerFormat = [item impliedAnswerFormat];
-            
+
             BOOL multiCellChoices = ([singleSectionTypes containsObject:@(answerFormat.questionType)] &&
                                      NO == [answerFormat isKindOfClass:[ORKValuePickerAnswerFormat class]]);
-            
+
             BOOL multilineTextEntry = (answerFormat.questionType == ORKQuestionTypeText && [(ORKTextAnswerFormat *)answerFormat multipleLines]);
-            
+
             BOOL scale = (answerFormat.questionType == ORKQuestionTypeScale);
-            
+
             // Items require individual section
             if (multiCellChoices || multilineTextEntry || scale) {
                 // Add new section
                 section = [[ORKTableSection alloc]  initWithSectionIndex:_sections.count];
                 [_sections addObject:section];
-                
+
                 // Save title
                 section.title = item.text;
-    
+
                 [section addFormItem:item];
 
                 // following item should start a new section
@@ -732,7 +775,6 @@
     }
     return enabled;
 }
-
 
 - (void)updateButtonStates {
     _navigationFooterView.continueEnabled = [self continueButtonEnabled];
@@ -1036,6 +1078,19 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     NSString *title = _sections[section].title;
+    NSString *detailText = _sections[section].detailText;
+    NSString *sectionProgressText;
+    ORKLearnMoreView *learnMoreView;
+    
+    if (_sections[section].showsProgress) {
+        sectionProgressText = [NSString stringWithFormat:@"%li of %li", section + 1, [_sections count]];
+    }
+    
+    if (_sections[section].learnMoreItem) {
+        learnMoreView = [ORKLearnMoreView learnMoreViewWithItem:_sections[section].learnMoreItem];
+        learnMoreView.delegate = self;
+    }
+    
     ORKFormStep *formStep = [self formStep];
     
     if (formStep.useCardView && _sections[section].items.count > 0) {
@@ -1043,7 +1098,7 @@
         ORKSurveyCardHeaderView *cardHeaderView = (ORKSurveyCardHeaderView *)[tableView dequeueReusableHeaderFooterViewWithIdentifier:@(section).stringValue];
         
         if (cardHeaderView == nil && title) {
-            cardHeaderView = [[ORKSurveyCardHeaderView alloc] initWithTitle:title];
+            cardHeaderView = [[ORKSurveyCardHeaderView alloc] initWithTitle:title detailText:detailText learnMoreView:learnMoreView progressText:sectionProgressText];
         }
         
         return cardHeaderView;
@@ -1181,6 +1236,14 @@ static NSString *const _ORKOriginalAnswersRestoreKey = @"originalAnswers";
     NSIndexPath *indexPath = [_tableView indexPathForCell:choiceOtherViewCell];
     ORKTableSection *section = _sections[indexPath.section];
     [section.textChoiceCellGroup textViewDidResignResponderForCellAtIndexPath:indexPath];
+}
+
+#pragma mark - ORKlearnMoreStepViewControllerDelegate
+
+- (void)learnMoreButtonPressedWithStep:(ORKLearnMoreInstructionStep *)learnMoreStep {
+    ORKLearnMoreStepViewController *learnMoreViewController = [[ORKLearnMoreStepViewController alloc] initWithStep:learnMoreStep];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:learnMoreViewController];
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 @end

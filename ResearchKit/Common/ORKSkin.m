@@ -53,6 +53,8 @@ NSString *const ORKNavigationContainerColorKey = @"ORKNavigationContainerColorKe
 NSString *const ORKNavigationContainerShadowColorKey = @"ORKNavigationContainerShadowColorKey";
 NSString *const ORKProgressLabelColorKey = @"ORKProgressLabelColorKey";
 NSString *const ORKiPadBackgroundViewColorKey = @"ORKiPadBacgroundViewColorKey";
+NSString *const ORKTopContentImageViewBackgroundColorKey = @"ORKTopContentImageViewBackgroundColorKey";
+NSString *const ORKBulletItemTextColorKey = @"ORKBulletItemTextColorKey";
 CGFloat ORKQuestionStepMinimumHeaderHeight = 29.75;
 CGFloat ORKCardDefaultCornerRadii = 10.0;
 CGFloat ORKCardDefaultBorderWidth = 0.5;
@@ -63,6 +65,29 @@ CGFloat ORKSurveyTableContainerLeftRightPadding = 20.0;
 CGFloat ORKiPadBackgroundViewCornerRadius = 20.0;
 CGFloat ORKiPadBackgroundViewBottomPadding = 50.0;
 CGFloat ORKiPadBackgroundViewLeftRightPadding = 115.0;
+
+CGFloat ORKStepContainerLeftRightMarginForXSMax = 44.0;
+CGFloat ORKStepContainerLeftRightMarginForXS = 24.0;
+CGFloat ORKStepContainerLeftRightMarginFor7Plus = 44.0;
+CGFloat ORKStepContainerLeftRightMarginFor7 = 24.0;
+CGFloat ORKStepContainerLeftRightMarginForSE = 16.0;
+CGFloat ORKStepContainerLeftRightMarginForDefault = 24.0;
+
+CGFloat ORKStepContainerTopMarginForXSMax = 44.0;
+CGFloat ORKStepContainerTopMarginForXS = 44.0;
+CGFloat ORKStepContainerTopMarginFor7Plus = 20.0;
+CGFloat ORKStepContainerTopMarginFor7 = 20.0;
+CGFloat ORKStepContainerTopMarginForSE = 20.0;
+CGFloat ORKStepContainerTopMarginForDefault = 20.0;
+
+CGFloat ORKStepContainerTitleToBodyTopPaddingStandard = 15.0;
+CGFloat ORKStepContainerTitleToBodyTopPaddingShort = 11.0;
+
+CGFloat ORKStepContainerTitleToBulletTopPaddingStandard = 57.0;
+CGFloat ORKStepContainerTitleToBulletTopPaddingShort = 37.0;
+
+CGFloat ORKStepContainerTopContentHeightPercentage = 36.0;
+CGFloat ORKStepContainerFirstItemTopPaddingPercentage = 9.0;
 
 @implementation UIColor (ORKColor)
 
@@ -110,6 +135,8 @@ static NSMutableDictionary *colors() {
                     ORKNavigationContainerShadowColorKey: [UIColor blackColor],
                     ORKProgressLabelColorKey: [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:142.0/255.0 alpha:1.0],
                     ORKiPadBackgroundViewColorKey: [UIColor colorWithRed:249.0 / 255.0 green:249.0 / 255.0 blue:251.0 / 255.0 alpha:1.0],
+                    ORKTopContentImageViewBackgroundColorKey: (ORKRGB(0xD7D7D7)),
+                    ORKBulletItemTextColorKey: [UIColor colorWithRed:0.56 green:0.56 blue:0.58 alpha:1.0]
                     } mutableCopy];
     });
     return colors;
@@ -228,8 +255,6 @@ static CGFloat ORKGetMetricForScreenType(ORKScreenMetric metric, ORKScreenType s
         {         44,        44,        44,        40,        40,        44,        44,        44},      // ORKScreenMetricIllustrationToCaptionBaseline
         {        198,       198,       198,       194,       152,       297,       297,       297},      // ORKScreenMetricIllustrationHeight
         {        300,       300,       300,       176,       152,       300,       300,       300},      // ORKScreenMetricInstructionImageHeight
-        {         55,        55,        50,        44,        44,        44,        44,        44},      // ORKScreenMetricContinueButtonHeightRegular
-        {         32,        44,        32,        32,        32,        44,        44,        44},      // ORKScreenMetricContinueButtonHeightCompact
         {        150,       150,       150,       146,       146,       150,       150,       150},      // ORKScreenMetricContinueButtonWidth
         {        162,       162,       162,       120,       116,       240,       240,       240},      // ORKScreenMetricMinimumStepHeaderHeightForMemoryGame
         {        200,       250,       200,       180,       150,       250,       250,       250},      // ORKScreenMetricMinimumGameViewHeightForMemoryGame
@@ -397,5 +422,113 @@ void ORKUpdateScrollViewBottomInset(UIScrollView *scrollView, CGFloat bottomInse
         scrollView.scrollIndicatorInsets = insets;
         
         scrollView.contentOffset = savedOffset;
+    }
+}
+
+CGFloat ORKStepContainerLeftRightPaddingForWindow(UIWindow *window) {
+    CGFloat margin = 0;
+    switch (ORKGetHorizontalScreenTypeForWindow(window)) {
+        case ORKScreenTypeiPhoneXSMax:
+            margin = ORKStepContainerLeftRightMarginForXSMax;
+            break;
+        case ORKScreenTypeiPhoneX:
+            margin = ORKStepContainerLeftRightMarginForXS;
+            break;
+        case ORKScreenTypeiPhone6Plus:
+            margin = ORKStepContainerLeftRightMarginFor7Plus;
+            break;
+        case ORKScreenTypeiPhone6:
+            margin = ORKStepContainerLeftRightMarginFor7;
+            break;
+        case ORKScreenTypeiPhone5:
+            margin = ORKStepContainerLeftRightMarginForSE;
+            break;
+        default:
+            margin = ORKStepContainerLeftRightMarginForDefault;
+            break;
+    }
+    return margin;
+}
+
+CGFloat ORKStepContainerTopPaddingForWindow(UIWindow *window) {
+    CGFloat margin = 0;
+    switch (ORKGetVerticalScreenTypeForWindow(window)) {
+        case ORKScreenTypeiPhoneXSMax:
+            margin = ORKStepContainerTopMarginForXSMax;
+            break;
+        case ORKScreenTypeiPhoneX:
+            margin = ORKStepContainerTopMarginForXS;
+            break;
+        case ORKScreenTypeiPhone6Plus:
+            margin = ORKStepContainerTopMarginFor7Plus;
+            break;
+        case ORKScreenTypeiPhone6:
+            margin = ORKStepContainerTopMarginFor7;
+            break;
+        case ORKScreenTypeiPhone5:
+            margin = ORKStepContainerTopMarginForSE;
+            break;
+        default:
+            margin = ORKStepContainerTopMarginForDefault;
+            break;
+    }
+    return margin;
+}
+
+CGFloat ORKStepContainerTopContentHeightForWindow(UIWindow *window) {
+    window = ORKDefaultWindowIfWindowIsNil(window);
+    const CGSize windowSize = window.bounds.size;
+    return ceil((ORKStepContainerTopContentHeightPercentage / 100.0) * windowSize.height);
+}
+
+CGFloat ORKStepContainerFirstItemTopPaddingForWindow(UIWindow *window) {
+    window = ORKDefaultWindowIfWindowIsNil(window);
+    const CGSize windowSize = window.bounds.size;
+    return ceil((ORKStepContainerFirstItemTopPaddingPercentage / 100.0) * windowSize.height);
+}
+
+//FIXME: Consolidate title/Icon to Body/Bullet methods into one. remove copy paste.
+
+CGFloat ORKStepContainerTitleToBodyTopPaddingForWindow(UIWindow *window) {
+    CGFloat padding = 0;
+    switch (ORKGetVerticalScreenTypeForWindow(window)) {
+        case ORKScreenTypeiPhone5:
+            padding = ORKStepContainerTitleToBodyTopPaddingShort;
+            break;
+        case ORKScreenTypeiPhoneXSMax:
+        case ORKScreenTypeiPhoneX:
+        case ORKScreenTypeiPhone6Plus:
+        case ORKScreenTypeiPhone6:
+        default:
+            padding = ORKStepContainerTitleToBodyTopPaddingStandard;
+            break;
+    }
+    return padding;
+}
+
+CGFloat ORKStepContainerTitleToBulletTopPaddingForWindow(UIWindow *window) {
+    CGFloat padding = 0;
+    switch (ORKGetVerticalScreenTypeForWindow(window)) {
+        case ORKScreenTypeiPhone5:
+            padding = ORKStepContainerTitleToBulletTopPaddingShort;
+            break;
+        case ORKScreenTypeiPhoneXSMax:
+        case ORKScreenTypeiPhoneX:
+        case ORKScreenTypeiPhone6Plus:
+        case ORKScreenTypeiPhone6:
+        default:
+            padding = ORKStepContainerTitleToBulletTopPaddingStandard;
+            break;
+    }
+    return padding;
+}
+
+UIFontTextStyle ORKTitleLabelFontTextStyleForWindow(UIWindow *window) {
+    window = ORKDefaultWindowIfWindowIsNil(window);
+    switch (ORKGetVerticalScreenTypeForWindow(window)) {
+        case ORKScreenTypeiPhone5:
+            return UIFontTextStyleTitle1;
+        default:
+            return UIFontTextStyleLargeTitle;
     }
 }

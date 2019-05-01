@@ -735,7 +735,8 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
                                               @"ORKInstructionStep.attributedDetailText",
                                               @"ORKOrderedTask.progressLabelColor",
                                               @"ORKQuestionStep.question",
-                                              @"ORKConsentSection.image"
+                                              @"ORKConsentSection.image",
+                                              @"ORKBodyItem.image"
                                               ];
     
     // Test Each class

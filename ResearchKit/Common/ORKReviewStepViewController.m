@@ -38,10 +38,12 @@
 #import "ORKSelectionSubTitleLabel.h"
 #import "ORKStepHeaderView_Internal.h"
 #import "ORKTableContainerView.h"
+#import "ORKBodyItem.h"
 
 #import "ORKStepViewController_Internal.h"
 #import "ORKTaskViewController_Internal.h"
 
+#import "ORKTableContainerHeaderView.h"
 #import "ORKAnswerFormat_Internal.h"
 #import "ORKCollectionResult_Private.h"
 #import "ORKFormStep.h"
@@ -103,11 +105,6 @@
     _navigationFooterView.continueButtonItem = continueButtonItem;
 }
 
-- (void)setLearnMoreButtonItem:(UIBarButtonItem *)learnMoreButtonItem {
-    [super setLearnMoreButtonItem:learnMoreButtonItem];
-    _tableContainer.stepHeaderView.learnMoreButtonItem = self.learnMoreButtonItem;
-}
-
 - (void)setSkipButtonItem:(UIBarButtonItem *)skipButtonItem {
     [super setSkipButtonItem:skipButtonItem];
     _navigationFooterView.skipButtonItem = self.skipButtonItem;
@@ -138,9 +135,8 @@
         [self.view addSubview:_tableContainer];
         _tableContainer.tapOffView = self.view;
         
-        _tableContainer.stepHeaderView.captionLabel.useSurveyMode = self.step.useSurveyMode;
-        _tableContainer.stepHeaderView.instructionLabel.text = [self reviewStep].text;
-        _tableContainer.stepHeaderView.learnMoreButtonItem = self.learnMoreButtonItem;
+        _tableContainer.tableContainerHeaderView.bodyItems = ([self reviewStep].text) ? [@[[[ORKBodyItem alloc] initWithText:[self reviewStep].text detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]] arrayByAddingObjectsFromArray:self.step.bodyItems] : self.step.bodyItems;
+        
         [_tableContainer.tableView setBackgroundColor:ORKNeedWideScreenDesign(self.view) ? [UIColor clearColor] : ORKColor(ORKBackgroundColorKey)];
         _navigationFooterView = [ORKNavigationContainerView new];
         _navigationFooterView.skipButtonItem = self.skipButtonItem;

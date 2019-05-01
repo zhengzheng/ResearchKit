@@ -55,6 +55,8 @@
 #import <ResearchKit/ORKQuestionResult_Private.h>
 #import <ResearchKit/ORKSignatureResult_Private.h>
 #import <ResearchKit/ORKResult_Private.h>
+#import <ResearchKit/ORKStepContainerView_Private.h>
+#import <ResearchKit/ORKTableContainerHeaderView.h>
 
 #import <ResearchKit/ORKAudioStep.h>
 #import <ResearchKit/ORKAmslerGridStep.h>
@@ -107,6 +109,7 @@
 #import <ResearchKit/ORKWalkingTaskStepViewController.h>
 #import <ResearchKit/ORKVideoInstructionStepViewController.h>
 #import <ResearchKit/ORKSpeechRecognitionStepViewController.h>
+#import <ResearchKit/ORKLearnMoreStepViewController.h>
 
 #import <ResearchKit/ORKAccelerometerRecorder.h>
 #import <ResearchKit/ORKAudioRecorder.h>
@@ -124,6 +127,7 @@
 #import <ResearchKit/ORKTappingContentView.h>
 #import <ResearchKit/ORKVerticalContainerView.h>
 #import <ResearchKit/ORKVerticalContainerView_Internal.h>
+#import <ResearchKit/ORKStepContainerView.h>
 #import <ResearchKit/ORKNavigationContainerView.h>
 #import <ResearchKit/ORKNavigationContainerView_Internal.h>
 #import <ResearchKit/ORKStepHeaderView.h>
@@ -162,3 +166,6 @@
 #import <ResearchKit/ORKSkin.h>
 #import <ResearchKit/ORKDefaultFont.h>
 #import <ResearchKit/ORKVoiceEngine.h>
+
+#import <ResearchKit/ORKLearnMoreView.h>
+#import <ResearchKit/ORKBodyContainerView.h>

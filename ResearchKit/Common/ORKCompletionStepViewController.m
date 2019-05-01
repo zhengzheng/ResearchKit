@@ -32,6 +32,7 @@
 #import "ORKCompletionStepViewController.h"
 
 #import "ORKCustomStepView_Internal.h"
+#import "ORKInstructionStepContainerView.h"
 #import "ORKInstructionStepView.h"
 #import "ORKNavigationContainerView.h"
 #import "ORKStepHeaderView_Internal.h"
@@ -154,7 +155,7 @@ static const CGFloat TickViewSize = 122;
         _completionStepView.tintColor = self.checkmarkColor;
     }
     
-    self.stepView.stepView = _completionStepView;
+    self.stepView.customContentView = _completionStepView;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
