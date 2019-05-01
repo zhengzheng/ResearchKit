@@ -185,6 +185,11 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
     [_stepContentView setStepTitle:_stepTitle];
 }
 
+- (void)setStepText:(NSString *)stepText {
+    _stepText = stepText;
+    [_stepContentView setStepText:_stepText];
+}
+
 - (void)setTitleIconImage:(UIImage *)titleIconImage {
     _titleIconImage = titleIconImage;
     [_stepContentView setTitleIconImage:_titleIconImage];

@@ -42,6 +42,8 @@ NS_ASSUME_NONNULL_BEGIN
 ORK_CLASS_AVAILABLE
 @interface ORKKeychainWrapper : NSObject
 
++ (nullable id<NSSecureCoding>)valueForKey:(NSString *)key NS_UNAVAILABLE;
+
 /**
  Sets the given object in the keychain for the provided key.
  

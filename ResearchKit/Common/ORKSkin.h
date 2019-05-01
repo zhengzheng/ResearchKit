@@ -131,6 +131,10 @@ ORK_EXTERN CGFloat ORKiPadBackgroundViewBottomPadding;
 /// Default Left Right margin for iPadBackgroundView;
 ORK_EXTERN CGFloat ORKiPadBackgroundViewLeftRightPadding;
 
+/// Default body to body item padding;
+ORK_EXTERN CGFloat ORKBodyToBodyPaddingStandard;
+
+
 /// Modify the color for a specified ORK...ColorKey. (for customization)
 void ORKColorSetColorForKey(NSString *key, UIColor *color);
 

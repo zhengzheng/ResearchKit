@@ -37,7 +37,6 @@
 #import "ORKLearnMoreInstructionStep.h"
 
 
-static const CGFloat ORKBodyToBodyPaddingStandard = 22.0;
 
 static const CGFloat ORKBodyToBulletPaddingStandard = 37.0;
 
