@@ -103,7 +103,7 @@ class HeaderView: UIView {
     func setupIcon() {
         self.iconContainer = UIView()
 
-        self.iconContainer.layer.cornerRadius = CIRCLE_DIM / 2;
+        self.iconContainer.layer.cornerRadius = CIRCLE_DIM / 2
         self.iconContainer.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(iconContainer)
         
@@ -113,11 +113,11 @@ class HeaderView: UIView {
         iconView.translatesAutoresizingMaskIntoConstraints = false
         self.iconContainer.addSubview(iconView)
         
-        let ICON_PADDING: CGFloat = 5.0;
-        iconView.topAnchor.constraint(equalTo: self.iconContainer.topAnchor, constant: ICON_PADDING).isActive = true
-        iconView.leadingAnchor.constraint(equalTo: self.iconContainer.leadingAnchor, constant: ICON_PADDING).isActive = true
-        iconView.trailingAnchor.constraint(equalTo: self.iconContainer.trailingAnchor, constant: -ICON_PADDING).isActive = true
-        iconView.bottomAnchor.constraint(equalTo: self.iconContainer.bottomAnchor, constant: -ICON_PADDING).isActive = true
+        let iconPadding: CGFloat = 5.0
+        iconView.topAnchor.constraint(equalTo: self.iconContainer.topAnchor, constant: iconPadding).isActive = true
+        iconView.leadingAnchor.constraint(equalTo: self.iconContainer.leadingAnchor, constant: iconPadding).isActive = true
+        iconView.trailingAnchor.constraint(equalTo: self.iconContainer.trailingAnchor, constant: -iconPadding).isActive = true
+        iconView.bottomAnchor.constraint(equalTo: self.iconContainer.bottomAnchor, constant: -iconPadding).isActive = true
         iconContainer.backgroundColor = invertColors ? UIColor.white : UIColor.clear
     }
     

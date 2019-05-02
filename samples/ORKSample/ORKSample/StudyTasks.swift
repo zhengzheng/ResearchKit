@@ -90,7 +90,7 @@ struct StudyTasks {
             (UIImage(named: "pentagon")!, "Pentagon"),
             (UIImage(named: "circle")!, "Circle")
         ]
-        let imageChoices : [ORKImageChoice] = shapeTuples.map {
+        let imageChoices: [ORKImageChoice] = shapeTuples.map {
             return ORKImageChoice(normalImage: $0.0, selectedImage: nil, text: $0.1, value: $0.1 as NSCoding & NSCopying & NSObjectProtocol)
         }
         let shapeAnswerFormat: ORKImageChoiceAnswerFormat = ORKAnswerFormat.choiceAnswerFormat(with: imageChoices)

@@ -72,10 +72,10 @@ class BarGraphDataSource: NSObject, ORKValueStackGraphChartViewDataSource {
                         datePoints.append(dateFormatter.string(from: date))
                         
                         for minute in hour {
-                            percentSlight = percentSlight + (minute["percentSlight"] as! Double) * 100
-                            percentMild = percentMild + (minute["percentMild"] as! Double) * 100
-                            percentModerate = percentModerate + (minute["percentModerate"] as! Double) * 100
-                            percentStrong = percentStrong + (minute["percentStrong"] as! Double) * 100
+                            percentSlight += (minute["percentSlight"] as! Double) * 100
+                            percentMild += (minute["percentMild"] as! Double) * 100
+                            percentModerate += (minute["percentModerate"] as! Double) * 100
+                            percentStrong += (minute["percentStrong"] as! Double) * 100
                         }
     
                         tremorPoints.append(ORKValueStack(stackedValues: [NSNumber(value: percentSlight / 60.0), NSNumber(value: percentMild / 60.0), NSNumber(value: percentModerate / 60.0), NSNumber(value: percentStrong / 60.0)]))

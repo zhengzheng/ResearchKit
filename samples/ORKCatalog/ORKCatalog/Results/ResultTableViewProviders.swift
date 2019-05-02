@@ -715,8 +715,7 @@ class SpeechRecognitionResultTableViewProvider: ResultTableViewProvider {
                 ResultRow(text: "timestamp", detail: segement.timestamp),
                 ResultRow(text: "duration", detail: segement.duration)
             ]
-        }
-        else {
+        } else {
             return [ResultRow(text: "error", detail: "speech recognition failed or cancelled")]
         }
     }
@@ -724,7 +723,7 @@ class SpeechRecognitionResultTableViewProvider: ResultTableViewProvider {
 
 /// Table view provider specific to an `ORKStroopResult` instance.
 class StroopResultTableViewProvider: ResultTableViewProvider {
-    //MARK: UITableViewDataSource
+    // MARK: UITableViewDataSource
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 2
@@ -745,7 +744,7 @@ class StroopResultTableViewProvider: ResultTableViewProvider {
         
         let rows = super.resultRowsForSection(section)
         
-        if (section == 0){
+        if section == 0 {
             return rows
         }
         return [
@@ -831,7 +830,7 @@ class ToneAudiometryResultTableViewProvider: ResultTableViewProvider {
         if section == 0 {
             return rows + [
                 // The size of the view where the two target buttons are displayed.
-                ResultRow(text: "outputVolume", detail: toneAudiometryResult.outputVolume),
+                ResultRow(text: "outputVolume", detail: toneAudiometryResult.outputVolume)
             ]
         }
         
@@ -948,7 +947,7 @@ class TowerOfHanoiResultTableViewProvider: ResultTableViewProvider {
 
 /// Table view provider specific to an `ORKTrailmaking` instance.
 class TrailmakingResultTableViewProvider: ResultTableViewProvider {
-//    MARK: UITableViewDataSource
+// MARK: UITableViewDataSource
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -996,11 +995,11 @@ class PSATResultTableViewProvider: ResultTableViewProvider {
         if section == 0 {
             var presentation = ""
             let presentationMode = PSATResult.presentationMode
-            if (presentationMode == .auditory) {
+            if presentationMode == .auditory {
                 presentation = "PASAT"
-            } else if (presentationMode == .visual) {
+            } else if presentationMode == .visual {
                 presentation = "PVSAT"
-            } else if (presentationMode.contains(.auditory) && presentationMode.contains(.visual)) {
+            } else if presentationMode.contains(.auditory) && presentationMode.contains(.visual) {
                 presentation = "PAVSAT"
             } else {
                 presentation = "Unknown"
@@ -1066,19 +1065,19 @@ class TimedWalkResultTableViewProvider: ResultTableViewProvider {
     // MARK: ResultTableViewProvider
     
     override func resultRowsForSection(_ section: Int) -> [ResultRow] {
-        let TimedWalkResult = result as! ORKTimedWalkResult
+        let timedWalkResult = result as! ORKTimedWalkResult
         
         let rows = super.resultRowsForSection(section)
         
         return rows + [
             // The timed walk distance in meters.
-            ResultRow(text: "distance (m)", detail: TimedWalkResult.distanceInMeters),
+            ResultRow(text: "distance (m)", detail: timedWalkResult.distanceInMeters),
             
             // The time limit to complete the trials.
-            ResultRow(text: "time limit (s)", detail: TimedWalkResult.timeLimit),
+            ResultRow(text: "time limit (s)", detail: timedWalkResult.timeLimit),
             
             // The duration for a Timed Walk.
-            ResultRow(text: "duration (s)", detail: TimedWalkResult.duration)
+            ResultRow(text: "duration (s)", detail: timedWalkResult.duration)
         ]
     }
 }
@@ -1115,9 +1114,9 @@ class HolePegTestResultTableViewProvider: ResultTableViewProvider {
         if section == 0 {
             var side = ""
             let movingDirection = holePegTestResult.movingDirection
-            if (movingDirection == .left) {
+            if movingDirection == .left {
                 side = "left > right"
-            } else if (movingDirection == .right) {
+            } else if movingDirection == .right {
                 side = "right > left"
             }
             

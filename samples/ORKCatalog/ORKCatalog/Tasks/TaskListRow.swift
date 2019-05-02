@@ -767,7 +767,7 @@ enum TaskListRow: Int, CustomStringConvertible {
         let section02 = ORKFormItem(sectionTitle: NSLocalizedString("Section title", comment: ""), detailText: nil, learnMoreItem: nil, showsProgress: true)
         
         let formItem03Text = NSLocalizedString(exampleQuestionText, comment: "")
-        let scaleAnswerFormat = ORKContinuousScaleAnswerFormat.init(maximumValue: 10, minimumValue: 0, defaultValue: 0.0, maximumFractionDigits: 1)//ORKScaleAnswerFormat(maximumValue: 10, minimumValue: 0, defaultValue: 0, step: 1)
+        let scaleAnswerFormat = ORKContinuousScaleAnswerFormat(maximumValue: 10, minimumValue: 0, defaultValue: 0.0, maximumFractionDigits: 1)//ORKScaleAnswerFormat(maximumValue: 10, minimumValue: 0, defaultValue: 0, step: 1)
         let formItem03 = ORKFormItem(identifier: String(describing: Identifier.formItem03), text: formItem03Text, answerFormat: scaleAnswerFormat)
         
         step.formItems = [
@@ -797,14 +797,14 @@ enum TaskListRow: Int, CustomStringConvertible {
         
         let question1 = NSLocalizedString("Would you like to subscribe to our newsletter?", comment: "")
         
-        let question1Step = ORKQuestionStep.init(identifier: String(describing: Identifier.questionStep), title: "Questionnaire", question: question1, answer: question1StepAnswerFormat)
+        let question1Step = ORKQuestionStep(identifier: String(describing: Identifier.questionStep), title: "Questionnaire", question: question1, answer: question1StepAnswerFormat)
         question1Step.text = exampleDetailText
         
         //Add a question step with different layout format.
         let question2StepAnswerFormat = ORKAnswerFormat.dateAnswerFormat(withDefaultDate: nil, minimumDate: nil, maximumDate: Date(), calendar: nil)
         
         let question2 = NSLocalizedString("When is your birthday?", comment: "")
-        let question2Step = ORKQuestionStep.init(identifier: String(describing: Identifier.birthdayQuestion), title: "Questionnaire", question: question2, answer: question2StepAnswerFormat)
+        let question2Step = ORKQuestionStep(identifier: String(describing: Identifier.birthdayQuestion), title: "Questionnaire", question: question2, answer: question2StepAnswerFormat)
         question2Step.text = exampleDetailText
         
         // Add a summary step.
@@ -825,7 +825,7 @@ enum TaskListRow: Int, CustomStringConvertible {
         let answerFormat = ORKBooleanAnswerFormat()
         
         // We attach an answer format to a question step to specify what controls the user sees.
-        let questionStep = ORKQuestionStep.init(identifier: String(describing: Identifier.booleanQuestionStep), title: NSLocalizedString("Boolean", comment: ""), question: exampleQuestionText, answer: answerFormat)
+        let questionStep = ORKQuestionStep(identifier: String(describing: Identifier.booleanQuestionStep), title: NSLocalizedString("Boolean", comment: ""), question: exampleQuestionText, answer: answerFormat)
         
         // The detail text is shown in a small font below the title.
         questionStep.text = exampleDetailText
@@ -992,7 +992,7 @@ enum TaskListRow: Int, CustomStringConvertible {
         let questionStep = ORKQuestionStep(identifier: String(describing: Identifier.locationQuestionStep), title: NSLocalizedString("Location", comment: ""), question: exampleQuestionText, answer: answerFormat)
         // The detail text is shown in a small font below the title.
         questionStep.text = exampleDetailText
-        questionStep.placeholder = NSLocalizedString("Address", comment: "");
+        questionStep.placeholder = NSLocalizedString("Address", comment: "")
         
         return ORKOrderedTask(identifier: String(describing: Identifier.locationQuestionTask), steps: [questionStep])
     }
@@ -1309,7 +1309,7 @@ enum TaskListRow: Int, CustomStringConvertible {
         formStep.isOptional = false
         
         // Form items
-        let textChoices : [ORKTextChoice] = [ORKTextChoice(text: "Yes", value: "Yes" as NSCoding & NSCopying & NSObjectProtocol), ORKTextChoice(text: "No", value: "No" as NSCoding & NSCopying & NSObjectProtocol), ORKTextChoice(text: "N/A", value: "N/A" as NSCoding & NSCopying & NSObjectProtocol)]
+        let textChoices: [ORKTextChoice] = [ORKTextChoice(text: "Yes", value: "Yes" as NSCoding & NSCopying & NSObjectProtocol), ORKTextChoice(text: "No", value: "No" as NSCoding & NSCopying & NSObjectProtocol), ORKTextChoice(text: "N/A", value: "N/A" as NSCoding & NSCopying & NSObjectProtocol)]
         let answerFormat = ORKTextChoiceAnswerFormat(style: ORKChoiceAnswerStyle.singleChoice, textChoices: textChoices)
         
         let formItem01 = ORKFormItem(identifier: String(describing: Identifier.eligibilityFormItem01), text: exampleQuestionText, answerFormat: answerFormat)
@@ -1356,7 +1356,7 @@ enum TaskListRow: Int, CustomStringConvertible {
         let predicateEligible = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateFormItem01, predicateFormItem02, predicateFormItem03])
         let predicateRule = ORKPredicateStepNavigationRule(resultPredicatesAndDestinationStepIdentifiers: [ (predicateEligible, String(describing: Identifier.eligibilityEligibleStep)) ])
         
-        eligibilityTask.setNavigationRule(predicateRule, forTriggerStepIdentifier:String(describing: Identifier.eligibilityFormStep))
+        eligibilityTask.setNavigationRule(predicateRule, forTriggerStepIdentifier: String(describing: Identifier.eligibilityFormStep))
         
         // Add end direct rules to skip unneeded steps
         let directRule = ORKDirectStepNavigationRule(destinationStepIdentifier: ORKNullStepIdentifier)
@@ -1438,7 +1438,7 @@ enum TaskListRow: Int, CustomStringConvertible {
         A verification step view controller subclass is required in order to use the verification step.
         The subclass provides the view controller button and UI behavior by overriding the following methods.
         */
-        class VerificationViewController : ORKVerificationStepViewController {
+        class VerificationViewController: ORKVerificationStepViewController {
             override func resendEmailButtonTapped() {
                 let alertTitle = NSLocalizedString("Resend Verification Email", comment: "")
                 let alertMessage = NSLocalizedString("Button tapped", comment: "")
@@ -1463,7 +1463,7 @@ enum TaskListRow: Int, CustomStringConvertible {
         A login step view controller subclass is required in order to use the login step.
         The subclass provides the behavior for the login step forgot password button.
         */
-        class LoginViewController : ORKLoginStepViewController {
+        class LoginViewController: ORKLoginStepViewController {
             override func forgotPasswordButtonTapped() {
                 let alertTitle = NSLocalizedString("Forgot password?", comment: "")
                 let alertMessage = NSLocalizedString("Button tapped", comment: "")
@@ -1508,7 +1508,7 @@ enum TaskListRow: Int, CustomStringConvertible {
     
     /// This task presents the Audio pre-defined active task.
     private var audioTask: ORKTask {
-        return ORKOrderedTask.audioTask(withIdentifier: String(describing: Identifier.audioTask), intendedUseDescription: exampleDescription, speechInstruction: exampleSpeechInstruction, shortSpeechInstruction: exampleSpeechInstruction, duration: 20, recordingSettings: nil,  checkAudioLevel: true, options: [])
+        return ORKOrderedTask.audioTask(withIdentifier: String(describing: Identifier.audioTask), intendedUseDescription: exampleDescription, speechInstruction: exampleSpeechInstruction, shortSpeechInstruction: exampleSpeechInstruction, duration: 20, recordingSettings: nil, checkAudioLevel: true, options: [])
     }
     
     /**
@@ -1745,8 +1745,7 @@ enum TaskListRow: Int, CustomStringConvertible {
             
             if contentSectionType == .overview {
                 consentSection.htmlContent = htmlContentString
-            }
-            else {
+            } else {
                 consentSection.content = loremIpsumLongText
             }
             

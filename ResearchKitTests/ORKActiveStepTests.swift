@@ -42,7 +42,7 @@ class ORKActiveStepTests: XCTestCase {
         XCTAssert(activeStepTest.identifier == "Test")
     }
     
-    func testStartsFinished(){
+    func testStartsFinished() {
         activeStepTest.stepDuration = -1
         XCTAssertFalse(activeStepTest.startsFinished())
         
@@ -53,7 +53,7 @@ class ORKActiveStepTests: XCTestCase {
         XCTAssert(activeStepTest.startsFinished())
     }
     
-    func testHasCountdown(){
+    func testHasCountdown() {
         // stepDuration > 0 && shouldShowDefaultTimer = true -> true
         activeStepTest.shouldShowDefaultTimer = true
         activeStepTest.stepDuration = -1
@@ -70,7 +70,7 @@ class ORKActiveStepTests: XCTestCase {
         XCTAssert(activeStepTest.hasCountDown())
     }
     
-    func testHasTitle(){
+    func testHasTitle() {
         activeStepTest.title = ""
         XCTAssertFalse(activeStepTest.hasTitle())
         
@@ -81,7 +81,7 @@ class ORKActiveStepTests: XCTestCase {
         XCTAssert(activeStepTest.hasTitle())
     }
     
-    func testHasText(){
+    func testHasText() {
         activeStepTest.text = ""
         XCTAssertFalse(activeStepTest.hasText())
         
@@ -92,7 +92,7 @@ class ORKActiveStepTests: XCTestCase {
         XCTAssert(activeStepTest.hasText())
     }
     
-    func testHasVoice(){
+    func testHasVoice() {
         
         activeStepTest.spokenInstruction = nil
         XCTAssertFalse(activeStepTest.hasVoice())
