@@ -41,7 +41,7 @@ class RootViewController: UIViewController, OnboardingManagerDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if (OnboardingStateManager.shared.getOnboardingCompletedState() == false) {
+        if OnboardingStateManager.shared.getOnboardingCompletedState() == false {
             let onboardingViewController = OnboardingViewController(task: nil, taskRun: nil)
             onboardingViewController.onboardingManagerDelegate = self
             
