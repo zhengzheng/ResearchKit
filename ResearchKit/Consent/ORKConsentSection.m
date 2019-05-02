@@ -212,7 +212,7 @@ static NSString *localizedTitleForConsentSectionType(ORKConsentSectionType secti
         ORK_DECODE_BOOL(aDecoder, omitFromDocument);
         ORK_DECODE_OBJ_CLASS(aDecoder, formalTitle, NSString);
         ORK_DECODE_IMAGE(aDecoder, customImage);
-        ORK_DECODE_UR(aDecoder, customAnimationURL);
+        ORK_DECODE_URL(aDecoder, customAnimationURL);
         ORK_DECODE_OBJ_CLASS(aDecoder, customLearnMoreButtonTitle, NSString);
     }
     return self;
