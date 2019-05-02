@@ -33,9 +33,9 @@ import ResearchKit
 class PieChartDataSource: NSObject, ORKPieChartViewDataSource {
     
     let colors = [
-        UIColor(red: 217/225, green: 217/255, blue: 217/225, alpha: 1),
-        UIColor(red: 142/255, green: 142/255, blue: 147/255, alpha: 1),
-        UIColor(red: 244/255, green: 190/255, blue: 74/255, alpha: 1)
+        UIColor(red: 217 / 225, green: 217 / 255, blue: 217 / 225, alpha: 1),
+        UIColor(red: 142 / 255, green: 142 / 255, blue: 147 / 255, alpha: 1),
+        UIColor(red: 244 / 255, green: 190 / 255, blue: 74 / 255, alpha: 1)
     ]
     let values = [10.0, 25.0, 45.0]
     

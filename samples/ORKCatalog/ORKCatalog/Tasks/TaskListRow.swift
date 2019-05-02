@@ -699,7 +699,7 @@ enum TaskListRow: Int, CustomStringConvertible {
             return shoulderRangeOfMotion
             
         case .trailMaking:
-            return trailMaking;
+            return trailMaking
         
         case .videoInstruction:
             return videoInstruction
@@ -886,7 +886,7 @@ enum TaskListRow: Int, CustomStringConvertible {
 
         let answerFormat2 = ORKAnswerFormat.heightAnswerFormat(with: ORKMeasurementSystem.metric)
         
-        let step2 = ORKQuestionStep(identifier: String(describing:  Identifier.heightQuestionStep2), title: NSLocalizedString("Height", comment: ""), question: exampleQuestionText, answer: answerFormat2)
+        let step2 = ORKQuestionStep(identifier: String(describing: Identifier.heightQuestionStep2), title: NSLocalizedString("Height", comment: ""), question: exampleQuestionText, answer: answerFormat2)
         
         step2.text = "Metric system"
 
@@ -1200,7 +1200,7 @@ enum TaskListRow: Int, CustomStringConvertible {
         stepEmail.text = exampleDetailText
         
         let domainRegularExpressionPattern = "^(https?:\\/\\/)?([\\da-z\\.-]+)\\.([a-z\\.]{2,6})([\\/\\w \\.-]*)*\\/?$"
-        let domainRegularExpression = try! NSRegularExpression(pattern: domainRegularExpressionPattern)
+        let domainRegularExpression = try? NSRegularExpression(pattern: domainRegularExpressionPattern)
         let answerFormatDomain = ORKAnswerFormat.textAnswerFormat(withValidationRegularExpression: domainRegularExpression, invalidMessage: "Invalid URL: %@")
         answerFormatDomain.multipleLines = false
         answerFormatDomain.keyboardType = .URL
@@ -1417,12 +1417,12 @@ enum TaskListRow: Int, CustomStringConvertible {
         If you wish to include any of the additional fields, then you can specify it through the `options` parameter.
         */
         let registrationTitle = NSLocalizedString("Registration", comment: "")
-        let passcodeValidationRegularExpressionPattern = "^(?=.*\\d).{4,8}$"
-        let passcodeValidationRegularExpression = try! NSRegularExpression(pattern: passcodeValidationRegularExpressionPattern)
+        let passcodeValidationRegexPattern = "^(?=.*\\d).{4,8}$"
+        let passcodeValidationRegularExpression = try? NSRegularExpression(pattern: passcodeValidationRegexPattern)
         let passcodeInvalidMessage = NSLocalizedString("A valid password must be 4 to 8 characters long and include at least one numeric character.", comment: "")
         let registrationOptions: ORKRegistrationStepOption = [.includeGivenName, .includeFamilyName, .includeGender, .includeDOB, .includePhoneNumber]
         let registrationStep = ORKRegistrationStep(identifier: String(describing: Identifier.registrationStep), title: registrationTitle, text: exampleDetailText, passcodeValidationRegularExpression: passcodeValidationRegularExpression, passcodeInvalidMessage: passcodeInvalidMessage, options: registrationOptions)
-        registrationStep.phoneNumberValidationRegularExpression = try! NSRegularExpression(pattern: "^[+]{1,1}[1]{1,1}\\s{1,1}[(]{1,1}[1-9]{3,3}[)]{1,1}\\s{1,1}[1-9]{3,3}\\s{1,1}[1-9]{4,4}$")
+        registrationStep.phoneNumberValidationRegularExpression = try? NSRegularExpression(pattern: "^[+]{1,1}[1]{1,1}\\s{1,1}[(]{1,1}[1-9]{3,3}[)]{1,1}\\s{1,1}[1-9]{3,3}\\s{1,1}[1-9]{4,4}$")
         registrationStep.phoneNumberInvalidMessage = "Invalid phone number"
         
         /*
@@ -1557,12 +1557,12 @@ enum TaskListRow: Int, CustomStringConvertible {
     
     /// This task presents the Speech Recognition pre-defined active task.
     private var speechRecognitionTask: ORKTask {
-        return ORKOrderedTask.speechRecognitionTask(withIdentifier: String(describing: Identifier.speechRecognitionTask), intendedUseDescription: exampleDescription, speechRecognizerLocale: .englishUS, speechRecognitionImage: nil, speechRecognitionText: NSLocalizedString("A quick brown fox jumps over the lazy dog.", comment: ""), shouldHideTranscript: false, allowsEdittingTranscript: true, options: []);
+        return ORKOrderedTask.speechRecognitionTask(withIdentifier: String(describing: Identifier.speechRecognitionTask), intendedUseDescription: exampleDescription, speechRecognizerLocale: .englishUS, speechRecognitionImage: nil, speechRecognitionText: NSLocalizedString("A quick brown fox jumps over the lazy dog.", comment: ""), shouldHideTranscript: false, allowsEdittingTranscript: true, options: [])
     }
     
     /// This task presents the Speech in Noise pre-defined active task.
     private var speechInNoiseTask: ORKTask {
-        return ORKOrderedTask.speechInNoiseTask(withIdentifier: String(describing: Identifier.speechInNoiseTask), intendedUseDescription: nil, options: []);
+        return ORKOrderedTask.speechInNoiseTask(withIdentifier: String(describing: Identifier.speechInNoiseTask), intendedUseDescription: nil, options: [])
     }
     
     /// This task presents the Stroop pre-defined active task.

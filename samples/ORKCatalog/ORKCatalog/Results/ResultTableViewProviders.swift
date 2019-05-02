@@ -180,9 +180,11 @@ func resultTableViewProviderForResult(_ result: ORKResult?) -> UITableViewDataSo
 enum ResultRow {
     // MARK: Cases
 
+    // swiftlint:disable identifier_name
     case text(String, detail: String, selectable: Bool)
     case textImage(String, image: UIImage?)
     case image(UIImage?)
+    // swiftlint:enable identifier_name
     
     // MARK: Types
     

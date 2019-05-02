@@ -5,6 +5,8 @@ excluded: # paths to ignore during linting.
 
 line_length: 200
 
+function_body_length: 1000
+
 number_separator:
   minimum_length: 5
 
@@ -13,6 +15,10 @@ force_cast: warning
 large_tuple:
   warning: 4
   error: 5
+
+cyclomatic_complexity:
+  warning: 35
+  error: 40
 
 trailing_whitespace:
   ignores_empty_lines: true
@@ -52,3 +58,4 @@ disabled_rules:
   - file_length
   - line_length
   - vertical_whitespace
+  - object_literal

@@ -100,7 +100,7 @@ struct StudyTasks {
         
         // Date question
         let today = NSDate()
-        let dateAnswerFormat =  ORKAnswerFormat.dateAnswerFormat(withDefaultDate: nil, minimumDate: today as Date, maximumDate: nil, calendar: nil)
+        let dateAnswerFormat = ORKAnswerFormat.dateAnswerFormat(withDefaultDate: nil, minimumDate: today, maximumDate: nil, calendar: nil)
         let dateQuestionStepTitle = "When is the next solar eclipse?"
         let dateQuestionStep = ORKQuestionStep(identifier: "DateQuestionStep", title: dateQuestionStepTitle, answer: dateAnswerFormat)
         

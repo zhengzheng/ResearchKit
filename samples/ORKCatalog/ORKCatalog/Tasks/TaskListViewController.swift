@@ -137,13 +137,13 @@ class TaskListViewController: UITableViewController, ORKTaskViewControllerDelega
         if stepViewController.step?.identifier == "WaitStepIndeterminate" ||
             stepViewController.step?.identifier == "WaitStep" ||
             stepViewController.step?.identifier == "LoginWaitStep" {
-            delay(5.0, closure: { () -> () in
+            delay(5.0, closure: { () -> Void in
                 if let stepViewController = stepViewController as? ORKWaitStepViewController {
                     stepViewController.goForward()
                 }
             })
         } else if stepViewController.step?.identifier == "WaitStepDeterminate" {
-            delay(1.0, closure: { () -> () in
+            delay(1.0, closure: { () -> Void in
                 if let stepViewController = stepViewController as? ORKWaitStepViewController {
                     self.waitStepViewController = stepViewController
                     self.waitStepProgress = 0.0
@@ -154,7 +154,7 @@ class TaskListViewController: UITableViewController, ORKTaskViewControllerDelega
         }
     }
     
-    func delay(_ delay: Double, closure: @escaping ()->() ) {
+    func delay(_ delay: Double, closure: @escaping () -> Void ) {
         let delayTime = DispatchTime.now() + delay
         let dispatchWorkItem = DispatchWorkItem(block: closure)
         DispatchQueue.main.asyncAfter(deadline: delayTime, execute: dispatchWorkItem)

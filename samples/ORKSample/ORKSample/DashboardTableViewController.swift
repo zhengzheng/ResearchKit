@@ -44,7 +44,7 @@ class DashboardTableViewController: UITableViewController {
     
     let pieChartDataSource = PieChartDataSource()
     let discreteGraphDataSource = DiscreteGraphDataSource()
-    let lineGraphDataSource = LineGraphDataSource()  
+    let lineGraphDataSource = LineGraphDataSource()
     
     // MARK: UIViewController
     

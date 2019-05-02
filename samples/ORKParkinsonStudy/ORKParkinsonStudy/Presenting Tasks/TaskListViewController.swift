@@ -153,9 +153,9 @@ extension TaskListViewController: UITableViewDelegate, UITableViewDataSource {
             }
         case TaskListViewTableSections.activeTasks.rawValue:
             if indexPath.row == 0 {
-                task = ORKOrderedTask.fitnessCheck(withIdentifier: "sixMinuteWalk", intendedUseDescription: "", walkDuration: 6*60, restDuration: 2*60, options: [])
+                task = ORKOrderedTask.fitnessCheck(withIdentifier: "sixMinuteWalk", intendedUseDescription: "", walkDuration: 6 * 60, restDuration: 2 * 60, options: [])
             } else if indexPath.row == 1 {
-                task = ORKOrderedTask.spatialSpanMemoryTask(withIdentifier: String(describing:"spatialSpan"), intendedUseDescription: "", initialSpan: 3, minimumSpan: 2, maximumSpan: 15, playSpeed: 1.0, maximumTests: 5, maximumConsecutiveFailures: 3, customTargetImage: nil, customTargetPluralName: nil, requireReversal: false, options: [])
+                task = ORKOrderedTask.spatialSpanMemoryTask(withIdentifier: String(describing: "spatialSpan"), intendedUseDescription: "", initialSpan: 3, minimumSpan: 2, maximumSpan: 15, playSpeed: 1.0, maximumTests: 5, maximumConsecutiveFailures: 3, customTargetImage: nil, customTargetPluralName: nil, requireReversal: false, options: [])
                 break
             } else if indexPath.row == 2 {
                 task = ORKOrderedTask.speechRecognitionTask(withIdentifier: "speechRecognition", intendedUseDescription: "", speechRecognizerLocale: .englishUS, speechRecognitionImage: nil, speechRecognitionText: "A quick brown fox jumps over the lazy dog.", shouldHideTranscript: true, allowsEdittingTranscript: true, options: [])
