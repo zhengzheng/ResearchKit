@@ -66,7 +66,7 @@ class LineGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
             ORKValueRange(value: 25),
             ORKValueRange(),
             ORKValueRange(value: 30),
-            ORKValueRange(value: 40),
+            ORKValueRange(value: 40)
         ],
         [
             ORKValueRange(value: 2),
@@ -74,7 +74,7 @@ class LineGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
             ORKValueRange(value: 8),
             ORKValueRange(value: 16),
             ORKValueRange(value: 32),
-            ORKValueRange(value: 64),
+            ORKValueRange(value: 64)
         ]
     ]
     
@@ -120,7 +120,7 @@ class DiscreteGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
             ORKValueRange(minimumValue: 2, maximumValue: 6),
             ORKValueRange(minimumValue: 3, maximumValue: 8),
             ORKValueRange(minimumValue: 5, maximumValue: 10),
-            ORKValueRange(minimumValue: 8, maximumValue: 13),
+            ORKValueRange(minimumValue: 8, maximumValue: 13)
         ],
         [
             ORKValueRange(value: 1),
@@ -128,7 +128,7 @@ class DiscreteGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
             ORKValueRange(minimumValue: 3, maximumValue: 10),
             ORKValueRange(minimumValue: 5, maximumValue: 11),
             ORKValueRange(minimumValue: 7, maximumValue: 13),
-            ORKValueRange(minimumValue: 10, maximumValue: 13),
+            ORKValueRange(minimumValue: 10, maximumValue: 13)
         ]
     ]
     
@@ -160,7 +160,7 @@ class BarGraphDataSource: NSObject, ORKValueStackGraphChartViewDataSource {
             ORKValueStack(stackedValues: [2, 6, 3, 6]),
             ORKValueStack(stackedValues: [3, 8, 10, 12]),
             ORKValueStack(stackedValues: [5, 10, 12, 8]),
-            ORKValueStack(stackedValues: [8, 13, 18]),
+            ORKValueStack(stackedValues: [8, 13, 18])
         ],
         [
             ORKValueStack(stackedValues: [14]),
@@ -168,7 +168,7 @@ class BarGraphDataSource: NSObject, ORKValueStackGraphChartViewDataSource {
             ORKValueStack(stackedValues: [3, 10, 12]),
             ORKValueStack(stackedValues: [5, 11, 14]),
             ORKValueStack(stackedValues: [7, 13, 20]),
-            ORKValueStack(stackedValues: [10, 13, 25]),
+            ORKValueStack(stackedValues: [10, 13, 25])
         ]
     ]
     

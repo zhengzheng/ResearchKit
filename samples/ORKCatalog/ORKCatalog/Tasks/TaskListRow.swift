@@ -9,25 +9,25 @@
  1.  Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  
- 2.  Redistributions in binary form must reproduce the above copyright notice, 
- this list of conditions and the following disclaimer in the documentation and/or 
- other materials provided with the distribution. 
+ 2.  Redistributions in binary form must reproduce the above copyright notice,
+ this list of conditions and the following disclaimer in the documentation and/or
+ other materials provided with the distribution.
  
- 3.  Neither the name of the copyright holder(s) nor the names of any contributors 
- may be used to endorse or promote products derived from this software without 
- specific prior written permission. No license is granted to the trademarks of 
- the copyright holders even if such marks are included in this software. 
+ 3.  Neither the name of the copyright holder(s) nor the names of any contributors
+ may be used to endorse or promote products derived from this software without
+ specific prior written permission. No license is granted to the trademarks of
+ the copyright holders even if such marks are included in this software.
  
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
- ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE 
- FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
- DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
- OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
- OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+ FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 import ResearchKit
@@ -130,7 +130,7 @@ enum TaskListRow: Int, CustomStringConvertible {
                 [
                     .form,
                     .groupedForm,
-                    .survey,
+                    .survey
                 ]),
             TaskListRowSection(title: "Survey Questions", rows:
                 [
@@ -153,7 +153,7 @@ enum TaskListRow: Int, CustomStringConvertible {
                     .imageCapture,
                     .videoCapture,
                     .wait,
-                    .PDFViewer,
+                    .PDFViewer
                 ]),
             TaskListRowSection(title: "Onboarding", rows:
                 [
@@ -161,7 +161,7 @@ enum TaskListRow: Int, CustomStringConvertible {
                     .consent,
                     .accountCreation,
                     .login,
-                    .passcode,
+                    .passcode
                 ]),
             TaskListRowSection(title: "Active Tasks", rows:
                 [
@@ -192,7 +192,7 @@ enum TaskListRow: Int, CustomStringConvertible {
                 [
                     .videoInstruction,
                     .webView
-                ]),
+                ])
         ]}
     
     // MARK: CustomStringConvertible
@@ -469,8 +469,8 @@ enum TaskListRow: Int, CustomStringConvertible {
         case imageCaptureStep
         
         // Video capture task specific identifiers.
-        case VideoCaptureTask
-        case VideoCaptureStep
+        case videoCaptureTask
+        case videoCaptureStep
         
         // Task with an example of waiting.
         case waitTask
@@ -731,7 +731,7 @@ enum TaskListRow: Int, CustomStringConvertible {
         formItem02.placeholder = NSLocalizedString("Your placeholder here", comment: "")
 
         let formItem03Text = NSLocalizedString(exampleQuestionText, comment: "")
-        let scaleAnswerFormat = ORKContinuousScaleAnswerFormat.init(maximumValue: 10, minimumValue: 0, defaultValue: 0.0, maximumFractionDigits: 1)//ORKScaleAnswerFormat(maximumValue: 10, minimumValue: 0, defaultValue: 0, step: 1)
+        let scaleAnswerFormat = ORKContinuousScaleAnswerFormat(maximumValue: 10, minimumValue: 0, defaultValue: 0.0, maximumFractionDigits: 1)//ORKScaleAnswerFormat(maximumValue: 10, minimumValue: 0, defaultValue: 0, step: 1)
         let formItem03 = ORKFormItem(identifier: String(describing: Identifier.formItem03), text: formItem03Text, answerFormat: scaleAnswerFormat)
 
         step.formItems = [
@@ -1058,7 +1058,7 @@ enum TaskListRow: Int, CustomStringConvertible {
         questionStep4.text = "Continuous Vertical Scale"
         
         // The fifth step is a scale control that allows text choices.
-        let textChoices : [ORKTextChoice] = [ORKTextChoice(text: "Poor", value: 1 as NSCoding & NSCopying & NSObjectProtocol), ORKTextChoice(text: "Fair", value: 2 as NSCoding & NSCopying & NSObjectProtocol), ORKTextChoice(text: "Good", value: 3 as NSCoding & NSCopying & NSObjectProtocol), ORKTextChoice(text: "Above Average", value: 10 as NSCoding & NSCopying & NSObjectProtocol), ORKTextChoice(text: "Excellent", value: 5 as NSCoding & NSCopying & NSObjectProtocol)]
+        let textChoices: [ORKTextChoice] = [ORKTextChoice(text: "Poor", value: 1 as NSCoding & NSCopying & NSObjectProtocol), ORKTextChoice(text: "Fair", value: 2 as NSCoding & NSCopying & NSObjectProtocol), ORKTextChoice(text: "Good", value: 3 as NSCoding & NSCopying & NSObjectProtocol), ORKTextChoice(text: "Above Average", value: 10 as NSCoding & NSCopying & NSObjectProtocol), ORKTextChoice(text: "Excellent", value: 5 as NSCoding & NSCopying & NSObjectProtocol)]
 
         let step5AnswerFormat = ORKAnswerFormat.textScale(with: textChoices, defaultIndex: NSIntegerMax, vertical: false)
         
@@ -1132,7 +1132,7 @@ enum TaskListRow: Int, CustomStringConvertible {
         commute?"
     */
     private var timeIntervalQuestionTask: ORKTask {
-        /* 
+        /*
             The time interval answer format is constrained to entering a time
             less than 24 hours and in steps of minutes. For times that don't fit
             these restrictions, use another mode of data entry.
@@ -1201,7 +1201,7 @@ enum TaskListRow: Int, CustomStringConvertible {
         
         let domainRegularExpressionPattern = "^(https?:\\/\\/)?([\\da-z\\.-]+)\\.([a-z\\.]{2,6})([\\/\\w \\.-]*)*\\/?$"
         let domainRegularExpression = try! NSRegularExpression(pattern: domainRegularExpressionPattern)
-        let answerFormatDomain = ORKAnswerFormat.textAnswerFormat(withValidationRegularExpression: domainRegularExpression, invalidMessage:"Invalid URL: %@")
+        let answerFormatDomain = ORKAnswerFormat.textAnswerFormat(withValidationRegularExpression: domainRegularExpression, invalidMessage: "Invalid URL: %@")
         answerFormatDomain.multipleLines = false
         answerFormatDomain.keyboardType = .URL
         answerFormatDomain.autocapitalizationType = UITextAutocapitalizationType.none
@@ -1286,7 +1286,7 @@ enum TaskListRow: Int, CustomStringConvertible {
     /// This task presents the PDF Viewer Step
     private var PDFViewerTask: ORKTask {
 
-        let PDFViewerStep = ORKPDFViewerStep.init(identifier: String(describing: Identifier.pdfViewerStep), pdfURL: Bundle.main.bundleURL.appendingPathComponent("ResearchKit.pdf"))
+        let PDFViewerStep = ORKPDFViewerStep(identifier: String(describing: Identifier.pdfViewerStep), pdfURL: Bundle.main.bundleURL.appendingPathComponent("ResearchKit.pdf"))
         PDFViewerStep.title = NSLocalizedString("PDF Step", comment: "")
         
         return ORKOrderedTask(identifier: String(describing: Identifier.pdfViewerTask), steps: [PDFViewerStep])
@@ -1360,7 +1360,7 @@ enum TaskListRow: Int, CustomStringConvertible {
         
         // Add end direct rules to skip unneeded steps
         let directRule = ORKDirectStepNavigationRule(destinationStepIdentifier: ORKNullStepIdentifier)
-        eligibilityTask.setNavigationRule(directRule, forTriggerStepIdentifier:String(describing: Identifier.eligibilityIneligibleStep))
+        eligibilityTask.setNavigationRule(directRule, forTriggerStepIdentifier: String(describing: Identifier.eligibilityIneligibleStep))
         
         return eligibilityTask
     }
@@ -1633,7 +1633,7 @@ enum TaskListRow: Int, CustomStringConvertible {
     /// This task presents a trail making task
     private var trailMaking: ORKTask {
         let intendedUseDescription = "Tests visual attention and task switching"
-        return ORKOrderedTask.trailmakingTask(withIdentifier: String(describing: Identifier.trailMaking), intendedUseDescription: intendedUseDescription, trailmakingInstruction: nil, trailType:.B, options: [])
+        return ORKOrderedTask.trailmakingTask(withIdentifier: String(describing: Identifier.trailMaking), intendedUseDescription: intendedUseDescription, trailmakingInstruction: nil, trailType: .B, options: [])
     }
 
     /// This task presents a video instruction step
@@ -1647,7 +1647,7 @@ enum TaskListRow: Int, CustomStringConvertible {
     
     /// This task presents a web view step
     private var webView: ORKTask {
-        let webViewStep = ORKWebViewStep.init(identifier: String(describing: Identifier.webViewStep), html: exampleHtml)
+        let webViewStep = ORKWebViewStep(identifier: String(describing: Identifier.webViewStep), html: exampleHtml)
         webViewStep.title = NSLocalizedString("Web View", comment: "")
         return ORKOrderedTask(identifier: String(describing: Identifier.webViewTask), steps: [webViewStep])
     }

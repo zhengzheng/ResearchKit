@@ -37,7 +37,7 @@ class ORKBorderedButtonTests: XCTestCase {
     
     override func setUp() {
         button.normalTintColor = UIColor.black
-        button.normalHighlightOrSelectTintColor  = UIColor.red
+        button.normalHighlightOrSelectTintColor = UIColor.red
         button.disableTintColor = UIColor.blue
         button.fadeDelay = 20.0
     }

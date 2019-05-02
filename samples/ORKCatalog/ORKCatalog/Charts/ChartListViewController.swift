@@ -50,6 +50,7 @@ class ChartListViewController: UITableViewController {
     var chartTableViewCells: [UITableViewCell]!
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         // ORKPieChartView
         pieChartTableViewCell = (tableView.dequeueReusableCell(withIdentifier: pieChartIdentifier) as! PieChartTableViewCell)
         let pieChartView = pieChartTableViewCell.pieChartView
@@ -108,6 +109,6 @@ class ChartListViewController: UITableViewController {
         lineGraphChartTableViewCell.graphView.animate(withDuration: 0.5)
         discreteGraphChartTableViewCell.graphView.animate(withDuration: 0.5)
         barGraphChartTableViewCell.graphView.animate(withDuration: 0.5)
-    }    
+    }
 
 }

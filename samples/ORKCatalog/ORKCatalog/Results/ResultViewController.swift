@@ -88,8 +88,7 @@ class ResultViewController: UITableViewController {
             result view controller.
         */
         if let identifier = segue.identifier,
-               let segueIdentifier = SegueIdentifier(rawValue: identifier)
-               , segueIdentifier == .showTaskResult {
+               let segueIdentifier = SegueIdentifier(rawValue: identifier), segueIdentifier == .showTaskResult {
             
             let cell = sender as! UITableViewCell
             

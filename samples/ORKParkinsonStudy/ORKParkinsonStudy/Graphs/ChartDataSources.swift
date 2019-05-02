@@ -34,7 +34,7 @@ import ResearchKit
 
 class BarGraphDataSource: NSObject, ORKValueStackGraphChartViewDataSource {
     
-    var plotPoints:[[ORKValueStack]]!
+    var plotPoints: [[ORKValueStack]]!
     var datePoints = [String]()
 
     
@@ -99,7 +99,7 @@ class BarGraphDataSource: NSObject, ORKValueStackGraphChartViewDataSource {
                     for hour in dyskinesiaPerHour {
                         var percentLikely = 0.0
                         for minute in hour {
-                            percentLikely = percentLikely + (minute["percentLikely"] as! Double) * 100
+                            percentLikely += (minute["percentLikely"] as! Double) * 100
                         }
                         dyskinesiaPoints.append(ORKValueStack(stackedValues: [NSNumber(value: percentLikely / 60.0)]))
                     }

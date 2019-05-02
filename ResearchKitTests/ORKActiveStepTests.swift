@@ -35,6 +35,7 @@ class ORKActiveStepTests: XCTestCase {
     var activeStepTest: ORKActiveStep!
     
     override func setUp() {
+        super.setUp()
         activeStepTest = ORKActiveStep(identifier: "Test")
     }
     

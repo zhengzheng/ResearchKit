@@ -33,7 +33,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import UIKit
 import ResearchKit
 
-func executeAfterDelay(_ delay:Double, closure:@escaping ()->()) {
+func executeAfterDelay(_ delay: Double, closure: @escaping ()->()) {
     let delayTime = DispatchTime.now() + delay
     let dispatchWorkItem = DispatchWorkItem(block: closure);
     DispatchQueue.main.asyncAfter(
@@ -72,7 +72,8 @@ class ChartListViewController: UIViewController, UITableViewDataSource {
     }
     
     override func viewDidLoad() {
-        self.tableView.dataSource = self;
+        super.viewDidLoad()
+        self.tableView.dataSource = self
         
         // ORKPieChartView
         pieChartTableViewCell = tableView.dequeueReusableCell(withIdentifier: pieChartIdentifier) as? PieChartTableViewCell
@@ -273,7 +274,8 @@ class ChartPerformanceListViewController: UIViewController, UITableViewDataSourc
     }
     
     override func viewDidLoad() {
-        self.tableView.dataSource = self;
+        super.viewDidLoad()
+        self.tableView.dataSource = self
         
         // ORKLineGraphChartView
         lineGraphChartTableViewCell = tableView.dequeueReusableCell(withIdentifier: lineGraphChartIdentifier) as? LineGraphChartTableViewCell

@@ -45,7 +45,7 @@ class ORKPasscodeViewControllerTests: XCTestCase {
         
         
         guard let stepViewController = testController.viewControllers.first as? ORKPasscodeStepViewController,
-            let step = stepViewController.step as? ORKPasscodeStep else{
+            let step = stepViewController.step as? ORKPasscodeStep else {
                 XCTFail()
                 return
         }
@@ -60,7 +60,7 @@ class ORKPasscodeViewControllerTests: XCTestCase {
         testController = ORKPasscodeViewController.passcodeEditingViewController(withText: "TEST", delegate: self, passcodeType: .type6Digit)
         
         guard let stepViewController = testController.viewControllers.first as? ORKPasscodeStepViewController,
-            let step = stepViewController.step as? ORKPasscodeStep else{
+            let step = stepViewController.step as? ORKPasscodeStep else {
                 XCTFail()
                 return
         }

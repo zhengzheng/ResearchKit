@@ -66,7 +66,7 @@ func resultTableViewProviderForResult(_ result: ORKResult?) -> UITableViewDataSo
         To reduce the possible effects of someone modifying this code--i.e.
         cases getting reordered and accidentally getting matches for subtypes
         of the intended result type, we guard against any subtype matches
-        (e.g. the `ORKCollectionResult` guard against `result` being an 
+        (e.g. the `ORKCollectionResult` guard against `result` being an
         `ORKTaskResult` instance).
     */
     switch result {
@@ -207,7 +207,7 @@ enum ResultRow {
             it's "nil". Use Optional's map method to map the value to a string
             if the detail is not `nil`.
         */
-        let detailText = detail.map { String(describing:$0) } ?? "nil"
+        let detailText = detail.map { String(describing: $0) } ?? "nil"
         
         self = .text(text, detail: detailText, selectable: selectable)
     }
@@ -287,7 +287,7 @@ class ResultTableViewProvider: NSObject, UITableViewDataSource, UITableViewDeleg
                     indicator if the table view cell is selectable.
                 */
                 cell.selectionStyle = selectable ? .default : .none
-                cell.accessoryType  = selectable ? .disclosureIndicator : .none
+                cell.accessoryType = selectable ? .disclosureIndicator : .none
             
                 return cell
 
@@ -340,7 +340,7 @@ class ResultTableViewProvider: NSObject, UITableViewDataSource, UITableViewDeleg
 }
 
 /// Table view provider specific to an `ORKBooleanQuestionResult` instance.
-class BooleanQuestionResultTableViewProvider: ResultTableViewProvider   {
+class BooleanQuestionResultTableViewProvider: ResultTableViewProvider {
     // MARK: ResultTableViewProvider
     
     override func resultRowsForSection(_ section: Int) -> [ResultRow] {
@@ -540,7 +540,7 @@ class AmslerGridResultTableViewProvider: ResultTableViewProvider {
     override func resultRowsForSection(_ section: Int) -> [ResultRow] {
         let amslerGridResult = result as! ORKAmslerGridResult
         let image = amslerGridResult.image!
-        let eyeSide:String = amslerGridResult.eyeSide.rawValue == 0 ? "Not Specified" : amslerGridResult.eyeSide.rawValue == 1 ? "Left" : "Right"
+        let eyeSide: String = amslerGridResult.eyeSide.rawValue == 0 ? "Not Specified": amslerGridResult.eyeSide.rawValue == 1 ? "Left": "Right"
         
         return super.resultRowsForSection(section) + [
             // The captured image.
@@ -561,7 +561,7 @@ class AmslerGridResultTableViewProvider: ResultTableViewProvider {
 }
 
 /// Table view provider specific to an `ORKPasscodeResult` instance.
-class PasscodeResultTableViewProvider: ResultTableViewProvider   {
+class PasscodeResultTableViewProvider: ResultTableViewProvider {
     // MARK: ResultTableViewProvider
     
     override func resultRowsForSection(_ section: Int) -> [ResultRow] {
@@ -591,9 +591,9 @@ class FileResultTableViewProvider: ResultTableViewProvider {
             ResultRow(text: "fileURL", detail: questionResult.fileURL)
         ]
 
-        if let fileURL = questionResult.fileURL, let contentType = questionResult.contentType , contentType.hasPrefix("image/") , !contentType.hasSuffix(".dng"){
+        if let fileURL = questionResult.fileURL, let contentType = questionResult.contentType, contentType.hasPrefix("image/"), !contentType.hasSuffix(".dng") {
             
-            if let image = UIImage.init(contentsOfFile: fileURL.path) {
+            if let image = UIImage(contentsOfFile: fileURL.path) {
                 return rows + [
                     // The image of the generated file on disk.
                     .image(image)
@@ -669,14 +669,13 @@ class SpatialSpanMemoryResultTableViewProvider: ResultTableViewProvider {
 
 /// Table view provider specific to an `ORKSpeechRecognitionResult` instance.
 class SpeechRecognitionResultTableViewProvider: ResultTableViewProvider {
-    //MARK: UITableViewDataSource
+    // MARK: UITableViewDataSource
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         let speechRecognitionResult = result as! ORKSpeechRecognitionResult
         if let segments = speechRecognitionResult.transcription?.segments {
             return segments.count + 1
-        }
-        else {
+        } else {
             return 2
         }
     }
@@ -690,8 +689,7 @@ class SpeechRecognitionResultTableViewProvider: ResultTableViewProvider {
         let speechRecognitionResult = result as! ORKSpeechRecognitionResult
         if speechRecognitionResult.transcription?.segments != nil {
             return "Transcritption " + String(section)
-        }
-        else {
+        } else {
             return "Error"
         }
     }
@@ -703,7 +701,7 @@ class SpeechRecognitionResultTableViewProvider: ResultTableViewProvider {
         
         let rows = super.resultRowsForSection(section)
         
-        if (section == 0) {
+        if section == 0 {
             return rows
         }
         

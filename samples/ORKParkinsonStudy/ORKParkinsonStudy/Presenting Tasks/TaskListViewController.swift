@@ -83,7 +83,7 @@ class TaskListViewController: UIViewController {
     
     func setupHeader() {
         
-        let attributedDescription = NSMutableAttributedString(string: "Powered by ResearchKit", attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 14.0, weight: .light)])
+        let attributedDescription = NSMutableAttributedString(string: "Powered by ResearchKit", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14.0, weight: .light)])
         attributedDescription.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: 16.0, weight: .bold), range: NSRange(location: 11, length: 11))
         
         headerView = HeaderView(title: "Parkinson's Study", descriptionText: attributedDescription, iconName: "CheckMark", invertColors: true)

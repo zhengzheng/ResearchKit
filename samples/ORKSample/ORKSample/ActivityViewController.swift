@@ -39,7 +39,7 @@ enum Activity: Int {
         return Array (
             AnyIterator {
                 let returnedElement = self.init(rawValue: index)
-                index = index + 1
+                index += 1
                 return returnedElement
             }
         )

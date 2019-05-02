@@ -154,7 +154,7 @@ class TaskListViewController: UITableViewController, ORKTaskViewControllerDelega
         }
     }
     
-    func delay(_ delay: Double, closure: @escaping ()->()) {
+    func delay(_ delay: Double, closure: @escaping ()->() ) {
         let delayTime = DispatchTime.now() + delay
         let dispatchWorkItem = DispatchWorkItem(block: closure)
         DispatchQueue.main.asyncAfter(deadline: delayTime, execute: dispatchWorkItem)

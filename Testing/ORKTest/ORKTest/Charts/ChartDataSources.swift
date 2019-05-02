@@ -44,12 +44,12 @@ func randomColorArray(_ number: Int) -> [UIColor] {
         return colors
     }
 
-let NumberOfPieChartSegments = 13
+let numberOfPieChartSegments = 13
 
 class ColorlessPieChartDataSource: NSObject, ORKPieChartViewDataSource {
     
     func numberOfSegments(in pieChartView: ORKPieChartView ) -> Int {
-        return NumberOfPieChartSegments
+        return numberOfPieChartSegments
     }
     
     func pieChartView(_ pieChartView: ORKPieChartView, valueForSegmentAt index: Int) -> CGFloat {
@@ -72,7 +72,7 @@ class RandomColorPieChartDataSource: ColorlessPieChartDataSource {
     }
 }
 
-class BaseFloatRangeGraphChartDataSource:  NSObject, ORKValueRangeGraphChartViewDataSource {
+class BaseFloatRangeGraphChartDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
     var plotPoints: [[ORKValueRange]] = [[]]
     
     internal func numberOfPlots(in graphChartView: ORKGraphChartView) -> Int {
@@ -88,7 +88,7 @@ class BaseFloatRangeGraphChartDataSource:  NSObject, ORKValueRangeGraphChartView
     }
 }
 
-class BaseFloatStackGraphChartDataSource:  NSObject, ORKValueStackGraphChartViewDataSource {
+class BaseFloatStackGraphChartDataSource: NSObject, ORKValueStackGraphChartViewDataSource {
     
     var plotPoints: [[ORKValueStack]] = [[]]
     
@@ -118,7 +118,7 @@ class LineGraphChartDataSource: BaseFloatRangeGraphChartDataSource {
                     ORKValueRange(),
                     ORKValueRange(value: 30),
                     ORKValueRange(value: 40),
-                    ORKValueRange(),
+                    ORKValueRange()
                 ],
                 [
                     ORKValueRange(value: 2),
@@ -127,7 +127,7 @@ class LineGraphChartDataSource: BaseFloatRangeGraphChartDataSource {
                     ORKValueRange(value: 16),
                     ORKValueRange(value: 32),
                     ORKValueRange(value: 50),
-                    ORKValueRange(value: 64),
+                    ORKValueRange(value: 64)
                 ],
                 [
                     ORKValueRange(),
@@ -138,8 +138,8 @@ class LineGraphChartDataSource: BaseFloatRangeGraphChartDataSource {
                     ORKValueRange(),
                     ORKValueRange(value: 30),
                     ORKValueRange(value: 40),
-                    ORKValueRange(),
-                ],
+                    ORKValueRange()
+                ]
         ]
     }
     
