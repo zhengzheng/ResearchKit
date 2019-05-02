@@ -85,6 +85,7 @@
 #import <ResearchKit/ORKTaskViewController_Private.h>
 #import <ResearchKit/ORKQuestionStepViewController_Private.h>
 #import <ResearchKit/ORKPasscodeStepViewController_Internal.h>
+#import <ResearchKit/ORKInstructionStepViewController_Internal.h>
 
 #import <ResearchKit/ORKAudioStepViewController.h>
 #import <ResearchKit/ORKAmslerGridStepViewController.h>
@@ -142,6 +143,7 @@
 #import <ResearchKit/ORKProgressView.h>
 #import <ResearchKit/ORKFreehandDrawingView.h>
 #import <ResearchKit/ORKAudioGraphView.h>
+#import <ResearchKit/ORKInstructionStepContainerView.h>
 
 #import <ResearchKit/ORKLabel.h>
 #import <ResearchKit/ORKUnitLabel.h>
