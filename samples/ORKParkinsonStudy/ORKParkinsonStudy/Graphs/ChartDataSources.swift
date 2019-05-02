@@ -32,6 +32,7 @@
 import Foundation
 import ResearchKit
 
+// swiftlint:disable force_cast
 class BarGraphDataSource: NSObject, ORKValueStackGraphChartViewDataSource {
     
     var plotPoints: [[ORKValueStack]]!
@@ -54,7 +55,7 @@ class BarGraphDataSource: NSObject, ORKValueStackGraphChartViewDataSource {
             do {
                 let data = try Data(contentsOf: URL(fileURLWithPath: tremorPath), options: .mappedIfSafe)
                 let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
-                
+                // swiftlint:disable syntactic_sugar
                 if let tremorData = jsonResult as? [Dictionary<String, AnyObject>] {
                     
                     let tremorPerHour = stride(from: 0, to: tremorData.count, by: 60).map {
@@ -81,6 +82,7 @@ class BarGraphDataSource: NSObject, ORKValueStackGraphChartViewDataSource {
                         tremorPoints.append(ORKValueStack(stackedValues: [NSNumber(value: percentSlight / 60.0), NSNumber(value: percentMild / 60.0), NSNumber(value: percentModerate / 60.0), NSNumber(value: percentStrong / 60.0)]))
                     }
                 }
+                // swiftlint:enable syntactic_sugar
             } catch {
                 // handle error
             }
@@ -90,6 +92,7 @@ class BarGraphDataSource: NSObject, ORKValueStackGraphChartViewDataSource {
                 let data = try Data(contentsOf: URL(fileURLWithPath: dyskinesiaPath), options: .mappedIfSafe)
                 let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
                 
+                // swiftlint:disable syntactic_sugar
                 if let dyskinesiaData = jsonResult as? [Dictionary<String, AnyObject>] {
                     
                     let dyskinesiaPerHour = stride(from: 0, to: dyskinesiaData.count, by: 60).map {
@@ -104,6 +107,7 @@ class BarGraphDataSource: NSObject, ORKValueStackGraphChartViewDataSource {
                         dyskinesiaPoints.append(ORKValueStack(stackedValues: [NSNumber(value: percentLikely / 60.0)]))
                     }
                 }
+               // swiftlint:enable syntactic_sugar
             } catch {
                 // handle error
             }
@@ -132,4 +136,4 @@ class BarGraphDataSource: NSObject, ORKValueStackGraphChartViewDataSource {
         return plotIndex == 0 ? Colors.tremorGraphColor.color : Colors.dyskinesiaSymptomGraphColor.color
     }
 }
-
+//swiftlint:enable force_cast

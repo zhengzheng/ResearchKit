@@ -49,6 +49,7 @@ import Speech
     and are not user visible (see description in `ResultViewController`), none
     of the properties / content are localized.
 */
+//swiftlint:disable force_cast
 func resultTableViewProviderForResult(_ result: ORKResult?) -> UITableViewDataSource & UITableViewDelegate {
     guard let result = result else {
         /*
@@ -458,6 +459,7 @@ class TextQuestionResultTableViewProvider: ResultTableViewProvider {
 }
 
 /// Table view provider specific to an `ORKTimeIntervalQuestionResult` instance.
+// swiftlint:disable type_name
 class TimeIntervalQuestionResultTableViewProvider: ResultTableViewProvider {
     // MARK: ResultTableViewProvider
     
@@ -470,6 +472,7 @@ class TimeIntervalQuestionResultTableViewProvider: ResultTableViewProvider {
         ]
     }
 }
+// swiftlint:enable type_name
 
 /// Table view provider specific to an `ORKTimeOfDayQuestionResult` instance.
 class TimeOfDayQuestionResultTableViewProvider: ResultTableViewProvider {
@@ -1227,6 +1230,7 @@ class CollectionResultTableViewProvider: ResultTableViewProvider {
 }
 
 /// Table view provider specific to an `ORKVideoInstructionStepResult` instance.
+// swiftlint:disable type_name
 class VideoInstructionStepResultTableViewProvider: ResultTableViewProvider {
     // MARK: ResultTableViewProvider
     
@@ -1245,6 +1249,7 @@ class VideoInstructionStepResultTableViewProvider: ResultTableViewProvider {
         return rows
     }
 }
+// swiftlint:enable type_name
 
 /// Table view provider specific to an `ORKWebViewStepResult` instance.
 class WebViewStepResultTableViewProvider: ResultTableViewProvider {
@@ -1264,3 +1269,4 @@ class WebViewStepResultTableViewProvider: ResultTableViewProvider {
         return rows
     }
 }
+//swiftlint:enable force_cast

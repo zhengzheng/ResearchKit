@@ -31,6 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import UIKit
 import ResearchKit
 
+//swiftlint:disable force_cast
 class ChartListViewController: UITableViewController {
     
     let pieChartDataSource = PieChartDataSource()
@@ -112,3 +113,4 @@ class ChartListViewController: UITableViewController {
     }
 
 }
+//swiftlint:enable force_cast

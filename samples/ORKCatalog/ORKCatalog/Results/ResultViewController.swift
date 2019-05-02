@@ -38,6 +38,7 @@ import ResearchKit
     it should not ever be shown to a user. Because of this, the UI for this view
     controller is not localized.
 */
+//swiftlint:disable force_cast
 class ResultViewController: UITableViewController {
     // MARK: Types
     
@@ -115,3 +116,4 @@ class ResultViewController: UITableViewController {
         return false
     }
 }
+//swiftlint:enable force_cast

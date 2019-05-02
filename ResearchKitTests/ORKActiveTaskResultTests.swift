@@ -99,7 +99,11 @@ class ORKHolePegTestResultTests: XCTestCase {
         XCTAssertEqual(result.totalFailures, 5)
         XCTAssertEqual(result.totalTime, 5.0)
         XCTAssertEqual(result.totalDistance, 10.0)
-        XCTAssertEqual(result.samples as! [Int], [2, 4])
+        guard let samples = result.samples as? [Int] else {
+            XCTFail("unable to cast samples array to array of int")
+            return
+        }
+        XCTAssertEqual(samples, [2, 4])
     }
     
     func testIsEqual() {

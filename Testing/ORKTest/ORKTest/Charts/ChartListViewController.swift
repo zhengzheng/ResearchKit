@@ -40,6 +40,7 @@ func executeAfterDelay(_ delay: Double, closure: @escaping () -> Void) {
         deadline: delayTime, execute: dispatchWorkItem)
 }
 
+//swiftlint:disable force_cast
 class ChartListViewController: UIViewController, UITableViewDataSource {
     
     @IBOutlet var tableView: UITableView!
@@ -313,3 +314,4 @@ class ChartPerformanceListViewController: UIViewController, UITableViewDataSourc
         lineGraphChartTableViewCell.graphChartView.animate(withDuration: 0.5)
     }
 }
+//swiftlint:enable force_cast

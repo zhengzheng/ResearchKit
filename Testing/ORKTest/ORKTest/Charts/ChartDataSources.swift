@@ -64,7 +64,7 @@ class ColorlessPieChartDataSource: NSObject, ORKPieChartViewDataSource {
 class RandomColorPieChartDataSource: ColorlessPieChartDataSource {
     
     lazy var backingStore: [UIColor] = {
-        return randomColorArray(NumberOfPieChartSegments)
+        return randomColorArray(numberOfPieChartSegments)
         }()
 
     func pieChartView(_ pieChartView: ORKPieChartView, colorForSegmentAtIndex index: Int) -> UIColor {

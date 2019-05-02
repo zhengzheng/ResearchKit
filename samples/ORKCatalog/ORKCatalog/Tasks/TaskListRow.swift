@@ -1201,7 +1201,7 @@ enum TaskListRow: Int, CustomStringConvertible {
         
         let domainRegularExpressionPattern = "^(https?:\\/\\/)?([\\da-z\\.-]+)\\.([a-z\\.]{2,6})([\\/\\w \\.-]*)*\\/?$"
         let domainRegularExpression = try? NSRegularExpression(pattern: domainRegularExpressionPattern)
-        let answerFormatDomain = ORKAnswerFormat.textAnswerFormat(withValidationRegularExpression: domainRegularExpression, invalidMessage: "Invalid URL: %@")
+        let answerFormatDomain = ORKAnswerFormat.textAnswerFormat(withValidationRegularExpression: domainRegularExpression!, invalidMessage: "Invalid URL: %@")
         answerFormatDomain.multipleLines = false
         answerFormatDomain.keyboardType = .URL
         answerFormatDomain.autocapitalizationType = UITextAutocapitalizationType.none
@@ -1254,7 +1254,7 @@ enum TaskListRow: Int, CustomStringConvertible {
         let handSolidImage = UIImage(named: "hand_solid")!
         instructionStep.image = handSolidImage.withRenderingMode(.alwaysTemplate)
         
-        let videoCaptureStep = ORKVideoCaptureStep(identifier: String(describing: Identifier.VideoCaptureStep))
+        let videoCaptureStep = ORKVideoCaptureStep(identifier: String(describing: Identifier.videoCaptureStep))
         videoCaptureStep.title = NSLocalizedString("Video Capture", comment: "")
         videoCaptureStep.accessibilityInstructions = NSLocalizedString("Your instructions for capturing the video", comment: "")
         videoCaptureStep.accessibilityHint = NSLocalizedString("Captures the video visible in the preview", comment: "")
@@ -1262,7 +1262,7 @@ enum TaskListRow: Int, CustomStringConvertible {
         videoCaptureStep.templateImageInsets = UIEdgeInsets(top: 0.05, left: 0.05, bottom: 0.05, right: 0.05)
         videoCaptureStep.duration = 30.0; // 30 seconds
         
-        return ORKOrderedTask(identifier: String(describing: Identifier.VideoCaptureTask), steps: [
+        return ORKOrderedTask(identifier: String(describing: Identifier.videoCaptureTask), steps: [
             instructionStep,
             videoCaptureStep
             ])

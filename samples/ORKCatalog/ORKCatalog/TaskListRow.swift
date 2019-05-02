@@ -763,7 +763,7 @@ enum TaskListRow: Int, Printable {
             This effectively tells the consent review step which signatory is
             reviewing the document.
         */
-        let signature = consentDocument.signatures!.first as! ORKConsentSignature
+        let signature = consentDocument.signatures!.first as? ORKConsentSignature
 
         let reviewConsentStep = ORKConsentReviewStep(identifier: Identifier.ConsentReviewStep.rawValue, signature: signature, inDocument: consentDocument)
 

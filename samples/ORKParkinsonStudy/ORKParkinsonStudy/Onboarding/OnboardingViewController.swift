@@ -120,7 +120,9 @@ class OnboardingViewController: ORKTaskViewController, ORKTaskViewControllerDele
     func signatureResult(taskViewController: ORKTaskViewController) -> ORKConsentSignatureResult? {
         
         let taskResults: [ORKResult]? = taskViewController.result.results
-        let reviewStepResult = taskResults?.filter { $0.identifier == "reviewStep" }.first
+        let reviewStepResult = taskResults?.first(where: { (result) -> Bool in
+            result.identifier == "reviewStep"
+        })
         let reviewStepResults = (reviewStepResult as? ORKStepResult)?.results
         let signatureResult = reviewStepResults?.first as? ORKConsentSignatureResult
         
