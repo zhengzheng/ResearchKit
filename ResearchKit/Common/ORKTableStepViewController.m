@@ -41,7 +41,7 @@
 #import "ORKTaskViewController_Internal.h"
 
 #import "ORKTableStep.h"
-#import "ORKTableContainerHeaderView.h"
+#import "ORKStepContentView.h"
 #import "ORKBodyItem.h"
 #import "ORKHelpers_Internal.h"
 #import "ORKSkin.h"

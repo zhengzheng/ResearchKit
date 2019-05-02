@@ -43,7 +43,7 @@
 #import "ORKStepViewController_Internal.h"
 #import "ORKTaskViewController_Internal.h"
 
-#import "ORKTableContainerHeaderView.h"
+#import "ORKStepContentView.h"
 #import "ORKAnswerFormat_Internal.h"
 #import "ORKCollectionResult_Private.h"
 #import "ORKFormStep.h"

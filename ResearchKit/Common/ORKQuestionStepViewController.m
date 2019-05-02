@@ -55,7 +55,7 @@
 #import "ORKQuestionStep_Internal.h"
 #import "ORKResult_Private.h"
 #import "ORKStep_Private.h"
-#import "ORKTableContainerHeaderView.h"
+#import "ORKStepContentView.h"
 
 #import "ORKHelpers_Internal.h"
 #import "ORKSkin.h"
@@ -71,7 +71,7 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
     id _answer;
     
     ORKTableContainerView *_tableContainer;
-    ORKTableContainerHeaderView *_headerView;
+    ORKStepContentView *_headerView;
     ORKNavigationContainerView *_navigationFooterView;
     ORKAnswerDefaultSource *_defaultSource;
     

@@ -42,7 +42,7 @@ static const CGFloat ORKStepContentIconToBodyTopPaddingStandard = 20.0;
 static const CGFloat ORKStepContentIconToBulletTopPaddingStandard = 20.0;
 
 
-typedef NS_ENUM(NSInteger, ORKUpdateConstraintSequence) {
+typedef NS_CLOSED_ENUM(NSInteger, ORKUpdateConstraintSequence) {
     ORKUpdateConstraintSequenceTopContentImageView = 0,
     ORKUpdateConstraintSequenceIconImageView,
     ORKUpdateConstraintSequenceTitleLabel,
