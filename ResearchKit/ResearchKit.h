@@ -108,6 +108,8 @@
 
 #import <ResearchKit/ORKKeychainWrapper.h>
 
+#import <ResearchKit/ORKStepContentView.h>
+
 #import <ResearchKit/ORKChartTypes.h>
 #import <ResearchKit/ORKBarGraphChartView.h>
 #import <ResearchKit/ORKDiscreteGraphChartView.h>
