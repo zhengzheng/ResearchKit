@@ -34,7 +34,7 @@
 #import "ORKHelpers_Internal.h"
 #import "ORKBodyItem.h"
 
-
+ORK_CLASS_AVAILABLE
 @interface ORKLearnMoreButton : UIButton
 
 + (instancetype)buttonWithType:(UIButtonType)buttonType NS_UNAVAILABLE;
