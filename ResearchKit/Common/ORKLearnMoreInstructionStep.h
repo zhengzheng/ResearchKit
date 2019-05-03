@@ -33,6 +33,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+ORK_CLASS_AVAILABLE
 @interface ORKLearnMoreInstructionStep : ORKInstructionStep
 
 @end
