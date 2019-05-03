@@ -391,7 +391,7 @@ typedef NS_CLOSED_ENUM(NSInteger, ORKUpdateConstraintSequence) {
     UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody];
     UIFontDescriptor *fontDescriptor = [descriptor fontDescriptorWithSymbolicTraits:(UIFontDescriptorTraitBold)];
     [_textLabel setFont:[UIFont fontWithDescriptor:fontDescriptor size:[[fontDescriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue]]];
-    _textLabel.textAlignment = NSTextAlignmentNatural;
+    _textLabel.textAlignment = NSTextAlignmentLeft;
     _textLabel.numberOfLines = 0;
     [self addSubview:_textLabel];
     [self setupTextLabelConstraints];
