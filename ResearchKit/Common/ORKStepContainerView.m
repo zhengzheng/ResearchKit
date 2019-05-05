@@ -89,6 +89,7 @@
  */
 
 static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
+static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
 
 @interface ORKStepContainerView()<ORKBodyContainerViewDelegate>
 
@@ -107,9 +108,9 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
     NSLayoutConstraint *_scrollViewBottomConstraint;
     NSLayoutConstraint *_customContentViewTopConstraint;
     
-    NSLayoutConstraint *_scrollContainerContentSizeConstraint;
     NSArray<NSLayoutConstraint *> *_topContentImageViewConstraints;
     
+    NSLayoutConstraint *_navigationContainerViewTopConstraint;
     NSArray<NSLayoutConstraint *> *_navigationContainerViewConstraints;
     
     NSMutableArray<NSLayoutConstraint *> *_updatedConstraints;
@@ -272,6 +273,8 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
     _customContentView = customContentView;
     [_scrollContainerView addSubview:_customContentView];
     [self setupCustomContentViewConstraints];
+    [self updateNavigationContainerViewTopConstraint];
+    [self setNeedsUpdateConstraints];
 }
 
 - (void)setupNavigationContainerView {
@@ -332,6 +335,7 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
                                                                           multiplier:1.0
                                                                             constant:0.0]];
     [_updatedConstraints addObjectsFromArray:_navigationContainerViewConstraints];
+    [self updateNavigationContainerViewTopConstraint];
 
     if (!_isNavigationContainerScrollable) {
         [NSLayoutConstraint deactivateConstraints:@[_scrollViewBottomConstraint]];
@@ -349,6 +353,47 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
     }
     
     [self setNeedsUpdateConstraints];
+}
+
+- (void)setupNavigationContainerViewTopConstraint {
+    if (_navigationFooterView && _isNavigationContainerScrollable) {
+        
+        id topItem;
+        NSLayoutAttribute topItemAttribute;
+        if (_customContentView) {
+            topItem = _customContentView;
+            topItemAttribute = NSLayoutAttributeBottom;
+        }
+        else if(_stepContentView) {
+            topItem = _stepContentView;
+            topItemAttribute = NSLayoutAttributeBottom;
+        }
+        else {
+            topItem = _scrollContainerView;
+            topItemAttribute = NSLayoutAttributeTop;
+        }
+        
+        _navigationContainerViewTopConstraint = [NSLayoutConstraint constraintWithItem:_navigationFooterView
+                                                                             attribute:NSLayoutAttributeTop
+                                                                             relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                                                toItem:topItem
+                                                                             attribute:topItemAttribute
+                                                                            multiplier:1.0
+                                                                              constant:ORKStepContainerNavigationFooterTopPaddingStandard];
+    }
+}
+
+- (void)updateNavigationContainerViewTopConstraint {
+    if (_navigationFooterView && _isNavigationContainerScrollable) {
+        if (_navigationContainerViewTopConstraint) {
+            [NSLayoutConstraint deactivateConstraints:@[_navigationContainerViewTopConstraint]];
+            if ([_updatedConstraints containsObject:_navigationContainerViewTopConstraint]) {
+                [_updatedConstraints removeObject:_navigationContainerViewTopConstraint];
+            }
+        }
+        [self setupNavigationContainerViewTopConstraint];
+        [_updatedConstraints addObject:_navigationContainerViewTopConstraint];
+    }
 }
 
 - (void)pinNavigationContainerToBottom {
@@ -480,6 +525,13 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
                                              toItem:_scrollView
                                           attribute:NSLayoutAttributeCenterX
                                          multiplier:1.0
+                                           constant:0.0],
+             [NSLayoutConstraint constraintWithItem:_scrollContainerView
+                                          attribute:NSLayoutAttributeHeight
+                                          relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                             toItem:_scrollView
+                                          attribute:NSLayoutAttributeHeight
+                                         multiplier:1.0
                                            constant:0.0]
              ];
 }
@@ -559,56 +611,7 @@ static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
     [self setStepContentViewConstraints];
 }
 
-- (void)updateScrollContainerContentSizeConstraint {
-    if (_scrollContainerContentSizeConstraint) {
-        [NSLayoutConstraint deactivateConstraints:@[_scrollContainerContentSizeConstraint]];
-    }
-    //    FIXME: set bottom with Min height.
-    //    TODO: Optimize.
-    id topItem;
-    id bottomItem;
-    NSLayoutAttribute topItemAttribute;
-    NSLayoutAttribute bottomItemAttribute;
-    if (_customContentView) {
-        topItem = _customContentView;
-        topItemAttribute = NSLayoutAttributeBottom;
-    }
-    else if(_stepContentView) {
-        topItem = _stepContentView;
-        topItemAttribute = NSLayoutAttributeBottom;
-    }
-    else {
-        topItem = _scrollView;
-        topItemAttribute = NSLayoutAttributeTop;
-    }
-    
-    if(_navigationFooterView) {
-        bottomItem = _navigationFooterView;
-        bottomItemAttribute = NSLayoutAttributeTop;
-    }
-    else {
-        bottomItem = _scrollContainerView;
-        bottomItemAttribute = NSLayoutAttributeBottom;
-    }
-    
-    CGFloat gap = 0.0;
-    
-    if (_scrollContainerView.bounds.size.height < _scrollView.bounds.size.height) {
-        gap = _scrollView.bounds.size.height - _scrollContainerView.bounds.size.height;
-    }
-    
-    _scrollContainerContentSizeConstraint = [NSLayoutConstraint constraintWithItem:bottomItem
-                                                                         attribute:bottomItemAttribute
-                                                                         relatedBy:NSLayoutRelationEqual
-                                                                            toItem:topItem
-                                                                         attribute:topItemAttribute
-                                                                        multiplier:1.0
-                                                                          constant:gap];
-}
-
 - (void)updateContainerConstraints {
-    [self updateScrollContainerContentSizeConstraint];
-    [_updatedConstraints addObject:_scrollContainerContentSizeConstraint];
     [NSLayoutConstraint activateConstraints:_updatedConstraints];
     [_updatedConstraints removeAllObjects];
 }
