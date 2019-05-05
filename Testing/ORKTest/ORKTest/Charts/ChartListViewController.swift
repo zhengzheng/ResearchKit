@@ -33,13 +33,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import UIKit
 import ResearchKit
 
-func executeAfterDelay(_ delay:Double, closure:@escaping ()->()) {
+func executeAfterDelay(_ delay: Double, closure: @escaping () -> Void) {
     let delayTime = DispatchTime.now() + delay
-    let dispatchWorkItem = DispatchWorkItem(block: closure);
+    let dispatchWorkItem = DispatchWorkItem(block: closure)
     DispatchQueue.main.asyncAfter(
         deadline: delayTime, execute: dispatchWorkItem)
 }
 
+//swiftlint:disable force_cast
 class ChartListViewController: UIViewController, UITableViewDataSource {
     
     @IBOutlet var tableView: UITableView!
@@ -72,7 +73,8 @@ class ChartListViewController: UIViewController, UITableViewDataSource {
     }
     
     override func viewDidLoad() {
-        self.tableView.dataSource = self;
+        super.viewDidLoad()
+        self.tableView.dataSource = self
         
         // ORKPieChartView
         pieChartTableViewCell = tableView.dequeueReusableCell(withIdentifier: pieChartIdentifier) as? PieChartTableViewCell
@@ -242,7 +244,7 @@ class ChartListViewController: UIViewController, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = chartTableViewCells[(indexPath as NSIndexPath).row];
+        let cell = chartTableViewCells[(indexPath as NSIndexPath).row]
         return cell
     }
     
@@ -253,7 +255,7 @@ class ChartListViewController: UIViewController, UITableViewDataSource {
         lineGraphChartTableViewCell.graphChartView.animate(withDuration: 0.5)
         discreteGraphChartTableViewCell.graphChartView.animate(withDuration: 0.5)
         discreteGraphChartTableViewCell.graphChartView.animate(withDuration: 2.5)
-    }    
+    }
 }
 
 class ChartPerformanceListViewController: UIViewController, UITableViewDataSource {
@@ -273,7 +275,8 @@ class ChartPerformanceListViewController: UIViewController, UITableViewDataSourc
     }
     
     override func viewDidLoad() {
-        self.tableView.dataSource = self;
+        super.viewDidLoad()
+        self.tableView.dataSource = self
         
         // ORKLineGraphChartView
         lineGraphChartTableViewCell = tableView.dequeueReusableCell(withIdentifier: lineGraphChartIdentifier) as? LineGraphChartTableViewCell
@@ -302,12 +305,13 @@ class ChartPerformanceListViewController: UIViewController, UITableViewDataSourc
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = chartTableViewCells[(indexPath as NSIndexPath).row];
+        let cell = chartTableViewCells[(indexPath as NSIndexPath).row]
         return cell
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         lineGraphChartTableViewCell.graphChartView.animate(withDuration: 0.5)
-    }    
+    }
 }
+//swiftlint:enable force_cast

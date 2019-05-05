@@ -45,8 +45,8 @@ class ORKPasscodeViewControllerTests: XCTestCase {
         
         
         guard let stepViewController = testController.viewControllers.first as? ORKPasscodeStepViewController,
-            let step = stepViewController.step as? ORKPasscodeStep else{
-                XCTFail()
+            let step = stepViewController.step as? ORKPasscodeStep else {
+                XCTFail("failed to cast step as ORKPascodeStep")
                 return
         }
         
@@ -60,8 +60,8 @@ class ORKPasscodeViewControllerTests: XCTestCase {
         testController = ORKPasscodeViewController.passcodeEditingViewController(withText: "TEST", delegate: self, passcodeType: .type6Digit)
         
         guard let stepViewController = testController.viewControllers.first as? ORKPasscodeStepViewController,
-            let step = stepViewController.step as? ORKPasscodeStep else{
-                XCTFail()
+            let step = stepViewController.step as? ORKPasscodeStep else {
+                XCTFail("failed to cast step as ORKPascodeStep")
                 return
         }
         
@@ -72,7 +72,10 @@ class ORKPasscodeViewControllerTests: XCTestCase {
     func testPasscodeViewControllerDelegateCalls() {
         testController = ORKPasscodeViewController.passcodeEditingViewController(withText: "TEST", delegate: self, passcodeType: .type4Digit)
         
-        let stepController = testController.viewControllers.first as! ORKPasscodeStepViewController
+        guard let stepController = testController.viewControllers.first as? ORKPasscodeStepViewController else {
+            XCTFail("unable to cast view controller as ORKPasscodeStepViewController")
+            return
+        }
         
         var testExpectation = expectation(description: "ORKPasscodeViewController calls the delegate as the result of the user authenticating or finishing editing")
         self.asyncExpectation = testExpectation
