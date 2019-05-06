@@ -29,10 +29,13 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "ORKDefines.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class ORKLearnMoreInstructionStep;
+
+ORK_CLASS_AVAILABLE
 @interface ORKLearnMoreItem : NSObject <NSCopying, NSSecureCoding>
 
 
