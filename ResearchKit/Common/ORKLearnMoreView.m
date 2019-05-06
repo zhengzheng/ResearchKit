@@ -57,6 +57,8 @@ ORK_CLASS_AVAILABLE
     ORKLearnMoreButton *button = [super buttonWithType:UIButtonTypeCustom];
     [button setTitle:text forState:UIControlStateNormal];
     [button setTitleColor:button.tintColor forState:UIControlStateNormal];
+    button.titleLabel.numberOfLines = 0;
+    button.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [button setContentEdgeInsets:UIEdgeInsetsMake(CGFLOAT_MIN, CGFLOAT_MIN, CGFLOAT_MIN, CGFLOAT_MIN)];
     return button;
 }
@@ -66,6 +68,10 @@ ORK_CLASS_AVAILABLE
     return button;
 }
 
+- (void)setNeedsLayout {
+    [super setNeedsLayout];
+    [self.titleLabel invalidateIntrinsicContentSize];
+}
 
 @end
 

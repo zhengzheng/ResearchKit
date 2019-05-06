@@ -1,6 +1,6 @@
 /*
- Copyright (c) 2015, Apple Inc. All rights reserved.
- 
+ Copyright (c) 2019, Apple Inc. All rights reserved.
+
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
  
@@ -29,42 +29,20 @@
  */
 
 
-@import UIKit;
+#import <ResearchKit/ORKStepContentView.h>
 
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class ORKTableContainerView;
-@class ORKStepContentView;
+@class ORKTitleLabel;
+@class ORKBodyContainerView;
+@interface ORKStepContentView ()
 
-@protocol ORKTableContainerViewDelegate <NSObject>
-
-@required
-- (UITableViewCell *)currentFirstResponderCellForTableContainerView:(ORKTableContainerView *)tableContainerView;
-
-@end
-
-@class ORKNavigationContainerView;
-@class ORKTableContainerHeaderView;
-
-@interface ORKTableContainerView : UIView
-
-@property (nonatomic, weak, nullable) id<ORKTableContainerViewDelegate> delegate;
-
-@property (nonatomic, strong, readonly) UITableView *tableView;
-@property (nonatomic) ORKStepContentView *tableContainerHeaderView;
-
-/*
- If tap off events should be accepted from outside this view's bounds, provide
- the parent view where the tap off gesture recognizer should be attached.
- */
-@property (nonatomic, weak, nullable) UIView *tapOffView;
-
-- (void)scrollCellVisible:(UITableViewCell *)cell animated:(BOOL)animated;
-    
-- (instancetype)initWithStyle:(UITableViewStyle)style;
-
-- (void)sizeHeaderToFit;
+@property (nonatomic, nullable) UIImageView *topContentImageView;
+@property (nonatomic) ORKTitleLabel *titleLabel;
+@property (nonatomic, nullable) UILabel *textLabel;
+@property (nonatomic, nullable) UIImageView *iconImageView;
+@property (nonatomic) ORKBodyContainerView *bodyContainerView;
 
 @end
 

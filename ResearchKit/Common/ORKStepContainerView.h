@@ -52,6 +52,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) NSString *stepTitle;
 
+@property (nonatomic, nullable) NSString *stepText;
+
 @property (nonatomic, nullable) UIImage *titleIconImage;
 
 @property (nonatomic) BOOL showScrollIndicator;

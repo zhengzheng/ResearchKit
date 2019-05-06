@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2015, Apple Inc. All rights reserved.
+ Copyright (c) 2019, Apple Inc. All rights reserved.
  
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
@@ -34,37 +34,30 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class ORKTableContainerView;
-@class ORKStepContentView;
-
-@protocol ORKTableContainerViewDelegate <NSObject>
+@class ORKLearnMoreInstructionStep;
+@protocol ORKStepContentLearnMoreItemDelegate <NSObject>
 
 @required
-- (UITableViewCell *)currentFirstResponderCellForTableContainerView:(ORKTableContainerView *)tableContainerView;
+- (void)stepContentLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep;
 
 @end
 
-@class ORKNavigationContainerView;
-@class ORKTableContainerHeaderView;
+@class ORKBodyItem;
+@interface ORKStepContentView : UIView
 
-@interface ORKTableContainerView : UIView
+@property (nonatomic, nullable) UIImage *stepTopContentImage;
 
-@property (nonatomic, weak, nullable) id<ORKTableContainerViewDelegate> delegate;
+@property (nonatomic, nullable) UIImage *auxiliaryImage; // Only underlayed when stepTopContentImage is added.
 
-@property (nonatomic, strong, readonly) UITableView *tableView;
-@property (nonatomic) ORKStepContentView *tableContainerHeaderView;
+@property (nonatomic) NSString *stepTitle;
 
-/*
- If tap off events should be accepted from outside this view's bounds, provide
- the parent view where the tap off gesture recognizer should be attached.
- */
-@property (nonatomic, weak, nullable) UIView *tapOffView;
+@property (nonatomic, nullable) NSString *stepText;
 
-- (void)scrollCellVisible:(UITableViewCell *)cell animated:(BOOL)animated;
-    
-- (instancetype)initWithStyle:(UITableViewStyle)style;
+@property (nonatomic, nullable) UIImage *titleIconImage;
 
-- (void)sizeHeaderToFit;
+@property (nonatomic) NSArray<ORKBodyItem *> *bodyItems;
+
+@property (nonatomic, weak) id<ORKStepContentLearnMoreItemDelegate> delegate;
 
 @end
 
