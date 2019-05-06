@@ -47,6 +47,7 @@ class ORKStepViewControllerTests: XCTestCase {
     var utilities: TopLevelUIUtilities<ORKStepViewController>!
     
     override func setUp() {
+        super.setUp()
         negativeTest = false
         testingWillExpectation = false
         
@@ -155,23 +156,23 @@ class ORKStepViewControllerTests: XCTestCase {
         //        Can't verify this since navigation bar has not been initialized
         //        XCTAssertFalse(navigationBar!.prefersLargeTitles)
         
-        guard let iPadBackgroundView = testController.view!.subviews.first else{
-            XCTFail()
+        guard let iPadBackgroundView = testController.view!.subviews.first else {
+            XCTFail("failed to retrieve the first subview")
             return
         }
         
         XCTAssertEqual(iPadBackgroundView.backgroundColor, ORKColor(ORKiPadBackgroundViewColorKey))
         XCTAssertEqual(iPadBackgroundView.layer.cornerRadius, ORKiPadBackgroundViewCornerRadius)
         
-        guard let iPadContentView = iPadBackgroundView.subviews.first else{
-            XCTFail()
+        guard let iPadContentView = iPadBackgroundView.subviews.first else {
+            XCTFail("failed to retrieve the first subview")
             return
         }
         
         XCTAssertEqual(iPadContentView.backgroundColor, UIColor.clear)
         
         guard let iPadStepTitleLabel = iPadBackgroundView.subviews.last as? UILabel else {
-            XCTFail()
+            XCTFail("failed to cast view as UILabel")
             return
         }
         let iPadStepTitleLabelFontSize = CGFloat(50.0)
@@ -213,7 +214,7 @@ class ORKStepViewControllerTests: XCTestCase {
         XCTAssertEqual(testController.result?.results, [resultOne, resultTwo])
         
         testController.addResult(resultOne)
-        XCTAssertEqual(testController.result?.results, [resultOne,resultOne, resultTwo])
+        XCTAssertEqual(testController.result?.results, [resultOne, resultOne, resultTwo])
     }
     
     func testGoForward() {
@@ -256,11 +257,11 @@ class ORKStepViewControllerTests: XCTestCase {
         forwardExpectation = expectation(description: "ORKStepViewController notifies delegate with Forward Direction")
         
         guard let skipButton = testController.skipButtonItem else {
-            XCTFail()
+            XCTFail("failed to unwrap the skipButtonItem")
             return
         }
         
-        let _ = skipButton.target?.perform(skipButton.action, with: testController.view)
+        _ = skipButton.target?.perform(skipButton.action, with: testController.view)
         
         waitForExpectations(timeout: 10) { (error) in
             if let error = error {
@@ -270,13 +271,12 @@ class ORKStepViewControllerTests: XCTestCase {
         
         let reviewStep = ORKReviewStep(identifier: "REVIEW STEP")
         testController.parentReviewStep = reviewStep
-        let _ = skipButton.target?.perform(skipButton.action, with: testController.view)
+        _ = skipButton.target?.perform(skipButton.action, with: testController.view)
         
-        guard let _ = testController.presentedViewController as? UIAlertController else {
-            XCTFail("ALERT WAS NOT PRESENTED")
+        guard (testController.presentedViewController as? UIAlertController) != nil else {
+            XCTFail("alert was not presented")
             return
         }
-    
     }
     
     func testViewDelegates() {
@@ -304,9 +304,9 @@ class ORKStepViewControllerTests: XCTestCase {
 
 extension ORKStepViewControllerTests: ORKStepViewControllerDelegate {
     func stepViewController(_ stepViewController: ORKStepViewController, didFinishWith direction: ORKStepViewControllerNavigationDirection) {
-        if(direction == .forward){
+        if direction == .forward {
             forwardExpectation.fulfill()
-        }else {
+        } else {
             reverseExpectation.fulfill()
         }
     }
@@ -330,12 +330,12 @@ extension ORKStepViewControllerTests: ORKStepViewControllerDelegate {
     }
     
     func stepViewControllerHasNextStep(_ stepViewController: ORKStepViewController) -> Bool {
-        if negativeTest{return false}
+        if negativeTest { return false }
         return true
     }
     
     func stepViewControllerHasPreviousStep(_ stepViewController: ORKStepViewController) -> Bool {
-        if negativeTest{return false}
+        if negativeTest { return false }
         return true
     }
 }
