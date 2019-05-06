@@ -91,7 +91,7 @@
 static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
 static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
 
-@interface ORKStepContainerView()<ORKBodyContainerViewDelegate>
+@interface ORKStepContainerView()<ORKStepContentLearnMoreItemDelegate>
 
 @end
 
@@ -239,6 +239,7 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
     if (!_stepContentView) {
         _stepContentView = [ORKStepContentView new];
     }
+    _stepContentView.delegate = self;
     [_scrollContainerView addSubview:_stepContentView];
 }
 
@@ -621,9 +622,9 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
     [super updateConstraints];
 }
 
-#pragma mark - ORKBodyContainerViewDelegate
+#pragma mark - ORKStepContentLearnMoreItemDelegate
 
-- (void)bodyContainerLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep {
+- (void)stepContentLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep {
     [_delegate stepContainerLearnMoreButtonPressed:learnMoreStep];
 }
 
