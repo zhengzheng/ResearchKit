@@ -49,6 +49,7 @@ import Speech
     and are not user visible (see description in `ResultViewController`), none
     of the properties / content are localized.
 */
+//swiftlint:disable force_cast
 func resultTableViewProviderForResult(_ result: ORKResult?) -> UITableViewDataSource & UITableViewDelegate {
     guard let result = result else {
         /*
@@ -66,7 +67,7 @@ func resultTableViewProviderForResult(_ result: ORKResult?) -> UITableViewDataSo
         To reduce the possible effects of someone modifying this code--i.e.
         cases getting reordered and accidentally getting matches for subtypes
         of the intended result type, we guard against any subtype matches
-        (e.g. the `ORKCollectionResult` guard against `result` being an 
+        (e.g. the `ORKCollectionResult` guard against `result` being an
         `ORKTaskResult` instance).
     */
     switch result {
@@ -180,9 +181,11 @@ func resultTableViewProviderForResult(_ result: ORKResult?) -> UITableViewDataSo
 enum ResultRow {
     // MARK: Cases
 
+    // swiftlint:disable identifier_name
     case text(String, detail: String, selectable: Bool)
     case textImage(String, image: UIImage?)
     case image(UIImage?)
+    // swiftlint:enable identifier_name
     
     // MARK: Types
     
@@ -207,7 +210,7 @@ enum ResultRow {
             it's "nil". Use Optional's map method to map the value to a string
             if the detail is not `nil`.
         */
-        let detailText = detail.map { String(describing:$0) } ?? "nil"
+        let detailText = detail.map { String(describing: $0) } ?? "nil"
         
         self = .text(text, detail: detailText, selectable: selectable)
     }
@@ -287,7 +290,7 @@ class ResultTableViewProvider: NSObject, UITableViewDataSource, UITableViewDeleg
                     indicator if the table view cell is selectable.
                 */
                 cell.selectionStyle = selectable ? .default : .none
-                cell.accessoryType  = selectable ? .disclosureIndicator : .none
+                cell.accessoryType = selectable ? .disclosureIndicator : .none
             
                 return cell
 
@@ -340,7 +343,7 @@ class ResultTableViewProvider: NSObject, UITableViewDataSource, UITableViewDeleg
 }
 
 /// Table view provider specific to an `ORKBooleanQuestionResult` instance.
-class BooleanQuestionResultTableViewProvider: ResultTableViewProvider   {
+class BooleanQuestionResultTableViewProvider: ResultTableViewProvider {
     // MARK: ResultTableViewProvider
     
     override func resultRowsForSection(_ section: Int) -> [ResultRow] {
@@ -456,6 +459,7 @@ class TextQuestionResultTableViewProvider: ResultTableViewProvider {
 }
 
 /// Table view provider specific to an `ORKTimeIntervalQuestionResult` instance.
+// swiftlint:disable type_name
 class TimeIntervalQuestionResultTableViewProvider: ResultTableViewProvider {
     // MARK: ResultTableViewProvider
     
@@ -468,6 +472,7 @@ class TimeIntervalQuestionResultTableViewProvider: ResultTableViewProvider {
         ]
     }
 }
+// swiftlint:enable type_name
 
 /// Table view provider specific to an `ORKTimeOfDayQuestionResult` instance.
 class TimeOfDayQuestionResultTableViewProvider: ResultTableViewProvider {
@@ -540,7 +545,7 @@ class AmslerGridResultTableViewProvider: ResultTableViewProvider {
     override func resultRowsForSection(_ section: Int) -> [ResultRow] {
         let amslerGridResult = result as! ORKAmslerGridResult
         let image = amslerGridResult.image!
-        let eyeSide:String = amslerGridResult.eyeSide.rawValue == 0 ? "Not Specified" : amslerGridResult.eyeSide.rawValue == 1 ? "Left" : "Right"
+        let eyeSide: String = amslerGridResult.eyeSide.rawValue == 0 ? "Not Specified": amslerGridResult.eyeSide.rawValue == 1 ? "Left": "Right"
         
         return super.resultRowsForSection(section) + [
             // The captured image.
@@ -561,7 +566,7 @@ class AmslerGridResultTableViewProvider: ResultTableViewProvider {
 }
 
 /// Table view provider specific to an `ORKPasscodeResult` instance.
-class PasscodeResultTableViewProvider: ResultTableViewProvider   {
+class PasscodeResultTableViewProvider: ResultTableViewProvider {
     // MARK: ResultTableViewProvider
     
     override func resultRowsForSection(_ section: Int) -> [ResultRow] {
@@ -591,9 +596,9 @@ class FileResultTableViewProvider: ResultTableViewProvider {
             ResultRow(text: "fileURL", detail: questionResult.fileURL)
         ]
 
-        if let fileURL = questionResult.fileURL, let contentType = questionResult.contentType , contentType.hasPrefix("image/") , !contentType.hasSuffix(".dng"){
+        if let fileURL = questionResult.fileURL, let contentType = questionResult.contentType, contentType.hasPrefix("image/"), !contentType.hasSuffix(".dng") {
             
-            if let image = UIImage.init(contentsOfFile: fileURL.path) {
+            if let image = UIImage(contentsOfFile: fileURL.path) {
                 return rows + [
                     // The image of the generated file on disk.
                     .image(image)
@@ -669,14 +674,13 @@ class SpatialSpanMemoryResultTableViewProvider: ResultTableViewProvider {
 
 /// Table view provider specific to an `ORKSpeechRecognitionResult` instance.
 class SpeechRecognitionResultTableViewProvider: ResultTableViewProvider {
-    //MARK: UITableViewDataSource
+    // MARK: UITableViewDataSource
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         let speechRecognitionResult = result as! ORKSpeechRecognitionResult
         if let segments = speechRecognitionResult.transcription?.segments {
             return segments.count + 1
-        }
-        else {
+        } else {
             return 2
         }
     }
@@ -690,8 +694,7 @@ class SpeechRecognitionResultTableViewProvider: ResultTableViewProvider {
         let speechRecognitionResult = result as! ORKSpeechRecognitionResult
         if speechRecognitionResult.transcription?.segments != nil {
             return "Transcritption " + String(section)
-        }
-        else {
+        } else {
             return "Error"
         }
     }
@@ -703,7 +706,7 @@ class SpeechRecognitionResultTableViewProvider: ResultTableViewProvider {
         
         let rows = super.resultRowsForSection(section)
         
-        if (section == 0) {
+        if section == 0 {
             return rows
         }
         
@@ -715,8 +718,7 @@ class SpeechRecognitionResultTableViewProvider: ResultTableViewProvider {
                 ResultRow(text: "timestamp", detail: segement.timestamp),
                 ResultRow(text: "duration", detail: segement.duration)
             ]
-        }
-        else {
+        } else {
             return [ResultRow(text: "error", detail: "speech recognition failed or cancelled")]
         }
     }
@@ -724,7 +726,7 @@ class SpeechRecognitionResultTableViewProvider: ResultTableViewProvider {
 
 /// Table view provider specific to an `ORKStroopResult` instance.
 class StroopResultTableViewProvider: ResultTableViewProvider {
-    //MARK: UITableViewDataSource
+    // MARK: UITableViewDataSource
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 2
@@ -745,7 +747,7 @@ class StroopResultTableViewProvider: ResultTableViewProvider {
         
         let rows = super.resultRowsForSection(section)
         
-        if (section == 0){
+        if section == 0 {
             return rows
         }
         return [
@@ -831,7 +833,7 @@ class ToneAudiometryResultTableViewProvider: ResultTableViewProvider {
         if section == 0 {
             return rows + [
                 // The size of the view where the two target buttons are displayed.
-                ResultRow(text: "outputVolume", detail: toneAudiometryResult.outputVolume),
+                ResultRow(text: "outputVolume", detail: toneAudiometryResult.outputVolume)
             ]
         }
         
@@ -948,7 +950,7 @@ class TowerOfHanoiResultTableViewProvider: ResultTableViewProvider {
 
 /// Table view provider specific to an `ORKTrailmaking` instance.
 class TrailmakingResultTableViewProvider: ResultTableViewProvider {
-//    MARK: UITableViewDataSource
+// MARK: UITableViewDataSource
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -996,11 +998,11 @@ class PSATResultTableViewProvider: ResultTableViewProvider {
         if section == 0 {
             var presentation = ""
             let presentationMode = PSATResult.presentationMode
-            if (presentationMode == .auditory) {
+            if presentationMode == .auditory {
                 presentation = "PASAT"
-            } else if (presentationMode == .visual) {
+            } else if presentationMode == .visual {
                 presentation = "PVSAT"
-            } else if (presentationMode.contains(.auditory) && presentationMode.contains(.visual)) {
+            } else if presentationMode.contains(.auditory) && presentationMode.contains(.visual) {
                 presentation = "PAVSAT"
             } else {
                 presentation = "Unknown"
@@ -1066,19 +1068,19 @@ class TimedWalkResultTableViewProvider: ResultTableViewProvider {
     // MARK: ResultTableViewProvider
     
     override func resultRowsForSection(_ section: Int) -> [ResultRow] {
-        let TimedWalkResult = result as! ORKTimedWalkResult
+        let timedWalkResult = result as! ORKTimedWalkResult
         
         let rows = super.resultRowsForSection(section)
         
         return rows + [
             // The timed walk distance in meters.
-            ResultRow(text: "distance (m)", detail: TimedWalkResult.distanceInMeters),
+            ResultRow(text: "distance (m)", detail: timedWalkResult.distanceInMeters),
             
             // The time limit to complete the trials.
-            ResultRow(text: "time limit (s)", detail: TimedWalkResult.timeLimit),
+            ResultRow(text: "time limit (s)", detail: timedWalkResult.timeLimit),
             
             // The duration for a Timed Walk.
-            ResultRow(text: "duration (s)", detail: TimedWalkResult.duration)
+            ResultRow(text: "duration (s)", detail: timedWalkResult.duration)
         ]
     }
 }
@@ -1115,9 +1117,9 @@ class HolePegTestResultTableViewProvider: ResultTableViewProvider {
         if section == 0 {
             var side = ""
             let movingDirection = holePegTestResult.movingDirection
-            if (movingDirection == .left) {
+            if movingDirection == .left {
                 side = "left > right"
-            } else if (movingDirection == .right) {
+            } else if movingDirection == .right {
                 side = "right > left"
             }
             
@@ -1228,6 +1230,7 @@ class CollectionResultTableViewProvider: ResultTableViewProvider {
 }
 
 /// Table view provider specific to an `ORKVideoInstructionStepResult` instance.
+// swiftlint:disable type_name
 class VideoInstructionStepResultTableViewProvider: ResultTableViewProvider {
     // MARK: ResultTableViewProvider
     
@@ -1246,6 +1249,7 @@ class VideoInstructionStepResultTableViewProvider: ResultTableViewProvider {
         return rows
     }
 }
+// swiftlint:enable type_name
 
 /// Table view provider specific to an `ORKWebViewStepResult` instance.
 class WebViewStepResultTableViewProvider: ResultTableViewProvider {
@@ -1265,3 +1269,4 @@ class WebViewStepResultTableViewProvider: ResultTableViewProvider {
         return rows
     }
 }
+//swiftlint:enable force_cast

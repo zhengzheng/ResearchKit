@@ -515,9 +515,6 @@
 "TRAILMAKING_INTENDED_USE2_B" = "بعد العد التنازلي، اضغط على النقاط بالتبادل بين الأرقام والحروف. ابدأ بالضغط على أول رقم \“١\” ثم اضغط على أول حرف \“ا\”، ثم \“٢\”، \“ب\”، \“٣\”، \“ت\”… حتى تصل إلى رقم \“٧\”.";
 "TRAILMAKING_INTRO_TEXT" = "افعل ذلك بأسرع ما يمكنك دون الوقوع في أخطاء. \n ";
 "TRAILMAKING_CALL_TO_ACTION" = "اضغط على البدء لكي تبدأ.";
-"TRAILMAKING_TIMER" = "‏%.1f ث";
-"TRAILMAKING_ERROR" = "‏%@ (%d من الأخطاء)";
-"TRAILMAKING_ERROR_PLURAL" = "‏%@ (%d من الأخطاء)";
 "TRAILMAKING_LETTER_A" = "‎أ";
 "TRAILMAKING_LETTER_B" = "ب";
 "TRAILMAKING_LETTER_C" = "ت";

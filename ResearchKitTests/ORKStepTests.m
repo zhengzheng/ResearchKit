@@ -64,7 +64,30 @@
                                               text:@"formItem2"
                                       answerFormat:[ORKNumericAnswerFormat decimalAnswerFormatWithUnit:nil]];
     [items addObject:item];
-
+    
+    item = [[ORKFormItem alloc] initWithSectionTitle:@"formItem3"
+                                          detailText:@"formItem3"
+                                       learnMoreItem:[ORKLearnMoreItem learnMoreItemWithText:@"learnMoreItemText" learnMoreInstructionStep:[[ORKLearnMoreInstructionStep alloc] initWithIdentifier:@"instructionStepIdentifier"]]
+                                       showsProgress:YES];
+    [items addObject:item];
+    
+    XCTAssertEqual(item.text, @"formItem3");
+    XCTAssertEqual(item.detailText, @"formItem3");
+    XCTAssertNotNil(item.detailText);
+    XCTAssertNotNil(item.learnMoreItem);
+    XCTAssertTrue(item.showsProgress);
+    
+    item = [[ORKFormItem alloc] initWithSectionTitle:nil
+                                          detailText:nil
+                                       learnMoreItem:nil
+                                       showsProgress:NO];
+    [items addObject:item];
+    
+    XCTAssertNil(item.text);
+    XCTAssertNil(item.detailText);
+    XCTAssertNil(item.learnMoreItem);
+    XCTAssertFalse(item.showsProgress);
+    
     [formStep setFormItems:items];
     XCTAssertThrows([formStep validateParameters]);
 }
@@ -192,6 +215,7 @@
     [step setTitle:@"Title"];
     [step setText:@"Text"];
     [step setTask:task];
+    step.showsProgress = NO;
     
     ORKStepViewController *controller = [step instantiateStepViewControllerWithResult:result];
     
@@ -203,6 +227,7 @@
     XCTAssertEqual([controller step], step);
     XCTAssertEqual([step stepViewControllerClass], [ORKStepViewController class]);
     XCTAssertEqual([step isRestorable], YES);
+    XCTAssertEqual([step showsProgress], NO);
     XCTAssert([step.identifier isEqualToString:@"STEP"]);
     XCTAssert([step isEqual:step]);
     XCTAssertEqual([step requestedPermissions], ORKPermissionNone);
@@ -374,6 +399,14 @@
     XCTAssertThrowsSpecificNamed([step validateParameters], NSException, NSInvalidArgumentException);
     
     XCTAssert([step isEqual:step]);
+}
+
+- (void)testLearnMoreInstructionStep {
+    NSString *identifier = @"STEP";
+    ORKLearnMoreInstructionStep *step = [[ORKLearnMoreInstructionStep alloc] initWithIdentifier:identifier];
+
+    //TODO: update per specs
+    XCTAssertEqual([step identifier], identifier);
 }
 
 @end

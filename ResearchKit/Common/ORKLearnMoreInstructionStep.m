@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2016, Sage Bionetworks
+ Copyright (c) 2019, Apple Inc. All rights reserved.
  
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
@@ -28,46 +28,19 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Foundation
 
-extension ORKBiologicalSexIdentifier {
-    
-    public func healthKitBiologicalSex() -> HKBiologicalSex? {
-        switch (self) {
-        case ORKBiologicalSexIdentifier.female:
-            return HKBiologicalSex.female
-        case ORKBiologicalSexIdentifier.male:
-            return HKBiologicalSex.male
-        case ORKBiologicalSexIdentifier.other:
-            return HKBiologicalSex.other
-        default:
-            return nil
-        }
-    }
+#import "ORKLearnMoreInstructionStep.h"
+#import "ORKLearnMoreStepViewController.h"
+
+@implementation ORKLearnMoreInstructionStep
+
++ (Class)stepViewControllerClass {
+    return [ORKLearnMoreStepViewController class];
 }
 
-extension ORKBloodTypeIdentifier {
-    
-    public func healthKitBloodType() -> HKBloodType? {
-        switch (self) {
-        case ORKBloodTypeIdentifier.abNegative:
-            return HKBloodType.abNegative
-        case ORKBloodTypeIdentifier.abPositive:
-            return HKBloodType.abPositive
-        case ORKBloodTypeIdentifier.aNegative:
-            return HKBloodType.aNegative
-        case ORKBloodTypeIdentifier.aPositive:
-            return HKBloodType.aPositive
-        case ORKBloodTypeIdentifier.bNegative:
-            return HKBloodType.bNegative
-        case ORKBloodTypeIdentifier.bPositive:
-            return HKBloodType.bPositive
-        case ORKBloodTypeIdentifier.oNegative:
-            return HKBloodType.oNegative
-        case ORKBloodTypeIdentifier.oPositive:
-            return HKBloodType.oPositive
-        default:
-            return nil
-        }
-    }
++ (BOOL)supportsSecureCoding {
+    return YES;
 }
+
+
+@end

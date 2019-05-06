@@ -35,6 +35,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class ORKTableContainerView;
+@class ORKStepContentView;
 
 @protocol ORKTableContainerViewDelegate <NSObject>
 
@@ -43,16 +44,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-
-@class ORKStepHeaderView;
 @class ORKNavigationContainerView;
+@class ORKTableContainerHeaderView;
 
 @interface ORKTableContainerView : UIView
 
 @property (nonatomic, weak, nullable) id<ORKTableContainerViewDelegate> delegate;
 
 @property (nonatomic, strong, readonly) UITableView *tableView;
-@property (nonatomic, strong, readonly) ORKStepHeaderView *stepHeaderView;
+@property (nonatomic) ORKStepContentView *tableContainerHeaderView;
 
 /*
  If tap off events should be accepted from outside this view's bounds, provide
@@ -62,7 +62,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)scrollCellVisible:(UITableViewCell *)cell animated:(BOOL)animated;
     
-- (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style;
+- (instancetype)initWithStyle:(UITableViewStyle)style;
+
+- (void)sizeHeaderToFit;
 
 @end
 

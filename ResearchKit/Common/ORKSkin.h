@@ -92,6 +92,12 @@ ORK_EXTERN NSString *const ORKProgressLabelColorKey;
 /// Default color used by iPadBackgroundView
 ORK_EXTERN NSString *const ORKiPadBackgroundViewColorKey;
 
+/// Background color of TopContentImageView in ORKStepContainerView
+ORK_EXTERN NSString *const ORKTopContentImageViewBackgroundColorKey;
+
+/// Font color for detail text in bullet item
+ORK_EXTERN NSString *const ORKBulletItemTextColorKey;
+
 /// Return the color for a specified ORK...ColorKey
 UIColor *ORKColor(NSString *colorKey);
 
@@ -124,6 +130,10 @@ ORK_EXTERN CGFloat ORKiPadBackgroundViewBottomPadding;
 
 /// Default Left Right margin for iPadBackgroundView;
 ORK_EXTERN CGFloat ORKiPadBackgroundViewLeftRightPadding;
+
+/// Default body to body item padding;
+ORK_EXTERN CGFloat ORKBodyToBodyPaddingStandard;
+
 
 /// Modify the color for a specified ORK...ColorKey. (for customization)
 void ORKColorSetColorForKey(NSString *key, UIColor *color);
@@ -160,8 +170,6 @@ typedef NS_ENUM(NSInteger, ORKScreenMetric) {
     ORKScreenMetricIllustrationToCaptionBaseline,
     ORKScreenMetricIllustrationHeight,
     ORKScreenMetricInstructionImageHeight,
-    ORKScreenMetricContinueButtonHeightRegular,
-    ORKScreenMetricContinueButtonHeightCompact,
     ORKScreenMetricContinueButtonWidth,
     ORKScreenMetricMinimumStepHeaderHeightForMemoryGame,
     ORKScreenMetricMinimumGameViewHeightForMemoryGame,
@@ -211,5 +219,13 @@ BOOL ORKNeedWideScreenDesign(UIView *view);
 
 void ORKUpdateScrollViewBottomInset(UIScrollView *scrollView, CGFloat bottomInset);
 
+CGFloat ORKStepContainerLeftRightPaddingForWindow(UIWindow *window);
+CGFloat ORKStepContainerTopPaddingForWindow(UIWindow *window);
+CGFloat ORKStepContainerTopContentHeightForWindow(UIWindow *window);
+CGFloat ORKStepContainerFirstItemTopPaddingForWindow(UIWindow *window);
+CGFloat ORKStepContainerTitleToBodyTopPaddingForWindow(UIWindow *window);
+CGFloat ORKStepContainerTitleToBulletTopPaddingForWindow(UIWindow *window);
+
+UIFontTextStyle ORKTitleLabelFontTextStyleForWindow(UIWindow *window);
 
 NS_ASSUME_NONNULL_END

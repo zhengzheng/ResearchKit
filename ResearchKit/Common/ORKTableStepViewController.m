@@ -35,14 +35,14 @@
 #import "ORKTableStepViewController_Internal.h"
 
 #import "ORKNavigationContainerView_Internal.h"
-#import "ORKStepHeaderView_Internal.h"
 #import "ORKTableContainerView.h"
 
 #import "ORKStepViewController_Internal.h"
 #import "ORKTaskViewController_Internal.h"
 
 #import "ORKTableStep.h"
-
+#import "ORKStepContentView.h"
+#import "ORKBodyItem.h"
 #import "ORKHelpers_Internal.h"
 #import "ORKSkin.h"
 
@@ -84,12 +84,6 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
     [self updateButtonStates];
 }
 
-- (void)setLearnMoreButtonItem:(UIBarButtonItem *)learnMoreButtonItem {
-    [super setLearnMoreButtonItem:learnMoreButtonItem];
-    self.headerView.learnMoreButtonItem = self.learnMoreButtonItem;
-    [_tableContainer setNeedsLayout];
-}
-
 - (void)setCancelButtonItem:(UIBarButtonItem *)cancelButtonItem {
     [super setCancelButtonItem:cancelButtonItem];
     self.navigationFooterView.cancelButtonItem = self.cancelButtonItem;
@@ -103,6 +97,11 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
     
 - (UITableViewStyle)tableViewStyle {
     return [self numSections] > 1 ? UITableViewStyleGrouped : UITableViewStylePlain;
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [_tableContainer sizeHeaderToFit];
 }
 
 - (void)stepDidChange {
@@ -120,7 +119,7 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
     _navigationFooterView = nil;
     
     if (self.step) {
-        _tableContainer = [[ORKTableContainerView alloc] initWithFrame:self.view.bounds style:self.tableViewStyle];
+        _tableContainer = [[ORKTableContainerView alloc] initWithStyle:self.tableViewStyle];
         if ([self conformsToProtocol:@protocol(ORKTableContainerViewDelegate)]) {
             _tableContainer.delegate = (id)self;
         }
@@ -136,13 +135,13 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
         _tableView.estimatedSectionHeaderHeight = [self numSections] > 1 ? 30.0 : 0.0;
         _tableView.allowsSelection = self.tableStepRef.allowsSelection;
         
-        _tableView.separatorColor = self.tableStepRef.isBulleted ? [UIColor clearColor] : nil;
+        _tableView.separatorColor = self.tableStepRef.bulletType == ORKBulletTypeNone ? [UIColor clearColor] : nil;
         [_tableView setBackgroundColor:_tableViewColor];
         _tableView.alwaysBounceVertical = NO;
-        _headerView = _tableContainer.stepHeaderView;
-        _headerView.instructionLabel.text = [[self step] text];
-        _headerView.learnMoreButtonItem = self.learnMoreButtonItem;
-        
+        _headerView = _tableContainer.tableContainerHeaderView;
+        _headerView.stepTitle = [[self step] title];
+        _headerView.stepText = [[self step] text];
+        _headerView.bodyItems = [[self step] bodyItems];
         _navigationFooterView = [ORKNavigationContainerView new];
         _navigationFooterView.skipButtonItem = self.skipButtonItem;
         _navigationFooterView.continueEnabled = [self continueButtonEnabled];
@@ -265,7 +264,11 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
     [self.tableStep configureCell:cell indexPath:indexPath tableView:tableView];
     
-    [cell setBackgroundColor:_tableViewColor];
+    // Only set the background color if it is using the default cell type
+    if ([reuseIdentifier isEqualToString:ORKBasicCellReuseIdentifier]) {
+        [cell setBackgroundColor:_tableViewColor];
+    }
+    
     return cell;
 }
 
