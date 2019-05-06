@@ -47,6 +47,7 @@ static const CGFloat ORKBodyTextToLearnMoreButtonPaddingStandard = 15.0;
 static const CGFloat ORKBodyDetailTextToLearnMoreButtonPaddingStandard = 15.0;
 
 static const CGFloat ORKBulletIconToBodyPadding = 14.0;
+static const CGFloat ORKBulletIconWidthStandard = 10.0;
 static const CGFloat ORKBulletStackLeftRightPadding = 10.0;
 
 static const CGFloat ORKBulletIconDimension = 40.0;
@@ -200,6 +201,15 @@ static NSString *ORKBulletUnicode = @"\u2981";
     bulletIconLabel.font = [ORKBodyItemView bulletIconFont];
     [bulletIconLabel setText:ORKBulletUnicode];
     bulletIconLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [NSLayoutConstraint activateConstraints:@[
+                                              [NSLayoutConstraint constraintWithItem:bulletIconLabel
+                                                                           attribute:NSLayoutAttributeWidth
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:nil
+                                                                           attribute:NSLayoutAttributeNotAnAttribute
+                                                                          multiplier:1.0
+                                                                            constant:ORKBulletIconWidthStandard]
+                                              ]];
     return bulletIconLabel;
 }
 
