@@ -44,7 +44,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
- 
 @class ORKNavigationContainerView;
 @class ORKTableContainerHeaderView;
 
