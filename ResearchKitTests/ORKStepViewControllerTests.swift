@@ -72,7 +72,8 @@ class ORKStepViewControllerTests: XCTestCase {
         testController.skipButtonTitle = skipString
         testController.backButtonItem = backButton
         testController.cancelButtonItem = cancelButton
-//        XCTAssertEqual(testController.learnMoreButtonTitle, learnMoreString)
+        // TODO: backwards compatibility for learnMoreButtonTitle
+        // XCTAssertEqual(testController.learnMoreButtonTitle, learnMoreString)
         XCTAssertEqual(testController.continueButtonTitle, countinueString)
         XCTAssertEqual(testController.skipButtonTitle, skipString)
         XCTAssertEqual(testController.backButtonItem, backButton)
