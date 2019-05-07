@@ -80,18 +80,10 @@ class ORKStepViewControllerTests: XCTestCase {
     }
     
     func testiPhoneViewDidLoad() {
-        var step = ORKStep(identifier: "STEP")
-        let title = "TEST"
-        
-        step.title = title
+        let step = ORKStep(identifier: "STEP")
         testController = ORKStepViewController(step: step)
         testController.viewDidLoad()
-        XCTAssertEqual(testController.title, title)
-        
-        step = ORKStep(identifier: "STEP")
-        testController = ORKStepViewController(step: step)
-        testController.viewDidLoad()
-        XCTAssertEqual(testController.title, "")
+        XCTAssertEqual(testController.view.backgroundColor, ORKColor(ORKBackgroundColorKey))
     }
     
     func testViewWillAppear() {
