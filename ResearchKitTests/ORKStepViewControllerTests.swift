@@ -105,15 +105,6 @@ class ORKStepViewControllerTests: XCTestCase {
 
         XCTAssertEqual(testController.continueButtonItem, testController.internalDoneButtonItem)
         XCTAssertEqual(testController.backButtonItem, nil)
-        
-//        Test currently fails since navigationBar is not initialized
-//        guard let navigationBar = testController.taskViewController?.navigationBar else {
-//            XCTFail()
-//            return
-//        }
-//
-//        XCTAssertEqual(navigationBar.backgroundColor, ORKColor(ORKBackgroundColorKey))
-        
         XCTAssertEqual(testController.hasBeenPresented, true)
         XCTAssert(testController.presentedDate != nil)
         XCTAssertNil(testController.dismissedDate)
@@ -144,10 +135,7 @@ class ORKStepViewControllerTests: XCTestCase {
         
         testController.view.window!.bounds = iPadScreenSize
         testController.viewDidLoad()
-        
-        //        Can't verify this since navigation bar has not been initialized
-        //        XCTAssertFalse(navigationBar!.prefersLargeTitles)
-        
+
         guard let iPadBackgroundView = testController.view!.subviews.first else {
             XCTFail("failed to retrieve the first subview")
             return
@@ -283,7 +271,7 @@ class ORKStepViewControllerTests: XCTestCase {
         
         recorderExpectation = expectation(description: "ORKStepViewController notifies delegate that it's recorder failed")
         let recorder = ORKRecorder(identifier: "RECORDER", step: nil, outputDirectory: nil)
-        testController!.delegate!.stepViewController(testController, recorder: recorder, didFailWithError: TestError.scaryError)
+        testController!.delegate!.stepViewController(testController, recorder: recorder, didFailWithError: TestError.recorderError)
         
         waitForExpectations(timeout: 10) { (error) in
             if let error = error {
@@ -333,5 +321,5 @@ extension ORKStepViewControllerTests: ORKStepViewControllerDelegate {
 }
 
 enum TestError: Error {
-    case scaryError
+    case recorderError
 }
