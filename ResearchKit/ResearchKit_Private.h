@@ -127,7 +127,6 @@
 #import <ResearchKit/ORKTappingContentView.h>
 #import <ResearchKit/ORKVerticalContainerView.h>
 #import <ResearchKit/ORKVerticalContainerView_Internal.h>
-#import <ResearchKit/ORKStepContentView_Private.h>
 #import <ResearchKit/ORKStepContainerView.h>
 #import <ResearchKit/ORKNavigationContainerView.h>
 #import <ResearchKit/ORKNavigationContainerView_Internal.h>

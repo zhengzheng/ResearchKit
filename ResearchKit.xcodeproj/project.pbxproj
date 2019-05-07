@@ -567,9 +567,9 @@
 		BA2FE3EE20B109C600AAC231 /* ORKAmslerGridResult.h in Headers */ = {isa = PBXBuildFile; fileRef = BA2FE3EC20B109C600AAC231 /* ORKAmslerGridResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BA2FE3EF20B109C600AAC231 /* ORKAmslerGridResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2FE3ED20B109C600AAC231 /* ORKAmslerGridResult.m */; };
 		BA3D7E732223F8B90023FE3A /* ORKChoiceViewCell_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = BA3D7E722223F8B90023FE3A /* ORKChoiceViewCell_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		BA43CCA42271741C00F2A2D2 /* ORKStepContentView.h in Headers */ = {isa = PBXBuildFile; fileRef = BA43CCA22271741C00F2A2D2 /* ORKStepContentView.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		BA43CCA42271741C00F2A2D2 /* ORKStepContentView.h in Headers */ = {isa = PBXBuildFile; fileRef = BA43CCA22271741C00F2A2D2 /* ORKStepContentView.h */; };
 		BA43CCA52271741C00F2A2D2 /* ORKStepContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA43CCA32271741C00F2A2D2 /* ORKStepContentView.m */; };
-		BA43CCA822722C6E00F2A2D2 /* ORKStepContentView_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = BA43CCA622722C6E00F2A2D2 /* ORKStepContentView_Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		BA43CCA822722C6E00F2A2D2 /* ORKStepContentView_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = BA43CCA622722C6E00F2A2D2 /* ORKStepContentView_Private.h */; };
 		BA473FE3224DAFEF00A362E3 /* ORKBodyContainerView.h in Headers */ = {isa = PBXBuildFile; fileRef = BA473FE1224DAFEF00A362E3 /* ORKBodyContainerView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BA473FE4224DAFEF00A362E3 /* ORKBodyContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA473FE2224DAFEF00A362E3 /* ORKBodyContainerView.m */; };
 		BA473FE8224DB38900A362E3 /* ORKBodyItem.h in Headers */ = {isa = PBXBuildFile; fileRef = BA473FE6224DB38900A362E3 /* ORKBodyItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
