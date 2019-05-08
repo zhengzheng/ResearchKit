@@ -424,7 +424,7 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
     _visible = YES;
     
     UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
-    //    TODO: Remove reloadData later.
+    // TODO: Remove reloadData later.
     [_tableView reloadData];
 }
 
