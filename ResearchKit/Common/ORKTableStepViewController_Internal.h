@@ -35,7 +35,6 @@
 
 @class ORKTableContainerView;
 @class ORKNavigationContainerView;
-@class ORKTableContainerHeaderView;
 @class ORKStepContentView;
 
 @interface ORKTableStepViewController ()
