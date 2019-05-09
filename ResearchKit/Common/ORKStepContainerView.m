@@ -37,8 +37,8 @@
 #import "ORKSkin.h"
 #import "ORKNavigationContainerView_Internal.h"
 
-/**
- 
+
+/** 
  +-----------------------------------------+
  | +-------------------------------------+ |<---_stepContainerView
  | |        _topContentImageView         | |
@@ -60,6 +60,10 @@
  | |  |  |                         |  |  | |
  | |  |  | +---------------------+ |  |  | |
  | |  |  | |    _textLabel       | |  |  | |
+ | |  |  | |_____________________| |  |  | |
+ | |  |  |                         |  |  | |
+ | |  |  | +---------------------+ |  |  | |
+ | |  |  | |  _detailTextLabel   | |  |  | |
  | |  |  | |_____________________| |  |  | |
  | |  |  |                         |  |  | |
  | |  |  | +---------------------+ |  |  | |
@@ -193,6 +197,11 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
 - (void)setStepText:(NSString *)stepText {
     _stepText = stepText;
     [_stepContentView setStepText:_stepText];
+}
+
+- (void)setStepDetailText:(NSString *)stepDetailText {
+    _stepDetailText = stepDetailText;
+    [_stepContentView setStepDetailText:_stepDetailText];
 }
 
 - (void)setTitleIconImage:(UIImage *)titleIconImage {

@@ -36,6 +36,44 @@
 #import "ORKSkin.h"
 
 
+/**
+ +_________________________+
+ |                         |<-------------_stepContentView
+ |       +-------+         |
+ |       | _icon |         |
+ |       |       |         |
+ |       +-------+         |
+ |                         |
+ | +---------------------+ |
+ | |    _titleLabel      | |
+ | |_____________________| |
+ |                         |
+ | +---------------------+ |
+ | |    _textLabel       | |
+ | |_____________________| |
+ |                         |
+ | +---------------------+ |
+ | |  _detailTextLabel   | |
+ | |_____________________| |
+ |                         |
+ | +---------------------+ |
+ | |                     |<-------------_bodyContainerView: UIstackView
+ | | +-----------------+ | |
+ | | |                 | | |
+ | | |--Title          | | |
+ | | |--Text           |<-------------- BodyItemStyleText
+ | | |--LearnMore      | | |
+ | | |_________________| | |
+ | |                     | |
+ | | +---+-------------+ | |
+ | | |   |--Title      | | |
+ | | | o |--Text       |<-------------- BodyItemStyleBullet
+ | | |   |--LearnMore  | | |
+ | | |___|_____________| | |
+ | |_____________________| |
+ |_________________________|
+ */
+
 static const CGFloat ORKStepContentIconImageViewDimension = 80.0;
 static const CGFloat ORKStepContentIconImageViewToTitleLabelPadding = 20.0;
 static const CGFloat ORKStepContentIconToBodyTopPaddingStandard = 20.0;
@@ -47,6 +85,7 @@ typedef NS_CLOSED_ENUM(NSInteger, ORKUpdateConstraintSequence) {
     ORKUpdateConstraintSequenceIconImageView,
     ORKUpdateConstraintSequenceTitleLabel,
     ORKUpdateConstraintSequenceTextLabel,
+    ORKUpdateConstraintSequenceDetailTextLabel,
     ORKUpdateConstraintSequenceBodyContainerView
 } ORK_ENUM_AVAILABLE;
 
@@ -62,10 +101,12 @@ typedef NS_CLOSED_ENUM(NSInteger, ORKUpdateConstraintSequence) {
     NSArray<NSLayoutConstraint *> *_topContentImageViewConstraints;
     NSArray<NSLayoutConstraint *> *_iconImageViewConstraints;
     NSArray<NSLayoutConstraint *> *_textLabelConstraints;
+    NSArray<NSLayoutConstraint *> *_detailTextLabelConstraints;
     
     NSLayoutConstraint *_iconImageViewTopConstraint;
     NSLayoutConstraint *_titleLabelTopConstraint;
     NSLayoutConstraint *_textLabelTopConstraint;
+    NSLayoutConstraint *_detailTextLabelTopConstraint;
     NSLayoutConstraint *_bodyContainerViewTopConstraint;
     NSLayoutConstraint *_stepContentBottomConstraint;
 }
@@ -472,6 +513,121 @@ typedef NS_CLOSED_ENUM(NSInteger, ORKUpdateConstraintSequence) {
 }
 
 
+// step detail text
+
+- (void)setStepDetailText:(NSString *)stepDetailText {
+    _stepDetailText = stepDetailText;
+    if (stepDetailText && !_detailTextLabel) {
+        [self setupDetailTextLabel];
+        [self updateViewConstraintsForSequence:ORKUpdateConstraintSequenceDetailTextLabel];
+        [self setNeedsUpdateConstraints];
+        [_detailTextLabel setText:stepDetailText];
+    }
+    else if (stepDetailText && _detailTextLabel) {
+        [_detailTextLabel setText:_stepDetailText];
+    }
+    else if (!stepDetailText) {
+        [_detailTextLabel removeFromSuperview];
+        _detailTextLabel = nil;
+        [self deactivateDetailTextLabelConstraints];
+        [self updateViewConstraintsForSequence:ORKUpdateConstraintSequenceDetailTextLabel];
+        [self setNeedsUpdateConstraints];
+    }
+}
+
+- (void)setupDetailTextLabel {
+    if (!_detailTextLabel) {
+        _detailTextLabel = [UILabel new];
+    }
+    UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody];
+    [_detailTextLabel setFont:[UIFont fontWithDescriptor:descriptor size:[[descriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue]]];
+    _detailTextLabel.textAlignment = NSTextAlignmentLeft;
+    _detailTextLabel.numberOfLines = 0;
+    [self addSubview:_detailTextLabel];
+    [self setupDetailTextLabelConstraints];
+}
+
+- (void)setupDetailTextLabelConstraints {
+    _detailTextLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [self setDetailTextLabelTopConstraint];
+    _detailTextLabelConstraints = @[_detailTextLabelTopConstraint,
+                              [NSLayoutConstraint constraintWithItem:_detailTextLabel
+                                                           attribute:NSLayoutAttributeCenterX
+                                                           relatedBy:NSLayoutRelationEqual
+                                                              toItem:self
+                                                           attribute:NSLayoutAttributeCenterX
+                                                          multiplier:1.0
+                                                            constant:0.0],
+                              [NSLayoutConstraint constraintWithItem:_detailTextLabel
+                                                           attribute:NSLayoutAttributeWidth
+                                                           relatedBy:NSLayoutRelationEqual
+                                                              toItem:self
+                                                           attribute:NSLayoutAttributeWidth
+                                                          multiplier:1.0
+                                                            constant:0.0]];
+    
+    [_updatedConstraints addObjectsFromArray:_detailTextLabelConstraints];
+    [self setNeedsUpdateConstraints];
+}
+
+- (void)setDetailTextLabelTopConstraint {
+    if (_detailTextLabel) {
+        id topItem;
+        NSLayoutAttribute attribute;
+        CGFloat constant;
+        if (_textLabel) {
+            topItem = _textLabel;
+            attribute = NSLayoutAttributeBottom;
+            constant = ORKBodyToBodyPaddingStandard;
+        }
+        
+        else if (_titleLabel) {
+            topItem = _titleLabel;
+            attribute = NSLayoutAttributeBottom;
+            constant = ORKStepContainerTitleToBodyTopPaddingForWindow(self.window);
+        }
+        else if (_iconImageView) {
+            topItem = _iconImageView;
+            attribute = NSLayoutAttributeBottom;
+            constant = ORKStepContentIconToBodyTopPaddingStandard;
+        }
+        else if (_topContentImageView) {
+            topItem = _topContentImageView;
+            attribute = NSLayoutAttributeBottom;
+            constant = ORKStepContainerFirstItemTopPaddingForWindow(self.window);
+        }
+        else {
+            topItem = self;
+            attribute = NSLayoutAttributeTop;
+            constant = ORKStepContainerFirstItemTopPaddingForWindow(self.window);
+        }
+        
+        _detailTextLabelTopConstraint = [NSLayoutConstraint constraintWithItem:_detailTextLabel
+                                                               attribute:NSLayoutAttributeTop
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:topItem
+                                                               attribute:attribute
+                                                              multiplier:1.0
+                                                                constant:constant];
+    }
+}
+
+- (void)updateDetailTextLabelTopConstraint {
+    if (_detailTextLabelTopConstraint) {
+        [self deactivateConstraints:@[_detailTextLabelTopConstraint]];
+    }
+    [self setDetailTextLabelTopConstraint];
+    if (_detailTextLabelTopConstraint) {
+        [_updatedConstraints addObject:_detailTextLabelTopConstraint];
+    }
+}
+
+- (void)deactivateDetailTextLabelConstraints {
+    [self deactivateConstraints:_detailTextLabelConstraints];
+    _detailTextLabelConstraints = nil;
+}
+
+
 //  body container
 
 - (void)setBodyItems:(NSArray<ORKBodyItem *> *)bodyItems {
@@ -536,7 +692,13 @@ typedef NS_CLOSED_ENUM(NSInteger, ORKUpdateConstraintSequence) {
     CGFloat topPadding;
     NSLayoutAttribute attribute;
 
-    if (_textLabel) {
+    if (_detailTextLabel) {
+        topItem = _detailTextLabel;
+        topPadding = ORKBodyToBodyPaddingStandard;
+        attribute = NSLayoutAttributeBottom;
+    }
+    
+    else if (_textLabel) {
         topItem = _textLabel;
         topPadding = ORKBodyToBodyPaddingStandard;
         attribute = NSLayoutAttributeBottom;
@@ -586,6 +748,8 @@ typedef NS_CLOSED_ENUM(NSInteger, ORKUpdateConstraintSequence) {
         case ORKUpdateConstraintSequenceTitleLabel:
             [self updateTextLabelTopConstraint];
         case ORKUpdateConstraintSequenceTextLabel:
+            [self updateDetailTextLabelTopConstraint];
+        case ORKUpdateConstraintSequenceDetailTextLabel:
             [self updateBodyContainerViewTopConstraint];
             
         default:
