@@ -36,26 +36,21 @@ class ORKCompletionStepViewControllerTests: XCTestCase {
     var step: ORKStep!
     var result: ORKResult!
     
-    func testProperties() {
+    override func setUp() {
+        super.setUp()
         step = ORKStep(identifier: "STEP")
         result = ORKResult(identifier: "RESULT")
         completionController = ORKCompletionStepViewController(step: step, result: result)
-        
         completionController.shouldShowContinueButton = true
         completionController.checkmarkColor = .blue
-        
+    }
+    
+    func testProperties() {
         XCTAssertEqual(completionController.shouldShowContinueButton, true)
         XCTAssertEqual(completionController.checkmarkColor, UIColor.blue)
     }
     
     func testStepView() {
-        let step = ORKInstructionStep(identifier: "STEP")
-        result = ORKResult(identifier: "RESULT")
-        completionController = ORKCompletionStepViewController(step: step, result: result)
-        
-        completionController.shouldShowContinueButton = true
-        completionController.checkmarkColor = .blue
-        
         let utilities = TopLevelUIUtilities<ORKStepViewController>()
         utilities.setupTopLevelUI(withViewController: completionController)
         
