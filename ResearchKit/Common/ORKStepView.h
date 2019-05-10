@@ -35,6 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class ORKBodyItem;
 @class ORKLearnMoreInstructionStep;
+@class ORKNavigationContainerView;
 
 ORK_CLASS_AVAILABLE
 
@@ -63,6 +64,7 @@ ORK_CLASS_AVAILABLE
 
 @property (nonatomic) NSArray<ORKBodyItem *> *bodyItems;
 
+@property (nonatomic, nullable) ORKNavigationContainerView *navigationFooterView;
 
 @property (nonatomic, weak) id<ORKStepViewLearnMoreItemDelegate> delegate;
 
