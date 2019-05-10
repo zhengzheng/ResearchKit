@@ -102,7 +102,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.activeStepView.stepViewFillsAvailableSpace = YES;
+//    self.activeStepView.stepViewFillsAvailableSpace = YES;
     self.psatContentView = [[ORKPSATContentView alloc] initWithPresentationMode:[self psatStep].presentationMode];
     self.psatContentView.keyboardView.delegate = self;
     [self.psatContentView setEnabled:NO];

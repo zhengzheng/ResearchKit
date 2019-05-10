@@ -168,8 +168,8 @@ typedef void (^_ORKStateHandler)(ORKState *fromState, ORKState *_toState, id con
     _contentView.footerHidden = YES;
     _contentView.gameView.delegate = self;
     self.activeStepView.activeCustomView = _contentView;
-    self.activeStepView.stepViewFillsAvailableSpace = NO;
-    self.activeStepView.minimumStepHeaderHeight = ORKGetMetricForWindow(ORKScreenMetricMinimumStepHeaderHeightForMemoryGame, self.view.window);
+//    self.activeStepView.stepViewFillsAvailableSpace = NO;
+//    self.activeStepView.minimumStepHeaderHeight = ORKGetMetricForWindow(ORKScreenMetricMinimumStepHeaderHeightForMemoryGame, self.view.window);
     
     [self resetUI];
     
@@ -177,7 +177,7 @@ typedef void (^_ORKStateHandler)(ORKState *fromState, ORKState *_toState, id con
     [self.activeStepView addGestureRecognizer:tapGestureRecognizer];
     
     if (usesDefaultCopyright) {
-        self.activeStepView.headerView.learnMoreButton.alpha = 0;
+//        self.activeStepView.headerView.learnMoreButton.alpha = 0;
     }
 }
 
@@ -656,7 +656,7 @@ typedef void (^_ORKStateHandler)(ORKState *fromState, ORKState *_toState, id con
     [self.activeStepView updateTitle:ORKLocalizedString(@"MEMORY_GAME_COMPLETE_TITLE", nil) text:nil];
     
     // Show the copyright
-    self.activeStepView.headerView.learnMoreButton.alpha = 1;
+//    self.activeStepView.headerView.learnMoreButton.alpha = 1;
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.75 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         _contentView.buttonItem = [ORKBorderedButton new];

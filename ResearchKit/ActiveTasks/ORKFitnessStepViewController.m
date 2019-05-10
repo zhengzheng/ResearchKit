@@ -85,7 +85,7 @@
     _contentView.image = self.fitnessStep.image;
     _contentView.timeLeft = self.fitnessStep.stepDuration;
     self.activeStepView.activeCustomView = _contentView;
-    self.activeStepView.stepViewFillsAvailableSpace = YES;
+//    self.activeStepView.stepViewFillsAvailableSpace = YES;
 }
 
 - (void)updateHeartRateWithQuantity:(HKQuantitySample *)quantity unit:(HKUnit *)unit {

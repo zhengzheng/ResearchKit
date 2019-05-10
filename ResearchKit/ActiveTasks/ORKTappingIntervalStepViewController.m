@@ -93,7 +93,7 @@
     _touchDownRecognizer.delegate = self;
     [self.view addGestureRecognizer:_touchDownRecognizer];
     
-    self.activeStepView.stepViewFillsAvailableSpace = YES;
+//    self.activeStepView.stepViewFillsAvailableSpace = YES;
     
     self.timerUpdateInterval = 0.1;
     
