@@ -34,6 +34,7 @@
 
 #import "ORKNavigationContainerView_Internal.h"
 #import "ORKInstructionStepContainerView.h"
+#import "ORKStepView_Private.h"
 #import "ORKInstructionStepViewController_Internal.h"
 #import "ORKStepViewController_Internal.h"
 #import "ORKTaskViewController_Internal.h"
@@ -44,7 +45,7 @@
 #import "ORKSkin.h"
 
 
-@interface ORKInstructionStepViewController()<ORKStepContainerLearnMoreItemDelegate>
+@interface ORKInstructionStepViewController()<ORKStepViewLearnMoreItemDelegate>
 
 @end
 
@@ -163,7 +164,7 @@
 
 #pragma mark - ORKStepContainerLearnMoreItemDelegate
 
-- (void)stepContainerLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep {
+- (void)stepViewLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep {
     [self presentViewController:[[ORKLearnMoreStepViewController alloc] initWithStep:learnMoreStep] animated:YES completion:nil];
 }
 

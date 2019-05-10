@@ -1,6 +1,6 @@
 /*
  Copyright (c) 2019, Apple Inc. All rights reserved.
-
+ 
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
  
@@ -28,16 +28,24 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
-#import <ResearchKit/ORKStepContainerView.h>
-
+@import UIKit;
+#import <ResearchKit/ORKStepView.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class ORKNavigationContainerView;
 @class ORKStepContentView;
-@interface ORKStepContainerView ()
+@interface ORKStepView ()
 
-@property (nonatomic) UIView *customContentView;
+@property (nonatomic, nullable) ORKNavigationContainerView *navigationFooterView;
+
+@property (nonatomic, nullable) ORKStepContentView *stepContentView;
+
+@property (nonatomic) BOOL isNavigationContainerScrollable;
+
+- (void)placeNavigationContainerView;
+
+- (UIImage *)topContentAndAuxiliaryImage;
 
 @end
 

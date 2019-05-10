@@ -519,7 +519,7 @@
         _formItemCells = [NSMutableSet new];
         
         _tableContainer = [ORKTableContainerView new];
-        _tableContainer.delegate = self;
+        _tableContainer.tableContainerDelegate = self;
         [self.view addSubview:_tableContainer];
         _tableContainer.tapOffView = self.view;
         
@@ -545,7 +545,7 @@
                 [self.view setBackgroundColor:[_tableView backgroundColor]];
             }
         }
-        _headerView = _tableContainer.tableContainerHeaderView;
+        _headerView = _tableContainer.stepContentView;
         _headerView.stepTitle = [self formStep].title;
         _headerView.bodyItems = ([[self formStep] text]) ? [@[[[ORKBodyItem alloc] initWithText:[[self formStep] text] detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]] arrayByAddingObjectsFromArray:self.step.bodyItems] : self.step.bodyItems;
         

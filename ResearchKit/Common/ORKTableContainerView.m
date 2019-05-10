@@ -75,7 +75,7 @@ static const CGFloat CellBottomPadding = 20.0;
         
         _scrollView = _tableView;
         [self setupRealFooterView];
-        [self setupTableContainerHeaderView];
+        [self addStepContentView];
         [self setupTableViewConstraints];
 
         
@@ -99,11 +99,8 @@ static const CGFloat CellBottomPadding = 20.0;
     [self addSubview:_tableView];
 }
 
-- (void)setupTableContainerHeaderView {
-    if (!_tableContainerHeaderView) {
-        _tableContainerHeaderView = [[ORKStepContentView alloc] init];
-    }
-    _tableView.tableHeaderView = _tableContainerHeaderView;
+- (void)addStepContentView {
+    _tableView.tableHeaderView = self.stepContentView;
 }
 
 - (void)setupRealFooterView {
@@ -116,10 +113,10 @@ static const CGFloat CellBottomPadding = 20.0;
 
 
 - (void)sizeHeaderToFit {
-    CGFloat estimatedHeight = [_tableContainerHeaderView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
-    CGRect bounds = CGRectMake(0.0, 0.0, _tableContainerHeaderView.bounds.size.width, _tableContainerHeaderView.bounds.size.height);
+    CGFloat estimatedHeight = [self.stepContentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+    CGRect bounds = CGRectMake(0.0, 0.0, self.stepContentView.bounds.size.width, self.stepContentView.bounds.size.height);
     bounds.size.height = estimatedHeight;
-    [_tableContainerHeaderView setBounds:bounds];
+    [self.stepContentView setBounds:bounds];
 }
 
 
@@ -135,7 +132,7 @@ static const CGFloat CellBottomPadding = 20.0;
 
 - (void)setupTableViewConstraints {
     _tableView.translatesAutoresizingMaskIntoConstraints = NO;
-    _tableContainerHeaderView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.stepContentView.translatesAutoresizingMaskIntoConstraints = NO;
     CGFloat leftRightPadding = ORKStepContainerLeftRightPaddingForWindow(self.window);
     [NSLayoutConstraint activateConstraints:@[
                                               
@@ -167,14 +164,14 @@ static const CGFloat CellBottomPadding = 20.0;
                                                                            attribute:NSLayoutAttributeBottom
                                                                           multiplier:1.0
                                                                             constant:0.0],
-                                                                                            [NSLayoutConstraint constraintWithItem:_tableContainerHeaderView
+                                                                                            [NSLayoutConstraint constraintWithItem:self.stepContentView
                                                                                                                          attribute:NSLayoutAttributeCenterX
                                                                                                                          relatedBy:NSLayoutRelationEqual
                                                                                                                             toItem:_tableView
                                                                                                                          attribute:NSLayoutAttributeCenterX
                                                                                                                         multiplier:1.0
                                                                                                                           constant:0.0],
-                                                                                            [NSLayoutConstraint constraintWithItem:_tableContainerHeaderView
+                                                                                            [NSLayoutConstraint constraintWithItem:self.stepContentView
                                                                                                                          attribute:NSLayoutAttributeWidth
                                                                                                                          relatedBy:NSLayoutRelationEqual
                                                                                                                             toItem:_tableView
@@ -349,7 +346,7 @@ static const CGFloat CellBottomPadding = 20.0;
             
             // Make current first responder cell visible
             {
-                [self scrollCellVisible:[self.delegate currentFirstResponderCellForTableContainerView:self] animated:NO];
+                [self scrollCellVisible:[self.tableContainerDelegate currentFirstResponderCellForTableContainerView:self] animated:NO];
             }
         }
     } completion:nil];

@@ -122,6 +122,7 @@
 #import <ResearchKit/ORKHTMLPDFPageRenderer.h>
 
 // For custom steps
+#import <ResearchKit/ORKStepView_Private.h>
 #import <ResearchKit/ORKCustomStepView.h>
 #import <ResearchKit/ORKTappingContentView.h>
 #import <ResearchKit/ORKVerticalContainerView.h>

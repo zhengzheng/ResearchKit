@@ -1,6 +1,6 @@
 /*
  Copyright (c) 2019, Apple Inc. All rights reserved.
-
+ 
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
  
@@ -28,16 +28,45 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
-#import <ResearchKit/ORKStepContainerView.h>
-
+#import <UIKit/UIKit.h>
+#import "ORKDefines.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class ORKStepContentView;
-@interface ORKStepContainerView ()
+@class ORKBodyItem;
+@class ORKLearnMoreInstructionStep;
 
-@property (nonatomic) UIView *customContentView;
+ORK_CLASS_AVAILABLE
+
+@protocol ORKStepViewLearnMoreItemDelegate <NSObject>
+
+@required
+- (void)stepViewLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep;
+
+@end
+
+@interface ORKStepView : UIView
+
+@property (nonatomic, nullable) UIImage *stepTopContentImage;
+
+@property (nonatomic, nullable) UIImage *auxiliaryImage; // Only underlayed when stepTopContentImage is added.
+
+@property (nonatomic) NSString *stepTitle;
+
+@property (nonatomic, nullable) NSString *stepText;
+
+@property (nonatomic, nullable) NSString *stepDetailText;
+
+@property (nonatomic, nullable) UIImage *titleIconImage;
+
+@property (nonatomic) BOOL showScrollIndicator;
+
+@property (nonatomic) NSArray<ORKBodyItem *> *bodyItems;
+
+
+@property (nonatomic, weak) id<ORKStepViewLearnMoreItemDelegate> delegate;
+
+- (void)pinNavigationContainerToBottom;
 
 @end
 

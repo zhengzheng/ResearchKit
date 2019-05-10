@@ -182,7 +182,7 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
             [self.view insertSubview:_tableContainer belowSubview:_navigationFooterView];
             _tableContainer.tapOffView = self.view;
             
-            _headerView = _tableContainer.tableContainerHeaderView;
+            _headerView = _tableContainer.stepContentView;
             if (self.questionStep.useCardView) {
                 _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
                 [_tableView setBackgroundColor:ORKColor(ORKBackgroundColorKey)];

@@ -64,6 +64,8 @@
 #import <ResearchKit/ORKNavigableOrderedTask.h>
 #import <ResearchKit/ORKStepNavigationRule.h>
 
+#import <ResearchKit/ORKStepView.h>
+
 #import <ResearchKit/ORKAnswerFormat.h>
 #import <ResearchKit/ORKHealthAnswerFormat.h>
 
