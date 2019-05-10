@@ -78,6 +78,7 @@ static const CGFloat ORKStepContentIconImageViewDimension = 80.0;
 static const CGFloat ORKStepContentIconImageViewToTitleLabelPadding = 20.0;
 static const CGFloat ORKStepContentIconToBodyTopPaddingStandard = 20.0;
 static const CGFloat ORKStepContentIconToBulletTopPaddingStandard = 20.0;
+static const CGFloat ORKStepContentIconImageViewCornerRadius = 15.0;
 
 
 typedef NS_CLOSED_ENUM(NSInteger, ORKUpdateConstraintSequence) {
@@ -265,6 +266,11 @@ typedef NS_CLOSED_ENUM(NSInteger, ORKUpdateConstraintSequence) {
         _iconImageView = [UIImageView new];
     }
     _iconImageView.contentMode = UIViewContentModeScaleAspectFit;
+    _iconImageView.layer.cornerRadius = ORKStepContentIconImageViewCornerRadius;
+    _iconImageView.layer.masksToBounds = YES;
+    _iconImageView.layer.borderColor = [UIColor groupTableViewBackgroundColor].CGColor;
+    _iconImageView.layer.borderWidth = 1.0;
+
     [self addSubview:_iconImageView];
     [self setIconImageViewConstraints];
 }
@@ -771,6 +777,16 @@ typedef NS_CLOSED_ENUM(NSInteger, ORKUpdateConstraintSequence) {
     
     if (_bodyContainerView) {
         bottomItem = _bodyContainerView;
+        attribute = NSLayoutAttributeBottom;
+        constant = 0.0;
+    }
+    else if (_detailTextLabel) {
+        bottomItem = _detailTextLabel;
+        attribute = NSLayoutAttributeBottom;
+        constant = 0.0;
+    }
+    else if (_textLabel) {
+        bottomItem = _textLabel;
         attribute = NSLayoutAttributeBottom;
         constant = 0.0;
     }
