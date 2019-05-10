@@ -1,6 +1,6 @@
 /*
- Copyright (c) 2018, Apple Inc. All rights reserved.
- 
+ Copyright (c) 2019, Apple Inc. All rights reserved.
+
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
  
@@ -29,35 +29,21 @@
  */
 
 
-import Foundation
+#import <ResearchKit/ORKStepContentView.h>
 
-@available(watchOSApplicationExtension 5.0, *)
-class AssessmentManager {
-    private var manager: CMMovementDisorderManager?
-    init() {
-        if CMMovementDisorderManager.isAvailable() {
-            manager = CMMovementDisorderManager()
-            
-            monitorForParkinsons()
-        
-        }
-    }
-    
-    func monitorForParkinsons() {
-        manager?.monitorKinesias(forDuration: 7 * 24 * 3600)
-    }
-    
-    func queryNewAssessments() {
-        let calendar = Calendar.current
-        let toDate = Date()
-        let fromDate: Date = calendar.date(byAdding: .day, value: -7, to: toDate)!
-        
-        manager?.queryTremor(from: fromDate, to: toDate, withHandler: { (results, error) in
-            
-        })
-        
-        manager?.queryDyskineticSymptom(from: fromDate, to: toDate, withHandler: { (results, error) in
-            
-        })
-    }
-}
+
+NS_ASSUME_NONNULL_BEGIN
+
+@class ORKTitleLabel;
+@class ORKBodyContainerView;
+@interface ORKStepContentView ()
+
+@property (nonatomic, nullable) UIImageView *topContentImageView;
+@property (nonatomic) ORKTitleLabel *titleLabel;
+@property (nonatomic, nullable) UILabel *textLabel;
+@property (nonatomic, nullable) UIImageView *iconImageView;
+@property (nonatomic) ORKBodyContainerView *bodyContainerView;
+
+@end
+
+NS_ASSUME_NONNULL_END

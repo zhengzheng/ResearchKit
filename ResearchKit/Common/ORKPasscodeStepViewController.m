@@ -345,7 +345,7 @@ static CGFloat const kForgotPasscodeHeight              = 100.0f;
     self.internalDoneButtonItem = nil;
 }
                                                               
-- (void)showValidityAlertWithMessage:(NSString *)text {
+- (BOOL)showValidityAlertWithMessage:(NSString *)text {
     
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:ORKLocalizedString(@"PASSCODE_INVALID_ALERT_TITLE", nil)
                                                                    message:text
@@ -354,6 +354,8 @@ static CGFloat const kForgotPasscodeHeight              = 100.0f;
                                               style:UIAlertActionStyleDefault
                                             handler:nil]];
     [self presentViewController:alert animated:YES completion:nil];
+    
+    return YES;
 }
 
 - (ORKStepResult *)result {

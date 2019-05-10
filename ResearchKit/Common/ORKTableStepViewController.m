@@ -41,7 +41,7 @@
 #import "ORKTaskViewController_Internal.h"
 
 #import "ORKTableStep.h"
-#import "ORKTableContainerHeaderView.h"
+#import "ORKStepContentView.h"
 #import "ORKBodyItem.h"
 #import "ORKHelpers_Internal.h"
 #import "ORKSkin.h"
@@ -139,7 +139,9 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
         [_tableView setBackgroundColor:_tableViewColor];
         _tableView.alwaysBounceVertical = NO;
         _headerView = _tableContainer.tableContainerHeaderView;
-        _headerView.bodyItems = ([[self step] text]) ? [@[[[ORKBodyItem alloc] initWithText:[[self step] text] detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]] arrayByAddingObjectsFromArray:self.step.bodyItems] : self.step.bodyItems;
+        _headerView.stepTitle = [[self step] title];
+        _headerView.stepText = [[self step] text];
+        _headerView.bodyItems = [[self step] bodyItems];
         _navigationFooterView = [ORKNavigationContainerView new];
         _navigationFooterView.skipButtonItem = self.skipButtonItem;
         _navigationFooterView.continueEnabled = [self continueButtonEnabled];

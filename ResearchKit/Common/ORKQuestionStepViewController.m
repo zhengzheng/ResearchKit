@@ -55,7 +55,7 @@
 #import "ORKQuestionStep_Internal.h"
 #import "ORKResult_Private.h"
 #import "ORKStep_Private.h"
-#import "ORKTableContainerHeaderView.h"
+#import "ORKStepContentView.h"
 
 #import "ORKHelpers_Internal.h"
 #import "ORKSkin.h"
@@ -71,7 +71,7 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
     id _answer;
     
     ORKTableContainerView *_tableContainer;
-    ORKTableContainerHeaderView *_headerView;
+    ORKStepContentView *_headerView;
     ORKNavigationContainerView *_navigationFooterView;
     ORKAnswerDefaultSource *_defaultSource;
     
@@ -330,13 +330,13 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
     
 }
 
-- (void)showValidityAlertWithMessage:(NSString *)text {
+- (BOOL)showValidityAlertWithMessage:(NSString *)text {
     // Ignore if our answer is null
     if (self.answer == ORKNullAnswerValue()) {
-        return;
+        return NO;
     }
     
-    [super showValidityAlertWithMessage:text];
+    return [super showValidityAlertWithMessage:text];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -424,6 +424,8 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
     _visible = YES;
     
     UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
+    // TODO: Remove reloadData later.
+    [_tableView reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

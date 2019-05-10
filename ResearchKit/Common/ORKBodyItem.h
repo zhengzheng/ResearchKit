@@ -30,6 +30,7 @@
 
 @import UIKit;
 #import <Foundation/Foundation.h>
+#import "ORKDefines.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -51,6 +52,8 @@ typedef NS_ENUM(NSInteger, ORKBodyItemStyle) {
 } ORK_ENUM_AVAILABLE;
 
 @class ORKLearnMoreItem;
+
+ORK_CLASS_AVAILABLE
 @interface ORKBodyItem : NSObject <NSSecureCoding, NSCopying>
 
 - (instancetype)initWithText:(nullable NSString *)text detailText:(nullable NSString *)detailText image:(nullable UIImage *)image learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem bodyItemStyle:(ORKBodyItemStyle)bodyItemStyle;

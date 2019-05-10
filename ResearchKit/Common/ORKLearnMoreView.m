@@ -34,7 +34,7 @@
 #import "ORKHelpers_Internal.h"
 #import "ORKBodyItem.h"
 
-
+ORK_CLASS_AVAILABLE
 @interface ORKLearnMoreButton : UIButton
 
 + (instancetype)buttonWithType:(UIButtonType)buttonType NS_UNAVAILABLE;
@@ -57,6 +57,8 @@
     ORKLearnMoreButton *button = [super buttonWithType:UIButtonTypeCustom];
     [button setTitle:text forState:UIControlStateNormal];
     [button setTitleColor:button.tintColor forState:UIControlStateNormal];
+    button.titleLabel.numberOfLines = 0;
+    button.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [button setContentEdgeInsets:UIEdgeInsetsMake(CGFLOAT_MIN, CGFLOAT_MIN, CGFLOAT_MIN, CGFLOAT_MIN)];
     return button;
 }
@@ -66,6 +68,10 @@
     return button;
 }
 
+- (void)setNeedsLayout {
+    [super setNeedsLayout];
+    [self.titleLabel invalidateIntrinsicContentSize];
+}
 
 @end
 

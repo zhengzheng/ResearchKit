@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2018, Apple Inc. All rights reserved.
+ Copyright (c) 2019, Apple Inc. All rights reserved.
  
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
@@ -28,36 +28,32 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import XCTest
+import UIKit
 
-import Foundation
-
-@available(watchOSApplicationExtension 5.0, *)
-class AssessmentManager {
-    private var manager: CMMovementDisorderManager?
-    init() {
-        if CMMovementDisorderManager.isAvailable() {
-            manager = CMMovementDisorderManager()
-            
-            monitorForParkinsons()
-        
+class TopLevelUIUtilities<T: UIViewController> {
+    
+    private var rootWindow: UIWindow!
+    
+    func setupTopLevelUI(withViewController viewController: T) {
+        rootWindow = UIWindow(frame: UIScreen.main.bounds)
+        rootWindow.isHidden = false
+        rootWindow.rootViewController = viewController
+        _ = viewController.view
+        viewController.viewWillAppear(false)
+        viewController.viewDidAppear(false)
+    }
+    
+    func tearDownTopLevelUI() {
+        guard let rootWindow = rootWindow,
+            let rootViewController = rootWindow.rootViewController as? T else {
+                XCTFail("tearDownTopLevelUI() was called without setupTopLevelUI() being called first")
+                return
         }
-    }
-    
-    func monitorForParkinsons() {
-        manager?.monitorKinesias(forDuration: 7 * 24 * 3600)
-    }
-    
-    func queryNewAssessments() {
-        let calendar = Calendar.current
-        let toDate = Date()
-        let fromDate: Date = calendar.date(byAdding: .day, value: -7, to: toDate)!
-        
-        manager?.queryTremor(from: fromDate, to: toDate, withHandler: { (results, error) in
-            
-        })
-        
-        manager?.queryDyskineticSymptom(from: fromDate, to: toDate, withHandler: { (results, error) in
-            
-        })
+        rootViewController.viewWillDisappear(false)
+        rootViewController.viewDidDisappear(false)
+        rootWindow.rootViewController = nil
+        rootWindow.isHidden = true
+        self.rootWindow = nil
     }
 }

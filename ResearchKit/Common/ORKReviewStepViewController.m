@@ -43,7 +43,7 @@
 #import "ORKStepViewController_Internal.h"
 #import "ORKTaskViewController_Internal.h"
 
-#import "ORKTableContainerHeaderView.h"
+#import "ORKStepContentView.h"
 #import "ORKAnswerFormat_Internal.h"
 #import "ORKCollectionResult_Private.h"
 #import "ORKFormStep.h"
@@ -127,7 +127,7 @@
     _navigationFooterView = nil;
     
     if ([self reviewStep]) {
-        _tableContainer = [[ORKTableContainerView alloc] initWithFrame:self.view.bounds];
+        _tableContainer = [ORKTableContainerView new];
         _tableContainer.tableView.delegate = self;
         _tableContainer.tableView.dataSource = self;
         _tableContainer.tableView.clipsToBounds = YES;
@@ -135,7 +135,9 @@
         [self.view addSubview:_tableContainer];
         _tableContainer.tapOffView = self.view;
         
-        _tableContainer.tableContainerHeaderView.bodyItems = ([self reviewStep].text) ? [@[[[ORKBodyItem alloc] initWithText:[self reviewStep].text detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]] arrayByAddingObjectsFromArray:self.step.bodyItems] : self.step.bodyItems;
+        _tableContainer.tableContainerHeaderView.stepTitle = [[self reviewStep] title];
+        _tableContainer.tableContainerHeaderView.stepText = [[self reviewStep] text];
+        _tableContainer.tableContainerHeaderView.bodyItems = [[self reviewStep] bodyItems];
         
         [_tableContainer.tableView setBackgroundColor:ORKNeedWideScreenDesign(self.view) ? [UIColor clearColor] : ORKColor(ORKBackgroundColorKey)];
         _navigationFooterView = [ORKNavigationContainerView new];

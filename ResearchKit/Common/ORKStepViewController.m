@@ -299,7 +299,7 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
     if ([self.delegate respondsToSelector:@selector(stepViewControllerWillAppear:)]) {
         [self.delegate stepViewControllerWillAppear:self];
     }
-        
+    
     if (!_step) {
         @throw [NSException exceptionWithName:NSGenericException reason:@"Cannot present step view controller without a step" userInfo:nil];
     }
@@ -520,22 +520,22 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
     return (ORKTaskViewController *)parentViewController;
 }
 
-- (void)showValidityAlertWithMessage:(NSString *)text {
-    [self showValidityAlertWithTitle:ORKLocalizedString(@"RANGE_ALERT_TITLE", nil) message:text];
+- (BOOL)showValidityAlertWithMessage:(NSString *)text {
+    return [self showValidityAlertWithTitle:ORKLocalizedString(@"RANGE_ALERT_TITLE", nil) message:text];
 }
 
-- (void)showValidityAlertWithTitle:(NSString *)title message:(NSString *)message {
+- (BOOL)showValidityAlertWithTitle:(NSString *)title message:(NSString *)message {
     if (![title length] && ![message length]) {
         // No alert if the value is empty
-        return;
+        return NO;
     }
     if (_dismissing || ![self isViewLoaded] || !self.view.window) {
         // No alert if not in view chain.
-        return;
+        return NO;
     }
     
     if (_presentingAlert) {
-        return;
+        return NO;
     }
     
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
@@ -550,6 +550,8 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
     [self presentViewController:alert animated:YES completion:^{
         _presentingAlert = NO;
     }];
+    
+    return YES;
 }
 
 

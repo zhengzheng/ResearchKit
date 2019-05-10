@@ -82,6 +82,7 @@ CGFloat ORKStepContainerTopMarginForDefault = 20.0;
 
 CGFloat ORKStepContainerTitleToBodyTopPaddingStandard = 15.0;
 CGFloat ORKStepContainerTitleToBodyTopPaddingShort = 11.0;
+CGFloat ORKBodyToBodyPaddingStandard = 22.0;
 
 CGFloat ORKStepContainerTitleToBulletTopPaddingStandard = 57.0;
 CGFloat ORKStepContainerTitleToBulletTopPaddingShort = 37.0;

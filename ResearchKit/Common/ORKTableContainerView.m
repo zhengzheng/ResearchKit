@@ -30,7 +30,7 @@
 
 
 #import "ORKTableContainerView.h"
-#import "ORKTableContainerHeaderView.h"
+#import "ORKStepContentView.h"
 
 #import "ORKNavigationContainerView.h"
 #import "ORKStepHeaderView.h"
@@ -101,7 +101,7 @@ static const CGFloat CellBottomPadding = 20.0;
 
 - (void)setupTableContainerHeaderView {
     if (!_tableContainerHeaderView) {
-        _tableContainerHeaderView = [[ORKTableContainerHeaderView alloc] init];
+        _tableContainerHeaderView = [[ORKStepContentView alloc] init];
     }
     _tableView.tableHeaderView = _tableContainerHeaderView;
 }

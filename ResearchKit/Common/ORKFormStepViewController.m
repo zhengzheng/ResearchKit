@@ -37,7 +37,7 @@
 #import "ORKFormSectionTitleLabel.h"
 #import "ORKStepHeaderView_Internal.h"
 #import "ORKTableContainerView.h"
-#import "ORKTableContainerHeaderView.h"
+#import "ORKStepContentView.h"
 #import "ORKBodyItem.h"
 #import "ORKLearnMoreView.h"
 
@@ -289,7 +289,7 @@
 
 @property (nonatomic, strong) ORKTableContainerView *tableContainer;
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) ORKTableContainerHeaderView *headerView;
+@property (nonatomic, strong) ORKStepContentView *headerView;
 
 @property (nonatomic, strong) NSMutableDictionary *savedAnswers;
 @property (nonatomic, strong) NSMutableDictionary *savedAnswerDates;
@@ -804,13 +804,13 @@
     return [array copy];
 }
 
-- (void)showValidityAlertWithMessage:(NSString *)text {
+- (BOOL)showValidityAlertWithMessage:(NSString *)text {
     // Ignore if our answer is null
     if (_skipped) {
-        return;
+        return NO;
     }
     
-    [super showValidityAlertWithMessage:text];
+    return [super showValidityAlertWithMessage:text];
 }
 
 - (ORKStepResult *)result {

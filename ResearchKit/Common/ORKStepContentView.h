@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2018, Apple Inc. All rights reserved.
+ Copyright (c) 2019, Apple Inc. All rights reserved.
  
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
@@ -29,35 +29,36 @@
  */
 
 
-import Foundation
+@import UIKit;
 
-@available(watchOSApplicationExtension 5.0, *)
-class AssessmentManager {
-    private var manager: CMMovementDisorderManager?
-    init() {
-        if CMMovementDisorderManager.isAvailable() {
-            manager = CMMovementDisorderManager()
-            
-            monitorForParkinsons()
-        
-        }
-    }
-    
-    func monitorForParkinsons() {
-        manager?.monitorKinesias(forDuration: 7 * 24 * 3600)
-    }
-    
-    func queryNewAssessments() {
-        let calendar = Calendar.current
-        let toDate = Date()
-        let fromDate: Date = calendar.date(byAdding: .day, value: -7, to: toDate)!
-        
-        manager?.queryTremor(from: fromDate, to: toDate, withHandler: { (results, error) in
-            
-        })
-        
-        manager?.queryDyskineticSymptom(from: fromDate, to: toDate, withHandler: { (results, error) in
-            
-        })
-    }
-}
+
+NS_ASSUME_NONNULL_BEGIN
+
+@class ORKLearnMoreInstructionStep;
+@protocol ORKStepContentLearnMoreItemDelegate <NSObject>
+
+@required
+- (void)stepContentLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep;
+
+@end
+
+@class ORKBodyItem;
+@interface ORKStepContentView : UIView
+
+@property (nonatomic, nullable) UIImage *stepTopContentImage;
+
+@property (nonatomic, nullable) UIImage *auxiliaryImage; // Only underlayed when stepTopContentImage is added.
+
+@property (nonatomic) NSString *stepTitle;
+
+@property (nonatomic, nullable) NSString *stepText;
+
+@property (nonatomic, nullable) UIImage *titleIconImage;
+
+@property (nonatomic) NSArray<ORKBodyItem *> *bodyItems;
+
+@property (nonatomic, weak) id<ORKStepContentLearnMoreItemDelegate> delegate;
+
+@end
+
+NS_ASSUME_NONNULL_END
