@@ -409,6 +409,22 @@
     XCTAssertEqual([step identifier], identifier);
 }
 
+- (void)testCopyWithIdentifier {
+    NSString *firstIdentifier = @"STEP";
+    ORKStep *step = [[ORKStep alloc] initWithIdentifier:firstIdentifier];
+    step.title = @"TITLE";
+    step.text = @"TEXT";
+    
+    XCTAssertEqual(step.identifier, firstIdentifier);
+    
+    NSString *newIdentifier = @"NEW STEP";
+    ORKStep *newStep = [step copyWithIdentifier:newIdentifier];
+    
+    XCTAssertEqual(newStep.identifier, newIdentifier);
+    XCTAssertEqual(newStep.title, @"TITLE");
+    XCTAssertEqual(newStep.text, @"TEXT");
+}
+
 @end
 
 
