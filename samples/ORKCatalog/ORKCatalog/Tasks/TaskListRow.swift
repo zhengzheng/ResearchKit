@@ -750,7 +750,7 @@ enum TaskListRow: Int, CustomStringConvertible {
         let learnMoreInstructionStep01 = ORKLearnMoreInstructionStep(identifier: "LearnMoreInstructionStep01")
         learnMoreInstructionStep01.title = NSLocalizedString("Learn more title", comment: "")
         learnMoreInstructionStep01.text = NSLocalizedString("Learn more text", comment: "")
-        let learnMoreItem01 = ORKLearnMoreItem(text: "Learn More", learnMoreInstructionStep: learnMoreInstructionStep01)
+        let learnMoreItem01 = ORKLearnMoreItem(text: nil, learnMoreInstructionStep: learnMoreInstructionStep01)
         let section01 = ORKFormItem(sectionTitle: NSLocalizedString("Section title", comment: ""), detailText: NSLocalizedString("Section detail text", comment: ""), learnMoreItem: learnMoreItem01, showsProgress: true)
         
         // A first field, for entering an integer.

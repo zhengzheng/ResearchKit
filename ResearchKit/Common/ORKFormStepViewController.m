@@ -1083,7 +1083,7 @@
     ORKLearnMoreView *learnMoreView;
     
     if (_sections[section].showsProgress) {
-        sectionProgressText = [NSString stringWithFormat:@"%li of %li", section + 1, [_sections count]];
+        sectionProgressText = [NSString localizedStringWithFormat:ORKLocalizedString(@"FORM_ITEM_PROGRESS", nil) ,ORKLocalizedStringFromNumber(@(section + 1)), ORKLocalizedStringFromNumber(@([_sections count]))];
     }
     
     if (_sections[section].learnMoreItem) {
