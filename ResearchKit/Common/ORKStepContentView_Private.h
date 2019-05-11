@@ -45,7 +45,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable) UIImageView *iconImageView;
 @property (nonatomic) ORKBodyContainerView *bodyContainerView;
 
-- (void)setAdditionalTopPaddingForTopLabel:(CGFloat)padding; // This padding is ignored if there is a `topContentImageView` or `iconImageView` above the label.
+// This padding is ignored if there is a `topContentImageView` or `iconImageView` above the label.
+- (void)setAdditionalTopPaddingForTopLabel:(CGFloat)padding;
 
 @end
 
