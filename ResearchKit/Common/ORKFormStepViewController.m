@@ -1079,10 +1079,10 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     NSString *title = _sections[section].title;
     NSString *detailText = _sections[section].detailText;
-    NSString *sectionProgressText;
+    NSString *sectionProgressText = nil;
     ORKLearnMoreView *learnMoreView;
     
-    if (_sections[section].showsProgress) {
+    if (_sections[section].showsProgress && (_sections.count > 1)) {
         sectionProgressText = [NSString localizedStringWithFormat:ORKLocalizedString(@"FORM_ITEM_PROGRESS", nil) ,ORKLocalizedStringFromNumber(@(section + 1)), ORKLocalizedStringFromNumber(@([_sections count]))];
     }
     
