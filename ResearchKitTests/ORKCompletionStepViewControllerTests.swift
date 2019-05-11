@@ -35,14 +35,21 @@ class ORKCompletionStepViewControllerTests: XCTestCase {
     var completionController: ORKCompletionStepViewController!
     var step: ORKStep!
     var result: ORKResult!
+     var utilities: TopLevelUIUtilities<ORKCompletionStepViewController>!
     
     override func setUp() {
         super.setUp()
-        step = ORKStep(identifier: "STEP")
+        step = ORKInstructionStep(identifier: "STEP")
         result = ORKResult(identifier: "RESULT")
         completionController = ORKCompletionStepViewController(step: step, result: result)
         completionController.shouldShowContinueButton = true
         completionController.checkmarkColor = .blue
+        utilities = TopLevelUIUtilities<ORKCompletionStepViewController>()
+        utilities.setupTopLevelUI(withViewController: completionController)
+    }
+    
+    override func tearDown() {
+        utilities.tearDownTopLevelUI()
     }
     
     func testProperties() {
@@ -51,16 +58,11 @@ class ORKCompletionStepViewControllerTests: XCTestCase {
     }
     
     func testStepView() {
-        let utilities = TopLevelUIUtilities<ORKStepViewController>()
-        utilities.setupTopLevelUI(withViewController: completionController)
-        
         guard let contentView = completionController.stepView?.customContentView else {
             XCTFail("UNABLE TO FIND STEPVIEW")
             return
         }
-        
-        completionController.viewWillAppear(true)
-        
+
         XCTAssertEqual(contentView.tintColor, UIColor.blue)
     }
 
