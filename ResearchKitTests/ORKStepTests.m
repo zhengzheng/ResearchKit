@@ -93,6 +93,13 @@
     XCTAssertEqual(newStep.title, @"TITLE");
     XCTAssertEqual(newStep.text, @"TEXT");
 }
+
+- (void) testCopyWithZone {
+    ORKStep *step = [[ORKStep alloc] initWithIdentifier:@"STEP"];
+    ORKStep *newStep = [step copyWithZone:nil];
+    XCTAssert([newStep isEqual:step]);
+}
+
 @end
 
 @interface ORKInstructionStepTests : XCTestCase
