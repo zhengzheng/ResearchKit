@@ -34,6 +34,7 @@
 #import "ORKInstructionStepContainerView.h"
 #import "ORKStepView_Private.h"
 #import "ORKNavigationContainerView.h"
+#import "ORKHelpers_Internal.h"
 
 @implementation ORKLearnMoreStepViewController
 
@@ -47,7 +48,7 @@
     if (self.navigationItem.leftBarButtonItem) {
         self.navigationItem.leftBarButtonItem = nil;
     }
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonPressed:)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:ORKLocalizedString(@"BUTTON_CLOSE", nil) style:UIBarButtonItemStyleDone target:self action:@selector(doneButtonPressed:)];
 }
 
 - (void)doneButtonPressed:(id)sender {

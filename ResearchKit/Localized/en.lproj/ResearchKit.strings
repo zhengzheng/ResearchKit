@@ -220,6 +220,7 @@
 "BUTTON_CLEAR_ANSWER" = "Clear answer";
 "BUTTON_READ_ONLY_MODE" = "This answer cannot be modified.";
 "BUTTON_COPYRIGHT" = "Copyright";
+"BUTTON_CLOSE" = "Close";
 
 /* General active tasks. */
 "COUNTDOWN_LABEL" = "Starting activity in";
