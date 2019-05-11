@@ -341,7 +341,7 @@ static const CGFloat CheckViewBorderWidth = 2.0;
     }
     _checkView.layer.cornerRadius = CheckViewDimension * 0.5;
     _checkView.layer.borderWidth = CheckViewBorderWidth;
-    _checkView.layer.borderColor = UIColor.grayColor.CGColor;
+    _checkView.layer.borderColor = self.tintColor.CGColor;
     _checkView.layer.masksToBounds = YES;
     _checkView.contentMode = UIViewContentModeCenter;
     [self.containerView addSubview:_checkView];
