@@ -351,8 +351,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self.taskViewController setRegisteredScrollView:_tableView];
-    
     NSMutableSet *types = [NSMutableSet set];
     for (ORKFormItem *item in [self formItems]) {
         ORKAnswerFormat *format = [item answerFormat];

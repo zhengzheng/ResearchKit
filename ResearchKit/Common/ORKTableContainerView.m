@@ -30,7 +30,7 @@
 
 
 #import "ORKTableContainerView.h"
-#import "ORKStepContentView.h"
+#import "ORKStepContentView_Private.h"
 
 #import "ORKNavigationContainerView.h"
 #import "ORKStepHeaderView.h"
@@ -95,11 +95,13 @@ static const CGFloat CellBottomPadding = 20.0;
     _tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
     _tableView.preservesSuperviewLayoutMargins = YES;
     _tableView.layer.masksToBounds = YES;
+    [_tableView setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
     _tableView.scrollIndicatorInsets = ORKScrollIndicatorInsetsForScrollView(self);
     [self addSubview:_tableView];
 }
 
 - (void)addStepContentView {
+    [self.stepContentView setAdditionalTopPaddingForTopLabel:ORKStepContainerTopPaddingForWindow(self.window)];
     _tableView.tableHeaderView = self.stepContentView;
 }
 
@@ -111,14 +113,12 @@ static const CGFloat CellBottomPadding = 20.0;
     _tableView.tableFooterView = _realFooterView;
 }
 
-
 - (void)sizeHeaderToFit {
     CGFloat estimatedHeight = [self.stepContentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
     CGRect bounds = CGRectMake(0.0, 0.0, self.stepContentView.bounds.size.width, self.stepContentView.bounds.size.height);
     bounds.size.height = estimatedHeight;
     [self.stepContentView setBounds:bounds];
 }
-
 
 - (void)setTapOffView:(UIView *)tapOffView {
     _tapOffView = tapOffView;
