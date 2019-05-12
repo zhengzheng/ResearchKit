@@ -100,6 +100,8 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
     
     UIScrollView *_scrollView;
     UIView *_scrollContainerView;
+    BOOL _topContentImageShouldScroll;
+    
     UIImageView *_topContentImageView;
 
 //    variable constraints:
@@ -125,6 +127,7 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
         [self setupConstraints];
         [self setupUpdatedConstraints];
         [self setupNavigationContainerView];
+        _topContentImageShouldScroll = YES;
     }
     return self;
 }
@@ -132,27 +135,31 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
 - (void)setStepTopContentImage:(UIImage *)stepTopContentImage {
     
     [super setStepTopContentImage:stepTopContentImage];
-    
-    //    1.) nil Image; updateConstraints
-    if (!stepTopContentImage && _topContentImageView) {
-        [_topContentImageView removeFromSuperview];
-        _topContentImageView = nil;
-        [self deactivateTopContentImageViewConstraints];
-        [self updateScrollViewTopConstraint];
-        [self setNeedsUpdateConstraints];
+    if (_topContentImageShouldScroll) {
+        [self.stepContentView setStepTopContentImage:stepTopContentImage];
     }
-    
-    //    2.) First Image; updateConstraints
-    if (stepTopContentImage && !_topContentImageView) {
-        [self setupTopContentImageView];
-        _topContentImageView.image = [self topContentAndAuxiliaryImage];
-        [self updateScrollViewTopConstraint];
-        [self setNeedsUpdateConstraints];
-    }
-    
-    //    3.) >= second Image;
-    if (stepTopContentImage && _topContentImageView) {
-        _topContentImageView.image = [self topContentAndAuxiliaryImage];
+    else {
+        //    1.) nil Image; updateConstraints
+        if (!stepTopContentImage && _topContentImageView) {
+            [_topContentImageView removeFromSuperview];
+            _topContentImageView = nil;
+            [self deactivateTopContentImageViewConstraints];
+            [self updateScrollViewTopConstraint];
+            [self setNeedsUpdateConstraints];
+        }
+        
+        //    2.) First Image; updateConstraints
+        if (stepTopContentImage && !_topContentImageView) {
+            [self setupTopContentImageView];
+            _topContentImageView.image = [self topContentAndAuxiliaryImage];
+            [self updateScrollViewTopConstraint];
+            [self setNeedsUpdateConstraints];
+        }
+        
+        //    3.) >= second Image;
+        if (stepTopContentImage && _topContentImageView) {
+            _topContentImageView.image = [self topContentAndAuxiliaryImage];
+        }
     }
 }
 
@@ -549,6 +556,11 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
 - (void)deactivateTopContentImageViewConstraints {
     if (_topContentImageViewConstraints) {
         [NSLayoutConstraint deactivateConstraints:_topContentImageViewConstraints];
+        for (NSLayoutConstraint *constraint in _topContentImageViewConstraints) {
+            if ([_updatedConstraints containsObject:constraint]) {
+                [_updatedConstraints removeObject:constraint];
+            }
+        }
     }
     _topContentImageViewConstraints = nil;
 }
@@ -573,6 +585,16 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
 - (void)updateConstraints {
     [self updateContainerConstraints];
     [super updateConstraints];
+}
+
+- (void)topContentImageShouldStickToTop {
+    if (self.stepTopContentImage) {
+        UIImage *stepTopContentImage = self.stepTopContentImage;
+        [self setStepTopContentImage:nil];
+        _topContentImageShouldScroll = NO;
+        [self setStepTopContentImage:stepTopContentImage];
+    }
+    _topContentImageShouldScroll = NO;
 }
 
 @end

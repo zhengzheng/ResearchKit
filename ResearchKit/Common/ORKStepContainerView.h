@@ -36,6 +36,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ORKStepContainerView : ORKStepView
 
+- (void)topContentImageShouldStickToTop;
+
 @end
 
 NS_ASSUME_NONNULL_END
