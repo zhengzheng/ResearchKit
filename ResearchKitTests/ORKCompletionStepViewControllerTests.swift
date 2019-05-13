@@ -35,7 +35,7 @@ class ORKCompletionStepViewControllerTests: XCTestCase {
     var completionController: ORKCompletionStepViewController!
     var step: ORKStep!
     var result: ORKResult!
-     var utilities: TopLevelUIUtilities<ORKCompletionStepViewController>!
+    var utilities: TopLevelUIUtilities<ORKCompletionStepViewController>!
     
     override func setUp() {
         super.setUp()
@@ -49,6 +49,7 @@ class ORKCompletionStepViewControllerTests: XCTestCase {
     }
     
     override func tearDown() {
+        super.tearDown()
         utilities.tearDownTopLevelUI()
     }
     
@@ -62,8 +63,6 @@ class ORKCompletionStepViewControllerTests: XCTestCase {
             XCTFail("UNABLE TO FIND STEPVIEW")
             return
         }
-
         XCTAssertEqual(contentView.tintColor, UIColor.blue)
     }
-
 }
