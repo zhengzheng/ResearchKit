@@ -544,8 +544,10 @@
             }
         }
         _headerView = _tableContainer.stepContentView;
-        _headerView.stepTitle = [self formStep].title;
-        _headerView.bodyItems = ([[self formStep] text]) ? [@[[[ORKBodyItem alloc] initWithText:[[self formStep] text] detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]] arrayByAddingObjectsFromArray:self.step.bodyItems] : self.step.bodyItems;
+        _headerView.stepTitle = self.step.title;
+        _headerView.stepText = self.step.text;
+        _headerView.stepDetailText = self.step.detailText;
+        _headerView.bodyItems = self.step.bodyItems;
         
         
         _navigationFooterView = [ORKNavigationContainerView new];
@@ -1077,11 +1079,11 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     NSString *title = _sections[section].title;
     NSString *detailText = _sections[section].detailText;
-    NSString *sectionProgressText;
+    NSString *sectionProgressText = nil;
     ORKLearnMoreView *learnMoreView;
     
-    if (_sections[section].showsProgress) {
-        sectionProgressText = [NSString stringWithFormat:@"%li of %li", section + 1, [_sections count]];
+    if (_sections[section].showsProgress && (_sections.count > 1)) {
+        sectionProgressText = [NSString localizedStringWithFormat:ORKLocalizedString(@"FORM_ITEM_PROGRESS", nil) ,ORKLocalizedStringFromNumber(@(section + 1)), ORKLocalizedStringFromNumber(@([_sections count]))];
     }
     
     if (_sections[section].learnMoreItem) {

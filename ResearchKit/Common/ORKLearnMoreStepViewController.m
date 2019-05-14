@@ -34,6 +34,7 @@
 #import "ORKInstructionStepContainerView.h"
 #import "ORKStepView_Private.h"
 #import "ORKNavigationContainerView.h"
+#import "ORKHelpers_Internal.h"
 
 @implementation ORKLearnMoreStepViewController
 
@@ -42,11 +43,12 @@
     [self.stepView.navigationFooterView setHidden:YES];
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonPressed:)];
-    self.navigationItem.rightBarButtonItem = rightBarButtonItem;
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (self.navigationItem.leftBarButtonItem) {
+        self.navigationItem.leftBarButtonItem = nil;
+    }
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:ORKLocalizedString(@"BUTTON_CLOSE", nil) style:UIBarButtonItemStyleDone target:self action:@selector(doneButtonPressed:)];
 }
 
 - (void)doneButtonPressed:(id)sender {

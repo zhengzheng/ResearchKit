@@ -640,13 +640,15 @@ typedef NS_CLOSED_ENUM(NSInteger, ORKUpdateConstraintSequence) {
 
 - (void)setBodyItems:(NSArray<ORKBodyItem *> *)bodyItems {
     _bodyItems = bodyItems;
-    if (!_bodyContainerView) {
-        [self setupBodyContainerView];
-        [self updateStepContentViewBottomConstraint];
-        [self setNeedsUpdateConstraints];
-    }
-    else {
-        _bodyContainerView.bodyItems = _bodyItems;
+    if (_bodyItems) {
+        if (!_bodyContainerView) {
+            [self setupBodyContainerView];
+            [self updateStepContentViewBottomConstraint];
+            [self setNeedsUpdateConstraints];
+        }
+        else {
+            _bodyContainerView.bodyItems = _bodyItems;
+        }
     }
 }
 
