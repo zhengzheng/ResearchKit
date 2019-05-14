@@ -295,7 +295,6 @@ static const CGFloat CheckViewBorderWidth = 2.0;
 
 - (void)updateSelectedItem {
     if (_immediateNavigation == NO) {
-//        self.accessoryView.hidden = self.isCellSelected ? NO : YES;
         [self updateCheckView];
     }
 }
