@@ -50,7 +50,7 @@ static const CGFloat CellBottomPadding = 20.0;
 
 
 @implementation ORKTableContainerView {
-    UIView *_realFooterView;
+    UIView *_footerView;
     NSLayoutConstraint *_bottomConstraint;
     
     CGFloat _keyboardOverlap;
@@ -101,7 +101,7 @@ static const CGFloat CellBottomPadding = 20.0;
 }
 
 - (void)placeNavigationContainerView {
-    [_realFooterView addSubview:self.navigationFooterView];
+    [_footerView addSubview:self.navigationFooterView];
     [self setupNavigationContainerViewConstraints];
 }
 
@@ -112,7 +112,7 @@ static const CGFloat CellBottomPadding = 20.0;
     [constraints addObject:[NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                         attribute:NSLayoutAttributeLeft
                                                         relatedBy:NSLayoutRelationEqual
-                                                           toItem:_realFooterView
+                                                           toItem:_footerView
                                                         attribute:NSLayoutAttributeLeft
                                                        multiplier:1.0
                                                          constant:0.0]];
@@ -120,7 +120,7 @@ static const CGFloat CellBottomPadding = 20.0;
     [constraints addObject:[NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                         attribute:NSLayoutAttributeRight
                                                         relatedBy:NSLayoutRelationEqual
-                                                           toItem:_realFooterView
+                                                           toItem:_footerView
                                                         attribute:NSLayoutAttributeRight
                                                        multiplier:1.0
                                                          constant:0.0]];
@@ -128,7 +128,7 @@ static const CGFloat CellBottomPadding = 20.0;
     [constraints addObject:[NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                         attribute:NSLayoutAttributeTop
                                                         relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                                           toItem:_realFooterView
+                                                           toItem:_footerView
                                                         attribute:NSLayoutAttributeTop
                                                        multiplier:1.0
                                                          constant:0.0]];
@@ -136,7 +136,7 @@ static const CGFloat CellBottomPadding = 20.0;
     _bottomConstraint = [NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                      attribute:NSLayoutAttributeBottom
                                                      relatedBy:NSLayoutRelationEqual
-                                                        toItem:_realFooterView
+                                                        toItem:_footerView
                                                      attribute:NSLayoutAttributeBottom
                                                     multiplier:1.0
                                                       constant:0.0];
@@ -152,7 +152,7 @@ static const CGFloat CellBottomPadding = 20.0;
     [_tableView layoutIfNeeded];
     {
         _tableView.tableFooterView = nil;
-        [_realFooterView removeFromSuperview];
+        [_footerView removeFromSuperview];
         CGSize footerSize = [self.navigationFooterView systemLayoutSizeFittingSize:(CGSize){_tableView.bounds.size.width,0} withHorizontalFittingPriority:UILayoutPriorityRequired verticalFittingPriority:UILayoutPriorityFittingSizeLevel];
         CGRect footerBounds = (CGRect){{0,0},footerSize};
         
@@ -163,8 +163,8 @@ static const CGFloat CellBottomPadding = 20.0;
         } else {
             _tableView.scrollEnabled = YES;
         }
-        _realFooterView.frame = footerBounds;
-        _tableView.tableFooterView = _realFooterView;
+        _footerView.frame = footerBounds;
+        _tableView.tableFooterView = _footerView;
     }
 }
 
@@ -174,11 +174,11 @@ static const CGFloat CellBottomPadding = 20.0;
 }
 
 - (void)setupRealFooterView {
-    if (!_realFooterView) {
-        _realFooterView = [UIView new];
+    if (!_footerView) {
+        _footerView = [UIView new];
     }
-    _realFooterView.layoutMargins = UIEdgeInsetsZero;
-    _tableView.tableFooterView = _realFooterView;
+    _footerView.layoutMargins = UIEdgeInsetsZero;
+    _tableView.tableFooterView = _footerView;
 }
 
 - (void)sizeHeaderToFit {
@@ -405,7 +405,7 @@ static const CGFloat CellBottomPadding = 20.0;
             // Made a little more complicated because the contentSize will still extend below the bottom of this container,
             // because we haven't changed our bounds.
             
-            CGFloat contentMaxY = CGRectGetMaxY([scrollView convertRect:_realFooterView.bounds fromView:_realFooterView]) + _realFooterView.layoutMargins.bottom + CellBottomPadding;
+            CGFloat contentMaxY = CGRectGetMaxY([scrollView convertRect:_footerView.bounds fromView:_footerView]) + _footerView.layoutMargins.bottom + CellBottomPadding;
             
             CGFloat keyboardOverlapWithActualContent = MAX(contentMaxY - (contentSize.height - intersectionSize.height), 0);
             UIEdgeInsets insets = (UIEdgeInsets){.bottom = keyboardOverlapWithActualContent };
