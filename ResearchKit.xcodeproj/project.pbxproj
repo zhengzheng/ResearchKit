@@ -193,6 +193,7 @@
 		71769E3A20882CED00A19914 /* ORKdBHLToneAudiometryStep.m in Sources */ = {isa = PBXBuildFile; fileRef = 71769E3820882CED00A19914 /* ORKdBHLToneAudiometryStep.m */; };
 		71769E3D20884DB800A19914 /* ORKdBHLToneAudiometryStepViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 71769E3B20884DB800A19914 /* ORKdBHLToneAudiometryStepViewController.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		71769E3E20884DB800A19914 /* ORKdBHLToneAudiometryStepViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71769E3C20884DB800A19914 /* ORKdBHLToneAudiometryStepViewController.m */; };
+		71897FA6228B3DB100B7CCEB /* ORKConsentSceneViewController_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = BCFB2EAF1AE70E4E0070B5D0 /* ORKConsentSceneViewController_Internal.h */; };
 		71B7B4DA20AA91D400C5768A /* retspl_AIRPODS.plist in Resources */ = {isa = PBXBuildFile; fileRef = 71B7B4D420AA91D300C5768A /* retspl_AIRPODS.plist */; };
 		71B7B4DE20AA91D400C5768A /* frequency_dBSPL_AIRPODS.plist in Resources */ = {isa = PBXBuildFile; fileRef = 71B7B4D820AA91D400C5768A /* frequency_dBSPL_AIRPODS.plist */; };
 		71B7B4DF20AA91D400C5768A /* volume_curve_AIRPODS.plist in Resources */ = {isa = PBXBuildFile; fileRef = 71B7B4D920AA91D400C5768A /* volume_curve_AIRPODS.plist */; };
@@ -3570,6 +3571,7 @@
 				71D8EF1720B9EE1900EBCDC6 /* ORKHealthClinicalTypeRecorder.h in Headers */,
 				FF36A48D1D1A0ACA00DE8470 /* ORKAudioLevelNavigationRule.h in Headers */,
 				86C40C5E1A8D7C5C00081FAC /* ORKWalkingTaskStepViewController.h in Headers */,
+				71897FA6228B3DB100B7CCEB /* ORKConsentSceneViewController_Internal.h in Headers */,
 				86C40D2C1A8D7C5C00081FAC /* ORKHeadlineLabel.h in Headers */,
 				86C40D1C1A8D7C5C00081FAC /* ORKFormSectionTitleLabel.h in Headers */,
 				86C40CBC1A8D7C5C00081FAC /* UITouch+ORKJSONDictionary.h in Headers */,
