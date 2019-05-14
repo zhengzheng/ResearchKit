@@ -299,10 +299,10 @@ static const CGFloat HeadlineStackViewSpacing = 4.0;
                                [NSLayoutConstraint constraintWithItem:_learnMoreView
                                                             attribute:NSLayoutAttributeTop
                                                             relatedBy:NSLayoutRelationEqual
-                                                               toItem:_headlineView
+                                                               toItem:_titleLabel ? : _headlineView
                                                             attribute:NSLayoutAttributeTop
                                                            multiplier:1.0
-                                                             constant:ORKCardTopBottomMargin],
+                                                             constant:_titleLabel ? 0.0 : ORKCardTopBottomMargin],
                                [NSLayoutConstraint constraintWithItem:_learnMoreView
                                                             attribute:NSLayoutAttributeTrailing
                                                             relatedBy:NSLayoutRelationEqual
