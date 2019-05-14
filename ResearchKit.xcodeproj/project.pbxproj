@@ -605,7 +605,7 @@
 		BABBB1B72097E58300CB29E5 /* ORKPDFViewerStepView.m in Sources */ = {isa = PBXBuildFile; fileRef = BABBB1B52097E58300CB29E5 /* ORKPDFViewerStepView.m */; };
 		BABBB1BA2097EF3800CB29E5 /* ORKFreehandDrawingView.h in Headers */ = {isa = PBXBuildFile; fileRef = BABBB1B82097EF3800CB29E5 /* ORKFreehandDrawingView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BABBB1BB2097EF3800CB29E5 /* ORKFreehandDrawingView.m in Sources */ = {isa = PBXBuildFile; fileRef = BABBB1B92097EF3800CB29E5 /* ORKFreehandDrawingView.m */; };
-		BAD65E4B2284EFF9008A5DCE /* ORKStepView.h in Headers */ = {isa = PBXBuildFile; fileRef = BAD65E492284EFF9008A5DCE /* ORKStepView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BAD65E4B2284EFF9008A5DCE /* ORKStepView.h in Headers */ = {isa = PBXBuildFile; fileRef = BAD65E492284EFF9008A5DCE /* ORKStepView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BAD65E4C2284EFF9008A5DCE /* ORKStepView.m in Sources */ = {isa = PBXBuildFile; fileRef = BAD65E4A2284EFF9008A5DCE /* ORKStepView.m */; };
 		BAD65E502284F266008A5DCE /* ORKStepView_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = BAD65E4F2284F266008A5DCE /* ORKStepView_Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BAD9E9122255E9750014FA29 /* ORKLearnMoreInstructionStep.h in Headers */ = {isa = PBXBuildFile; fileRef = BAD9E9102255E9750014FA29 /* ORKLearnMoreInstructionStep.h */; settings = {ATTRIBUTES = (Public, ); }; };
