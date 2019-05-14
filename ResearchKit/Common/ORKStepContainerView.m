@@ -123,10 +123,9 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
         [self setupScrollView];
         [self setupScrollContainerView];
         [self addStepContentView];
-        self.isNavigationContainerScrollable = YES;
         [self setupConstraints];
         [self setupUpdatedConstraints];
-        [self setupNavigationContainerView];
+        [self placeNavigationContainerView];
         _topContentImageShouldScroll = YES;
     }
     return self;
@@ -241,14 +240,6 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
     [self setupCustomContentViewConstraints];
     [self updateNavigationContainerViewTopConstraint];
     [self setNeedsUpdateConstraints];
-}
-
-- (void)setupNavigationContainerView {
-    if (!self.navigationFooterView) {
-        self.navigationFooterView = [ORKNavigationContainerView new];
-    }
-    [self.navigationFooterView removeStyling];
-    [self placeNavigationContainerView];
 }
 
 - (void)removeNavigationFooterView {

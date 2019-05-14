@@ -30,6 +30,7 @@
 
 #import "ORKStepView_Private.h"
 #import "ORKStepContentView.h"
+#import "ORKNavigationContainerView_Internal.h"
 
 @interface ORKStepView ()<ORKStepContentLearnMoreItemDelegate>
 
@@ -40,7 +41,9 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
+        self.isNavigationContainerScrollable = YES;
         [self setupStepContentView];
+        [self setupNavigationContainerView];
     }
     return self;
 }
@@ -50,6 +53,13 @@
         self.stepContentView = [ORKStepContentView new];
     }
     self.stepContentView.delegate = self;
+}
+
+- (void)setupNavigationContainerView {
+    if (!self.navigationFooterView) {
+        self.navigationFooterView = [ORKNavigationContainerView new];
+    }
+    [self.navigationFooterView removeStyling];
 }
 
 - (void)setStepTopContentImage:(UIImage *)stepTopContentImage {

@@ -32,9 +32,8 @@
 #import "ORKTableContainerView.h"
 #import "ORKStepContentView_Private.h"
 
-#import "ORKNavigationContainerView.h"
+#import "ORKNavigationContainerView_Internal.h"
 #import "ORKStepHeaderView.h"
-#import "ORKVerticalContainerView_Internal.h"
 
 #import "ORKHelpers_Internal.h"
 #import "ORKSkin.h"
@@ -52,7 +51,6 @@ static const CGFloat CellBottomPadding = 20.0;
 
 @implementation ORKTableContainerView {
     UIView *_realFooterView;
-    
     NSLayoutConstraint *_bottomConstraint;
     
     CGFloat _keyboardOverlap;
@@ -74,8 +72,9 @@ static const CGFloat CellBottomPadding = 20.0;
 
         
         _scrollView = _tableView;
-        [self setupRealFooterView];
         [self addStepContentView];
+        [self.navigationFooterView deprioritizeContentWidthConstraints];
+        [self placeNavigationContainerView];
         [self setupTableViewConstraints];
 
         
@@ -98,6 +97,75 @@ static const CGFloat CellBottomPadding = 20.0;
     [_tableView setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
     _tableView.scrollIndicatorInsets = ORKScrollIndicatorInsetsForScrollView(self);
     [self addSubview:_tableView];
+    [self setupRealFooterView];
+}
+
+- (void)placeNavigationContainerView {
+    [_realFooterView addSubview:self.navigationFooterView];
+    [self setupNavigationContainerViewConstraints];
+}
+
+- (void)setupNavigationContainerViewConstraints {
+    self.navigationFooterView.translatesAutoresizingMaskIntoConstraints = NO;
+    NSMutableArray *constraints = [NSMutableArray array];
+    
+    [constraints addObject:[NSLayoutConstraint constraintWithItem:self.navigationFooterView
+                                                        attribute:NSLayoutAttributeLeft
+                                                        relatedBy:NSLayoutRelationEqual
+                                                           toItem:_realFooterView
+                                                        attribute:NSLayoutAttributeLeft
+                                                       multiplier:1.0
+                                                         constant:0.0]];
+    
+    [constraints addObject:[NSLayoutConstraint constraintWithItem:self.navigationFooterView
+                                                        attribute:NSLayoutAttributeRight
+                                                        relatedBy:NSLayoutRelationEqual
+                                                           toItem:_realFooterView
+                                                        attribute:NSLayoutAttributeRight
+                                                       multiplier:1.0
+                                                         constant:0.0]];
+    
+    [constraints addObject:[NSLayoutConstraint constraintWithItem:self.navigationFooterView
+                                                        attribute:NSLayoutAttributeTop
+                                                        relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                           toItem:_realFooterView
+                                                        attribute:NSLayoutAttributeTop
+                                                       multiplier:1.0
+                                                         constant:0.0]];
+    
+    _bottomConstraint = [NSLayoutConstraint constraintWithItem:self.navigationFooterView
+                                                     attribute:NSLayoutAttributeBottom
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:_realFooterView
+                                                     attribute:NSLayoutAttributeBottom
+                                                    multiplier:1.0
+                                                      constant:0.0];
+    _bottomConstraint.priority = UILayoutPriorityDefaultHigh - 1;
+    [constraints addObject:_bottomConstraint];
+    
+    [self updateBottomConstraintConstant];
+    [NSLayoutConstraint activateConstraints:constraints];
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    [_tableView layoutIfNeeded];
+    {
+        _tableView.tableFooterView = nil;
+        [_realFooterView removeFromSuperview];
+        CGSize footerSize = [self.navigationFooterView systemLayoutSizeFittingSize:(CGSize){_tableView.bounds.size.width,0} withHorizontalFittingPriority:UILayoutPriorityRequired verticalFittingPriority:UILayoutPriorityFittingSizeLevel];
+        CGRect footerBounds = (CGRect){{0,0},footerSize};
+        
+        CGFloat boundsHeightUnused = _tableView.bounds.size.height - _tableView.contentSize.height;
+        if (boundsHeightUnused > footerBounds.size.height) {
+            _tableView.scrollEnabled = YES;
+            footerBounds.size.height = boundsHeightUnused;
+        } else {
+            _tableView.scrollEnabled = YES;
+        }
+        _realFooterView.frame = footerBounds;
+        _tableView.tableFooterView = _realFooterView;
+    }
 }
 
 - (void)addStepContentView {
