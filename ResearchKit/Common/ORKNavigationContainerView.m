@@ -49,7 +49,8 @@ static const CGFloat shadowRadius = 1.0;
     NSMutableArray *_variableConstraints;
     NSMutableArray *_skipButtonConstraints;
     NSMutableArray *_cancelButtonConstraints;
-    
+    NSArray *_contentWidthConstraints;
+    BOOL _deprioritizeContentWidthConstraints;
     UIVisualEffectView *effectView;
     UIColor *_appTintColor;
     
@@ -585,37 +586,38 @@ static const CGFloat shadowRadius = 1.0;
                                                                    multiplier:1.0
                                                                      constant:0.0]
                                        ]];
-
-    [constraints addObjectsFromArray:@[
-                                       [NSLayoutConstraint constraintWithItem:_parentStackView
-                                                                    attribute:NSLayoutAttributeLeft
-                                                                    relatedBy:NSLayoutRelationEqual
-                                                                       toItem:self.safeAreaLayoutGuide
-                                                                    attribute:NSLayoutAttributeLeft
-                                                                   multiplier:1.0
-                                                                     constant:ORKStackViewSpacing],
-                                       [NSLayoutConstraint constraintWithItem:_parentStackView
-                                                                    attribute:NSLayoutAttributeRight
-                                                                    relatedBy:NSLayoutRelationEqual
-                                                                       toItem:self.safeAreaLayoutGuide
-                                                                    attribute:NSLayoutAttributeRight
-                                                                   multiplier:1.0
-                                                                     constant:-ORKStackViewSpacing],
-                                       [NSLayoutConstraint constraintWithItem:_footnoteLabel
-                                                                    attribute:NSLayoutAttributeLeft
-                                                                    relatedBy:NSLayoutRelationEqual
-                                                                       toItem:self.safeAreaLayoutGuide
-                                                                    attribute:NSLayoutAttributeLeft
-                                                                   multiplier:1.0
-                                                                     constant:ORKStackViewSpacing],
-                                       [NSLayoutConstraint constraintWithItem:_footnoteLabel
-                                                                    attribute:NSLayoutAttributeRight
-                                                                    relatedBy:NSLayoutRelationEqual
-                                                                       toItem:self.safeAreaLayoutGuide
-                                                                    attribute:NSLayoutAttributeRight
-                                                                   multiplier:1.0
-                                                                     constant:-ORKStackViewSpacing]
-                                       ]];
+    _contentWidthConstraints = @[
+                                            [NSLayoutConstraint constraintWithItem:_parentStackView
+                                                                         attribute:NSLayoutAttributeLeft
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:self.safeAreaLayoutGuide
+                                                                         attribute:NSLayoutAttributeLeft
+                                                                        multiplier:1.0
+                                                                          constant:ORKStackViewSpacing],
+                                            [NSLayoutConstraint constraintWithItem:_parentStackView
+                                                                         attribute:NSLayoutAttributeRight
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:self.safeAreaLayoutGuide
+                                                                         attribute:NSLayoutAttributeRight
+                                                                        multiplier:1.0
+                                                                          constant:-ORKStackViewSpacing],
+                                            [NSLayoutConstraint constraintWithItem:_footnoteLabel
+                                                                         attribute:NSLayoutAttributeLeft
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:self.safeAreaLayoutGuide
+                                                                         attribute:NSLayoutAttributeLeft
+                                                                        multiplier:1.0
+                                                                          constant:ORKStackViewSpacing],
+                                            [NSLayoutConstraint constraintWithItem:_footnoteLabel
+                                                                         attribute:NSLayoutAttributeRight
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:self.safeAreaLayoutGuide
+                                                                         attribute:NSLayoutAttributeRight
+                                                                        multiplier:1.0
+                                                                          constant:-ORKStackViewSpacing]
+                                            ];
+    [self setContentWidthConstraintsPriority];
+    [constraints addObjectsFromArray:_contentWidthConstraints];
     [constraints addObjectsFromArray:@[
                                        [NSLayoutConstraint constraintWithItem:effectView
                                                                     attribute:NSLayoutAttributeTop
@@ -648,6 +650,19 @@ static const CGFloat shadowRadius = 1.0;
                                        ]];
     
     [NSLayoutConstraint activateConstraints:constraints];
+}
+
+- (void)deprioritizeContentWidthConstraints {
+    _deprioritizeContentWidthConstraints = YES;
+    [self setContentWidthConstraintsPriority];
+}
+
+- (void)setContentWidthConstraintsPriority {
+    if (_deprioritizeContentWidthConstraints && _contentWidthConstraints) {
+        for (NSLayoutConstraint *constraint in _contentWidthConstraints) {
+            constraint.priority = UILayoutPriorityDefaultLow;
+        }
+    }
 }
 
 - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {

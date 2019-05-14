@@ -508,7 +508,6 @@
     _tableView = nil;
     _formItemCells = nil;
     _headerView = nil;
-    [_navigationFooterView removeFromSuperview];
     _navigationFooterView = nil;
     
     if (self.isViewLoaded && self.step) {
@@ -550,7 +549,7 @@
         _headerView.bodyItems = self.step.bodyItems;
         
         
-        _navigationFooterView = [ORKNavigationContainerView new];
+        _navigationFooterView = _tableContainer.navigationFooterView;
         [_navigationFooterView removeStyling];
         _navigationFooterView.skipButtonItem = self.skipButtonItem;
         _navigationFooterView.continueEnabled = [self continueButtonEnabled];
@@ -558,7 +557,6 @@
         _navigationFooterView.cancelButtonItem = self.cancelButtonItem;
         _navigationFooterView.optional = self.step.optional;
         _navigationFooterView.footnoteLabel.text = [self formStep].footnote;
-        [self.view addSubview:_navigationFooterView];
         if (self.readOnlyMode) {
             _navigationFooterView.optional = YES;
             [_navigationFooterView setNeverHasContinueButton:YES];
@@ -574,9 +572,7 @@
         [NSLayoutConstraint deactivateConstraints:_constraints];
     }
     _tableContainer.translatesAutoresizingMaskIntoConstraints = NO;
-    _navigationFooterView.translatesAutoresizingMaskIntoConstraints = NO;
     _constraints = nil;
-    CGFloat leftRightPadding = ORKStepContainerLeftRightPaddingForWindow(self.view.window);
 
     
     _constraints = @[
@@ -601,32 +597,11 @@
                                                   attribute:NSLayoutAttributeRight
                                                  multiplier:1.0
                                                    constant:0.0],
-                     [NSLayoutConstraint constraintWithItem:_navigationFooterView
-                                                  attribute:NSLayoutAttributeBottom
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:self.view
-                                                  attribute:NSLayoutAttributeBottom
-                                                 multiplier:1.0
-                                                   constant:0.0],
-                     [NSLayoutConstraint constraintWithItem:_navigationFooterView
-                                                  attribute:NSLayoutAttributeLeft
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:self.view
-                                                  attribute:NSLayoutAttributeLeft
-                                                 multiplier:1.0
-                                                   constant:leftRightPadding],
-                     [NSLayoutConstraint constraintWithItem:_navigationFooterView
-                                                  attribute:NSLayoutAttributeRight
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:self.view
-                                                  attribute:NSLayoutAttributeRight
-                                                 multiplier:1.0
-                                                   constant:-leftRightPadding],
                      [NSLayoutConstraint constraintWithItem:_tableContainer
                                                   attribute:NSLayoutAttributeBottom
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:_navigationFooterView
-                                                  attribute:NSLayoutAttributeTop
+                                                     toItem:self.view
+                                                  attribute:NSLayoutAttributeBottom
                                                  multiplier:1.0
                                                    constant:0.0]
                      ];
