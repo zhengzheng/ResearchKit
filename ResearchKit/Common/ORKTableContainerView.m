@@ -49,6 +49,7 @@
 
 
 @implementation ORKTableContainerView {
+    CGFloat _leftRightPadding;
     UIView *_footerView;
     NSLayoutConstraint *_bottomConstraint;
     NSLayoutConstraint *_tableViewBottomConstraint;
@@ -66,6 +67,7 @@
 - (instancetype)initWithStyle:(UITableViewStyle)style {
     self = [super init];
     if (self) {
+        _leftRightPadding = ORKStepContainerLeftRightPaddingForWindow(self.window);
         [self setupTableViewWithStyle:style];
 
         
@@ -126,7 +128,7 @@
                                                                                    toItem:_footerView
                                                                                 attribute:NSLayoutAttributeLeft
                                                                                multiplier:1.0
-                                                                                 constant:0.0]];
+                                                                                 constant:_leftRightPadding]];
         
         [_navigationContainerConstraints addObject:[NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                                                 attribute:NSLayoutAttributeRight
@@ -134,7 +136,7 @@
                                                                                    toItem:_footerView
                                                                                 attribute:NSLayoutAttributeRight
                                                                                multiplier:1.0
-                                                                                 constant:0.0]];
+                                                                                 constant:-_leftRightPadding]];
         
         [_navigationContainerConstraints addObject:[NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                                                 attribute:NSLayoutAttributeTop
@@ -162,14 +164,14 @@
                                                                                                toItem:self
                                                                                             attribute:NSLayoutAttributeLeft
                                                                                            multiplier:1.0
-                                                                                             constant:0.0],
+                                                                                             constant:_leftRightPadding],
                                                                [NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                                                             attribute:NSLayoutAttributeRight
                                                                                             relatedBy:NSLayoutRelationEqual
                                                                                                toItem:self
                                                                                             attribute:NSLayoutAttributeRight
                                                                                            multiplier:1.0
-                                                                                             constant:0.0],
+                                                                                             constant:-_leftRightPadding],
                                                                [NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                                                             attribute:NSLayoutAttributeBottom
                                                                                             relatedBy:NSLayoutRelationEqual
