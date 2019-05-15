@@ -584,23 +584,23 @@ static const CGFloat shadowRadius = 1.0;
                                                                        toItem:_footnoteLabel
                                                                     attribute:NSLayoutAttributeBottom
                                                                    multiplier:1.0
-                                                                     constant:0.0]
+                                                                     constant:0.0],
+                                       [NSLayoutConstraint constraintWithItem:_parentStackView
+                                                                    attribute:NSLayoutAttributeLeft
+                                                                    relatedBy:NSLayoutRelationLessThanOrEqual
+                                                                       toItem:self.safeAreaLayoutGuide
+                                                                    attribute:NSLayoutAttributeLeft
+                                                                   multiplier:1.0
+                                                                     constant:ORKStackViewSpacing],
+                                       [NSLayoutConstraint constraintWithItem:_parentStackView
+                                                                    attribute:NSLayoutAttributeRight
+                                                                    relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                                       toItem:self.safeAreaLayoutGuide
+                                                                    attribute:NSLayoutAttributeRight
+                                                                   multiplier:1.0
+                                                                     constant:-ORKStackViewSpacing]
                                        ]];
     _contentWidthConstraints = @[
-                                            [NSLayoutConstraint constraintWithItem:_parentStackView
-                                                                         attribute:NSLayoutAttributeLeft
-                                                                         relatedBy:NSLayoutRelationEqual
-                                                                            toItem:self.safeAreaLayoutGuide
-                                                                         attribute:NSLayoutAttributeLeft
-                                                                        multiplier:1.0
-                                                                          constant:ORKStackViewSpacing],
-                                            [NSLayoutConstraint constraintWithItem:_parentStackView
-                                                                         attribute:NSLayoutAttributeRight
-                                                                         relatedBy:NSLayoutRelationEqual
-                                                                            toItem:self.safeAreaLayoutGuide
-                                                                         attribute:NSLayoutAttributeRight
-                                                                        multiplier:1.0
-                                                                          constant:-ORKStackViewSpacing],
                                             [NSLayoutConstraint constraintWithItem:_footnoteLabel
                                                                          attribute:NSLayoutAttributeLeft
                                                                          relatedBy:NSLayoutRelationEqual
