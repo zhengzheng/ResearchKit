@@ -42,7 +42,6 @@
 // Enable this define to see outlines and colors of all the views laid out at this level.
 // #define LAYOUT_DEBUG
 
-static const CGFloat CellBottomPadding = 20.0;
 
 @interface ORKTableContainerView () <UIGestureRecognizerDelegate>
 
@@ -53,9 +52,6 @@ static const CGFloat CellBottomPadding = 20.0;
     UIView *_footerView;
     NSLayoutConstraint *_bottomConstraint;
     NSLayoutConstraint *_tableViewBottomConstraint;
-    
-    CGFloat _keyboardOverlap;
-    BOOL _keyboardIsUp;
     
     UIScrollView *_scrollView;
     
@@ -157,8 +153,6 @@ static const CGFloat CellBottomPadding = 20.0;
                                                           constant:0.0];
         _bottomConstraint.priority = UILayoutPriorityDefaultHigh - 1;
         [_navigationContainerConstraints addObject:_bottomConstraint];
-        
-        [self updateBottomConstraintConstant];
     }
     else {
         [_navigationContainerConstraints addObjectsFromArray:@[
@@ -321,10 +315,6 @@ static const CGFloat CellBottomPadding = 20.0;
     [NSLayoutConstraint activateConstraints:@[_tableViewBottomConstraint]];
 }
 
-- (void)updateBottomConstraintConstant {
-    _bottomConstraint.constant = -_keyboardOverlap;
-}
-
 - (BOOL)view:(UIView *)view hasFirstResponderOrTableViewCellContainingPoint:(CGPoint)point {
     UIView *subview = [_tableView hitTest:point withEvent:nil];
     BOOL viewIsChildOfFirstResponder = NO;
@@ -350,40 +340,6 @@ static const CGFloat CellBottomPadding = 20.0;
     
     if (!viewIsChildOfFirstResponder) {
         [_tableView endEditing:NO];
-    }
-}
-
-- (void)dealloc {
-    [self registerForKeyboardNotifications:NO];
-}
-
-- (void)registerForKeyboardNotifications:(BOOL)shouldRegister {
-    NSNotificationCenter *nfc = [NSNotificationCenter defaultCenter];
-    if (shouldRegister) {
-        [nfc addObserver:self
-                selector:@selector(keyboardWillShow:)
-                    name:UIKeyboardWillShowNotification object:nil];
-        
-        [nfc addObserver:self
-                selector:@selector(keyboardWillHide:)
-                    name:UIKeyboardWillHideNotification object:nil];
-        [nfc addObserver:self
-                selector:@selector(keyboardFrameWillChange:)
-                    name:UIKeyboardWillChangeFrameNotification object:nil];
-    } else {
-        [nfc removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-        [nfc removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-        [nfc removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
-    }
-    
-}
-
-- (void)willMoveToWindow:(UIWindow *)newWindow {
-    [super willMoveToWindow:newWindow];
-    if (newWindow) {
-        [self registerForKeyboardNotifications:YES];
-    } else {
-        [self registerForKeyboardNotifications:NO];
     }
 }
 
@@ -450,73 +406,6 @@ static const CGFloat CellBottomPadding = 20.0;
             scrollView.bounds = bounds;
         }
     }
-}
-
-- (void)animateLayoutForKeyboardNotification:(NSNotification *)notification {
-    NSTimeInterval animationDuration = ((NSNumber *)notification.userInfo[UIKeyboardAnimationDurationUserInfoKey]).doubleValue;
-    
-    UIScrollView *scrollView = _scrollView;
-    
-    [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-        CGRect bounds = scrollView.bounds;
-        CGSize contentSize = scrollView.contentSize;
-        
-        CGSize intersectionSize = [self keyboardIntersectionSizeFromNotification:notification];
-        
-        // Keep track of the keyboard overlap, so we can adjust the constraint properly.
-        _keyboardOverlap = intersectionSize.height;
-        
-        [self updateBottomConstraintConstant];
-        
-        // Trigger layout inside the animation block to get the constraint change to animate.
-        [scrollView layoutIfNeeded];
-        
-        if (_keyboardIsUp && _footerView) {
-            // The content ends at the bottom of the continueSkipContainer.
-            // We want to calculate new insets so it's possible to scroll it fully visible, but no more.
-            // Made a little more complicated because the contentSize will still extend below the bottom of this container,
-            // because we haven't changed our bounds.
-            
-            CGFloat contentMaxY = CGRectGetMaxY([scrollView convertRect:_footerView.bounds fromView:_footerView]) + _footerView.layoutMargins.bottom + CellBottomPadding;
-            
-            CGFloat keyboardOverlapWithActualContent = MAX(contentMaxY - (contentSize.height - intersectionSize.height), 0);
-            UIEdgeInsets insets = (UIEdgeInsets){.bottom = keyboardOverlapWithActualContent };
-            scrollView.contentInset = insets;
-            scrollView.bounds = bounds;
-            
-            // Make current first responder cell visible
-            {
-                [self scrollCellVisible:[self.tableContainerDelegate currentFirstResponderCellForTableContainerView:self] animated:NO];
-            }
-        }
-    } completion:nil];
-}
-
-- (void)keyboardFrameWillChange:(NSNotification *)notification {
-    CGSize intersectionSize = [self keyboardIntersectionSizeFromNotification:notification];
-    
-    // Assume the overlap is at the bottom of the view
-    ORKUpdateScrollViewBottomInset(self.tableView, intersectionSize.height);
-    
-    _keyboardIsUp = YES;
-    [self animateLayoutForKeyboardNotification:notification];
-}
-
-- (void)keyboardWillShow:(NSNotification *)notification {
-    CGSize intersectionSize = [self keyboardIntersectionSizeFromNotification:notification];
-    
-    // Assume the overlap is at the bottom of the view
-    ORKUpdateScrollViewBottomInset(self.tableView, intersectionSize.height);
-    
-    _keyboardIsUp = YES;
-    [self animateLayoutForKeyboardNotification:notification];
-}
-
-- (void)keyboardWillHide:(NSNotification *)notification {
-    ORKUpdateScrollViewBottomInset(self.tableView, 0);
-    
-    _keyboardIsUp = NO;
-    [self animateLayoutForKeyboardNotification:notification];
 }
 
 @end
