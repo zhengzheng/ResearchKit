@@ -99,6 +99,7 @@ typedef NS_CLOSED_ENUM(NSInteger, ORKUpdateConstraintSequence) {
 
 @implementation ORKStepContentView {
     CGFloat _additionalTopPaddingForTopLabel;
+    CGFloat _leftRightPadding;
     NSMutableArray<NSLayoutConstraint *> *_updatedConstraints;
     
     NSArray<NSLayoutConstraint *> *_topContentImageViewConstraints;
@@ -119,6 +120,7 @@ typedef NS_CLOSED_ENUM(NSInteger, ORKUpdateConstraintSequence) {
     if (self) {
         [self setupUpdatedConstraints];
         [self setStepContentViewBottomConstraint];
+        _leftRightPadding = ORKStepContainerLeftRightPaddingForWindow(self.window);
     }
     return self;
 }
@@ -373,7 +375,7 @@ typedef NS_CLOSED_ENUM(NSInteger, ORKUpdateConstraintSequence) {
                                                                                toItem:self
                                                                             attribute:NSLayoutAttributeWidth
                                                                            multiplier:1.0
-                                                                             constant:0.0]
+                                                                             constant:-2*_leftRightPadding]
                                                ]];
     [self setNeedsUpdateConstraints];
 }
@@ -462,7 +464,7 @@ typedef NS_CLOSED_ENUM(NSInteger, ORKUpdateConstraintSequence) {
                                                               toItem:self
                                                            attribute:NSLayoutAttributeWidth
                                                           multiplier:1.0
-                                                            constant:0.0]];
+                                                            constant:-2*_leftRightPadding]];
     
     [_updatedConstraints addObjectsFromArray:_textLabelConstraints];
     [self setNeedsUpdateConstraints];
@@ -572,7 +574,7 @@ typedef NS_CLOSED_ENUM(NSInteger, ORKUpdateConstraintSequence) {
                                                               toItem:self
                                                            attribute:NSLayoutAttributeWidth
                                                           multiplier:1.0
-                                                            constant:0.0]];
+                                                            constant:-2*_leftRightPadding]];
     
     [_updatedConstraints addObjectsFromArray:_detailTextLabelConstraints];
     [self setNeedsUpdateConstraints];
@@ -685,14 +687,14 @@ typedef NS_CLOSED_ENUM(NSInteger, ORKUpdateConstraintSequence) {
                                                                                toItem:self
                                                                             attribute:NSLayoutAttributeLeft
                                                                            multiplier:1.0
-                                                                             constant:0.0],
+                                                                             constant:_leftRightPadding],
                                                [NSLayoutConstraint constraintWithItem:_bodyContainerView
                                                                             attribute:NSLayoutAttributeRight
                                                                             relatedBy:NSLayoutRelationEqual
                                                                                toItem:self
                                                                             attribute:NSLayoutAttributeRight
                                                                            multiplier:1.0
-                                                                             constant:0.0]
+                                                                             constant:-_leftRightPadding]
                                                ]];
     [self setNeedsUpdateConstraints];
 }
