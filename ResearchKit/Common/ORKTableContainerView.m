@@ -244,7 +244,6 @@
 - (void)setupTableViewConstraints {
     _tableView.translatesAutoresizingMaskIntoConstraints = NO;
     self.stepContentView.translatesAutoresizingMaskIntoConstraints = NO;
-    CGFloat leftRightPadding = ORKStepContainerLeftRightPaddingForWindow(self.window);
     [self setTableViewBottomConstraint];
     [NSLayoutConstraint activateConstraints:@[
                                               
@@ -261,14 +260,14 @@
                                                                               toItem:self
                                                                            attribute:NSLayoutAttributeLeft
                                                                           multiplier:1.0
-                                                                            constant:leftRightPadding],
+                                                                            constant:0.0],
                                               [NSLayoutConstraint constraintWithItem:_tableView
                                                                            attribute:NSLayoutAttributeRight
                                                                            relatedBy:NSLayoutRelationEqual
                                                                               toItem:self
                                                                            attribute:NSLayoutAttributeRight
                                                                           multiplier:1.0
-                                                                            constant:-leftRightPadding],
+                                                                            constant:0.0],
                                               [NSLayoutConstraint constraintWithItem:self.stepContentView
                                                                            attribute:NSLayoutAttributeCenterX
                                                                            relatedBy:NSLayoutRelationEqual

@@ -414,7 +414,6 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
 }
 
 - (NSArray<NSLayoutConstraint *> *)scrollViewStaticConstraints {
-    CGFloat leftRightPadding = ORKStepContainerLeftRightPaddingForWindow(self.window);
     _scrollViewBottomConstraint = [NSLayoutConstraint constraintWithItem:_scrollView
                                                                attribute:NSLayoutAttributeBottom
                                                                relatedBy:NSLayoutRelationEqual
@@ -429,14 +428,14 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
                                              toItem:self
                                           attribute:NSLayoutAttributeLeft
                                          multiplier:1.0
-                                           constant:leftRightPadding],
+                                           constant:0.0],
              [NSLayoutConstraint constraintWithItem:_scrollView
                                           attribute:NSLayoutAttributeRight
                                           relatedBy:NSLayoutRelationEqual
                                              toItem:self
                                           attribute:NSLayoutAttributeRight
                                          multiplier:1.0
-                                           constant:-leftRightPadding],
+                                           constant:0.0],
              _scrollViewBottomConstraint
              ];
 }
@@ -495,7 +494,7 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
                                                                         toItem:_topContentImageView ? : self
                                                                      attribute:_topContentImageView ? NSLayoutAttributeBottom : NSLayoutAttributeTop
                                                                     multiplier:1.0
-                                                                      constant:_topContentImageView ? 0.0 : ORKStepContainerTopPaddingForWindow(self.window)];
+                                                                      constant:0.0];
     [_updatedConstraints addObject:_scrollViewTopConstraint];
 }
 
