@@ -49,6 +49,7 @@
 
 
 @implementation ORKTableContainerView {
+    CGFloat _leftRightPadding;
     UIView *_footerView;
     NSLayoutConstraint *_bottomConstraint;
     NSLayoutConstraint *_tableViewBottomConstraint;
@@ -66,6 +67,7 @@
 - (instancetype)initWithStyle:(UITableViewStyle)style {
     self = [super init];
     if (self) {
+        _leftRightPadding = ORKStepContainerLeftRightPaddingForWindow(self.window);
         [self setupTableViewWithStyle:style];
 
         
@@ -122,19 +124,19 @@
     if (self.isNavigationContainerScrollable) {
         [_navigationContainerConstraints addObject:[NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                                                 attribute:NSLayoutAttributeLeft
-                                                                                relatedBy:NSLayoutRelationEqual
+                                                                                relatedBy:NSLayoutRelationLessThanOrEqual
                                                                                    toItem:_footerView
                                                                                 attribute:NSLayoutAttributeLeft
                                                                                multiplier:1.0
-                                                                                 constant:0.0]];
+                                                                                 constant:_leftRightPadding]];
         
         [_navigationContainerConstraints addObject:[NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                                                 attribute:NSLayoutAttributeRight
-                                                                                relatedBy:NSLayoutRelationEqual
+                                                                                relatedBy:NSLayoutRelationGreaterThanOrEqual
                                                                                    toItem:_footerView
                                                                                 attribute:NSLayoutAttributeRight
                                                                                multiplier:1.0
-                                                                                 constant:0.0]];
+                                                                                 constant:-_leftRightPadding]];
         
         [_navigationContainerConstraints addObject:[NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                                                 attribute:NSLayoutAttributeTop
@@ -162,14 +164,14 @@
                                                                                                toItem:self
                                                                                             attribute:NSLayoutAttributeLeft
                                                                                            multiplier:1.0
-                                                                                             constant:0.0],
+                                                                                             constant:_leftRightPadding],
                                                                [NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                                                             attribute:NSLayoutAttributeRight
                                                                                             relatedBy:NSLayoutRelationEqual
                                                                                                toItem:self
                                                                                             attribute:NSLayoutAttributeRight
                                                                                            multiplier:1.0
-                                                                                             constant:0.0],
+                                                                                             constant:-_leftRightPadding],
                                                                [NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                                                             attribute:NSLayoutAttributeBottom
                                                                                             relatedBy:NSLayoutRelationEqual
@@ -244,7 +246,6 @@
 - (void)setupTableViewConstraints {
     _tableView.translatesAutoresizingMaskIntoConstraints = NO;
     self.stepContentView.translatesAutoresizingMaskIntoConstraints = NO;
-    CGFloat leftRightPadding = ORKStepContainerLeftRightPaddingForWindow(self.window);
     [self setTableViewBottomConstraint];
     [NSLayoutConstraint activateConstraints:@[
                                               
@@ -261,14 +262,14 @@
                                                                               toItem:self
                                                                            attribute:NSLayoutAttributeLeft
                                                                           multiplier:1.0
-                                                                            constant:leftRightPadding],
+                                                                            constant:0.0],
                                               [NSLayoutConstraint constraintWithItem:_tableView
                                                                            attribute:NSLayoutAttributeRight
                                                                            relatedBy:NSLayoutRelationEqual
                                                                               toItem:self
                                                                            attribute:NSLayoutAttributeRight
                                                                           multiplier:1.0
-                                                                            constant:-leftRightPadding],
+                                                                            constant:0.0],
                                               [NSLayoutConstraint constraintWithItem:self.stepContentView
                                                                            attribute:NSLayoutAttributeCenterX
                                                                            relatedBy:NSLayoutRelationEqual

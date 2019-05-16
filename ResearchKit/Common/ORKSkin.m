@@ -59,7 +59,6 @@ CGFloat ORKQuestionStepMinimumHeaderHeight = 29.75;
 CGFloat ORKCardDefaultCornerRadii = 10.0;
 CGFloat ORKCardDefaultBorderWidth = 0.5;
 CGFloat ORKCardDefaultFontSize = 25.0;
-CGFloat ORKCardLeftRightMargin = 0.0;
 CGFloat ORKCardTopBottomMargin = 15.0;
 CGFloat ORKSurveyTableContainerLeftRightPadding = 20.0;
 CGFloat ORKiPadBackgroundViewCornerRadius = 20.0;
@@ -522,6 +521,10 @@ CGFloat ORKStepContainerTitleToBulletTopPaddingForWindow(UIWindow *window) {
             break;
     }
     return padding;
+}
+
+CGFloat ORKCardLeftRightMarginForWindow(UIWindow *window) {
+    return ORKStepContainerLeftRightPaddingForWindow(window);
 }
 
 UIFontTextStyle ORKTitleLabelFontTextStyleForWindow(UIWindow *window) {
