@@ -54,6 +54,8 @@
 
 static const CGFloat VerticalMargin = 10.0;
 static const CGFloat HorizontalMargin = 15.0;
+static const CGFloat VerticalSpacer = 15.0;
+static const CGFloat HorizontalSpacer = 16.0;
 
 @interface ORKFormItemCell ()
 
@@ -424,9 +426,10 @@ static const CGFloat HorizontalMargin = 15.0;
     CGFloat labelWidth = self.maxLabelWidth;
     CGFloat boundWidth = self.expectedLayoutWidth;
     
-    NSDictionary *metrics = @{@"vMargin":@(10),
-                              @"hMargin":@(15),
-                              @"hSpacer":@(16), @"vSpacer":@(15),
+    NSDictionary *metrics = @{@"vMargin":@(VerticalMargin),
+                              @"hMargin":@(HorizontalMargin),
+                              @"hSpacer":@(HorizontalSpacer),
+                              @"vSpacer":@(VerticalSpacer),
                               @"labelWidth": @(labelWidth)};
     
     id labelLabel = self.labelLabel;
