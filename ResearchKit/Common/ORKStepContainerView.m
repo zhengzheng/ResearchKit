@@ -98,6 +98,7 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
 
 @implementation ORKStepContainerView {
     CGFloat _leftRightPadding;
+    CGFloat _customContentLeftRightPadding;
     UIScrollView *_scrollView;
     UIView *_scrollContainerView;
     BOOL _topContentImageShouldScroll;
@@ -113,7 +114,7 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
     
     NSLayoutConstraint *_navigationContainerViewTopConstraint;
     NSArray<NSLayoutConstraint *> *_navigationContainerViewConstraints;
-    
+    NSLayoutConstraint *_customContentWidthConstraint;
     NSMutableArray<NSLayoutConstraint *> *_updatedConstraints;
 }
 
@@ -121,6 +122,7 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
     self = [super init];
     if (self) {
         _leftRightPadding = ORKStepContainerLeftRightPaddingForWindow(self.window);
+        _customContentLeftRightPadding = ORKStepContainerLeftRightPaddingForWindow(self.window);
         [self setupScrollView];
         [self setupScrollContainerView];
         [self addStepContentView];
@@ -357,24 +359,38 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
 - (void)setupCustomContentViewConstraints {
     _customContentView.translatesAutoresizingMaskIntoConstraints = NO;
     [self setCustomContentViewTopConstraint];
+    [self setCustomContentWidthConstraint];
     [_updatedConstraints addObjectsFromArray:@[
                                                _customContentViewTopConstraint,
                                                [NSLayoutConstraint constraintWithItem:_customContentView
-                                                                            attribute:NSLayoutAttributeLeft
+                                                                            attribute:NSLayoutAttributeCenterX
                                                                             relatedBy:NSLayoutRelationEqual
                                                                                toItem:_scrollContainerView
-                                                                            attribute:NSLayoutAttributeLeft
+                                                                            attribute:NSLayoutAttributeCenterX
                                                                            multiplier:1.0
-                                                                             constant:_leftRightPadding],
-                                               [NSLayoutConstraint constraintWithItem:_customContentView
-                                                                            attribute:NSLayoutAttributeRight
-                                                                            relatedBy:NSLayoutRelationEqual
-                                                                               toItem:_scrollContainerView
-                                                                            attribute:NSLayoutAttributeRight
-                                                                           multiplier:1.0
-                                                                             constant:-_leftRightPadding]
+                                                                             constant:0.0],
+                                               _customContentWidthConstraint
                                                ]];
     [self setNeedsUpdateConstraints];
+}
+
+- (void)setCustomContentWidthConstraint {
+    if (_customContentView) {
+        _customContentWidthConstraint = [NSLayoutConstraint constraintWithItem:_customContentView
+                                                                     attribute:NSLayoutAttributeWidth
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:_scrollContainerView
+                                                                     attribute:NSLayoutAttributeWidth
+                                                                    multiplier:1.0
+                                                                      constant:-2*_customContentLeftRightPadding];
+    }
+}
+
+- (void)removeCustomContentPadding {
+    _customContentLeftRightPadding = 0.0;
+    if (_customContentWidthConstraint) {
+        _customContentWidthConstraint.constant = _customContentLeftRightPadding;
+    }
 }
 
 - (void)setCustomContentViewTopConstraint {

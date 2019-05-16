@@ -234,6 +234,7 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
             }
             
             _questionView.translatesAutoresizingMaskIntoConstraints = NO;
+            [_questionView removeCustomContentPadding];
             
             if (self.readOnlyMode) {
                 _navigationFooterView.optional = YES;
