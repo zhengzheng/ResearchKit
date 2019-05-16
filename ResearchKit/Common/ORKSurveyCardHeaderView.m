@@ -194,7 +194,7 @@ static const CGFloat HeadlineStackViewSpacing = 4.0;
         
         if (_titleLabel.text) {
             CAShapeLayer *lineLayer = [CAShapeLayer layer];
-            CGRect lineBounds = CGRectMake(ORKCardLeftRightMargin, _headlineView.bounds.size.height - 1.0, _headlineView.bounds.size.width - 2 * ORKCardLeftRightMargin, 0.5);
+            CGRect lineBounds = CGRectMake(0.0, _headlineView.bounds.size.height - 1.0, _headlineView.bounds.size.width, 0.5);
             lineLayer.path = [UIBezierPath bezierPathWithRect:lineBounds].CGPath;
             lineLayer.zPosition = 0.0f;
             [lineLayer setFillColor:[[UIColor ork_midGrayTintColor] CGColor]];
@@ -240,14 +240,14 @@ static const CGFloat HeadlineStackViewSpacing = 4.0;
                                                                toItem:self
                                                             attribute:NSLayoutAttributeLeft
                                                            multiplier:1.0
-                                                             constant:ORKCardLeftRightMargin],
+                                                             constant:ORKCardLeftRightMarginForWindow(self.window)],
                                [NSLayoutConstraint constraintWithItem:_headlineView
                                                             attribute:NSLayoutAttributeRight
                                                             relatedBy:NSLayoutRelationEqual
                                                                toItem:self
                                                             attribute:NSLayoutAttributeRight
                                                            multiplier:1.0
-                                                             constant:-ORKCardLeftRightMargin],
+                                                             constant:-ORKCardLeftRightMarginForWindow(self.window)],
                                
                                [NSLayoutConstraint constraintWithItem:_headlineStackView
                                                             attribute:NSLayoutAttributeTop

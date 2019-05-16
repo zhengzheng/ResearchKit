@@ -281,7 +281,7 @@ static const CGFloat CheckViewBorderWidth = 2.0;
 
 - (void)setUseCardView:(bool)useCardView {
     _useCardView = useCardView;
-    _leftRightMargin = ORKCardLeftRightMargin;
+    _leftRightMargin = ORKCardLeftRightMarginForWindow(self.window);
     _topBottomMargin = CardTopBottomMargin;
     [self setBackgroundColor:[UIColor clearColor]];
     self.selectionStyle = UITableViewCellSelectionStyleNone;

@@ -120,7 +120,6 @@ static const CGFloat HorizontalMargin = 15.0;
         // need it when they wish to report their default answers to 'ORKFormStepViewController'.
         _delegate = delegate;
         
-        _leftRightMargin = 0.0;
         _maxLabelWidth = maxLabelWidth;
         _answer = [answer copy];
         self.formItem = formItem;
@@ -153,8 +152,8 @@ static const CGFloat HorizontalMargin = 15.0;
     
     _containerConstraints = @[
                               [NSLayoutConstraint constraintWithItem:_containerView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0],
-                              [NSLayoutConstraint constraintWithItem:_containerView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:_leftRightMargin],
-                              [NSLayoutConstraint constraintWithItem:_containerView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeRight multiplier:1.0 constant:-_leftRightMargin],
+                              [NSLayoutConstraint constraintWithItem:_containerView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1.0 constant:_leftRightMargin],
+                              [NSLayoutConstraint constraintWithItem:_containerView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1.0 constant:-_leftRightMargin],
                               [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_containerView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0],
                               ];
     [NSLayoutConstraint activateConstraints:_containerConstraints];
@@ -220,7 +219,7 @@ static const CGFloat HorizontalMargin = 15.0;
             foreLayer.path = [UIBezierPath bezierPathWithRect:foreLayerBounds].CGPath;
 
             _contentMaskLayer.path = [UIBezierPath bezierPathWithRect:self.containerView.bounds].CGPath;
-            CGRect lineBounds = CGRectMake(ORKCardLeftRightMargin, self.containerView.bounds.size.height - 1.0, self.containerView.bounds.size.width - 2 * ORKCardLeftRightMargin, 0.5);
+            CGRect lineBounds = CGRectMake(0.0, self.containerView.bounds.size.height - 1.0, self.containerView.bounds.size.width, 0.5);
             lineLayer.path = [UIBezierPath bezierPathWithRect:lineBounds].CGPath;
             lineLayer.zPosition = 0.0f;
             [lineLayer setFillColor:[[UIColor ork_midGrayTintColor] CGColor]];
@@ -235,7 +234,7 @@ static const CGFloat HorizontalMargin = 15.0;
 
 - (void)setUseCardView:(bool)useCardView {
     _useCardView = useCardView;
-    _leftRightMargin = ORKCardLeftRightMargin;
+    _leftRightMargin = ORKCardLeftRightMarginForWindow(self.window);
     [self setupConstraints];
 }
 
@@ -426,7 +425,7 @@ static const CGFloat HorizontalMargin = 15.0;
     CGFloat boundWidth = self.expectedLayoutWidth;
     
     NSDictionary *metrics = @{@"vMargin":@(10),
-                              @"hMargin":@(self.separatorInset.left),
+                              @"hMargin":@(15),
                               @"hSpacer":@(16), @"vSpacer":@(15),
                               @"labelWidth": @(labelWidth)};
     

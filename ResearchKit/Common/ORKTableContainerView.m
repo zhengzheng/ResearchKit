@@ -124,7 +124,7 @@
     if (self.isNavigationContainerScrollable) {
         [_navigationContainerConstraints addObject:[NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                                                 attribute:NSLayoutAttributeLeft
-                                                                                relatedBy:NSLayoutRelationEqual
+                                                                                relatedBy:NSLayoutRelationLessThanOrEqual
                                                                                    toItem:_footerView
                                                                                 attribute:NSLayoutAttributeLeft
                                                                                multiplier:1.0
@@ -132,7 +132,7 @@
         
         [_navigationContainerConstraints addObject:[NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                                                 attribute:NSLayoutAttributeRight
-                                                                                relatedBy:NSLayoutRelationEqual
+                                                                                relatedBy:NSLayoutRelationGreaterThanOrEqual
                                                                                    toItem:_footerView
                                                                                 attribute:NSLayoutAttributeRight
                                                                                multiplier:1.0
