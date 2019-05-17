@@ -87,7 +87,7 @@ CGFloat ORKStepContainerTitleToBulletTopPaddingStandard = 57.0;
 CGFloat ORKStepContainerTitleToBulletTopPaddingShort = 37.0;
 
 CGFloat ORKStepContainerTopContentHeightPercentage = 36.0;
-CGFloat ORKStepContainerFirstItemTopPaddingPercentage = 9.0;
+CGFloat ORKStepContainerFirstItemTopPaddingPercentage = 7.0;
 
 @implementation UIColor (ORKColor)
 

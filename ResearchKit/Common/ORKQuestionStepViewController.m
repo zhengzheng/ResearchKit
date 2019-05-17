@@ -280,7 +280,7 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
                      [NSLayoutConstraint constraintWithItem:view
                                                   attribute:NSLayoutAttributeTop
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:[view isEqual:_questionView] ? self.view.safeAreaLayoutGuide : self.view
+                                                     toItem:self.view
                                                   attribute:NSLayoutAttributeTop
                                                  multiplier:1.0
                                                    constant:0.0],
