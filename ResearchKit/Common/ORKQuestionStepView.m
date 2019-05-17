@@ -51,7 +51,12 @@
 - (void)setQuestionStep:(ORKQuestionStep *)step {
     _questionStep = step;
     self.stepTitle = step.title;
-    self.bodyItems = (step.text) ? [@[[[ORKBodyItem alloc] initWithText:step.text detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]] arrayByAddingObjectsFromArray:step.bodyItems] : step.bodyItems;
+    self.stepTopContentImage = step.image;
+    self.titleIconImage = step.iconImage;
+    self.stepTitle = step.title;
+    self.stepText = step.text;
+    self.stepDetailText = step.detailText;
+    self.bodyItems = step.bodyItems;
 }
 
 - (void)setCustomHeaderTitle:(nullable NSString *)text {

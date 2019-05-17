@@ -33,7 +33,6 @@
 #import "ORKSkin.h"
 #import "ORKLearnMoreView.h"
 
-static const CGFloat HeadlineViewTitleLeftRightPadding = 10.0;
 static const CGFloat HeadlineStackViewSpacing = 4.0;
 
 @implementation ORKSurveyCardHeaderView {
@@ -255,21 +254,21 @@ static const CGFloat HeadlineStackViewSpacing = 4.0;
                                                                toItem:_headlineView
                                                             attribute:NSLayoutAttributeTop
                                                            multiplier:1.0
-                                                             constant:ORKCardTopBottomMargin],
+                                                             constant:ORKSurveyItemMargin],
                                [NSLayoutConstraint constraintWithItem:_headlineStackView
                                                             attribute:NSLayoutAttributeLeading
                                                             relatedBy:NSLayoutRelationEqual
                                                                toItem:_headlineView
                                                             attribute:NSLayoutAttributeLeading
                                                            multiplier:1.0
-                                                             constant:HeadlineViewTitleLeftRightPadding],
+                                                             constant:ORKSurveyItemMargin],
                                [NSLayoutConstraint constraintWithItem:_headlineStackView
                                                             attribute:NSLayoutAttributeTrailing
                                                             relatedBy:NSLayoutRelationEqual
                                                                toItem:_learnMoreView ? : _headlineView
                                                             attribute:_learnMoreView ? NSLayoutAttributeLeading : NSLayoutAttributeTrailing
                                                            multiplier:1.0
-                                                             constant:-HeadlineViewTitleLeftRightPadding],
+                                                             constant:-ORKSurveyItemMargin],
                                
                                [NSLayoutConstraint constraintWithItem:_headlineView
                                                             attribute:NSLayoutAttributeBottom
@@ -277,7 +276,7 @@ static const CGFloat HeadlineStackViewSpacing = 4.0;
                                                                toItem:_headlineStackView
                                                             attribute:NSLayoutAttributeBottom
                                                            multiplier:1.0
-                                                             constant:ORKCardTopBottomMargin],
+                                                             constant:ORKSurveyItemMargin],
                                [NSLayoutConstraint constraintWithItem:self
                                                             attribute:NSLayoutAttributeBottom
                                                             relatedBy:NSLayoutRelationEqual
@@ -302,14 +301,14 @@ static const CGFloat HeadlineStackViewSpacing = 4.0;
                                                                toItem:_titleLabel ? : _headlineView
                                                             attribute:NSLayoutAttributeTop
                                                            multiplier:1.0
-                                                             constant:_titleLabel ? 0.0 : ORKCardTopBottomMargin],
+                                                             constant:_titleLabel ? 0.0 : ORKSurveyItemMargin],
                                [NSLayoutConstraint constraintWithItem:_learnMoreView
                                                             attribute:NSLayoutAttributeTrailing
                                                             relatedBy:NSLayoutRelationEqual
                                                                toItem: _headlineView
                                                             attribute:NSLayoutAttributeTrailing
                                                            multiplier:1.0
-                                                             constant:-HeadlineViewTitleLeftRightPadding]
+                                                             constant:-ORKSurveyItemMargin]
                                ];
 
     [NSLayoutConstraint activateConstraints:_learnMoreViewConstraints];

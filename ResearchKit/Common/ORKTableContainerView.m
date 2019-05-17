@@ -206,7 +206,6 @@
 }
 
 - (void)addStepContentView {
-    [self.stepContentView setAdditionalTopPaddingForTopLabel:ORKStepContainerTopPaddingForWindow(self.window)];
     _tableView.tableHeaderView = self.stepContentView;
 }
 

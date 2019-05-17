@@ -114,7 +114,7 @@ ORK_EXTERN CGFloat ORKCardDefaultBorderWidth;
 ORK_EXTERN CGFloat ORKCardDefaultFontSize;
 
 /// Default Top and Bottom margin for card view
-ORK_EXTERN CGFloat ORKCardTopBottomMargin;
+ORK_EXTERN CGFloat ORKSurveyItemMargin;
 
 /// Padding for Form and Question Step Table Containers
 ORK_EXTERN CGFloat ORKSurveyTableContainerLeftRightPadding;

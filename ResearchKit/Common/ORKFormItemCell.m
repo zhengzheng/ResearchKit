@@ -53,7 +53,6 @@
 
 
 static const CGFloat VerticalMargin = 10.0;
-static const CGFloat HorizontalMargin = 15.0;
 static const CGFloat VerticalSpacer = 15.0;
 static const CGFloat HorizontalSpacer = 16.0;
 
@@ -427,7 +426,7 @@ static const CGFloat HorizontalSpacer = 16.0;
     CGFloat boundWidth = self.expectedLayoutWidth;
     
     NSDictionary *metrics = @{@"vMargin":@(VerticalMargin),
-                              @"hMargin":@(HorizontalMargin),
+                              @"hMargin":@(ORKSurveyItemMargin),
                               @"hSpacer":@(HorizontalSpacer),
                               @"vSpacer":@(VerticalSpacer),
                               @"labelWidth": @(labelWidth)};
@@ -1087,7 +1086,7 @@ static const CGFloat HorizontalSpacer = 16.0;
                                                                              answer:self.answer];
     _selectionView.delegate = self;
     
-    self.contentView.layoutMargins = UIEdgeInsetsMake(VerticalMargin, HorizontalMargin, VerticalMargin, HorizontalMargin);
+    self.contentView.layoutMargins = UIEdgeInsetsMake(VerticalMargin, ORKSurveyItemMargin, VerticalMargin, ORKSurveyItemMargin);
     
     [self.containerView addSubview:_selectionView];
     [self setUpConstraints];
@@ -1352,7 +1351,7 @@ static const CGFloat HorizontalSpacer = 16.0;
     
     NSDictionary *dictionary = @{@"_selectionView":_selectionView};
     ORKEnableAutoLayoutForViews([dictionary allValues]);
-    NSDictionary *metrics = @{@"verticalMargin":@(VerticalMargin), @"horizontalMargin":@(self.separatorInset.left), @"verticalMarginBottom":@(VerticalMargin - (1.0 / [UIScreen mainScreen].scale))};
+    NSDictionary *metrics = @{@"verticalMargin":@(VerticalMargin), @"horizontalMargin":@(ORKSurveyItemMargin), @"verticalMarginBottom":@(VerticalMargin - (1.0 / [UIScreen mainScreen].scale))};
     
     [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_selectionView]|" options:NSLayoutFormatDirectionLeadingToTrailing metrics:metrics views:dictionary]];
     [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_selectionView]" options:NSLayoutFormatDirectionLeadingToTrailing metrics:metrics views:dictionary]];
