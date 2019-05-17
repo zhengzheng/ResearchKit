@@ -543,6 +543,8 @@
             }
         }
         _headerView = _tableContainer.stepContentView;
+        _headerView.stepTopContentImage = self.step.image;
+        _headerView.titleIconImage = self.step.iconImage;
         _headerView.stepTitle = self.step.title;
         _headerView.stepText = self.step.text;
         _headerView.stepDetailText = self.step.detailText;

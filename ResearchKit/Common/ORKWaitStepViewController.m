@@ -80,7 +80,12 @@
         [self.view addSubview:_waitStepView];
         [self setupNavigationFooterView];
         [self setupConstraints];
+        _waitStepView.stepTopContentImage = self.step.image;
+        _waitStepView.titleIconImage = self.step.iconImage;
+        _waitStepView.stepTitle = self.step.title;
         _waitStepView.stepText = _updatedText;
+        _waitStepView.stepDetailText = self.step.detailText;
+        _waitStepView.bodyItems = self.step.bodyItems;
     }
 }
 

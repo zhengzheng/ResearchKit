@@ -47,8 +47,7 @@ static const CGFloat TextViewTopMargin = 20.0;
 static const CGFloat TextViewHeight = 100.0;
 static const CGFloat CheckViewDimension = 25.0;
 static const CGFloat CheckViewBorderWidth = 2.0;
-
-
+static const CGFloat LabelLeadingPadding = 10.0;
 
 @interface ORKChoiceViewCell()
 
@@ -57,7 +56,6 @@ static const CGFloat CheckViewBorderWidth = 2.0;
 @property (nonatomic) ORKSelectionSubTitleLabel *detailLabel;
 @property (nonatomic) UIImageView *checkView;
 @property (nonatomic) NSMutableArray<NSLayoutConstraint *> *containerConstraints;
-@property (nonatomic) CGFloat cellLeftMargin;
 
 @end
 
@@ -76,7 +74,6 @@ static const CGFloat CheckViewBorderWidth = 2.0;
         _topBottomMargin = 0.0;
         [self setupContainerView];
         [self setupCheckView];
-        _cellLeftMargin = self.separatorInset.left;
     }
     return self;
 }
@@ -196,7 +193,7 @@ static const CGFloat CheckViewBorderWidth = 2.0;
                                                                                      toItem:_checkView
                                                                                   attribute:NSLayoutAttributeTrailing
                                                                                  multiplier:1.0
-                                                                                   constant:_cellLeftMargin],
+                                                                                   constant:LabelLeadingPadding],
                                                      [NSLayoutConstraint constraintWithItem:_primaryLabel
                                                                                   attribute:NSLayoutAttributeTrailing
                                                                                   relatedBy:NSLayoutRelationEqual
@@ -224,7 +221,7 @@ static const CGFloat CheckViewBorderWidth = 2.0;
                                                                                      toItem:_checkView
                                                                                   attribute:NSLayoutAttributeTrailing
                                                                                  multiplier:1.0
-                                                                                   constant:_cellLeftMargin],
+                                                                                   constant:LabelLeadingPadding],
                                                      [NSLayoutConstraint constraintWithItem:_detailLabel
                                                                                   attribute:NSLayoutAttributeTrailing
                                                                                   relatedBy:NSLayoutRelationEqual
@@ -377,7 +374,7 @@ static const CGFloat CheckViewBorderWidth = 2.0;
                                                                                      toItem:_containerView
                                                                                   attribute:NSLayoutAttributeLeading
                                                                                  multiplier:1.0
-                                                                                   constant:_cellLeftMargin]
+                                                                                   constant:ORKSurveyItemMargin]
                                                      ]];
     }
 }
@@ -493,7 +490,7 @@ static const CGFloat CheckViewBorderWidth = 2.0;
                                                                                      toItem:self.checkView
                                                                                   attribute:NSLayoutAttributeTrailing
                                                                                  multiplier:1.0
-                                                                                   constant:self.cellLeftMargin],
+                                                                                   constant:LabelLeadingPadding],
                                                      [NSLayoutConstraint constraintWithItem:_textView
                                                                                   attribute:NSLayoutAttributeTrailing
                                                                                   relatedBy:NSLayoutRelationEqual

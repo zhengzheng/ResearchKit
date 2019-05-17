@@ -182,8 +182,13 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
                 [self.taskViewController.navigationBar setBarTintColor:[_tableView backgroundColor]];
                 [self.view setBackgroundColor:[_tableView backgroundColor]];
             }
-            _headerView.stepTitle = self.questionStep.title;
-            _headerView.bodyItems = (self.questionStep.text) ? [@[[[ORKBodyItem alloc] initWithText:self.questionStep.text detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]] arrayByAddingObjectsFromArray:self.step.bodyItems] : self.step.bodyItems;
+            
+            _headerView.stepTopContentImage = self.step.image;
+            _headerView.titleIconImage = self.step.iconImage;
+            _headerView.stepTitle = self.step.title;
+            _headerView.stepText = self.step.text;
+            _headerView.stepDetailText = self.step.detailText;
+            _headerView.bodyItems = self.step.bodyItems;
             
             _navigationFooterView.optional = self.step.optional;
             if (self.readOnlyMode) {
@@ -275,7 +280,7 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
                      [NSLayoutConstraint constraintWithItem:view
                                                   attribute:NSLayoutAttributeTop
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:self.view
+                                                     toItem:[view isEqual:_questionView] ? self.view.safeAreaLayoutGuide : self.view
                                                   attribute:NSLayoutAttributeTop
                                                  multiplier:1.0
                                                    constant:0.0],

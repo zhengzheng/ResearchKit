@@ -276,7 +276,7 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
                                               [NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                                            attribute:NSLayoutAttributeBottom
                                                                            relatedBy:NSLayoutRelationEqual
-                                                                              toItem:self.isNavigationContainerScrollable ? _scrollContainerView : self
+                                                                              toItem:self.isNavigationContainerScrollable ? _scrollContainerView.safeAreaLayoutGuide : self.safeAreaLayoutGuide
                                                                            attribute:NSLayoutAttributeBottom
                                                                           multiplier:1.0
                                                                             constant:0.0],
