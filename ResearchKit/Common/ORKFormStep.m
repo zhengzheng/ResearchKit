@@ -99,7 +99,11 @@
 }
 
 - (BOOL)isEqual:(id)object {
-    return [super isEqual:object];
+    BOOL isParentSame = [super isEqual:object];
+    
+    __typeof(self) castObject = object;
+    return isParentSame &&
+    ORKEqualObjects(self.formItems, castObject.formItems);
 }
 
 - (NSUInteger)hash {
