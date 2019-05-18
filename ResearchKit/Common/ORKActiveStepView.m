@@ -46,7 +46,6 @@
 - (void)setActiveStep:(ORKActiveStep *)step {
     _activeStep = step;
     self.stepTitle = step.title;
-    self.stepTopContentImage = _activeStep.image;
     self.stepText = step.text;
     self.stepTopContentImage = step.image;
 }
