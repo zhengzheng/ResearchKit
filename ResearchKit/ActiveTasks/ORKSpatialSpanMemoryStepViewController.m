@@ -168,8 +168,6 @@ typedef void (^_ORKStateHandler)(ORKState *fromState, ORKState *_toState, id con
     _contentView.footerHidden = YES;
     _contentView.gameView.delegate = self;
     self.activeStepView.activeCustomView = _contentView;
-//    self.activeStepView.stepViewFillsAvailableSpace = NO;
-//    self.activeStepView.minimumStepHeaderHeight = ORKGetMetricForWindow(ORKScreenMetricMinimumStepHeaderHeightForMemoryGame, self.view.window);
     
     [self resetUI];
     
