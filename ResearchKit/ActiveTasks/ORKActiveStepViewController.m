@@ -124,8 +124,6 @@
     if (_customView) {
         _activeStepView.customContentView = _customView;
     }
-    //    TODO: Add support for LearnMoreButton
-//    _activeStepView.headerView.learnMoreButtonItem = self.learnMoreButtonItem;
     [self.view addSubview:_activeStepView];
 }
 
@@ -207,8 +205,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     ORK_Log_Debug(@"%@",self);
-
-//    [self.taskViewController setRegisteredScrollView:_activeStepView];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -244,7 +240,6 @@
 
 - (void)setLearnMoreButtonItem:(UIBarButtonItem *)learnMoreButtonItem {
     [super setLearnMoreButtonItem:learnMoreButtonItem];
-//    _activeStepView.headerView.learnMoreButtonItem = self.learnMoreButtonItem;
 }
 
 - (void)setSkipButtonItem:(UIBarButtonItem *)skipButtonItem {

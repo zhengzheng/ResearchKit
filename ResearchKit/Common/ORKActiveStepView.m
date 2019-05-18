@@ -32,8 +32,6 @@
 #import "ORKActiveStepView.h"
 
 #import "ORKCustomStepView_Internal.h"
-//#import "ORKNavigationContainerView_Internal.h"
-//#import "ORKStepHeaderView_Internal.h"
 #import "ORKTintedImageView.h"
 #import "ORKStepContainerView_Private.h"
 

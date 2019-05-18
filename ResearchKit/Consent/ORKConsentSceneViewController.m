@@ -127,8 +127,6 @@ static NSString *localizedLearnMoreForType(ORKConsentSectionType sectionType) {
     
     if (_section.content.length||_section.htmlContent.length || _section.contentURL) {
         NSLog(@"%@", localizedLearnMoreForType(_section.type));
-        //        TODO: Add support for LearnMoreButton
-//        _sceneView.headerView.learnMoreButtonItem = [[UIBarButtonItem alloc] initWithTitle:_learnMoreButtonTitle ? : localizedLearnMoreForType(_section.type) style:UIBarButtonItemStylePlain target:self action:@selector(showContent:)];
     }
     [self setupNavigationFooterView];
     [self setupConstraints];
@@ -193,17 +191,6 @@ static NSString *localizedLearnMoreForType(ORKConsentSectionType sectionType) {
     _cancelButtonItem = cancelButtonItem;
     _navigationFooterView.cancelButtonItem = cancelButtonItem;
 }
-
-//  TODO: Add support for LearnMoreButton
-//- (void)setLearnMoreButtonTitle:(NSString *)learnMoreButtonTitle {
-//    _learnMoreButtonTitle = learnMoreButtonTitle;
-//
-//    UIBarButtonItem *item = _sceneView.headerView.learnMoreButtonItem;
-//    if (item) {
-//        item.title = _learnMoreButtonTitle ? : localizedLearnMoreForType(_section.type);
-//        _sceneView.headerView.learnMoreButtonItem = item;
-//    }
-//}
 
 - (UIScrollView *)scrollView {
     return (UIScrollView *)self.view;
