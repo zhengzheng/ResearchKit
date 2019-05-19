@@ -123,7 +123,6 @@
     
     _tableContainer.tableView.delegate = nil;
     _tableContainer.tableView.dataSource = nil;
-    [_navigationFooterView removeFromSuperview];
     _navigationFooterView = nil;
     
     if ([self reviewStep]) {
@@ -140,13 +139,12 @@
         _tableContainer.stepContentView.bodyItems = [[self reviewStep] bodyItems];
         
         [_tableContainer.tableView setBackgroundColor:ORKNeedWideScreenDesign(self.view) ? [UIColor clearColor] : ORKColor(ORKBackgroundColorKey)];
-        _navigationFooterView = [ORKNavigationContainerView new];
+        _navigationFooterView = _tableContainer.navigationFooterView;
         _navigationFooterView.skipButtonItem = self.skipButtonItem;
         _navigationFooterView.continueEnabled = YES;
         _navigationFooterView.continueButtonItem = self.continueButtonItem;
         _navigationFooterView.optional = self.step.optional;
         _navigationFooterView.cancelButtonItem = self.cancelButtonItem;
-        [self.view addSubview:_navigationFooterView];
         [self setupConstraints];
         [_tableContainer setNeedsLayout];
     }
@@ -158,59 +156,35 @@
         [NSLayoutConstraint deactivateConstraints:_constraints];
     }
     _tableContainer.translatesAutoresizingMaskIntoConstraints = NO;
-    _navigationFooterView.translatesAutoresizingMaskIntoConstraints = NO;
     _constraints = nil;
-    
-    UIView *viewForiPad = [self viewForiPadLayoutConstraints];
     
     _constraints = @[
                      [NSLayoutConstraint constraintWithItem:_tableContainer
                                                   attribute:NSLayoutAttributeTop
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view.safeAreaLayoutGuide
+                                                     toItem:self.view
                                                   attribute:NSLayoutAttributeTop
                                                  multiplier:1.0
                                                    constant:0.0],
                      [NSLayoutConstraint constraintWithItem:_tableContainer
                                                   attribute:NSLayoutAttributeLeft
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view.safeAreaLayoutGuide
+                                                     toItem:self.view
                                                   attribute:NSLayoutAttributeLeft
                                                  multiplier:1.0
                                                    constant:0.0],
                      [NSLayoutConstraint constraintWithItem:_tableContainer
                                                   attribute:NSLayoutAttributeRight
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view.safeAreaLayoutGuide
-                                                  attribute:NSLayoutAttributeRight
-                                                 multiplier:1.0
-                                                   constant:0.0],
-                     [NSLayoutConstraint constraintWithItem:_navigationFooterView
-                                                  attribute:NSLayoutAttributeBottom
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view
-                                                  attribute:NSLayoutAttributeBottom
-                                                 multiplier:1.0
-                                                   constant:0.0],
-                     [NSLayoutConstraint constraintWithItem:_navigationFooterView
-                                                  attribute:NSLayoutAttributeLeft
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view
-                                                  attribute:NSLayoutAttributeLeft
-                                                 multiplier:1.0
-                                                   constant:0.0],
-                     [NSLayoutConstraint constraintWithItem:_navigationFooterView
-                                                  attribute:NSLayoutAttributeRight
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view
+                                                     toItem:self.view
                                                   attribute:NSLayoutAttributeRight
                                                  multiplier:1.0
                                                    constant:0.0],
                      [NSLayoutConstraint constraintWithItem:_tableContainer
                                                   attribute:NSLayoutAttributeBottom
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:_navigationFooterView
-                                                  attribute:NSLayoutAttributeTop
+                                                     toItem:self.view
+                                                  attribute:NSLayoutAttributeBottom
                                                  multiplier:1.0
                                                    constant:0.0]
                      ];
