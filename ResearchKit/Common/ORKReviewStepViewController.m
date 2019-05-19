@@ -135,9 +135,9 @@
         [self.view addSubview:_tableContainer];
         _tableContainer.tapOffView = self.view;
         
-        _tableContainer.tableContainerHeaderView.stepTitle = [[self reviewStep] title];
-        _tableContainer.tableContainerHeaderView.stepText = [[self reviewStep] text];
-        _tableContainer.tableContainerHeaderView.bodyItems = [[self reviewStep] bodyItems];
+        _tableContainer.stepContentView.stepTitle = [[self reviewStep] title];
+        _tableContainer.stepContentView.stepText = [[self reviewStep] text];
+        _tableContainer.stepContentView.bodyItems = [[self reviewStep] bodyItems];
         
         [_tableContainer.tableView setBackgroundColor:ORKNeedWideScreenDesign(self.view) ? [UIColor clearColor] : ORKColor(ORKBackgroundColorKey)];
         _navigationFooterView = [ORKNavigationContainerView new];

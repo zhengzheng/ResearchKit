@@ -70,8 +70,6 @@ class HeaderView: UIView {
         let activeLabel = UILabel()
         activeLabel.attributedText = self.descriptionText
         activeLabel.translatesAutoresizingMaskIntoConstraints = false
-        //activeLabel.textColor = (self.invertColors == true) ? UIColor(red: 217.0/255.0, green: 217.0/255.0, blue: 217.0/255.0, alpha: 1.0) : UIColor.lightGray
-//        activeLabel.font =
         activeLabel.textColor = UIColor.white
         self.nameContainer.addSubview(activeLabel)
         

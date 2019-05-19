@@ -59,19 +59,18 @@ CGFloat ORKQuestionStepMinimumHeaderHeight = 29.75;
 CGFloat ORKCardDefaultCornerRadii = 10.0;
 CGFloat ORKCardDefaultBorderWidth = 0.5;
 CGFloat ORKCardDefaultFontSize = 25.0;
-CGFloat ORKCardLeftRightMargin = 0.0;
-CGFloat ORKCardTopBottomMargin = 15.0;
+CGFloat ORKSurveyItemMargin = 20.0;
 CGFloat ORKSurveyTableContainerLeftRightPadding = 20.0;
 CGFloat ORKiPadBackgroundViewCornerRadius = 20.0;
 CGFloat ORKiPadBackgroundViewBottomPadding = 50.0;
 CGFloat ORKiPadBackgroundViewLeftRightPadding = 115.0;
 
-CGFloat ORKStepContainerLeftRightMarginForXSMax = 44.0;
-CGFloat ORKStepContainerLeftRightMarginForXS = 24.0;
-CGFloat ORKStepContainerLeftRightMarginFor7Plus = 44.0;
-CGFloat ORKStepContainerLeftRightMarginFor7 = 24.0;
-CGFloat ORKStepContainerLeftRightMarginForSE = 16.0;
-CGFloat ORKStepContainerLeftRightMarginForDefault = 24.0;
+CGFloat ORKStepContainerLeftRightMarginForXSMax = 22.0;
+CGFloat ORKStepContainerLeftRightMarginForXS = 12.0;
+CGFloat ORKStepContainerLeftRightMarginFor7Plus = 22.0;
+CGFloat ORKStepContainerLeftRightMarginFor7 = 12.0;
+CGFloat ORKStepContainerLeftRightMarginForSE = 8.0;
+CGFloat ORKStepContainerLeftRightMarginForDefault = 12.0;
 
 CGFloat ORKStepContainerTopMarginForXSMax = 44.0;
 CGFloat ORKStepContainerTopMarginForXS = 44.0;
@@ -88,7 +87,7 @@ CGFloat ORKStepContainerTitleToBulletTopPaddingStandard = 57.0;
 CGFloat ORKStepContainerTitleToBulletTopPaddingShort = 37.0;
 
 CGFloat ORKStepContainerTopContentHeightPercentage = 36.0;
-CGFloat ORKStepContainerFirstItemTopPaddingPercentage = 9.0;
+CGFloat ORKStepContainerFirstItemTopPaddingPercentage = 7.0;
 
 @implementation UIColor (ORKColor)
 
@@ -522,6 +521,10 @@ CGFloat ORKStepContainerTitleToBulletTopPaddingForWindow(UIWindow *window) {
             break;
     }
     return padding;
+}
+
+CGFloat ORKCardLeftRightMarginForWindow(UIWindow *window) {
+    return ORKStepContainerLeftRightPaddingForWindow(window);
 }
 
 UIFontTextStyle ORKTitleLabelFontTextStyleForWindow(UIWindow *window) {

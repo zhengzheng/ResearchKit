@@ -38,6 +38,7 @@
 #import "ORKStepViewController_Internal.h"
 #import "ORKTaskViewController_Internal.h"
 #import "ORKStepContainerView_Private.h"
+#import "ORKStepView_Private.h"
 
 #import "ORKResult_Private.h"
 #import "ORKCollectionResult_Private.h"

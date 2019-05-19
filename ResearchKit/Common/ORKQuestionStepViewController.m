@@ -151,7 +151,6 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
     if ([self isViewLoaded]) {
         BOOL neediPadDesign = ORKNeedWideScreenDesign(self.view);
         [_tableContainer removeFromSuperview];
-        [_navigationFooterView removeFromSuperview];
         _tableView.delegate = nil;
         _tableView.dataSource = nil;
         _tableView = nil;
@@ -160,37 +159,36 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
         _navigationFooterView = nil;
         [_questionView removeFromSuperview];
         _questionView = nil;
-        
-        _navigationFooterView = [ORKNavigationContainerView new];
-        [_navigationFooterView removeStyling];
-        _navigationFooterView.skipButtonItem = self.skipButtonItem;
-        _navigationFooterView.continueEnabled = [self continueButtonEnabled];
-        _navigationFooterView.continueButtonItem = self.continueButtonItem;
-        _navigationFooterView.cancelButtonItem = self.cancelButtonItem;
 
-        [self.view addSubview:_navigationFooterView];
         if ([self.questionStep formatRequiresTableView] && !_customQuestionView) {
             _tableContainer = [ORKTableContainerView new];
             
             // Create a new one (with correct style)
             _tableView = _tableContainer.tableView;
-            [_tableView setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
             _tableView.delegate = self;
             _tableView.dataSource = self;
             _tableView.clipsToBounds = YES;
             
-            [self.view insertSubview:_tableContainer belowSubview:_navigationFooterView];
+            _navigationFooterView = _tableContainer.navigationFooterView;
+            [self setNavigationFooterButtonItems];
+            
+            [self.view addSubview:_tableContainer];
             _tableContainer.tapOffView = self.view;
             
-            _headerView = _tableContainer.tableContainerHeaderView;
+            _headerView = _tableContainer.stepContentView;
             if (self.questionStep.useCardView) {
                 _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
                 [_tableView setBackgroundColor:ORKColor(ORKBackgroundColorKey)];
                 [self.taskViewController.navigationBar setBarTintColor:[_tableView backgroundColor]];
                 [self.view setBackgroundColor:[_tableView backgroundColor]];
             }
-            _headerView.stepTitle = self.questionStep.title;
-            _headerView.bodyItems = (self.questionStep.text) ? [@[[[ORKBodyItem alloc] initWithText:self.questionStep.text detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText]] arrayByAddingObjectsFromArray:self.step.bodyItems] : self.step.bodyItems;
+            
+            _headerView.stepTopContentImage = self.step.image;
+            _headerView.titleIconImage = self.step.iconImage;
+            _headerView.stepTitle = self.step.title;
+            _headerView.stepText = self.step.text;
+            _headerView.stepDetailText = self.step.detailText;
+            _headerView.bodyItems = self.step.bodyItems;
             
             _navigationFooterView.optional = self.step.optional;
             if (self.readOnlyMode) {
@@ -209,12 +207,14 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
             _questionView = [ORKQuestionStepView new];
             
             ORKQuestionStep *step = [self questionStep];
+            _navigationFooterView = _questionView.navigationFooterView;
+            [self setNavigationFooterButtonItems];
             _navigationFooterView.useNextForSkip = (step ? NO : YES);
             _questionView.questionStep = step;
             _navigationFooterView.optional = step.optional;
             [_navigationFooterView updateContinueAndSkipEnabled];
             
-            [self.view insertSubview:_questionView belowSubview:_navigationFooterView];
+            [self.view addSubview:_questionView];
             
             if (_customQuestionView) {
                 _questionView.questionCustomView = _customQuestionView;
@@ -239,6 +239,7 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
             }
             
             _questionView.translatesAutoresizingMaskIntoConstraints = NO;
+            [_questionView removeCustomContentPadding];
             
             if (self.readOnlyMode) {
                 _navigationFooterView.optional = YES;
@@ -256,17 +257,23 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
     if ([self allowContinue] == NO) {
         self.continueButtonItem  = self.internalContinueButtonItem;
     }
-    
+}
+
+- (void)setNavigationFooterButtonItems {
+    if (_navigationFooterView) {
+        _navigationFooterView.skipButtonItem = self.skipButtonItem;
+        _navigationFooterView.continueEnabled = [self continueButtonEnabled];
+        _navigationFooterView.continueButtonItem = self.continueButtonItem;
+        _navigationFooterView.cancelButtonItem = self.cancelButtonItem;
+    }
 }
 
 - (void)setupConstraints:(UIView *)view {
     if (_constraints) {
         [NSLayoutConstraint deactivateConstraints:_constraints];
     }
-    CGFloat leftRightPadding = ORKStepContainerLeftRightPaddingForWindow(self.view.window);
 
     view.translatesAutoresizingMaskIntoConstraints = NO;
-    _navigationFooterView.translatesAutoresizingMaskIntoConstraints = NO;
     _constraints = nil;
 
     _constraints = @[
@@ -291,32 +298,11 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
                                                   attribute:NSLayoutAttributeRight
                                                  multiplier:1.0
                                                    constant:0.0],
-                     [NSLayoutConstraint constraintWithItem:_navigationFooterView
-                                                  attribute:NSLayoutAttributeBottom
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:self.view
-                                                  attribute:NSLayoutAttributeBottom
-                                                 multiplier:1.0
-                                                   constant:0.0],
-                     [NSLayoutConstraint constraintWithItem:_navigationFooterView
-                                                  attribute:NSLayoutAttributeLeft
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:self.view
-                                                  attribute:NSLayoutAttributeLeft
-                                                 multiplier:1.0
-                                                   constant:leftRightPadding],
-                     [NSLayoutConstraint constraintWithItem:_navigationFooterView
-                                                  attribute:NSLayoutAttributeRight
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:self.view
-                                                  attribute:NSLayoutAttributeRight
-                                                 multiplier:1.0
-                                                   constant:-leftRightPadding],
                      [NSLayoutConstraint constraintWithItem:view
                                                   attribute:NSLayoutAttributeBottom
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:_navigationFooterView
-                                                  attribute:NSLayoutAttributeTop
+                                                     toItem:self.view
+                                                  attribute:NSLayoutAttributeBottom
                                                  multiplier:1.0
                                                    constant:0.0]
                      ];

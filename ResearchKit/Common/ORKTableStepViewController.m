@@ -121,7 +121,7 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
     if (self.step) {
         _tableContainer = [[ORKTableContainerView alloc] initWithStyle:self.tableViewStyle];
         if ([self conformsToProtocol:@protocol(ORKTableContainerViewDelegate)]) {
-            _tableContainer.delegate = (id)self;
+            _tableContainer.tableContainerDelegate = (id)self;
         }
         [self.view addSubview:_tableContainer];
         _tableContainer.tapOffView = self.view;
@@ -138,7 +138,7 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
         _tableView.separatorColor = self.tableStepRef.bulletType == ORKBulletTypeNone ? [UIColor clearColor] : nil;
         [_tableView setBackgroundColor:_tableViewColor];
         _tableView.alwaysBounceVertical = NO;
-        _headerView = _tableContainer.tableContainerHeaderView;
+        _headerView = _tableContainer.stepContentView;
         _headerView.stepTitle = [[self step] title];
         _headerView.stepText = [[self step] text];
         _headerView.bodyItems = [[self step] bodyItems];
