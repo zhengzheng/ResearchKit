@@ -169,6 +169,7 @@ static void *_ORKViewControllerToolbarObserverContext = &_ORKViewControllerToolb
     BOOL _hasSetProgressLabel;
     BOOL _hasBeenPresented;
     BOOL _hasRequestedHealthData;
+    BOOL _saveable;
     ORKPermissionMask _grantedPermissions;
     NSSet<HKObjectType *> *_requestedHealthTypesForRead;
     NSSet<HKObjectType *> *_requestedHealthTypesForWrite;
@@ -254,6 +255,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
     
     self.showsProgressInNavigationBar = YES;
     self.discardable = NO;
+    _saveable = NO;
     
     _managedResults = [NSMutableDictionary dictionary];
     _managedStepIdentifiers = [NSMutableArray array];
@@ -667,6 +669,14 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
     
     // Clear endDate if current TaskVC got presented again
     _dismissedDate = nil;
+    
+    if (@available(iOS 13.0, *)) {
+        if ([self dismissWithoutConfirmation]) {
+            self.modalInPresentation = NO;
+        } else {
+            self.modalInPresentation = YES;
+        }
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -1179,16 +1189,24 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
 }
 
 - (IBAction)cancelAction:(UIBarButtonItem *)sender {
+    if ([self dismissWithoutConfirmation]) {
+        [self finishWithReason:ORKTaskViewControllerFinishReasonDiscarded error:nil];
+    } else {
+        [self presentCancelOptions:_saveable sender:sender];
+    }
+}
+
+- (BOOL)dismissWithoutConfirmation {
     // Should we also include visualConsentStep here? Others?
     BOOL isCurrentInstructionStep = [self.currentStepViewController.step isKindOfClass:[ORKInstructionStep class]];
     
     // [self result] would not include any results beyond current step.
     // Use _managedResults to get the completed result set.
     NSArray *results = _managedResults.allValues;
-    BOOL saveable = NO;
+    _saveable = NO;
     for (ORKStepResult *result in results) {
         if ([result isSaveable]) {
-            saveable = YES;
+            _saveable = YES;
             break;
         }
     }
@@ -1199,10 +1217,10 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
         isStandaloneReviewStep = reviewStep.isStandalone;
     }
     
-    if (self.discardable || (isCurrentInstructionStep && saveable == NO) || isStandaloneReviewStep || self.currentStepViewController.readOnlyMode) {
-        [self finishWithReason:ORKTaskViewControllerFinishReasonDiscarded error:nil];
+    if (self.discardable || (isCurrentInstructionStep && _saveable == NO) || isStandaloneReviewStep || self.currentStepViewController.readOnlyMode) {
+        return YES;
     } else {
-        [self presentCancelOptions:saveable sender:sender];
+        return NO;
     }
 }
 
