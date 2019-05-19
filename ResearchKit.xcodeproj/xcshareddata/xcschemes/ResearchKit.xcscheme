@@ -51,11 +51,6 @@
                BlueprintName = "ResearchKitTests"
                ReferencedContainer = "container:ResearchKit.xcodeproj">
             </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "ORKStepViewControllerTests/testiPadSetUp()">
-               </Test>
-            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>
