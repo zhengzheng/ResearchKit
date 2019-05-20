@@ -643,13 +643,17 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     })),
            ENTRY(ORKBodyItem,
                  ^id(__unused NSDictionary *dict, __unused ORKESerializationPropertyGetter getter) {
-                     ORKBodyItem *bodyItem = [[ORKBodyItem alloc] initWithText:nil detailText:nil image:nil learnMoreItem:nil bodyItemStyle:ORKBodyItemStyleText];
+                     ORKBodyItem *bodyItem = [[ORKBodyItem alloc] initWithText:GETPROP(dict, text)
+                                                                    detailText:GETPROP(dict, detailText)
+                                                                         image:nil
+                                                                 learnMoreItem:GETPROP(dict, learnMoreItem)
+                                                                 bodyItemStyle:[GETPROP(dict, bodyItemStyle) intValue]];
                      return bodyItem;
                  },
                  (@{
-                    PROPERTY(text, NSString, NSObject, YES, nil, nil),
-                    PROPERTY(detailText, NSString, NSObject, YES, nil, nil),
-                    PROPERTY(bodyItemStyle, NSNumber, NSObject, YES, nil, nil),
+                    PROPERTY(text, NSString, NSObject, NO, nil, nil),
+                    PROPERTY(detailText, NSString, NSObject, NO, nil, nil),
+                    PROPERTY(bodyItemStyle, NSNumber, NSObject, NO, nil, nil),
                     IMAGEPROPERTY(image, NSObject, YES),
                     PROPERTY(learnMoreItem, ORKLearnMoreItem, NSObject, YES, nil, nil),
                     })),

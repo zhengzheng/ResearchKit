@@ -491,7 +491,8 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
                                               @"ORKAmslerGridResult.image",
                                               @"ORKTextChoice.detailTextAttributedString",
                                               @"ORKTextChoice.primaryTextAttributedString",
-                                              @"ORKConsentSection.image"
+                                              @"ORKConsentSection.image",
+                                              @"ORKBodyItem.image"
                                               ];
     NSArray *allowedUnTouchedKeys = @[@"_class"];
     
