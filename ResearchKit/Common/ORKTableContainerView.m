@@ -35,6 +35,7 @@
 #import "ORKNavigationContainerView_Internal.h"
 #import "ORKStepHeaderView.h"
 
+#import "ORKTitleLabel.h"
 #import "ORKHelpers_Internal.h"
 #import "ORKSkin.h"
 
@@ -226,6 +227,7 @@
 }
 
 - (void)sizeHeaderToFit {
+    [self.stepContentView.titleLabel setPreferredMaxLayoutWidth:CGFLOAT_MIN];
     CGFloat estimatedHeight = [self.stepContentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
     CGRect bounds = CGRectMake(0.0, 0.0, self.stepContentView.bounds.size.width, self.stepContentView.bounds.size.height);
     bounds.size.height = estimatedHeight;

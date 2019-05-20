@@ -268,6 +268,13 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
     }
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    if (_tableContainer) {
+        [_tableContainer sizeHeaderToFit];
+    }
+}
+
 - (void)setupConstraints:(UIView *)view {
     if (_constraints) {
         [NSLayoutConstraint deactivateConstraints:_constraints];

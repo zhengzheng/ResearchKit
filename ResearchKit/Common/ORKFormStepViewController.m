@@ -381,6 +381,7 @@
     
     // Reset skipped flag - result can now be non-empty
     _skipped = NO;
+    [_tableContainer layoutIfNeeded];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -523,6 +524,7 @@
         _tableView = _tableContainer.tableView;
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        _tableView.clipsToBounds = YES;
         _tableView.rowHeight = UITableViewAutomaticDimension;
         _tableView.sectionHeaderHeight = UITableViewAutomaticDimension;
         _tableView.estimatedRowHeight = ORKGetMetricForWindow(ORKScreenMetricTableCellDefaultHeight, self.view.window);
@@ -566,6 +568,7 @@
             _navigationFooterView.skipButton.accessibilityTraits = UIAccessibilityTraitStaticText;
         }
         [self setupConstraints];
+        [_tableContainer setNeedsLayout];
     }
 }
 
