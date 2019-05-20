@@ -364,7 +364,8 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
     if (!scheduledRefresh) {
         [self refreshDefaults];
     }
-    
+    //    TODO: Remove if unnecessary.
+    [_tableContainer sizeHeaderToFit];
     [_tableContainer layoutIfNeeded];
 }
 
