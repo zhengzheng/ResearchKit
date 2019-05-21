@@ -378,8 +378,6 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
    
 }
 
-
-
 - (void)setCustomContentFillsAvailableSpace:(BOOL)customContentFillsAvailableSpace {
     _customContentFillsAvailableSpace = customContentFillsAvailableSpace;
     [self updateCustomContentHeightConstraint];
