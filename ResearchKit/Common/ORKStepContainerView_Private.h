@@ -38,6 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ORKStepContainerView ()
 
 @property (nonatomic) UIView *customContentView;
+@property (nonatomic, assign) BOOL customContentFillsAvailableSpace;
 
 @end
 
