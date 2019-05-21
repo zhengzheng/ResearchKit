@@ -115,6 +115,7 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
     NSLayoutConstraint *_navigationContainerViewTopConstraint;
     NSArray<NSLayoutConstraint *> *_navigationContainerViewConstraints;
     NSLayoutConstraint *_customContentWidthConstraint;
+    NSLayoutConstraint *_customContentHeightConstraint;
     NSMutableArray<NSLayoutConstraint *> *_updatedConstraints;
 }
 
@@ -371,7 +372,42 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
                                                                              constant:0.0],
                                                _customContentWidthConstraint
                                                ]];
+    [self updateCustomContentHeightConstraint];
     [self setNeedsUpdateConstraints];
+    
+   
+}
+
+- (void)setCustomContentFillsAvailableSpace:(BOOL)customContentFillsAvailableSpace {
+    _customContentFillsAvailableSpace = customContentFillsAvailableSpace;
+    [self updateCustomContentHeightConstraint];
+}
+
+- (void)setCustomContentHeightConstraint {
+    if (_customContentView) {
+        _customContentHeightConstraint = [NSLayoutConstraint constraintWithItem:_customContentView
+                                                                      attribute:NSLayoutAttributeBottom
+                                                                      relatedBy:_customContentFillsAvailableSpace ? NSLayoutRelationEqual : NSLayoutRelationLessThanOrEqual
+                                                                         toItem:self.isNavigationContainerScrollable ? self.navigationFooterView : _scrollContainerView
+                                                                      attribute:self.isNavigationContainerScrollable ? NSLayoutAttributeTop : NSLayoutAttributeBottom
+                                                                     multiplier:1.0
+                                                                       constant:self.isNavigationContainerScrollable ? -ORKStepContainerNavigationFooterTopPaddingStandard : 0.0];
+    }
+}
+
+- (void)updateCustomContentHeightConstraint {
+    if (_customContentView) {
+        if (_customContentHeightConstraint && _customContentHeightConstraint.isActive) {
+            [NSLayoutConstraint deactivateConstraints:@[_customContentHeightConstraint]];
+        }
+        if ([_updatedConstraints containsObject:_customContentHeightConstraint]) {
+            [_updatedConstraints removeObject:_customContentHeightConstraint];
+        }
+        [self setCustomContentHeightConstraint];
+        if (_customContentHeightConstraint) {
+            [_updatedConstraints addObject:_customContentHeightConstraint];
+        }
+    }
 }
 
 - (void)setCustomContentWidthConstraint {
