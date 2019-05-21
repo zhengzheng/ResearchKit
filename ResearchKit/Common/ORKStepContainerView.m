@@ -37,10 +37,6 @@
 #import "ORKSkin.h"
 #import "ORKNavigationContainerView_Internal.h"
 
-
-
-
-
 /**
  +-----------------------------------------+
  | +-------------------------------------+ |<---_stepContainerView
