@@ -102,6 +102,8 @@
 
 @property (nonatomic, strong) NSMutableSet *touchedKeys;
 
+- (NSDictionary *)_containedDictionary;
+
 @end
 
 
@@ -165,6 +167,10 @@
         [self.touchedKeys addObject:key];
     }
     return [_d objectForKeyedSubscript:key];
+}
+
+- (NSDictionary *)_containedDictionary {
+    return [_d copy];
 }
 
 @end
@@ -275,6 +281,7 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
 @interface ORKJSONTestImageSerialization : NSObject<ORKESerializationImageProvider>
 
 @property (nonatomic, readonly) NSDictionary *imageTable;
+@property (nonatomic) BOOL generateImages;
 
 - (void)reset;
 
@@ -304,7 +311,14 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
 }
 
 - (UIImage *)imageForReference:(NSDictionary *)reference {
-    return _imageTable[reference[@"imageName"]];
+    NSString *s = reference[@"imageName"];
+    if (_generateImages && ![_imageTable objectForKey:s]) {
+        UIImage *image = [UIImage new];
+        NSValue *imagePointer = [NSValue valueWithPointer:(const void *)image];
+        _imageTable[s] = image;
+        _reverseImageTable[imagePointer] = s;
+    }
+    return _imageTable[s];
 }
 
 - (nullable NSDictionary *)referenceBySavingImage:(UIImage *)image {
@@ -379,7 +393,8 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
                                    @"ORKNavigablePageStep.steps",
                                    @"ORKTextAnswerFormat.validationRegex",
                                    @"ORKRegistrationStep.passcodeValidationRegex",
-                                   @"textViewText"
+                                   @"textViewText",
+                                   @"ORKConsentSection.image"
                                    ];
         _knownNotSerializedProperties = @[
                                           @"ORKStep.task",
@@ -544,6 +559,63 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
     
 }
 
+/*
+ Verifies there is a sample for every JSON-serializable class.
+ Verifies all registered properties for each of those classes is present in the sample.
+ Verifies that all properties in the sample are registered.
+ Attempts a decode of the sample, twice: once with image decoding enabled and once with images mapped to nil.
+ */
+- (void)testORKSampleDeserialization {
+    NSString *bundlePath = [[NSBundle bundleForClass:[ORKJSONSerializationTests class]] pathForResource:@"samples" ofType:@"bundle"];
+    NSBundle *bundle = [NSBundle bundleWithPath:bundlePath];
+    NSArray<NSString *> *paths = [bundle pathsForResourcesOfType:@"json" inDirectory:nil forLocalization:nil];
+    
+    ORKJSONTestImageSerialization *testImageSerialization = [[ORKJSONTestImageSerialization alloc] init];
+    testImageSerialization.generateImages = YES;
+    ORKESerializationContext *context = [[ORKESerializationContext alloc] initWithLocalizer:nil imageProvider:testImageSerialization];
+    
+    ORKJSONSerializationTestConfiguration *testConfiguration = [[ORKJSONSerializationTestConfiguration alloc] init];
+    
+    NSArray *classesWithORKSerialization = testConfiguration.classesWithORKSerialization;
+    
+    for (Class c in classesWithORKSerialization) {
+        XCTAssertNotNil([bundle pathForResource:NSStringFromClass(c) ofType:@"json"], @"Missing JSON serialization example for %@", NSStringFromClass(c));
+    }
+    
+    // Decode where images are "decoded"
+    for (NSString *path in paths) {
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:path] options:0 error:NULL];
+        NSString *className = [[path lastPathComponent] stringByDeletingPathExtension];
+        NSMutableArray<NSString *> *knownProperties = [[ORKESerializer serializedPropertiesForClass:NSClassFromString(className)] mutableCopy];
+        NSMutableArray<NSString *> *loadedProperties = [[dict allKeys] mutableCopy];
+        [loadedProperties removeObject:@"_class"];
+        NSSet *knownPropSet = [NSSet setWithArray:knownProperties];
+        NSSet *loadedPropSet = [NSSet setWithArray:loadedProperties];
+        NSMutableSet *intersectionSet = [knownPropSet mutableCopy]; [intersectionSet intersectSet:loadedPropSet];
+        NSMutableSet *extraKnownProps = [knownPropSet mutableCopy]; [extraKnownProps minusSet:intersectionSet];
+        NSMutableSet *extraLoadedProps = [loadedPropSet mutableCopy]; [extraLoadedProps minusSet:intersectionSet];
+        XCTAssertEqualObjects(extraKnownProps, [NSSet set], @"Extra properties registered but not in example for %@", className);
+        XCTAssertEqualObjects(extraLoadedProps, [NSSet set], @"Extra properties in sample but not registered for %@", className);
+        id instance = [ORKESerializer objectFromJSONObject:dict context:context error:NULL];
+        XCTAssertNotNil(instance);
+        XCTAssertEqualObjects(NSStringFromClass([instance class]), className);
+    }
+    
+    context.imageProvider = nil;
+    
+    // Decode with image decoding failing and returning nil instead of an image: silently suppress the failure
+    for (NSString *path in paths) {
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:path] options:0 error:NULL];
+        NSString *className = [[path lastPathComponent] stringByDeletingPathExtension];
+        id instance = [ORKESerializer objectFromJSONObject:dict context:context error:NULL];
+        XCTAssertNotNil(instance);
+        XCTAssertEqualObjects(NSStringFromClass([instance class]), className);
+    }
+    
+}
+
+#define GENERATE_SAMPLES 0
+
 // JSON Serialization
 - (void)testORKSerialization {
     ORKJSONTestImageSerialization *testImageSerialization = [[ORKJSONTestImageSerialization alloc] init];
@@ -663,7 +735,7 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
         
         // Make sure all keys are touched by initializer
         for (NSString *key in unTouchedKeys) {
-            XCTAssertTrue([allowedUnTouchedKeys containsObject:key], @"untouched %@", key);
+            XCTAssertTrue([allowedUnTouchedKeys containsObject:key], @"untouched %@ in %@", key, aClass);
         }
         
         [mockDictionary stopObserving];
@@ -675,9 +747,21 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
             XCTAssertTrue(isMatch, @"Should be equal for class: %@", NSStringFromClass(aClass));
         }
         
+#if GENERATE_SAMPLES
+        [self writeDictionary:dictionary2 forClass:aClass];
+#endif
+        
         [testImageSerialization reset];
     }
     
+}
+
+- (void)writeDictionary:(NSDictionary *)dictionary forClass:(Class)aClass {
+    NSURL *docsDir = [NSURL fileURLWithPath:[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject]];
+    NSString *outputPath = [[docsDir path] stringByAppendingPathComponent:[NSStringFromClass(aClass) stringByAppendingString:@".json"]];
+    NSData *data = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:NULL];
+    [data writeToFile:outputPath atomically:YES];
+    NSLog(@"%@", outputPath);
 }
 
 - (BOOL)applySomeValueToClassProperty:(ClassProperty *)p forObject:(id)instance index:(NSInteger)index forEqualityCheck:(BOOL)equality {

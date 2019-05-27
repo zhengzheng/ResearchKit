@@ -641,7 +641,10 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     PROPERTY(footnote, NSString, NSObject, YES, nil, nil),
                     PROPERTY(shouldTintImages, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(useSurveyMode, NSNumber, NSObject, YES, nil, nil),
-                    PROPERTY(bodyItems, ORKBodyItem, NSArray, YES, nil, nil)
+                    PROPERTY(bodyItems, ORKBodyItem, NSArray, YES, nil, nil),
+                    IMAGEPROPERTY(iconImage, NSObject, YES),
+                    IMAGEPROPERTY(auxiliaryImage, NSObject, YES),
+                    IMAGEPROPERTY(image, NSObject, YES),
                     })),
            ENTRY(ORKBodyItem,
                  ^id(__unused NSDictionary *dict, __unused ORKESerializationPropertyGetter getter) {
@@ -739,9 +742,6 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                  (@{
                     PROPERTY(detailText, NSString, NSObject, YES, nil, nil),
                     PROPERTY(footnote, NSString, NSObject, YES, nil, nil),
-                    IMAGEPROPERTY(image, NSObject, NO),
-                    IMAGEPROPERTY(auxiliaryImage, NSObject, NO),
-                    IMAGEPROPERTY(iconImage, NSObject, NO),
                     })),
            ENTRY(ORKLearnMoreInstructionStep,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
@@ -832,7 +832,6 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     PROPERTY(spokenInstruction, NSString, NSObject, YES, nil, nil),
                     PROPERTY(finishedSpokenInstruction, NSString, NSObject, YES, nil, nil),
                     PROPERTY(recorderConfigurations, ORKRecorderConfiguration, NSArray, YES, nil, nil),
-                    IMAGEPROPERTY(image, NSObject, NO),
                     })),
            ENTRY(ORKAudioStep,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
@@ -896,7 +895,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     PROPERTY(accessibilityHint, NSString, NSObject, YES, nil, nil),
                     PROPERTY(accessibilityInstructions, NSString, NSObject, YES, nil, nil),
                     PROPERTY(captureRaw, NSNumber, NSObject, YES, nil, nil),
-                    IMAGEPROPERTY(templateImage, NSObject, NO),
+                    IMAGEPROPERTY(templateImage, NSObject, YES),
                     })),
            ENTRY(ORKVideoCaptureStep,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
@@ -912,7 +911,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     PROPERTY(devicePosition, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(accessibilityHint, NSString, NSObject, YES, nil, nil),
                     PROPERTY(accessibilityInstructions, NSString, NSObject, YES, nil, nil),
-                    IMAGEPROPERTY(templateImage, NSObject, NO),
+                    IMAGEPROPERTY(templateImage, NSObject, YES),
                     })),
            ENTRY(ORKSignatureStep,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
@@ -933,7 +932,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     PROPERTY(maximumConsecutiveFailures, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(requireReversal, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(customTargetPluralName, NSString, NSObject, YES, nil, nil),
-                    IMAGEPROPERTY(customTargetImage, NSObject, NO),
+                    IMAGEPROPERTY(customTargetImage, NSObject, YES),
                     })),
            ENTRY(ORKWalkingTaskStep,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
@@ -1034,7 +1033,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                  },
                  (@{
                     PROPERTY(shouldHideTranscript, NSNumber, NSObject, YES, nil, nil),
-                    PROPERTY(speechRecognitionText, NSString, NSObject, YES, nil, nil),
+                    PROPERTY(speechRecognitionText, NSString, NSObject, NO, nil, nil),
                     PROPERTY(speechRecognizerLocale, NSString, NSObject, YES, nil, nil)
                     })),
            ENTRY(ORKEnvironmentSPLMeterStep,
@@ -1088,7 +1087,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                  (@{
                     PROPERTY(eyeSide, NSNumber, NSObject, NO, nil, nil),
                     PROPERTY(path, UIBezierPath, NSArray, NO, nil, nil),
-                    IMAGEPROPERTY(image, NSObject, NO),
+                    IMAGEPROPERTY(image, NSObject, YES),
                     })),
            ENTRY(ORKConsentDocument,
                  nil,
@@ -1142,7 +1141,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                              ^id(id url, __unused ORKESerializationContext *context) { return [(NSURL *)url absoluteString]; },
                              ^id(id string, __unused ORKESerializationContext *context) { return [NSURL URLWithString:string]; }),
                     PROPERTY(omitFromDocument, NSNumber, NSObject, YES, nil, nil),
-                    IMAGEPROPERTY(customImage, NSObject, NO),
+                    IMAGEPROPERTY(customImage, NSObject, YES),
                     })),
            ENTRY(ORKConsentSignature,
                  nil,
@@ -1155,7 +1154,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     PROPERTY(requiresName, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(requiresSignatureImage, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(signatureDateFormatString, NSString, NSObject, YES, nil, nil),
-                    IMAGEPROPERTY(signatureImage, NSObject, NO),
+                    IMAGEPROPERTY(signatureImage, NSObject, YES),
                     })),
            ENTRY(ORKRegistrationStep,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
@@ -1333,8 +1332,8 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                  (@{
                     PROPERTY(text, NSString, NSObject, NO, nil, nil),
                     PROPERTY(value, NSObject, NSObject, NO, nil, nil),
-                    IMAGEPROPERTY(normalStateImage, NSObject, NO),
-                    IMAGEPROPERTY(selectedStateImage, NSObject, NO),
+                    IMAGEPROPERTY(normalStateImage, NSObject, YES),
+                    IMAGEPROPERTY(selectedStateImage, NSObject, YES),
                     })),
            ENTRY(ORKTimeOfDayAnswerFormat,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
@@ -1399,8 +1398,8 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     PROPERTY(gradientColors, UIColor, NSArray, YES, nil, nil),
                     PROPERTY(gradientLocations, NSNumber, NSArray, YES, nil, nil),
                     PROPERTY(hideSelectedValue, NSNumber, NSObject, YES, nil, nil),
-                    IMAGEPROPERTY(minimumImage, NSObject, NO),
-                    IMAGEPROPERTY(maximumImage, NSObject, NO),
+                    IMAGEPROPERTY(minimumImage, NSObject, YES),
+                    IMAGEPROPERTY(maximumImage, NSObject, YES),
                     })),
            ENTRY(ORKContinuousScaleAnswerFormat,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
@@ -1420,8 +1419,8 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     PROPERTY(gradientColors, UIColor, NSArray, YES, nil, nil),
                     PROPERTY(gradientLocations, NSNumber, NSArray, YES, nil, nil),
                     PROPERTY(hideSelectedValue, NSNumber, NSObject, YES, nil, nil),
-                    IMAGEPROPERTY(minimumImage, NSObject, NO),
-                    IMAGEPROPERTY(maximumImage, NSObject, NO),
+                    IMAGEPROPERTY(minimumImage, NSObject, YES),
+                    IMAGEPROPERTY(maximumImage, NSObject, YES),
                     })),
            ENTRY(ORKTextScaleAnswerFormat,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
@@ -1937,6 +1936,10 @@ static id objectForJsonObject(id input, Class expectedClass, ORKESerializationJS
     
     if (converterBlock != nil) {
         input = converterBlock(input, context);
+        if (input == nil) {
+            // Object converted to nothing
+            return nil;
+        }
     }
     
     ORKESerializationLocalizer *localizer = context.localizer;
@@ -2132,6 +2135,16 @@ static id jsonObjectForObject(id object, ORKESerializationContext *context) {
         [a addObject:NSClassFromString(key)];
     }
     return a;
+}
+
+
++ (NSArray<NSString *> *)serializedPropertiesForClass:(Class)c {
+    NSArray<ORKESerializableTableEntry *> *entries = classEncodingsForClass(c);
+    NSMutableArray *properties = [NSMutableArray array];
+    for (ORKESerializableTableEntry *entry in entries) {
+        [properties addObjectsFromArray:[entry.properties allKeys]];
+    }
+    return properties;
 }
 
 @end

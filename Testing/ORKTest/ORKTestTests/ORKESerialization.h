@@ -93,6 +93,8 @@ typedef _Nullable id (^ORKESerializationJSONToObjectBlock)(id jsonObject, ORKESe
 
 + (NSArray *)serializableClasses;
 
++ (NSArray<NSString *> *)serializedPropertiesForClass:(Class)c;
+
 @end
 
 
