@@ -72,8 +72,6 @@ class ORKStepViewControllerTests: XCTestCase {
         testController.skipButtonTitle = skipString
         testController.backButtonItem = backButton
         testController.cancelButtonItem = cancelButton
-        // TODO: backwards compatibility for learnMoreButtonTitle
-        // XCTAssertEqual(testController.learnMoreButtonTitle, learnMoreString)
         XCTAssertEqual(testController.continueButtonTitle, countinueString)
         XCTAssertEqual(testController.skipButtonTitle, skipString)
         XCTAssertEqual(testController.backButtonItem, backButton)
@@ -129,51 +127,6 @@ class ORKStepViewControllerTests: XCTestCase {
         XCTAssertFalse(completed, "Alert should not display")
     }
 
-    
-    func testiPadSetUp() {
-        testController.shouldIgnoreiPadDesign = false
-        let iPadScreenSize = CGRect(x: 0, y: 0, width: 768, height: 1024)
-        
-        testController.view.window!.bounds = iPadScreenSize
-        testController.viewDidLoad()
-
-        guard let iPadBackgroundView = testController.view!.subviews.first else {
-            XCTFail("failed to retrieve the first subview")
-            return
-        }
-        
-        XCTAssertEqual(iPadBackgroundView.backgroundColor, ORKColor(ORKiPadBackgroundViewColorKey))
-        XCTAssertEqual(iPadBackgroundView.layer.cornerRadius, ORKiPadBackgroundViewCornerRadius)
-        
-        guard let iPadContentView = iPadBackgroundView.subviews.first else {
-            XCTFail("failed to retrieve the first subview")
-            return
-        }
-        
-        XCTAssertEqual(iPadContentView.backgroundColor, UIColor.clear)
-        
-        guard let iPadStepTitleLabel = iPadBackgroundView.subviews.last as? UILabel else {
-            XCTFail("failed to cast view as UILabel")
-            return
-        }
-        let iPadStepTitleLabelFontSize = CGFloat(50.0)
-        
-        XCTAssertEqual(iPadStepTitleLabel.numberOfLines, 0)
-        XCTAssertEqual(iPadStepTitleLabel.textAlignment, NSTextAlignment.natural)
-        XCTAssertEqual(iPadStepTitleLabel.font, UIFont.systemFont(ofSize: iPadStepTitleLabelFontSize, weight: UIFont.Weight.bold))
-        XCTAssertEqual(iPadStepTitleLabel.adjustsFontSizeToFitWidth, true)
-        XCTAssertEqual(iPadStepTitleLabel.text, testController.step?.title)
-        
-        
-        let text = "TEST"
-        testController.setiPadStepTitleLabelText(text)
-        XCTAssertEqual(iPadStepTitleLabel.text, text)
-        
-        let backgroundColor = UIColor.red
-        testController.setiPadBackgroundViewColor(backgroundColor)
-        XCTAssertEqual(iPadBackgroundView.backgroundColor, backgroundColor)
-    }
-    
     func testNavigation() {
         negativeTest = false
         XCTAssertEqual(testController.hasPreviousStep(), true)

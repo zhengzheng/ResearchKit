@@ -53,6 +53,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, nullable) NSString *stepText;
 
+@property (nonatomic, nullable) NSString *stepDetailText;
+
 @property (nonatomic, nullable) UIImage *titleIconImage;
 
 @property (nonatomic) NSArray<ORKBodyItem *> *bodyItems;

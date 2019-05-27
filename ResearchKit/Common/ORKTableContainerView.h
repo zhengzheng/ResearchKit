@@ -30,7 +30,7 @@
 
 
 @import UIKit;
-
+#import "ORKStepView_Private.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -45,14 +45,12 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @class ORKNavigationContainerView;
-@class ORKTableContainerHeaderView;
 
-@interface ORKTableContainerView : UIView
+@interface ORKTableContainerView : ORKStepView
 
-@property (nonatomic, weak, nullable) id<ORKTableContainerViewDelegate> delegate;
+@property (nonatomic, weak, nullable) id<ORKTableContainerViewDelegate> tableContainerDelegate;
 
 @property (nonatomic, strong, readonly) UITableView *tableView;
-@property (nonatomic) ORKStepContentView *tableContainerHeaderView;
 
 /*
  If tap off events should be accepted from outside this view's bounds, provide

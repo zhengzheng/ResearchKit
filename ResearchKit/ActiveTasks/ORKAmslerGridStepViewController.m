@@ -81,7 +81,6 @@
     _amslerGridView = [ORKAmslerGridContentView new];
     _amslerGridView.translatesAutoresizingMaskIntoConstraints = NO;
     self.activeStepView.activeCustomView = _amslerGridView;
-    self.activeStepView.stepViewFillsAvailableSpace = YES;
     
     _freehandDrawingView = [ORKFreehandDrawingView new];
 

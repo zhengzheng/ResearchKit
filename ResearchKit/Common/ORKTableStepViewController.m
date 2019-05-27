@@ -115,13 +115,12 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
     _tableView = nil;
 
     _headerView = nil;
-    [_navigationFooterView removeFromSuperview];
     _navigationFooterView = nil;
     
     if (self.step) {
         _tableContainer = [[ORKTableContainerView alloc] initWithStyle:self.tableViewStyle];
         if ([self conformsToProtocol:@protocol(ORKTableContainerViewDelegate)]) {
-            _tableContainer.delegate = (id)self;
+            _tableContainer.tableContainerDelegate = (id)self;
         }
         [self.view addSubview:_tableContainer];
         _tableContainer.tapOffView = self.view;
@@ -138,17 +137,16 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
         _tableView.separatorColor = self.tableStepRef.bulletType == ORKBulletTypeNone ? [UIColor clearColor] : nil;
         [_tableView setBackgroundColor:_tableViewColor];
         _tableView.alwaysBounceVertical = NO;
-        _headerView = _tableContainer.tableContainerHeaderView;
+        _headerView = _tableContainer.stepContentView;
         _headerView.stepTitle = [[self step] title];
         _headerView.stepText = [[self step] text];
         _headerView.bodyItems = [[self step] bodyItems];
-        _navigationFooterView = [ORKNavigationContainerView new];
+        _navigationFooterView = _tableContainer.navigationFooterView;
         _navigationFooterView.skipButtonItem = self.skipButtonItem;
         _navigationFooterView.continueEnabled = [self continueButtonEnabled];
         _navigationFooterView.continueButtonItem = self.continueButtonItem;
         _navigationFooterView.cancelButtonItem = self.cancelButtonItem;
         _navigationFooterView.optional = self.step.optional;
-        [self.view addSubview:_navigationFooterView];
         
         [self setupConstraints];
         // Register the cells for the table view
@@ -165,59 +163,35 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
         [NSLayoutConstraint deactivateConstraints:_constraints];
     }
     _tableContainer.translatesAutoresizingMaskIntoConstraints = NO;
-    _navigationFooterView.translatesAutoresizingMaskIntoConstraints = NO;
     _constraints = nil;
     
-    UIView *viewForiPad = [self viewForiPadLayoutConstraints];
-
     _constraints = @[
                      [NSLayoutConstraint constraintWithItem:_tableContainer
                                                   attribute:NSLayoutAttributeTop
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view.safeAreaLayoutGuide
+                                                     toItem:self.view
                                                   attribute:NSLayoutAttributeTop
                                                  multiplier:1.0
                                                    constant:0.0],
                      [NSLayoutConstraint constraintWithItem:_tableContainer
                                                   attribute:NSLayoutAttributeLeft
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view.safeAreaLayoutGuide
+                                                     toItem:self.view
                                                   attribute:NSLayoutAttributeLeft
                                                  multiplier:1.0
                                                    constant:0.0],
                      [NSLayoutConstraint constraintWithItem:_tableContainer
                                                   attribute:NSLayoutAttributeRight
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view.safeAreaLayoutGuide
-                                                  attribute:NSLayoutAttributeRight
-                                                 multiplier:1.0
-                                                   constant:0.0],
-                     [NSLayoutConstraint constraintWithItem:_navigationFooterView
-                                                  attribute:NSLayoutAttributeBottom
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view
-                                                  attribute:NSLayoutAttributeBottom
-                                                 multiplier:1.0
-                                                   constant:0.0],
-                     [NSLayoutConstraint constraintWithItem:_navigationFooterView
-                                                  attribute:NSLayoutAttributeLeft
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view
-                                                  attribute:NSLayoutAttributeLeft
-                                                 multiplier:1.0
-                                                   constant:0.0],
-                     [NSLayoutConstraint constraintWithItem:_navigationFooterView
-                                                  attribute:NSLayoutAttributeRight
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view
+                                                     toItem:self.view
                                                   attribute:NSLayoutAttributeRight
                                                  multiplier:1.0
                                                    constant:0.0],
                      [NSLayoutConstraint constraintWithItem:_tableContainer
                                                   attribute:NSLayoutAttributeBottom
                                                   relatedBy:NSLayoutRelationEqual
-                                                     toItem:_navigationFooterView
-                                                  attribute:NSLayoutAttributeTop
+                                                     toItem:self.view
+                                                  attribute:NSLayoutAttributeBottom
                                                  multiplier:1.0
                                                    constant:0.0]
                      ];

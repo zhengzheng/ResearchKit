@@ -56,7 +56,6 @@
 #import <ResearchKit/ORKSignatureResult_Private.h>
 #import <ResearchKit/ORKResult_Private.h>
 #import <ResearchKit/ORKStepContainerView_Private.h>
-#import <ResearchKit/ORKTableContainerHeaderView.h>
 
 #import <ResearchKit/ORKAudioStep.h>
 #import <ResearchKit/ORKAmslerGridStep.h>
@@ -124,6 +123,7 @@
 #import <ResearchKit/ORKHTMLPDFPageRenderer.h>
 
 // For custom steps
+#import <ResearchKit/ORKStepView_Private.h>
 #import <ResearchKit/ORKCustomStepView.h>
 #import <ResearchKit/ORKTappingContentView.h>
 #import <ResearchKit/ORKVerticalContainerView.h>

@@ -86,8 +86,6 @@
     self.holePegTestRemoveContentView.threshold = [self holePegTestRemoveStep].threshold;
     self.holePegTestRemoveContentView.delegate = self;
     self.activeStepView.activeCustomView = self.holePegTestRemoveContentView;
-    self.activeStepView.stepViewFillsAvailableSpace = YES;
-    self.activeStepView.scrollContainerShouldCollapseNavbar = NO;
     
     NSString *identifier = [[self holePegTestRemoveStep].identifier stringByReplacingOccurrencesOfString:@"remove" withString:@"place"];
     NSTimeInterval placeStepDuration = ((ORKHolePegTestResult *)[[self.taskViewController.result stepResultForStepIdentifier:identifier].results firstObject]).totalTime;

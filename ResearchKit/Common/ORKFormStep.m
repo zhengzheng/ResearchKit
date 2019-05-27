@@ -95,7 +95,6 @@
 - (instancetype)copyWithZone:(NSZone *)zone {
     ORKFormStep *step = [super copyWithZone:zone];
     step.formItems = ORKArrayCopyObjects(_formItems);
-    step.footnote = self.footnote;
     return step;
 }
 
@@ -104,19 +103,17 @@
     
     __typeof(self) castObject = object;
     return isParentSame &&
-        ORKEqualObjects(self.formItems, castObject.formItems) &&
-        ORKEqualObjects(self.footnote, castObject.footnote);
+    ORKEqualObjects(self.formItems, castObject.formItems);
 }
 
 - (NSUInteger)hash {
-    return super.hash ^ self.formItems.hash ^ self.footnote.hash;
+    return super.hash ^ self.formItems.hash;
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self) {
         ORK_DECODE_OBJ_ARRAY(aDecoder, formItems, ORKFormItem);
-        ORK_DECODE_OBJ_CLASS(aDecoder, footnote, NSString);
         ORK_DECODE_BOOL(aDecoder, useCardView);
     }
     return self;
@@ -125,7 +122,6 @@
 - (void)encodeWithCoder:(NSCoder *)aCoder {
     [super encodeWithCoder:aCoder];
     ORK_ENCODE_OBJ(aCoder, formItems);
-    ORK_ENCODE_OBJ(aCoder, footnote);
     ORK_ENCODE_BOOL(aCoder, useCardView);
 }
 

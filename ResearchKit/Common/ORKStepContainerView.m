@@ -28,17 +28,16 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
+#import "ORKStepView_Private.h"
 #import "ORKStepContainerView_Private.h"
 #import "ORKTitleLabel.h"
 #import "ORKBodyItem.h"
-#import "ORKStepContentView_Private.h"
+#import "ORKStepContentView.h"
 #import "ORKBodyContainerView.h"
 #import "ORKSkin.h"
 #import "ORKNavigationContainerView_Internal.h"
 
 /**
- 
  +-----------------------------------------+
  | +-------------------------------------+ |<---_stepContainerView
  | |        _topContentImageView         | |
@@ -57,9 +56,11 @@
  | |  |  | +---------------------+ |  |  | |
  | |  |  | |    _titleLabel      | |  |  | |
  | |  |  | |_____________________| |  |  | |
- | |  |  |                         |  |  | |
  | |  |  | +---------------------+ |  |  | |
  | |  |  | |    _textLabel       | |  |  | |
+ | |  |  | |_____________________| |  |  | |
+ | |  |  | +---------------------+ |  |  | |
+ | |  |  | |  _detailTextLabel   | |  |  | |
  | |  |  | |_____________________| |  |  | |
  | |  |  |                         |  |  | |
  | |  |  | +---------------------+ |  |  | |
@@ -95,18 +96,15 @@
 static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
 static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
 
-@interface ORKStepContainerView()<ORKStepContentLearnMoreItemDelegate>
-
-@end
-
 @implementation ORKStepContainerView {
-    
+    CGFloat _leftRightPadding;
+    CGFloat _customContentLeftRightPadding;
     UIScrollView *_scrollView;
     UIView *_scrollContainerView;
+    BOOL _topContentImageShouldScroll;
+    
     UIImageView *_topContentImageView;
-    BOOL _isNavigationContainerScrollable;
-    
-    
+
 //    variable constraints:
     NSLayoutConstraint *_scrollViewTopConstraint;
     NSLayoutConstraint *_scrollViewBottomConstraint;
@@ -116,105 +114,67 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
     
     NSLayoutConstraint *_navigationContainerViewTopConstraint;
     NSArray<NSLayoutConstraint *> *_navigationContainerViewConstraints;
-    
+    NSLayoutConstraint *_customContentWidthConstraint;
     NSMutableArray<NSLayoutConstraint *> *_updatedConstraints;
 }
 
 - (instancetype)init {
     self = [super init];
     if (self) {
+        _leftRightPadding = ORKStepContainerLeftRightPaddingForWindow(self.window);
+        _customContentLeftRightPadding = ORKStepContainerLeftRightPaddingForWindow(self.window);
         [self setupScrollView];
         [self setupScrollContainerView];
-        [self setupStepContentView];
-        _isNavigationContainerScrollable = YES;
+        [self addStepContentView];
         [self setupConstraints];
         [self setupUpdatedConstraints];
-        [self setupNavigationContainerView];
+        [self placeNavigationContainerView];
+        _topContentImageShouldScroll = YES;
     }
     return self;
 }
 
 - (void)setStepTopContentImage:(UIImage *)stepTopContentImage {
     
-    _stepTopContentImage = stepTopContentImage;
-    
-    //    1.) nil Image; updateConstraints
-    if (!stepTopContentImage && _topContentImageView) {
-        [_topContentImageView removeFromSuperview];
-        _topContentImageView = nil;
-        [self deactivateTopContentImageViewConstraints];
-        [self updateScrollViewTopConstraint];
-        [self setNeedsUpdateConstraints];
+    [super setStepTopContentImage:stepTopContentImage];
+    if (_topContentImageShouldScroll) {
+        [self.stepContentView setStepTopContentImage:stepTopContentImage];
     }
-    
-    //    2.) First Image; updateConstraints
-    if (stepTopContentImage && !_topContentImageView) {
-        [self setupTopContentImageView];
-        _topContentImageView.image = [self topContentAndAuxiliaryImage];
-        [self updateScrollViewTopConstraint];
-        [self setNeedsUpdateConstraints];
+    else {
+        //    1.) nil Image; updateConstraints
+        if (!stepTopContentImage && _topContentImageView) {
+            [_topContentImageView removeFromSuperview];
+            _topContentImageView = nil;
+            [self deactivateTopContentImageViewConstraints];
+            [self updateScrollViewTopConstraint];
+            [self setNeedsUpdateConstraints];
+        }
+        
+        //    2.) First Image; updateConstraints
+        if (stepTopContentImage && !_topContentImageView) {
+            [self setupTopContentImageView];
+            _topContentImageView.image = [self topContentAndAuxiliaryImage];
+            [self updateScrollViewTopConstraint];
+            [self setNeedsUpdateConstraints];
+        }
+        
+        //    3.) >= second Image;
+        if (stepTopContentImage && _topContentImageView) {
+            _topContentImageView.image = [self topContentAndAuxiliaryImage];
+        }
     }
-    
-    //    3.) >= second Image;
-    if (stepTopContentImage && _topContentImageView) {
-        _topContentImageView.image = [self topContentAndAuxiliaryImage];
-    }
-}
-
-- (void)setAuxiliaryImage:(UIImage *)auxiliaryImage {
-    _auxiliaryImage = auxiliaryImage;
-    if (_stepTopContentImage) {
-        _topContentImageView.image = [self topContentAndAuxiliaryImage];
-    }
-}
-
-- (UIImage *)topContentAndAuxiliaryImage {
-    if (!_auxiliaryImage) {
-        return _stepTopContentImage;
-    }
-    CGSize size = _auxiliaryImage.size;
-    UIGraphicsBeginImageContext(size);
-    
-    CGRect rect = CGRectMake(0.0, 0.0, size.width, size.height);
-    
-    [_auxiliaryImage drawInRect:rect];
-    [_stepTopContentImage drawInRect:rect blendMode:kCGBlendModeNormal alpha:1.0];
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return image;
-}
-
-- (void)setStepTitle:(NSString *)stepTitle {
-    _stepTitle = stepTitle;
-    [_stepContentView setStepTitle:_stepTitle];
-}
-
-- (void)setStepText:(NSString *)stepText {
-    _stepText = stepText;
-    [_stepContentView setStepText:_stepText];
-}
-
-- (void)setTitleIconImage:(UIImage *)titleIconImage {
-    _titleIconImage = titleIconImage;
-    [_stepContentView setTitleIconImage:_titleIconImage];
-}
-
-- (void)setBodyItems:(NSArray<ORKBodyItem *> *)bodyItems {
-    _bodyItems = bodyItems;
-    [_stepContentView setBodyItems:_bodyItems];
 }
 
 - (void)setupScrollView {
     if (!_scrollView) {
         _scrollView = [[UIScrollView alloc] init];
     }
-    _scrollView.showsVerticalScrollIndicator = _showScrollIndicator;
+    _scrollView.showsVerticalScrollIndicator = self.showScrollIndicator;
     [self addSubview:_scrollView];
 }
 
 - (void)setShowScrollIndicator:(BOOL)showScrollIndicator {
-    _showScrollIndicator = showScrollIndicator;
+    self.showScrollIndicator = showScrollIndicator;
     _scrollView.showsVerticalScrollIndicator = showScrollIndicator;
 }
 
@@ -239,32 +199,35 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
     [self setTopContentImageViewConstraints];
 }
 
-- (void)setupStepContentView {
-    if (!_stepContentView) {
-        _stepContentView = [ORKStepContentView new];
+- (void)setAuxiliaryImage:(UIImage *)auxiliaryImage {
+    [super setAuxiliaryImage:auxiliaryImage];
+    if (self.stepTopContentImage) {
+        _topContentImageView.image = [self topContentAndAuxiliaryImage];
     }
-    _stepContentView.delegate = self;
-    [_scrollContainerView addSubview:_stepContentView];
+}
+
+- (void)addStepContentView {
+    [_scrollContainerView addSubview:self.stepContentView];
 }
 
 - (void)setStepContentViewConstraints {
-    _stepContentView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.stepContentView.translatesAutoresizingMaskIntoConstraints = NO;
     [NSLayoutConstraint activateConstraints:@[
-                                              [NSLayoutConstraint constraintWithItem:_stepContentView
+                                              [NSLayoutConstraint constraintWithItem:self.stepContentView
                                                                            attribute:NSLayoutAttributeTop
                                                                            relatedBy:NSLayoutRelationEqual
                                                                               toItem:_scrollContainerView
                                                                            attribute:NSLayoutAttributeTop
                                                                           multiplier:1.0
                                                                             constant:0.0],
-                                              [NSLayoutConstraint constraintWithItem:_stepContentView
+                                              [NSLayoutConstraint constraintWithItem:self.stepContentView
                                                                            attribute:NSLayoutAttributeLeft
                                                                            relatedBy:NSLayoutRelationEqual
                                                                               toItem:_scrollContainerView
                                                                            attribute:NSLayoutAttributeLeft
                                                                           multiplier:1.0
                                                                             constant:0.0],
-                                              [NSLayoutConstraint constraintWithItem:_stepContentView
+                                              [NSLayoutConstraint constraintWithItem:self.stepContentView
                                                                            attribute:NSLayoutAttributeRight
                                                                            relatedBy:NSLayoutRelationEqual
                                                                               toItem:_scrollContainerView
@@ -282,16 +245,8 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
     [self setNeedsUpdateConstraints];
 }
 
-- (void)setupNavigationContainerView {
-    if (!_navigationFooterView) {
-        _navigationFooterView = [ORKNavigationContainerView new];
-    }
-    [_navigationFooterView removeStyling];
-    [self placeNavigationContainerView];
-}
-
 - (void)removeNavigationFooterView {
-    [_navigationFooterView removeFromSuperview];
+    [self.navigationFooterView removeFromSuperview];
     if (_navigationContainerViewConstraints) {
         [NSLayoutConstraint deactivateConstraints:_navigationContainerViewConstraints];
         for (NSLayoutConstraint *constraint in _navigationContainerViewConstraints) {
@@ -305,44 +260,44 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
 
 - (void)placeNavigationContainerView {
     [self removeNavigationFooterView];
-    if (_isNavigationContainerScrollable) {
-        [_scrollContainerView addSubview:_navigationFooterView];
+    if (self.isNavigationContainerScrollable) {
+        [_scrollContainerView addSubview:self.navigationFooterView];
     }
     else {
-        [self addSubview:_navigationFooterView];
+        [self addSubview:self.navigationFooterView];
     }
     [self setupNavigationContainerViewConstraints];
 }
 
 - (void)setupNavigationContainerViewConstraints {
-    _navigationFooterView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.navigationFooterView.translatesAutoresizingMaskIntoConstraints = NO;
     
     _navigationContainerViewConstraints = @[
-                                              [NSLayoutConstraint constraintWithItem:_navigationFooterView
+                                              [NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                                            attribute:NSLayoutAttributeBottom
                                                                            relatedBy:NSLayoutRelationEqual
-                                                                              toItem:_isNavigationContainerScrollable ? _scrollContainerView : self
+                                                                              toItem:self.isNavigationContainerScrollable ? _scrollContainerView.safeAreaLayoutGuide : self.safeAreaLayoutGuide
                                                                            attribute:NSLayoutAttributeBottom
                                                                           multiplier:1.0
                                                                             constant:0.0],
-                                              [NSLayoutConstraint constraintWithItem:_navigationFooterView
+                                              [NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                                            attribute:NSLayoutAttributeLeft
                                                                            relatedBy:NSLayoutRelationEqual
-                                                                              toItem:_isNavigationContainerScrollable ? _scrollContainerView : self
+                                                                              toItem:self.isNavigationContainerScrollable ? _scrollContainerView : self
                                                                            attribute:NSLayoutAttributeLeft
                                                                           multiplier:1.0
-                                                                            constant:0.0],
-                                              [NSLayoutConstraint constraintWithItem:_navigationFooterView
+                                                                            constant:_leftRightPadding],
+                                              [NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                                            attribute:NSLayoutAttributeRight
                                                                            relatedBy:NSLayoutRelationEqual
-                                                                              toItem:_isNavigationContainerScrollable ? _scrollContainerView : self
+                                                                              toItem:self.isNavigationContainerScrollable ? _scrollContainerView : self
                                                                            attribute:NSLayoutAttributeRight
                                                                           multiplier:1.0
-                                                                            constant:0.0]];
+                                                                            constant:-_leftRightPadding]];
     [_updatedConstraints addObjectsFromArray:_navigationContainerViewConstraints];
     [self updateNavigationContainerViewTopConstraint];
 
-    if (!_isNavigationContainerScrollable) {
+    if (!self.isNavigationContainerScrollable) {
         [NSLayoutConstraint deactivateConstraints:@[_scrollViewBottomConstraint]];
         if ([_updatedConstraints containsObject:_scrollViewBottomConstraint]) {
             [_updatedConstraints removeObject:_scrollViewBottomConstraint];
@@ -350,7 +305,7 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
         _scrollViewBottomConstraint = [NSLayoutConstraint constraintWithItem:_scrollView
                                                                    attribute:NSLayoutAttributeBottom
                                                                    relatedBy:NSLayoutRelationEqual
-                                                                      toItem:_navigationFooterView
+                                                                      toItem:self.navigationFooterView
                                                                    attribute:NSLayoutAttributeTop
                                                                   multiplier:1.0
                                                                     constant:0.0];
@@ -361,7 +316,7 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
 }
 
 - (void)setupNavigationContainerViewTopConstraint {
-    if (_navigationFooterView && _isNavigationContainerScrollable) {
+    if (self.navigationFooterView && self.isNavigationContainerScrollable) {
         
         id topItem;
         NSLayoutAttribute topItemAttribute;
@@ -369,8 +324,8 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
             topItem = _customContentView;
             topItemAttribute = NSLayoutAttributeBottom;
         }
-        else if(_stepContentView) {
-            topItem = _stepContentView;
+        else if(self.stepContentView) {
+            topItem = self.stepContentView;
             topItemAttribute = NSLayoutAttributeBottom;
         }
         else {
@@ -378,7 +333,7 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
             topItemAttribute = NSLayoutAttributeTop;
         }
         
-        _navigationContainerViewTopConstraint = [NSLayoutConstraint constraintWithItem:_navigationFooterView
+        _navigationContainerViewTopConstraint = [NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                                              attribute:NSLayoutAttributeTop
                                                                              relatedBy:NSLayoutRelationGreaterThanOrEqual
                                                                                 toItem:topItem
@@ -389,7 +344,7 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
 }
 
 - (void)updateNavigationContainerViewTopConstraint {
-    if (_navigationFooterView && _isNavigationContainerScrollable) {
+    if (self.navigationFooterView && self.isNavigationContainerScrollable) {
         if (_navigationContainerViewTopConstraint) {
             [NSLayoutConstraint deactivateConstraints:@[_navigationContainerViewTopConstraint]];
             if ([_updatedConstraints containsObject:_navigationContainerViewTopConstraint]) {
@@ -401,40 +356,49 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
     }
 }
 
-- (void)pinNavigationContainerToBottom {
-    _isNavigationContainerScrollable = NO;
-    [self placeNavigationContainerView];
-}
-
 - (void)setupCustomContentViewConstraints {
     _customContentView.translatesAutoresizingMaskIntoConstraints = NO;
     [self setCustomContentViewTopConstraint];
+    [self setCustomContentWidthConstraint];
     [_updatedConstraints addObjectsFromArray:@[
                                                _customContentViewTopConstraint,
                                                [NSLayoutConstraint constraintWithItem:_customContentView
-                                                                            attribute:NSLayoutAttributeLeft
+                                                                            attribute:NSLayoutAttributeCenterX
                                                                             relatedBy:NSLayoutRelationEqual
                                                                                toItem:_scrollContainerView
-                                                                            attribute:NSLayoutAttributeLeft
+                                                                            attribute:NSLayoutAttributeCenterX
                                                                            multiplier:1.0
                                                                              constant:0.0],
-                                               [NSLayoutConstraint constraintWithItem:_customContentView
-                                                                            attribute:NSLayoutAttributeRight
-                                                                            relatedBy:NSLayoutRelationEqual
-                                                                               toItem:_scrollContainerView
-                                                                            attribute:NSLayoutAttributeRight
-                                                                           multiplier:1.0
-                                                                             constant:0.0]
+                                               _customContentWidthConstraint
                                                ]];
     [self setNeedsUpdateConstraints];
+}
+
+- (void)setCustomContentWidthConstraint {
+    if (_customContentView) {
+        _customContentWidthConstraint = [NSLayoutConstraint constraintWithItem:_customContentView
+                                                                     attribute:NSLayoutAttributeWidth
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:_scrollContainerView
+                                                                     attribute:NSLayoutAttributeWidth
+                                                                    multiplier:1.0
+                                                                      constant:-2*_customContentLeftRightPadding];
+    }
+}
+
+- (void)removeCustomContentPadding {
+    _customContentLeftRightPadding = 0.0;
+    if (_customContentWidthConstraint) {
+        _customContentWidthConstraint.constant = _customContentLeftRightPadding;
+    }
 }
 
 - (void)setCustomContentViewTopConstraint {
     id topItem;
     NSLayoutAttribute attribute;
     
-    if (_stepContentView) {
-        topItem = _stepContentView;
+    if (self.stepContentView) {
+        topItem = self.stepContentView;
         attribute = NSLayoutAttributeBottom;
     }
     else {
@@ -467,7 +431,6 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
 }
 
 - (NSArray<NSLayoutConstraint *> *)scrollViewStaticConstraints {
-    CGFloat leftRightPadding = ORKStepContainerLeftRightPaddingForWindow(self.window);
     _scrollViewBottomConstraint = [NSLayoutConstraint constraintWithItem:_scrollView
                                                                attribute:NSLayoutAttributeBottom
                                                                relatedBy:NSLayoutRelationEqual
@@ -482,14 +445,14 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
                                              toItem:self
                                           attribute:NSLayoutAttributeLeft
                                          multiplier:1.0
-                                           constant:leftRightPadding],
+                                           constant:0.0],
              [NSLayoutConstraint constraintWithItem:_scrollView
                                           attribute:NSLayoutAttributeRight
                                           relatedBy:NSLayoutRelationEqual
                                              toItem:self
                                           attribute:NSLayoutAttributeRight
                                          multiplier:1.0
-                                           constant:-leftRightPadding],
+                                           constant:0.0],
              _scrollViewBottomConstraint
              ];
 }
@@ -548,7 +511,7 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
                                                                         toItem:_topContentImageView ? : self
                                                                      attribute:_topContentImageView ? NSLayoutAttributeBottom : NSLayoutAttributeTop
                                                                     multiplier:1.0
-                                                                      constant:_topContentImageView ? 0.0 : ORKStepContainerTopPaddingForWindow(self.window)];
+                                                                      constant:0.0];
     [_updatedConstraints addObject:_scrollViewTopConstraint];
 }
 
@@ -600,6 +563,11 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
 - (void)deactivateTopContentImageViewConstraints {
     if (_topContentImageViewConstraints) {
         [NSLayoutConstraint deactivateConstraints:_topContentImageViewConstraints];
+        for (NSLayoutConstraint *constraint in _topContentImageViewConstraints) {
+            if ([_updatedConstraints containsObject:constraint]) {
+                [_updatedConstraints removeObject:constraint];
+            }
+        }
     }
     _topContentImageViewConstraints = nil;
 }
@@ -626,10 +594,14 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
     [super updateConstraints];
 }
 
-#pragma mark - ORKStepContentLearnMoreItemDelegate
-
-- (void)stepContentLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep {
-    [_delegate stepContainerLearnMoreButtonPressed:learnMoreStep];
+- (void)topContentImageShouldStickToTop {
+    if (self.stepTopContentImage) {
+        UIImage *stepTopContentImage = self.stepTopContentImage;
+        [self setStepTopContentImage:nil];
+        _topContentImageShouldScroll = NO;
+        [self setStepTopContentImage:stepTopContentImage];
+    }
+    _topContentImageShouldScroll = NO;
 }
 
 @end

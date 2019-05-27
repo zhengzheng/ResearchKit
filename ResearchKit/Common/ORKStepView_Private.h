@@ -1,14 +1,5 @@
 /*
- Copyright (c) 2015, Alejandro Martinez, Quintiles Inc.
- Copyright (c) 2015, Brian Kelly, Quintiles Inc.
- Copyright (c) 2015, Bryan Strothmann, Quintiles Inc.
- Copyright (c) 2015, Greg Yip, Quintiles Inc.
- Copyright (c) 2015, John Reites, Quintiles Inc.
- Copyright (c) 2015, Pavel Kanzelsberger, Quintiles Inc.
- Copyright (c) 2015, Richard Thomas, Quintiles Inc.
- Copyright (c) 2015, Shelby Brooks, Quintiles Inc.
- Copyright (c) 2015, Steve Cadwallader, Quintiles Inc.
- Copyright (c) 2015, Apple Inc. All rights reserved.
+ Copyright (c) 2019, Apple Inc. All rights reserved.
  
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
@@ -37,19 +28,21 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 @import UIKit;
-#import "ORKStepContainerView.h"
-#import "ORKTypes.h"
-
+#import <ResearchKit/ORKStepView.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ORKWaitStepView : ORKStepContainerView
+@class ORKStepContentView;
+@interface ORKStepView ()
 
-- (instancetype)initWithIndicatorType:(ORKProgressIndicatorType)type;
+@property (nonatomic, nullable) ORKStepContentView *stepContentView;
 
-@property (nonatomic, readonly) UIProgressView *progressView;
+@property (nonatomic) BOOL isNavigationContainerScrollable;
+
+- (void)placeNavigationContainerView;
+
+- (UIImage *)topContentAndAuxiliaryImage;
 
 @end
 

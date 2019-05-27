@@ -122,8 +122,6 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
     if (!_iPadBackgroundView) {
         _iPadBackgroundView = [UIView new];
     }
-    [_iPadBackgroundView setBackgroundColor:ORKColor(ORKiPadBackgroundViewColorKey)];
-    _iPadBackgroundView.layer.cornerRadius = ORKiPadBackgroundViewCornerRadius;
     [self.view addSubview:_iPadBackgroundView];
 }
 
@@ -131,7 +129,6 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
     if (!_iPadContentView) {
         _iPadContentView = [UIView new];
     }
-    [_iPadContentView setBackgroundColor:[UIColor clearColor]];
     [_iPadBackgroundView addSubview:_iPadContentView];
 }
 
@@ -143,19 +140,18 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
     _iPadStepTitleLabel.textAlignment = NSTextAlignmentNatural;
     [_iPadStepTitleLabel setFont:[UIFont systemFontOfSize:iPadStepTitleLabelFontSize weight:UIFontWeightBold]];
     [_iPadStepTitleLabel setAdjustsFontSizeToFitWidth:YES];
-    [_iPadStepTitleLabel setText:self.step.title];
     [_iPadBackgroundView addSubview:_iPadStepTitleLabel];
 }
 
 - (void)setiPadStepTitleLabelText:(NSString *)text {
     if (_iPadStepTitleLabel) {
-        [_iPadStepTitleLabel setText: text];
+//        [_iPadStepTitleLabel setText: text];
     }
 }
 
 - (void)setiPadBackgroundViewColor:(UIColor *)color {
     if (_iPadBackgroundView) {
-        [_iPadBackgroundView setBackgroundColor:color];
+//        [_iPadBackgroundView setBackgroundColor:color];
     }
 }
 

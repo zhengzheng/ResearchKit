@@ -30,6 +30,7 @@
 
 
 @import Foundation;
+@import UIKit;
 @import HealthKit;
 #import <ResearchKit/ORKTypes.h>
 
@@ -154,9 +155,48 @@ ORK_CLASS_AVAILABLE
 @property (nonatomic, copy, nullable) NSString *text;
 
 /**
+ Additional detailed explanation for the instruction.
+ 
+ The detail text is displayed below the content of the `text` property.
+ */
+@property (nonatomic, copy, nullable) NSString *detailText;
+
+/**
  Array of `ORKBodyItem` type items to display textual info.
  */
 @property (nonatomic) NSArray<ORKBodyItem *> *bodyItems;
+
+/**
+ Additional text to display for the step in a localized string at the bottom of the view.
+ 
+ The footnote is displayed in a smaller font below the continue button. It is intended to be used
+ in order to include disclaimer, copyright, etc. that is important to display in the step but
+ should not distract from the main purpose of the step.
+ */
+@property (nonatomic, copy, nullable) NSString *footnote;
+
+/**
+ An image that provides visual context for the instruction.
+ 
+ The image is displayed with aspect fit. Depending on the device, the screen area
+ available for this image can vary.
+ */
+@property (nonatomic, copy, nullable) UIImage *image;
+
+/**
+ An image that provides visual context for the instruction that will allow for showing
+ a two-part composite image where the `image` is tinted and the `auxiliaryImage` is
+ shown with light grey.
+ 
+ The image is displayed with the same frame as the `image` so both the `auxiliaryImage`
+ and `image` should have transparently to allow for overlay.
+ */
+@property (nonatomic, copy, nullable) UIImage *auxiliaryImage;
+
+/**
+ Optional icon image to show above the title and text.
+ */
+@property (nonatomic, copy, nullable) UIImage *iconImage;
 
 /**
 Whether to show progress for this step when it is presented. The default is YES.

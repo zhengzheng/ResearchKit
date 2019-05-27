@@ -113,11 +113,8 @@ ORK_EXTERN CGFloat ORKCardDefaultBorderWidth;
 /// Default font size for card view
 ORK_EXTERN CGFloat ORKCardDefaultFontSize;
 
-/// Default Left and Right margin for card view
-ORK_EXTERN CGFloat ORKCardLeftRightMargin;
-
 /// Default Top and Bottom margin for card view
-ORK_EXTERN CGFloat ORKCardTopBottomMargin;
+ORK_EXTERN CGFloat ORKSurveyItemMargin;
 
 /// Padding for Form and Question Step Table Containers
 ORK_EXTERN CGFloat ORKSurveyTableContainerLeftRightPadding;
@@ -225,6 +222,7 @@ CGFloat ORKStepContainerTopContentHeightForWindow(UIWindow *window);
 CGFloat ORKStepContainerFirstItemTopPaddingForWindow(UIWindow *window);
 CGFloat ORKStepContainerTitleToBodyTopPaddingForWindow(UIWindow *window);
 CGFloat ORKStepContainerTitleToBulletTopPaddingForWindow(UIWindow *window);
+CGFloat ORKCardLeftRightMarginForWindow(UIWindow *window);
 
 UIFontTextStyle ORKTitleLabelFontTextStyleForWindow(UIWindow *window);
 

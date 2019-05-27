@@ -92,9 +92,6 @@
     _touchDownRecognizer = [UIGestureRecognizer new];
     _touchDownRecognizer.delegate = self;
     [self.view addGestureRecognizer:_touchDownRecognizer];
-    
-    self.activeStepView.stepViewFillsAvailableSpace = YES;
-    
     self.timerUpdateInterval = 0.1;
     
     _expired = NO;

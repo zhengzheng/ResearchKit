@@ -88,8 +88,6 @@
     self.holePegTestPlaceContentView.threshold = [self holePegTestPlaceStep].threshold;
     self.holePegTestPlaceContentView.delegate = self;
     self.activeStepView.activeCustomView = self.holePegTestPlaceContentView;
-    self.activeStepView.stepViewFillsAvailableSpace = YES;
-    self.activeStepView.scrollContainerShouldCollapseNavbar = NO;
 }
 
 #pragma mark - step life cycle methods

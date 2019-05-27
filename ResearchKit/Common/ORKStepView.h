@@ -28,23 +28,25 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
-@import UIKit;
-
+#import <UIKit/UIKit.h>
+#import <ResearchKit/ORKDefines.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class ORKBodyItem;
 @class ORKLearnMoreInstructionStep;
-@protocol ORKTableContainerHeaderLearnMoreItemDelegate <NSObject>
+@class ORKNavigationContainerView;
+
+ORK_CLASS_AVAILABLE
+
+@protocol ORKStepViewLearnMoreItemDelegate <NSObject>
 
 @required
-- (void)tableContainerHeaderLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep;
+- (void)stepViewLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep;
 
 @end
 
-@class ORKBodyItem;
-@class ORKNavigationContainerView;
-@interface ORKTableContainerHeaderView : UIView
+@interface ORKStepView : UIView
 
 @property (nonatomic, nullable) UIImage *stepTopContentImage;
 
@@ -52,14 +54,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) NSString *stepTitle;
 
+@property (nonatomic, nullable) NSString *stepText;
+
+@property (nonatomic, nullable) NSString *stepDetailText;
+
 @property (nonatomic, nullable) UIImage *titleIconImage;
 
 @property (nonatomic) BOOL showScrollIndicator;
 
 @property (nonatomic) NSArray<ORKBodyItem *> *bodyItems;
 
+@property (nonatomic, nullable) ORKNavigationContainerView *navigationFooterView;
 
-@property (nonatomic, weak) id<ORKTableContainerHeaderLearnMoreItemDelegate> delegate;
+@property (nonatomic, weak) id<ORKStepViewLearnMoreItemDelegate> delegate;
+
+- (void)pinNavigationContainerToBottom;
 
 @end
 
