@@ -45,21 +45,22 @@ static const CGFloat RoundTappingButtonDefaultDiameter = 104;
     [super init_ORKTextButton];
     self.fadeDelay = 0.2;
     [self setDiameter:RoundTappingButtonDefaultDiameter];
-    [self setupConstraints];
+    [self updateDimensionConstraints];
 }
 
 - (void)setDiameter:(CGFloat)diameter {
     _diameter = diameter;
-    if (_widthConstraint) {
-        _widthConstraint.constant = _diameter;
-    }
-    if (_heightConstraint) {
-        _heightConstraint.constant = _diameter;
-    }
     self.layer.cornerRadius = diameter * 0.5;
+    [self updateDimensionConstraints];
 }
 
-- (void)setupConstraints {
+- (void)updateDimensionConstraints {
+    if (_widthConstraint && _widthConstraint.active) {
+        [NSLayoutConstraint deactivateConstraints:@[_widthConstraint]];
+    }
+    if (_heightConstraint && _heightConstraint.active) {
+        [NSLayoutConstraint deactivateConstraints:@[_heightConstraint]];
+    }
     _widthConstraint = [NSLayoutConstraint constraintWithItem:self
                                                     attribute:NSLayoutAttributeWidth
                                                     relatedBy:NSLayoutRelationEqual
@@ -68,13 +69,14 @@ static const CGFloat RoundTappingButtonDefaultDiameter = 104;
                                                    multiplier:1.0
                                                      constant:_diameter];
     _heightConstraint = [NSLayoutConstraint constraintWithItem:self
-                                                    attribute:NSLayoutAttributeHeight
-                                                    relatedBy:NSLayoutRelationEqual
-                                                       toItem:nil
-                                                    attribute:NSLayoutAttributeNotAnAttribute
-                                                   multiplier:1.0
-                                                     constant:_diameter];
+                                                     attribute:NSLayoutAttributeHeight
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:nil
+                                                     attribute:NSLayoutAttributeNotAnAttribute
+                                                    multiplier:1.0
+                                                      constant:_diameter];
     [NSLayoutConstraint activateConstraints:@[_widthConstraint, _heightConstraint]];
+
 }
 
 - (void)tintColorDidChange {
