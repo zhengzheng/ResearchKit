@@ -394,7 +394,8 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
                                    @"ORKTextAnswerFormat.validationRegex",
                                    @"ORKRegistrationStep.passcodeValidationRegex",
                                    @"textViewText",
-                                   @"ORKConsentSection.image"
+                                   @"ORKConsentSection.image",
+                                   @"ORKSpeechRecognitionResult.transcription"
                                    ];
         _knownNotSerializedProperties = @[
                                           @"ORKStep.task",
@@ -446,7 +447,6 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
                                           @"ORKInstructionStep.attributedDetailText",
                                           @"ORKOrderedTask.progressLabelColor",
                                           @"ORKRegistrationStep.passcodeRules",
-                                          @"ORKSpeechRecognitionResult.transcription", // SFTranscription
                                           @"ORKTextChoice.detailTextAttributedString",
                                           @"ORKTextChoice.primaryTextAttributedString"
                                           ];
