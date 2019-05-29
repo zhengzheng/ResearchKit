@@ -37,6 +37,7 @@
 @import ResearchKit.Private;
 
 @import MapKit;
+@import Speech;
 
 
 static NSString *ORKEStringFromDateISO8601(NSDate *date) {
@@ -103,6 +104,59 @@ static NSInteger tableMapReverse(id value, NSArray *table) {
 
 static NSDictionary *dictionaryFromCGPoint(CGPoint p) {
     return @{ @"x": @(p.x), @"y": @(p.y) };
+}
+
+static NSDictionary *dictionaryFromNSRange(NSRange r) {
+    return @{ @"location": @(r.location) , @"length": @(r.length) };
+}
+
+static NSDictionary *dictionaryFromSFAcousticFeature(SFAcousticFeature *acousticFeature) {
+    if (acousticFeature == nil) { return @{}; }
+    return @{ @"acousticFeatureValuePerFrame" : acousticFeature.acousticFeatureValuePerFrame,
+              @"frameDuration" : @(acousticFeature.frameDuration)
+              };
+}
+
+static NSDictionary *dictionaryFromSFVoiceAnalytics(SFVoiceAnalytics *voiceAnalytics) {
+    if (voiceAnalytics == nil) { return @{}; }
+    return @{
+             @"jitter" : dictionaryFromSFAcousticFeature(voiceAnalytics.jitter),
+             @"shimmer" : dictionaryFromSFAcousticFeature(voiceAnalytics.shimmer),
+             @"pitch" : dictionaryFromSFAcousticFeature(voiceAnalytics.pitch),
+             @"voicing" : dictionaryFromSFAcousticFeature(voiceAnalytics.voicing)
+             };
+}
+
+static NSDictionary *dictionaryFromSFTranscriptionSegment(SFTranscriptionSegment *segment) {
+    if (segment == nil) { return @{}; }
+    return @{
+             @"substring" : segment.substring,
+             @"substringRange" : dictionaryFromNSRange(segment.substringRange),
+             @"timestamp" : @(segment.timestamp),
+             @"duration" : @(segment.duration),
+             @"confidence" : @(segment.confidence),
+             @"alternativeSubstrings" : segment.alternativeSubstrings.copy,
+             @"voiceAnalytics" : dictionaryFromSFVoiceAnalytics(segment.voiceAnalytics)
+             };
+}
+
+typedef id (*mapFunction)(id);
+static NSArray *mapArray(NSArray *input, mapFunction function) {
+    NSMutableArray *result = [NSMutableArray arrayWithCapacity:[input count]];
+    for (id value in input) {
+        [result addObject:function(value)];
+    }
+    return result;
+}
+
+static NSDictionary *dictionaryFromSFTranscription(SFTranscription *transcription) {
+    if (transcription == nil) { return @{}; };
+    return @{
+             @"formattedString": transcription.formattedString,
+             @"speakingRate" : @(transcription.speakingRate),
+             @"averagePauseDuration" : @(transcription.averagePauseDuration),
+             @"segments" : mapArray(transcription.segments, dictionaryFromSFTranscriptionSegment)
+             };
 }
 
 static NSDictionary *dictionaryFromCGSize(CGSize s) {
@@ -1656,9 +1710,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                  nil,
                  (@{
                     PROPERTY(frequency, NSNumber, NSObject, NO, nil, nil),
-                    PROPERTY(calculatedThreshold, NSNumber, NSObject, NO,
-                             (^id(id threshold, __unused ORKESerializationContext *context) { return [NSString stringWithFormat:@"%@", threshold]; }),
-                             (^id(id string, __unused ORKESerializationContext *context) { return [NSDecimalNumber decimalNumberWithString:string]; })),
+                    PROPERTY(calculatedThreshold, NSNumber, NSObject, NO, nil, nil),
                     PROPERTY(channel, NSNumber, NSObject, NO, nil, nil),
                     PROPERTY(units, ORKdBHLToneAudiometryUnit, NSArray, NO, nil, nil)
                     })),
@@ -1680,6 +1732,10 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
            ENTRY(ORKSpeechRecognitionResult,
                  nil,
                  (@{
+                    PROPERTY(transcription, SFTranscription, NSObject, NO,
+                             (^id(id transcription, __unused ORKESerializationContext *context) { return dictionaryFromSFTranscription(transcription); }),
+                             // Decode not supported: SFTranscription is immmutable
+                             (^id(id __unused transcriptionDict, __unused ORKESerializationContext *context) { return nil; })),
                     })),
            ENTRY(ORKStroopResult,
                  nil,
