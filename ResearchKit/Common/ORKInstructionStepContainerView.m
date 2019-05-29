@@ -52,6 +52,7 @@
     self.bodyItems = _instructionStep.bodyItems;
     
     self.stepTopContentImage = _instructionStep.image;
+    self.stepTopContentImageContentMode = _instructionStep.imageContentMode;
     self.auxiliaryImage = _instructionStep.auxiliaryImage;
     self.titleIconImage = _instructionStep.iconImage;
 }

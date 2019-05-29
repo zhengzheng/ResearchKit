@@ -29,7 +29,7 @@
  */
 
 #import "ORKStepView_Private.h"
-#import "ORKStepContentView.h"
+#import "ORKStepContentView_Private.h"
 #import "ORKNavigationContainerView_Internal.h"
 
 @interface ORKStepView ()<ORKStepContentLearnMoreItemDelegate>
@@ -42,6 +42,7 @@
     self = [super init];
     if (self) {
         self.isNavigationContainerScrollable = YES;
+        _stepTopContentImageContentMode = UIViewContentModeScaleAspectFit;
         [self setupStepContentView];
         [self setupNavigationContainerView];
     }
@@ -64,6 +65,10 @@
 
 - (void)setStepTopContentImage:(UIImage *)stepTopContentImage {
     _stepTopContentImage = stepTopContentImage;
+}
+
+- (void)setStepTopContentImageContentMode:(UIViewContentMode)stepTopContentImageContentMode {
+    _stepContentView.topContentImageView.contentMode = stepTopContentImageContentMode;
 }
 
 - (void)setAuxiliaryImage:(UIImage *)auxiliaryImage {
