@@ -96,6 +96,7 @@
     step.detailText = self.detailText;
     step.footnote = self.footnote;
     step.image = self.image;
+    step.imageContentMode = self.imageContentMode;
     step.auxiliaryImage = self.auxiliaryImage;
     step.iconImage = self.iconImage;
     step.bodyItems = [_bodyItems copy];
@@ -121,6 +122,7 @@
             && ORKEqualObjects(self.auxiliaryImage, castObject.auxiliaryImage)
             && ORKEqualObjects(self.iconImage, castObject.iconImage)
             && ORKEqualObjects(self.bodyItems, castObject.bodyItems)
+            && (self.imageContentMode == castObject.imageContentMode)
             && (self.showsProgress == castObject.showsProgress)
             && (self.optional == castObject.optional)
             && (self.shouldTintImages == castObject.shouldTintImages)
@@ -129,7 +131,7 @@
 
 - (NSUInteger)hash {
     // Ignore the task reference - it's not part of the content of the step.
-    return _identifier.hash ^ _title.hash ^ _text.hash ^ self.detailText.hash ^ self.footnote.hash ^ (_optional ? 0xf : 0x0) ^ _bodyItems.hash ^ (_showsProgress ? 0xf : 0x0);
+    return _identifier.hash ^ _title.hash ^ _text.hash ^ self.detailText.hash ^ _imageContentMode ^ self.footnote.hash ^ (_optional ? 0xf : 0x0) ^ _bodyItems.hash ^ (_showsProgress ? 0xf : 0x0);
 }
 
 + (BOOL)supportsSecureCoding {
@@ -145,6 +147,7 @@
         ORK_DECODE_OBJ_CLASS(aDecoder, detailText, NSString);
         ORK_DECODE_OBJ_CLASS(aDecoder, footnote, NSString);
         ORK_DECODE_IMAGE(aDecoder, image);
+        ORK_DECODE_ENUM(aDecoder, imageContentMode);
         ORK_DECODE_IMAGE(aDecoder, auxiliaryImage);
         ORK_DECODE_IMAGE(aDecoder, iconImage);
         ORK_DECODE_OBJ_ARRAY(aDecoder, bodyItems, ORKBodyItem);
@@ -164,6 +167,7 @@
     ORK_ENCODE_OBJ(aCoder, detailText);
     ORK_ENCODE_OBJ(aCoder, footnote);
     ORK_ENCODE_IMAGE(aCoder, image);
+    ORK_ENCODE_ENUM(aCoder, imageContentMode);
     ORK_ENCODE_IMAGE(aCoder, auxiliaryImage);
     ORK_ENCODE_IMAGE(aCoder, iconImage);
     ORK_ENCODE_OBJ(aCoder, bodyItems);

@@ -696,6 +696,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     PROPERTY(shouldTintImages, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(useSurveyMode, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(bodyItems, ORKBodyItem, NSArray, YES, nil, nil),
+                    PROPERTY(imageContentMode, NSNumber, NSObject, YES, nil, nil),
                     IMAGEPROPERTY(iconImage, NSObject, YES),
                     IMAGEPROPERTY(auxiliaryImage, NSObject, YES),
                     IMAGEPROPERTY(image, NSObject, YES),

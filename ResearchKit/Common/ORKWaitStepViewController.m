@@ -86,6 +86,7 @@
         _waitStepView.stepText = _updatedText;
         _waitStepView.stepDetailText = self.step.detailText;
         _waitStepView.bodyItems = self.step.bodyItems;
+        _waitStepView.stepTopContentImageContentMode = self.step.imageContentMode;
     }
 }
 

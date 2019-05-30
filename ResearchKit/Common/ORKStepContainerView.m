@@ -194,10 +194,17 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
     if (!_topContentImageView) {
         _topContentImageView = [UIImageView new];
     }
-    _topContentImageView.contentMode = UIViewContentModeCenter;
+    _topContentImageView.contentMode = UIViewContentModeScaleAspectFit;
     [_topContentImageView setBackgroundColor:ORKColor(ORKTopContentImageViewBackgroundColorKey)];
     [self addSubview:_topContentImageView];
     [self setTopContentImageViewConstraints];
+}
+
+- (void)setStepTopContentImageContentMode:(UIViewContentMode)stepTopContentImageContentMode {
+    [super setStepTopContentImageContentMode:stepTopContentImageContentMode];
+    if (_topContentImageView) {
+        _topContentImageView.contentMode = stepTopContentImageContentMode;
+    }
 }
 
 - (void)setAuxiliaryImage:(UIImage *)auxiliaryImage {

@@ -52,8 +52,8 @@
     _questionStep = step;
     self.stepTitle = step.title;
     self.stepTopContentImage = step.image;
+    self.stepTopContentImageContentMode = step.imageContentMode;
     self.titleIconImage = step.iconImage;
-    self.stepTitle = step.title;
     self.stepText = step.text;
     self.stepDetailText = step.detailText;
     self.bodyItems = step.bodyItems;

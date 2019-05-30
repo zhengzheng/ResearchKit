@@ -184,6 +184,14 @@ ORK_CLASS_AVAILABLE
 @property (nonatomic, copy, nullable) UIImage *image;
 
 /**
+ A `UIViewContentMode` used to position image inside a `UIImageView` used by the step.
+ 
+ Depending on the subclass of the step, the `ORKStepView` uses specific 'UIImageView', and the
+ imageContentMode property sets the content mode of used image view.
+ */
+@property (nonatomic) UIViewContentMode imageContentMode;
+
+/**
  An image that provides visual context for the instruction that will allow for showing
  a two-part composite image where the `image` is tinted and the `auxiliaryImage` is
  shown with light grey.

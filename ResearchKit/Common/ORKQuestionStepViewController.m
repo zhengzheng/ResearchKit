@@ -189,7 +189,7 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
             _headerView.stepText = self.step.text;
             _headerView.stepDetailText = self.step.detailText;
             _headerView.bodyItems = self.step.bodyItems;
-            
+            _tableContainer.stepTopContentImageContentMode = self.step.imageContentMode;
             _navigationFooterView.optional = self.step.optional;
             if (self.readOnlyMode) {
                 _navigationFooterView.optional = YES;

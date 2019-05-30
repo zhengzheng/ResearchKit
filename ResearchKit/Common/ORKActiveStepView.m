@@ -48,6 +48,7 @@
     self.stepTitle = step.title;
     self.stepText = step.text;
     self.stepTopContentImage = step.image;
+    self.stepTopContentImageContentMode = step.imageContentMode;
 }
 
 - (void)updateTitle:(NSString *)title text:(NSString *)text {

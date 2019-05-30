@@ -50,6 +50,8 @@ ORK_CLASS_AVAILABLE
 
 @property (nonatomic, nullable) UIImage *stepTopContentImage;
 
+@property (nonatomic) UIViewContentMode stepTopContentImageContentMode;
+
 @property (nonatomic, nullable) UIImage *auxiliaryImage; // Only underlayed when stepTopContentImage is added.
 
 @property (nonatomic) NSString *stepTitle;
