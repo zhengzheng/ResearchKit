@@ -253,7 +253,7 @@ ORK_CLASS_AVAILABLE
  step navigation rules to be triggered before a task step is shown. Each step can have one skip rule
  at most.
  
- Subclasses must implement the `-stepShouldSkipWithTaskResult:` method, which returns whether the
+ Subclasses must implement the `stepShouldSkipWithTaskResult:` method, which returns whether the
  step should be skipped.
  
  A concrete subclass is included: `ORKPredicateSkipStepNavigationRule`, which will skip the step
