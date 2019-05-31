@@ -32,6 +32,7 @@
 #import "ORKSpatialSpanMemoryStepViewController.h"
 
 #import "ORKActiveStepView.h"
+#import "ORKStepContainerView_Private.h"
 #import "ORKSpatialSpanMemoryContentView.h"
 #import "ORKVerticalContainerView_Internal.h"
 
@@ -168,6 +169,7 @@ typedef void (^_ORKStateHandler)(ORKState *fromState, ORKState *_toState, id con
     _contentView.footerHidden = YES;
     _contentView.gameView.delegate = self;
     self.activeStepView.activeCustomView = _contentView;
+    self.activeStepView.customContentFillsAvailableSpace = YES;
     
     [self resetUI];
     

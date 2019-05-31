@@ -736,6 +736,7 @@ NSString *const ORKFitnessRestStepIdentifier = @"fitness.rest";
             fitnessStep.shouldStartTimerAutomatically = YES;
             fitnessStep.shouldTintImages = YES;
             fitnessStep.image = [UIImage imageNamed:@"walkingman" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
+            fitnessStep.imageContentMode = UIViewContentModeCenter;
             fitnessStep.shouldVibrateOnStart = YES;
             fitnessStep.shouldPlaySoundOnStart = YES;
             
@@ -768,6 +769,7 @@ NSString *const ORKFitnessRestStepIdentifier = @"fitness.rest";
             stillStep.shouldStartTimerAutomatically = YES;
             stillStep.shouldTintImages = YES;
             stillStep.image = [UIImage imageNamed:@"sittingman" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
+            stillStep.imageContentMode = UIViewContentModeCenter;
             stillStep.shouldVibrateOnStart = YES;
             stillStep.shouldPlaySoundOnStart = YES;
             stillStep.shouldPlaySoundOnFinish = YES;
@@ -1972,6 +1974,7 @@ NSString *const ORKTimedWalkTrial2StepIdentifier = @"timed.walk.trial2";
             step.distanceInMeters = distanceInMeters;
             step.shouldTintImages = YES;
             step.image = [UIImage imageNamed:@"timed-walkingman-outbound" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
+            step.imageContentMode = UIViewContentModeCenter;
             step.stepDuration = timeLimit == 0 ? CGFLOAT_MAX : timeLimit;
 
             ORKStepArrayAddStep(steps, step);
@@ -1987,6 +1990,7 @@ NSString *const ORKTimedWalkTrial2StepIdentifier = @"timed.walk.trial2";
                 step.distanceInMeters = 1;
                 step.shouldTintImages = YES;
                 step.image = [UIImage imageNamed:@"turnaround" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
+                step.imageContentMode = UIViewContentModeCenter;
                 step.stepDuration = turnAroundTimeLimit == 0 ? CGFLOAT_MAX : turnAroundTimeLimit;
 
                 ORKStepArrayAddStep(steps, step);
@@ -2002,6 +2006,7 @@ NSString *const ORKTimedWalkTrial2StepIdentifier = @"timed.walk.trial2";
             step.distanceInMeters = distanceInMeters;
             step.shouldTintImages = YES;
             step.image = [UIImage imageNamed:@"timed-walkingman-return" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
+            step.imageContentMode = UIViewContentModeCenter;
             step.stepDuration = timeLimit == 0 ? CGFLOAT_MAX : timeLimit;
 
             ORKStepArrayAddStep(steps, step);
@@ -2151,7 +2156,8 @@ NSString *const ORKTremorTestTurnWristStepIdentifier = @"tremor.handQueenWave";
         
         NSString *imageName = leftHand ? @"tremortestLeft" : @"tremortestRight";
         step.image = [UIImage imageNamed:imageName inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
-        step.imageContentMode = UIViewContentModeCenter;
+        //            TODO: Awaiting newer assets.
+//        step.imageContentMode = UIViewContentModeCenter;
         step.shouldTintImages = YES;
         
         ORKStepArrayAddStep(steps, step);
@@ -2165,7 +2171,8 @@ NSString *const ORKTremorTestTurnWristStepIdentifier = @"tremor.handQueenWave";
             step.text = ORKLocalizedString(@"TREMOR_TEST_ACTIVE_STEP_IN_LAP_INTRO", nil);
             step.detailText = ORKLocalizedString(@"TREMOR_TEST_ACTIVE_STEP_INTRO_TEXT", nil);
             step.image = [UIImage imageNamed:@"tremortest3a" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
-            step.imageContentMode = UIViewContentModeCenter;
+            //            TODO: Awaiting newer assets.
+//            step.imageContentMode = UIViewContentModeCenter;
             step.auxiliaryImage = [UIImage imageNamed:@"tremortest3b" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
             if (leftHand) {
                 step.text = ORKLocalizedString(@"TREMOR_TEST_ACTIVE_STEP_IN_LAP_INTRO_LEFT", nil);
@@ -2215,7 +2222,8 @@ NSString *const ORKTremorTestTurnWristStepIdentifier = @"tremor.handQueenWave";
             step.text = ORKLocalizedString(@"TREMOR_TEST_ACTIVE_STEP_EXTEND_ARM_INTRO", nil);
             step.detailText = ORKLocalizedString(@"TREMOR_TEST_ACTIVE_STEP_INTRO_TEXT", nil);
             step.image = [UIImage imageNamed:@"tremortest4a" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
-            step.imageContentMode = UIViewContentModeCenter;
+            //            TODO: Awaiting newer assets.
+//            step.imageContentMode = UIViewContentModeCenter;
             step.auxiliaryImage = [UIImage imageNamed:@"tremortest4b" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
             if (leftHand) {
                 step.text = ORKLocalizedString(@"TREMOR_TEST_ACTIVE_STEP_EXTEND_ARM_INTRO_LEFT", nil);

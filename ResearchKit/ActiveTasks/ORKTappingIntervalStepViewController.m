@@ -34,8 +34,7 @@
 #import "ORKActiveStepTimer.h"
 #import "ORKRoundTappingButton.h"
 #import "ORKTappingContentView.h"
-#import "ORKVerticalContainerView.h"
-
+#import "ORKStepContainerView_Private.h"
 #import "ORKActiveStepViewController_Internal.h"
 #import "ORKStepViewController_Internal.h"
 
@@ -99,6 +98,7 @@
     _tappingContentView = [[ORKTappingContentView alloc] init];
     _tappingContentView.hasSkipButton = self.step.optional;
     self.activeStepView.activeCustomView = _tappingContentView;
+    self.activeStepView.customContentFillsAvailableSpace = YES;
     
     [_tappingContentView.tapButton1 addTarget:self action:@selector(buttonPressed:forEvent:) forControlEvents:UIControlEventTouchDown];
     [_tappingContentView.tapButton2 addTarget:self action:@selector(buttonPressed:forEvent:) forControlEvents:UIControlEventTouchDown];
