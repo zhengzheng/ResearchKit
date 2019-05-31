@@ -736,6 +736,7 @@ NSString *const ORKFitnessRestStepIdentifier = @"fitness.rest";
             fitnessStep.shouldStartTimerAutomatically = YES;
             fitnessStep.shouldTintImages = YES;
             fitnessStep.image = [UIImage imageNamed:@"walkingman" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
+            fitnessStep.imageContentMode = UIViewContentModeCenter;
             fitnessStep.shouldVibrateOnStart = YES;
             fitnessStep.shouldPlaySoundOnStart = YES;
             
@@ -768,6 +769,7 @@ NSString *const ORKFitnessRestStepIdentifier = @"fitness.rest";
             stillStep.shouldStartTimerAutomatically = YES;
             stillStep.shouldTintImages = YES;
             stillStep.image = [UIImage imageNamed:@"sittingman" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
+            stillStep.imageContentMode = UIViewContentModeCenter;
             stillStep.shouldVibrateOnStart = YES;
             stillStep.shouldPlaySoundOnStart = YES;
             stillStep.shouldPlaySoundOnFinish = YES;

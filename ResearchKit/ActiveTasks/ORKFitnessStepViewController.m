@@ -82,7 +82,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     _contentView = [ORKFitnessContentView new];
-    _contentView.image = self.fitnessStep.image;
     _contentView.timeLeft = self.fitnessStep.stepDuration;
     self.activeStepView.activeCustomView = _contentView;
 }
