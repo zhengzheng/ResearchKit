@@ -81,6 +81,7 @@
     _amslerGridView = [ORKAmslerGridContentView new];
     _amslerGridView.translatesAutoresizingMaskIntoConstraints = NO;
     self.activeStepView.activeCustomView = _amslerGridView;
+    [self.activeStepView removeCustomContentPadding];
     
     _freehandDrawingView = [ORKFreehandDrawingView new];
 
@@ -108,35 +109,6 @@
 - (void)setupContraints {
     CGFloat width = MIN(self.view.bounds.size.width, self.view.bounds.size.height);
     NSArray *constraints = @[
-                             
-                             [NSLayoutConstraint constraintWithItem:_amslerGridView
-                                                          attribute:NSLayoutAttributeWidth
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:nil
-                                                          attribute:NSLayoutAttributeNotAnAttribute
-                                                         multiplier:1.0
-                                                           constant:width],
-                             [NSLayoutConstraint constraintWithItem:_amslerGridView
-                                                          attribute:NSLayoutAttributeHeight
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:nil
-                                                          attribute:NSLayoutAttributeNotAnAttribute
-                                                         multiplier:1.0
-                                                           constant:width],
-                             [NSLayoutConstraint constraintWithItem:_amslerGridView
-                                                          attribute:NSLayoutAttributeCenterX
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeCenterX
-                                                         multiplier:1.0
-                                                           constant:0.0],
-                             [NSLayoutConstraint constraintWithItem:_amslerGridView
-                                                          attribute:NSLayoutAttributeCenterY
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeCenterY
-                                                         multiplier:1.0
-                                                           constant:0.0],
                              [NSLayoutConstraint constraintWithItem:_freehandDrawingView
                                                           attribute:NSLayoutAttributeWidth
                                                           relatedBy:NSLayoutRelationEqual
