@@ -90,8 +90,8 @@
 
     [_amslerGridView addSubview:_freehandDrawingView];
    
-    UISwipeGestureRecognizer *r = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
-    r.direction = UISwipeGestureRecognizerDirectionLeft;
+    UIPanGestureRecognizer *r = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
+    [r setMinimumNumberOfTouches:2];
     [self.activeStepView addGestureRecognizer:r];
     
     self.activeStepView.isAccessibilityElement = YES;
@@ -101,8 +101,10 @@
     [self setupContraints];
 }
 
-- (void)handleSingleTap:(UISwipeGestureRecognizer *)recognizer {
-    [self finish];
+- (void)handleSingleTap:(UIPanGestureRecognizer *)recognizer {
+    if (recognizer.state == UIGestureRecognizerStateChanged) {
+        [self finish];
+    }
 }
 
 - (void)setupContraints {
