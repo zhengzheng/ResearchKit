@@ -77,7 +77,6 @@
     
     self.view.backgroundColor = [UIColor blackColor];
     [self.navigationController setNavigationBarHidden:YES animated:NO];
-    [self.navigationFooterView setHidden:YES];
     _amslerGridView = [ORKAmslerGridContentView new];
     _amslerGridView.translatesAutoresizingMaskIntoConstraints = NO;
     self.activeStepView.activeCustomView = _amslerGridView;
