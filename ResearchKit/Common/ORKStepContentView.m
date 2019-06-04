@@ -152,6 +152,8 @@ typedef NS_CLOSED_ENUM(NSInteger, ORKUpdateConstraintSequence) {
     if (stepTopContentImage && _topContentImageView) {
         _topContentImageView.image = [self topContentAndAuxiliaryImage];
     }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:ORKStepTopContentImageChangedKey object:nil];
 }
 
 - (void)setAuxiliaryImage:(UIImage *)auxiliaryImage {

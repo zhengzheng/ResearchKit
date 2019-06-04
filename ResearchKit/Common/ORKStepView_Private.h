@@ -44,6 +44,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (UIImage *)topContentAndAuxiliaryImage;
 
+- (void)stepContentViewImageChanged:(NSNotification *)notification;
+
 @end
 
 NS_ASSUME_NONNULL_END

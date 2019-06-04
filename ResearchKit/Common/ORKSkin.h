@@ -98,6 +98,9 @@ ORK_EXTERN NSString *const ORKTopContentImageViewBackgroundColorKey;
 /// Font color for detail text in bullet item
 ORK_EXTERN NSString *const ORKBulletItemTextColorKey;
 
+/// ORKStepContentView stepTopContentImage  KVO keyPath image changed
+ORK_EXTERN NSString *const ORKStepTopContentImageChangedKey;
+
 /// Return the color for a specified ORK...ColorKey
 UIColor *ORKColor(NSString *colorKey);
 
