@@ -44,11 +44,9 @@ static const CGFloat shadowRadius = 1.0;
     UIStackView *_subStackView1;
     UIStackView *_subStackView2;
     UIView *_skipButtonView;
-    UIView *_cancelButtonView;
     
     NSMutableArray *_variableConstraints;
     NSMutableArray *_skipButtonConstraints;
-    NSMutableArray *_cancelButtonConstraints;
     NSArray *_contentWidthConstraints;
     BOOL _deprioritizeContentWidthConstraints;
     UIVisualEffectView *effectView;
@@ -68,7 +66,6 @@ static const CGFloat shadowRadius = 1.0;
         self.preservesSuperviewLayoutMargins = NO;
         _appTintColor = nil;
         self.skipButtonStyle = ORKNavigationContainerButtonStyleTextBold;
-        self.cancelButtonStyle = ORKNavigationContainerButtonStyleTextBold;
         [self setUpConstraints];
         [self updateContinueAndSkipEnabled];
     }
@@ -106,78 +103,6 @@ static const CGFloat shadowRadius = 1.0;
         _continueButton.normalTintColor = _appTintColor;
     }
     
-}
-
-- (void)setupCancelButton {
-    if (!_cancelButton) {
-        _cancelButton = [ORKBorderedButton new];
-        _cancelButtonView = [UIView new];
-    }
-    [_cancelButton setTitle:nil forState:UIControlStateNormal];
-    [_cancelButton addTarget:self action:@selector(cancelButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-    _cancelButton.translatesAutoresizingMaskIntoConstraints = NO;
-    _cancelButtonView.translatesAutoresizingMaskIntoConstraints = NO;
-
-    [_cancelButtonView addSubview:_cancelButton];
-    if (_appTintColor) {
-        _cancelButton.normalTintColor = _appTintColor;
-    }
-    [self setCancelButtonConstraints];
-}
-
-- (void)setCancelButtonConstraints {
-    if (_cancelButtonConstraints) {
-        [NSLayoutConstraint deactivateConstraints:_cancelButtonConstraints];
-    }
-    _cancelButtonConstraints = nil;
-    
-    NSMutableArray<NSLayoutConstraint *> *constraints = [[NSMutableArray alloc] initWithObjects:
-                                                         [NSLayoutConstraint constraintWithItem:_cancelButton
-                                                                                      attribute:NSLayoutAttributeCenterX
-                                                                                      relatedBy:NSLayoutRelationEqual
-                                                                                         toItem:_cancelButtonView
-                                                                                      attribute:NSLayoutAttributeCenterX
-                                                                                     multiplier:1.0
-                                                                                       constant:0.0],
-                                                         
-                                                         [NSLayoutConstraint constraintWithItem:_cancelButton
-                                                                                      attribute:NSLayoutAttributeCenterY
-                                                                                      relatedBy:NSLayoutRelationEqual
-                                                                                         toItem:_cancelButtonView
-                                                                                      attribute:NSLayoutAttributeCenterY
-                                                                                     multiplier:1.0
-                                                                                       constant:0.0], nil];
-    if (_cancelButtonStyle == ORKNavigationContainerButtonStyleRoundedRect) {
-        [constraints addObjectsFromArray:@[
-                                           [NSLayoutConstraint constraintWithItem:_cancelButton
-                                                                        attribute:NSLayoutAttributeWidth
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:_cancelButtonView
-                                                                        attribute:NSLayoutAttributeWidth
-                                                                       multiplier:1.0
-                                                                         constant:0.0]
-                                           ]];
-    }
-    else {
-        [constraints addObjectsFromArray:@[
-                                           [NSLayoutConstraint constraintWithItem:_cancelButtonView
-                                                                        attribute:NSLayoutAttributeWidth
-                                                                        relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                                                           toItem:_cancelButton
-                                                                        attribute:NSLayoutAttributeWidth
-                                                                       multiplier:1.0
-                                                                         constant:0.0]
-                                           ]];
-    }
-    [constraints addObject:[NSLayoutConstraint constraintWithItem:_cancelButtonView
-                                                        attribute:NSLayoutAttributeHeight
-                                                        relatedBy:NSLayoutRelationEqual
-                                                           toItem:_cancelButton
-                                                        attribute:NSLayoutAttributeHeight
-                                                       multiplier:1.0
-                                                         constant:0.0]];
-    _cancelButtonConstraints = constraints;
-    [NSLayoutConstraint activateConstraints:_cancelButtonConstraints];
 }
 
 - (void)setupSkipButton {
@@ -296,25 +221,6 @@ static const CGFloat shadowRadius = 1.0;
     [self setSkipButtonConstraints];
 }
 
-- (void)setCancelButtonStyle:(ORKNavigationContainerButtonStyle)cancelButtonStyle {
-    _cancelButtonStyle = cancelButtonStyle;
-    switch (cancelButtonStyle) {
-        case ORKNavigationContainerButtonStyleTextStandard:
-            [_cancelButton setAppearanceAsTextButton];
-            break;
-        case ORKNavigationContainerButtonStyleTextBold:
-            [_cancelButton setAppearanceAsBoldTextButton];
-            break;
-        case ORKNavigationContainerButtonStyleRoundedRect:
-            [_cancelButton resetAppearanceAsBorderedButton];
-            break;
-        default:
-            [_cancelButton setAppearanceAsTextButton];
-            break;
-    }
-    [self setCancelButtonConstraints];
-}
-
 - (void)setupSubStackViews {
     if (!_subStackView1) {
         _subStackView1 = [[UIStackView alloc] init];
@@ -333,14 +239,12 @@ static const CGFloat shadowRadius = 1.0;
     }
     _appTintColor = [[UIApplication sharedApplication].delegate window].tintColor;
     [self setupContinueButton];
-    [self setupCancelButton];
     [self setupSkipButton];
 }
 
 - (void)arrangeSubStacks {
     if (_parentStackView && _subStackView1 && _subStackView2) {
         [_continueButton removeFromSuperview];
-        [_cancelButtonView removeFromSuperview];
         [_skipButtonView removeFromSuperview];
         [_subStackView1 removeFromSuperview];
         [_subStackView2 removeFromSuperview];
@@ -352,12 +256,10 @@ static const CGFloat shadowRadius = 1.0;
         
         if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
            
-            [_subStackView1 insertArrangedSubview:_cancelButtonView atIndex:[[_subStackView1 arrangedSubviews] count]];
             [_subStackView1 insertArrangedSubview:_skipButtonView atIndex:[[_subStackView1 arrangedSubviews] count] - 1];
             _parentStackView.axis = UILayoutConstraintAxisHorizontal;
         } else {
             [_subStackView2 insertArrangedSubview:_skipButtonView atIndex:0];
-            [_subStackView2 insertArrangedSubview:_cancelButtonView atIndex:[[_subStackView2 arrangedSubviews] count]];
             _parentStackView.axis = UILayoutConstraintAxisVertical;
         }
         if ([_subStackView1.subviews count] > 0) {
@@ -419,10 +321,6 @@ static const CGFloat shadowRadius = 1.0;
     });
 }
 
-- (void)cancelButtonAction:(id)sender {
-    [self cancelAction:sender];
-}
-
 - (void)continueButtonAction:(id)sender {
     if (_useNextForSkip && _skipButtonItem && !_continueButtonItem) {
         [self skipAction:sender];
@@ -450,11 +348,6 @@ static const CGFloat shadowRadius = 1.0;
 - (void)skipAction:(id)sender {
     ORKSuppressPerformSelectorWarning(
                                       (void)[_skipButtonItem.target performSelector:_skipButtonItem.action withObject:_skipButton];
-                                      );
-}
-
-- (void)cancelAction:(id)sender {
-    ORKSuppressPerformSelectorWarning((void)[_cancelButtonItem.target performSelector:_cancelButtonItem.action withObject:_cancelButton];
                                       );
 }
 
@@ -537,27 +430,6 @@ static const CGFloat shadowRadius = 1.0;
 - (void)setContinueButtonItem:(UIBarButtonItem *)continueButtonItem {
     _continueButtonItem = continueButtonItem;
     [self updateContinueAndSkipEnabled];
-}
-
-- (void)setCancelButtonItem:(UIBarButtonItem *)cancelButtonItem {
-    _cancelButtonItem = cancelButtonItem;
-    [_cancelButton setTitle:cancelButtonItem.title ? cancelButtonItem.title : ORKLocalizedString(@"BUTTON_CANCEL", nil) forState:UIControlStateNormal];
-    [_cancelButtonItem addObserver:self
-                  forKeyPath:@"title"
-                     options:NSKeyValueObservingOptionNew
-                     context:NULL];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath
-                      ofObject:(id)object
-                        change:(NSDictionary *)change
-                       context:(void *)context {
-    
-    if ([keyPath isEqualToString:@"title"]) {
-        UIBarButtonItem *cancelButtonItemObject = object;
-        NSString *title = cancelButtonItemObject.title;
-        [_cancelButton setTitle:title forState:UIControlStateNormal];
-    }
 }
 
 - (void)setUpConstraints {

@@ -129,7 +129,6 @@
 
 - (void)setCancelButtonItem:(UIBarButtonItem *)cancelButtonItem {
     [super setCancelButtonItem:cancelButtonItem];
-    _videoCaptureView.cancelButtonItem = cancelButtonItem;
 }
 
 - (void)stepDidChange {
