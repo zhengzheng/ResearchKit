@@ -58,10 +58,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepContentViewImageChanged:) name:ORKStepTopContentImageChangedKey object:nil];
 }
 
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (void)stepContentViewImageChanged:(NSNotification *)notification {
     
 }
