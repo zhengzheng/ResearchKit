@@ -957,7 +957,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
         
         // Set the progress label only if non-nil or if it is nil having previously set a progress label.
         if (progressLabel || strongSelf->_hasSetProgressLabel) {
-            strongSelf.pageViewController.navigationItem.rightBarButtonItem = [strongSelf rightBarItemWithText:progressLabel];
+            viewController.navigationItem.title = progressLabel;
         }
         
         strongSelf->_hasSetProgressLabel = (progressLabel != nil);
