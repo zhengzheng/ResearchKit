@@ -90,9 +90,9 @@
 
     [_amslerGridView addSubview:_freehandDrawingView];
    
-    UIPanGestureRecognizer *r = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
-    [r setMinimumNumberOfTouches:2];
-    [self.activeStepView addGestureRecognizer:r];
+    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
+    [panGestureRecognizer setMinimumNumberOfTouches:2];
+    [self.activeStepView addGestureRecognizer:panGestureRecognizer];
     
     self.activeStepView.isAccessibilityElement = YES;
     self.activeStepView.accessibilityLabel = ORKLocalizedString(@"AX_AMSLER_GRID_LABEL", nil);
@@ -101,7 +101,7 @@
     [self setupContraints];
 }
 
-- (void)handleSingleTap:(UIPanGestureRecognizer *)recognizer {
+- (void)handlePanGesture:(UIPanGestureRecognizer *)recognizer {
     if (recognizer.state == UIGestureRecognizerStateChanged) {
         [self finish];
     }
