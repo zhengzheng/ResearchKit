@@ -31,6 +31,7 @@
 #import "ORKStepView_Private.h"
 #import "ORKStepContentView_Private.h"
 #import "ORKNavigationContainerView_Internal.h"
+#import "ORKSkin.h"
 
 @interface ORKStepView ()<ORKStepContentLearnMoreItemDelegate>
 
@@ -54,6 +55,11 @@
         self.stepContentView = [ORKStepContentView new];
     }
     self.stepContentView.delegate = self;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepContentViewImageChanged:) name:ORKStepTopContentImageChangedKey object:nil];
+}
+
+- (void)stepContentViewImageChanged:(NSNotification *)notification {
+    
 }
 
 - (void)setupNavigationContainerView {

@@ -53,6 +53,7 @@
     CGFloat _leftRightPadding;
     UIView *_footerView;
     NSLayoutConstraint *_bottomConstraint;
+    NSLayoutConstraint *_tableViewTopConstraint;
     NSLayoutConstraint *_tableViewBottomConstraint;
     
     UIScrollView *_scrollView;
@@ -247,16 +248,10 @@
 - (void)setupTableViewConstraints {
     _tableView.translatesAutoresizingMaskIntoConstraints = NO;
     self.stepContentView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self setTableViewTopConstraint];
     [self setTableViewBottomConstraint];
     [NSLayoutConstraint activateConstraints:@[
-                                              
-                                              [NSLayoutConstraint constraintWithItem:_tableView
-                                                                           attribute:NSLayoutAttributeTop
-                                                                           relatedBy:NSLayoutRelationEqual
-                                                                              toItem:self
-                                                                           attribute:NSLayoutAttributeTop
-                                                                          multiplier:1.0
-                                                                            constant:0.0],
+                                              _tableViewTopConstraint,
                                               [NSLayoutConstraint constraintWithItem:_tableView
                                                                            attribute:NSLayoutAttributeLeft
                                                                            relatedBy:NSLayoutRelationEqual
@@ -286,6 +281,29 @@
                                                                           multiplier:1.0
                                                                             constant:0.0]
                                               ]];
+}
+
+- (void)setTableViewTopConstraint {
+    _tableViewTopConstraint = [NSLayoutConstraint constraintWithItem:_tableView
+                                                           attribute:NSLayoutAttributeTop
+                                                           relatedBy:NSLayoutRelationEqual
+                                                              toItem:self.stepTopContentImage ? self : self.safeAreaLayoutGuide
+                                                           attribute:NSLayoutAttributeTop
+                                                          multiplier:1.0
+                                                            constant:0.0];
+}
+
+- (void)updateTableViewTopConstraint {
+    if (_tableViewTopConstraint && _tableViewTopConstraint.isActive) {
+        [NSLayoutConstraint deactivateConstraints:@[_tableViewTopConstraint]];
+    }
+    [self setTableViewTopConstraint];
+    [NSLayoutConstraint activateConstraints:@[_tableViewTopConstraint]];
+}
+
+- (void)stepContentViewImageChanged:(NSNotification *)notification {
+    [super stepContentViewImageChanged:notification];
+    [self updateTableViewTopConstraint];
 }
 
 - (void)setTableViewBottomConstraint {

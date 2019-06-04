@@ -32,7 +32,7 @@
 #import "ORKStepContainerView_Private.h"
 #import "ORKTitleLabel.h"
 #import "ORKBodyItem.h"
-#import "ORKStepContentView.h"
+#import "ORKStepContentView_Private.h"
 #import "ORKBodyContainerView.h"
 #import "ORKSkin.h"
 #import "ORKNavigationContainerView_Internal.h"
@@ -108,6 +108,7 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
 //    variable constraints:
     NSLayoutConstraint *_scrollViewTopConstraint;
     NSLayoutConstraint *_scrollViewBottomConstraint;
+    NSLayoutConstraint *_stepContentViewTopConstraint;
     NSLayoutConstraint *_customContentViewTopConstraint;
     
     NSArray<NSLayoutConstraint *> *_topContentImageViewConstraints;
@@ -218,16 +219,17 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
     [_scrollContainerView addSubview:self.stepContentView];
 }
 
+- (void)stepContentViewImageChanged:(NSNotification *)notification {
+    [super stepContentViewImageChanged:notification];
+    [self updateStepContentViewTopConstraint];
+    [self setNeedsUpdateConstraints];
+}
+
 - (void)setStepContentViewConstraints {
     self.stepContentView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self setStepContentViewTopConstraint];
     [NSLayoutConstraint activateConstraints:@[
-                                              [NSLayoutConstraint constraintWithItem:self.stepContentView
-                                                                           attribute:NSLayoutAttributeTop
-                                                                           relatedBy:NSLayoutRelationEqual
-                                                                              toItem:_scrollContainerView
-                                                                           attribute:NSLayoutAttributeTop
-                                                                          multiplier:1.0
-                                                                            constant:0.0],
+                                              _stepContentViewTopConstraint,
                                               [NSLayoutConstraint constraintWithItem:self.stepContentView
                                                                            attribute:NSLayoutAttributeLeft
                                                                            relatedBy:NSLayoutRelationEqual
@@ -243,6 +245,29 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
                                                                           multiplier:1.0
                                                                             constant:0.0]
                                               ]];
+}
+
+- (void)setStepContentViewTopConstraint {
+    _stepContentViewTopConstraint = [NSLayoutConstraint constraintWithItem:self.stepContentView
+                                                                 attribute:NSLayoutAttributeTop
+                                                                 relatedBy:NSLayoutRelationEqual
+                                                                    toItem:self.stepContentView.topContentImageView.image ? _scrollContainerView : _scrollContainerView.safeAreaLayoutGuide
+                                                                 attribute:NSLayoutAttributeTop
+                                                                multiplier:1.0
+                                                                  constant:0.0];
+}
+
+- (void)updateStepContentViewTopConstraint {
+    if (_stepContentViewTopConstraint && _stepContentViewTopConstraint.isActive) {
+        [NSLayoutConstraint deactivateConstraints:@[_stepContentViewTopConstraint]];
+    }
+    if ([_updatedConstraints containsObject:_stepContentViewTopConstraint]) {
+        [_updatedConstraints removeObject:_stepContentViewTopConstraint];
+    }
+    [self setStepContentViewTopConstraint];
+    if (_stepContentViewTopConstraint) {
+        [_updatedConstraints addObject:_stepContentViewTopConstraint];
+    }
 }
 
 - (void)setCustomContentView:(UIView *)customContentView {
