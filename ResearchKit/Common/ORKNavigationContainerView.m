@@ -256,7 +256,7 @@ static const CGFloat shadowRadius = 1.0;
         
         if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
            
-            [_subStackView1 insertArrangedSubview:_skipButtonView atIndex:[[_subStackView1 arrangedSubviews] count] - 1];
+            [_subStackView1 insertArrangedSubview:_skipButtonView atIndex:[[_subStackView1 arrangedSubviews] count]];
             _parentStackView.axis = UILayoutConstraintAxisHorizontal;
         } else {
             [_subStackView2 insertArrangedSubview:_skipButtonView atIndex:0];
