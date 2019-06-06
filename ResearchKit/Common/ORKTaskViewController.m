@@ -340,6 +340,23 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
     return [[UIBarButtonItem alloc] initWithTitle:ORKLocalizedString(@"BUTTON_LEARN_MORE", nil) style:UIBarButtonItemStylePlain target:self action:@selector(learnMoreAction:)];
 }
 
+- (UIBarButtonItem *)rightBarItemWithText:(NSString *)text {
+    UILabel *progressLabelNavigationItem = [UILabel new];
+    progressLabelNavigationItem.numberOfLines = 1;
+    progressLabelNavigationItem.textAlignment = NSTextAlignmentRight;
+    id<ORKTask> task = self.task;
+    if ([task isKindOfClass:[ORKOrderedTask class]]) {
+        ORKOrderedTask *orderedTask = (ORKOrderedTask *)task;
+        progressLabelNavigationItem.textColor = orderedTask.progressLabelColor;
+    }
+    else {
+        progressLabelNavigationItem.textColor = ORKColor(ORKProgressLabelColorKey);
+    }
+    [progressLabelNavigationItem setText:text];
+    
+    return [[UIBarButtonItem alloc] initWithCustomView:progressLabelNavigationItem];
+}
+
 - (void)requestHealthStoreAccessWithReadTypes:(NSSet *)readTypes
                                    writeTypes:(NSSet *)writeTypes
                                       handler:(void (^)(void))handler {
@@ -940,7 +957,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
         
         // Set the progress label only if non-nil or if it is nil having previously set a progress label.
         if (progressLabel || strongSelf->_hasSetProgressLabel) {
-            
+            strongSelf.pageViewController.navigationItem.rightBarButtonItem = [strongSelf rightBarItemWithText:progressLabel];
         }
         
         strongSelf->_hasSetProgressLabel = (progressLabel != nil);
@@ -995,7 +1012,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
             _pageViewController.navigationItem.title = viewController.navigationItem.title;
         }
         if (![self shouldDisplayProgressLabel]) {
-            //_pageViewController.navigationItem.rightBarButtonItem = viewController.navigationItem.rightBarButtonItem;
+            _pageViewController.navigationItem.rightBarButtonItem = viewController.navigationItem.rightBarButtonItem;
         }
     }
 }
