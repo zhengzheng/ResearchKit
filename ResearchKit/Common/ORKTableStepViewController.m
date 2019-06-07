@@ -86,6 +86,7 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
 
 - (void)setCancelButtonItem:(UIBarButtonItem *)cancelButtonItem {
     [super setCancelButtonItem:cancelButtonItem];
+    self.navigationFooterView.cancelButtonItem = self.cancelButtonItem;
 }
 
 - (void)setSkipButtonItem:(UIBarButtonItem *)skipButtonItem {
@@ -148,6 +149,7 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
         _navigationFooterView.skipButtonItem = self.skipButtonItem;
         _navigationFooterView.continueEnabled = [self continueButtonEnabled];
         _navigationFooterView.continueButtonItem = self.continueButtonItem;
+        _navigationFooterView.cancelButtonItem = self.cancelButtonItem;
         _navigationFooterView.optional = self.step.optional;
         
         [self setupConstraints];

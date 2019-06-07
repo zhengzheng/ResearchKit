@@ -112,6 +112,7 @@
 
 - (void)setCancelButtonItem:(UIBarButtonItem *)cancelButtonItem {
     [super setCancelButtonItem:cancelButtonItem];
+    _navigationFooterView.cancelButtonItem = self.cancelButtonItem;
 }
 
 - (void)stepDidChange {
@@ -143,6 +144,7 @@
         _navigationFooterView.continueEnabled = YES;
         _navigationFooterView.continueButtonItem = self.continueButtonItem;
         _navigationFooterView.optional = self.step.optional;
+        _navigationFooterView.cancelButtonItem = self.cancelButtonItem;
         [self setupConstraints];
         [_tableContainer setNeedsLayout];
     }

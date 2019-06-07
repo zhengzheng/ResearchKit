@@ -45,10 +45,10 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (self.navigationItem.leftBarButtonItem) {
-        self.navigationItem.leftBarButtonItem = nil;
+    if (self.navigationItem.rightBarButtonItem) {
+        self.navigationItem.rightBarButtonItem = nil;
     }
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:ORKLocalizedString(@"BUTTON_CLOSE", nil) style:UIBarButtonItemStyleDone target:self action:@selector(doneButtonPressed:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:ORKLocalizedString(@"BUTTON_CLOSE", nil) style:UIBarButtonItemStyleDone target:self action:@selector(doneButtonPressed:)];
 }
 
 - (void)doneButtonPressed:(id)sender {
