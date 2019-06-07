@@ -36,6 +36,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class ORKAnswerFormat;
+@class ORKLearnMoreItem;
 
 /**
  The `ORKQuestionStep` class is a concrete subclass of `ORKStep` that represents
@@ -107,6 +108,8 @@ ORK_CLASS_AVAILABLE
  A property to present the question with a card view. Default to YES;
  */
 @property (nonatomic) BOOL useCardView;
+
+@property (nonatomic, copy, nullable) ORKLearnMoreItem *learnMoreItem;
 
 @end
 

@@ -33,6 +33,8 @@
 
 #import "ORKChoiceViewCell_Internal.h"
 #import "ORKQuestionStepView.h"
+#import "ORKLearnMoreView.h"
+#import "ORKLearnMoreStepViewController.h"
 #import "ORKStepHeaderView_Internal.h"
 #import "ORKSurveyAnswerCellForScale.h"
 #import "ORKSurveyAnswerCellForNumber.h"
@@ -67,7 +69,7 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
 };
 
 
-@interface ORKQuestionStepViewController () <UITableViewDataSource, UITableViewDelegate, ORKSurveyAnswerCellDelegate, ORKTextChoiceCellGroupDelegate, ORKChoiceOtherViewCellDelegate, ORKTableContainerViewDelegate> {
+@interface ORKQuestionStepViewController () <UITableViewDataSource, UITableViewDelegate, ORKSurveyAnswerCellDelegate, ORKTextChoiceCellGroupDelegate, ORKChoiceOtherViewCellDelegate, ORKTableContainerViewDelegate, ORKLearnMoreViewDelegate> {
     id _answer;
     
     ORKTableContainerView *_tableContainer;
@@ -606,8 +608,16 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    
     if ([self questionStep].useCardView && [self questionStep].question) {
-        return [[ORKSurveyCardHeaderView alloc] initWithTitle:self.questionStep.question];
+        ORKLearnMoreView *learnMoreView;
+        
+        if (self.questionStep.learnMoreItem) {
+            learnMoreView = [ORKLearnMoreView learnMoreViewWithItem:self.questionStep.learnMoreItem];
+            learnMoreView.delegate = self;
+        }
+        
+        return [[ORKSurveyCardHeaderView alloc] initWithTitle:self.questionStep.question detailText:nil learnMoreView:learnMoreView progressText:nil];
     }
     return nil;
 }
@@ -916,5 +926,13 @@ static NSString *const _ORKOriginalAnswerRestoreKey = @"originalAnswer";
 //    if (_navigationFooterView.skipButton != nil) {
 //        [elements addObject:self.continueSkipContainer.skipButton];
 //    }
+
+#pragma mark - ORKlearnMoreStepViewControllerDelegate
+
+- (void)learnMoreButtonPressedWithStep:(ORKLearnMoreInstructionStep *)learnMoreStep {
+    ORKLearnMoreStepViewController *learnMoreViewController = [[ORKLearnMoreStepViewController alloc] initWithStep:learnMoreStep];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:learnMoreViewController];
+    [self presentViewController:navigationController animated:YES completion:nil];
+}
 
 @end

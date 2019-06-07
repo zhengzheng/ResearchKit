@@ -77,7 +77,6 @@
     
     self.view.backgroundColor = [UIColor blackColor];
     [self.navigationController setNavigationBarHidden:YES animated:NO];
-    [self.navigationFooterView setHidden:YES];
     _amslerGridView = [ORKAmslerGridContentView new];
     _amslerGridView.translatesAutoresizingMaskIntoConstraints = NO;
     self.activeStepView.activeCustomView = _amslerGridView;
@@ -91,9 +90,9 @@
 
     [_amslerGridView addSubview:_freehandDrawingView];
    
-    UISwipeGestureRecognizer *r = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
-    r.direction = UISwipeGestureRecognizerDirectionLeft;
-    [self.activeStepView addGestureRecognizer:r];
+    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
+    [panGestureRecognizer setMinimumNumberOfTouches:2];
+    [self.activeStepView addGestureRecognizer:panGestureRecognizer];
     
     self.activeStepView.isAccessibilityElement = YES;
     self.activeStepView.accessibilityLabel = ORKLocalizedString(@"AX_AMSLER_GRID_LABEL", nil);
@@ -102,8 +101,10 @@
     [self setupContraints];
 }
 
-- (void)handleSingleTap:(UISwipeGestureRecognizer *)recognizer {
-    [self finish];
+- (void)handlePanGesture:(UIPanGestureRecognizer *)recognizer {
+    if (recognizer.state == UIGestureRecognizerStateChanged) {
+        [self finish];
+    }
 }
 
 - (void)setupContraints {
