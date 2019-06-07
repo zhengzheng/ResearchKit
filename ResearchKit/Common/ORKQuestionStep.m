@@ -114,7 +114,7 @@
 }
 
 - (NSUInteger)hash {
-    return super.hash ^ self.answerFormat.hash;
+    return super.hash ^ self.answerFormat.hash ^ self.question.hash ^ self.questionType ^ self.placeholder.hash ^ (_useCardView ? 0xf : 0x0) ^ self.learnMoreItem.hash;
 }
 
 - (void)setQuestion:(NSString *)question {
