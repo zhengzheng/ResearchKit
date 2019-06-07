@@ -30,6 +30,7 @@
 
 
 #import "ORKQuestionStep.h"
+#import "ORKLearnMoreItem.h"
 
 #import "ORKQuestionStepViewController.h"
 
@@ -98,6 +99,7 @@
     ORKQuestionStep *questionStep = [super copyWithZone:zone];
     questionStep.answerFormat = [self.answerFormat copy];
     questionStep.placeholder = [self.placeholder copy];
+    questionStep.learnMoreItem = [self.learnMoreItem copy];
     return questionStep;
 }
 
@@ -107,7 +109,8 @@
     __typeof(self) castObject = object;
     return isParentSame &&
     ORKEqualObjects(self.answerFormat, castObject.answerFormat) &&
-    ORKEqualObjects(self.placeholder, castObject.placeholder);
+    ORKEqualObjects(self.placeholder, castObject.placeholder) &&
+    ORKEqualObjects(self.learnMoreItem, castObject.learnMoreItem);
 }
 
 - (NSUInteger)hash {
@@ -133,6 +136,7 @@
         ORK_DECODE_OBJ_CLASS(aDecoder, answerFormat, ORKAnswerFormat);
         ORK_DECODE_OBJ_CLASS(aDecoder, placeholder, NSString);
         ORK_DECODE_OBJ_CLASS(aDecoder, question, NSString);
+        ORK_DECODE_OBJ_CLASS(aDecoder, learnMoreItem, ORKLearnMoreItem);
         ORK_DECODE_BOOL(aDecoder, useCardView);
     }
     return self;
@@ -144,6 +148,7 @@
     ORK_ENCODE_OBJ(aCoder, answerFormat);
     ORK_ENCODE_OBJ(aCoder, placeholder);
     ORK_ENCODE_OBJ(aCoder, question);
+    ORK_ENCODE_OBJ(aCoder, learnMoreItem);
     ORK_ENCODE_BOOL(aCoder, useCardView);
 }
 
