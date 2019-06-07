@@ -74,6 +74,21 @@ ORK_CLASS_AVAILABLE
                                     answer:(nullable ORKAnswerFormat *)answerFormat;
 
 /**
+ Returns a new question step that includes the specified identifier, title, question, and answer format.
+ 
+ @param identifier    The identifier of the step (a step identifier should be unique within the task).
+ @param title         A localized string that represents the primary text of the question.
+ @param question      A localized string that represents the question as a text.
+ @param answerFormat  The format in which the answer is expected.
+ @param learnMoreItem A LearnMoreItem object that presents a learn more button in the card header view
+ */
++ (instancetype)questionStepWithIdentifier:(NSString *)identifier
+                                     title:(nullable NSString *)title
+                                  question:(nullable NSString *)question
+                                    answer:(nullable ORKAnswerFormat *)answerFormat
+                             learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem;
+
+/**
  The format of the answer.
  
  For example, the answer format might include the type of data to collect, the constraints
@@ -109,6 +124,9 @@ ORK_CLASS_AVAILABLE
  */
 @property (nonatomic) BOOL useCardView;
 
+/**
+ A property that presents a learn more button within the question's card header view;
+ */
 @property (nonatomic, copy, nullable) ORKLearnMoreItem *learnMoreItem;
 
 @end

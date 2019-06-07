@@ -57,6 +57,20 @@
     return step;
 }
 
++ (instancetype)questionStepWithIdentifier:(NSString *)identifier
+                                     title:(nullable NSString *)title
+                                  question:(nullable NSString *)question
+                                    answer:(nullable ORKAnswerFormat *)answerFormat
+                             learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem {
+    
+    ORKQuestionStep *step = [[ORKQuestionStep alloc] initWithIdentifier:identifier];
+    step.title = title;
+    step.question = question;
+    step.answerFormat = answerFormat;
+    step.learnMoreItem = learnMoreItem;
+    return step;
+}
+
 - (instancetype)initWithIdentifier:(NSString *)identifier {
     
     self = [super initWithIdentifier:identifier];
