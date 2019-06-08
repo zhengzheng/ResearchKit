@@ -165,6 +165,11 @@ ORK_CLASS_AVAILABLE
 @property (nonatomic) BOOL allowsSelection;
 
 /**
+ UIColor to be applied to the tableView and table cell background color.
+*/
+@property (nonatomic, strong) UIColor *tableColor;
+
+/**
  Returns the number of sections in the tableview used to display this step. Default = `1`.
  
  @return                The number of sections in the tableview.

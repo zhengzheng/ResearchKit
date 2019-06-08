@@ -543,6 +543,8 @@
                 [self.taskViewController.navigationBar setBarTintColor:[_tableView backgroundColor]];
                 [self.view setBackgroundColor:[_tableView backgroundColor]];
             }
+        } else {
+            [_tableView setBackgroundColor:[UIColor whiteColor]];
         }
         _headerView = _tableContainer.stepContentView;
         _headerView.stepTopContentImage = self.step.image;
@@ -1096,6 +1098,15 @@
         
         return view;
     }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+    ORKFormStep *formStep = [self formStep];
+    if (formStep.footerText != nil && (section == (tableView.numberOfSections - 1))) {
+        return formStep.footerText;
+    }
+
+    return nil;
 }
 
 #pragma mark ORKFormItemCellDelegate

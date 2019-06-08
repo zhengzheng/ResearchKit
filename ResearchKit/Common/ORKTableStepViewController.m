@@ -106,7 +106,15 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
 
 - (void)stepDidChange {
     [super stepDidChange];
-    _tableViewColor = ORKNeedWideScreenDesign(self.view) ? [UIColor clearColor] : (ORKColor(ORKBackgroundColorKey));
+
+    if (ORKNeedWideScreenDesign(self.view)) {
+        _tableViewColor = [UIColor clearColor];
+    } else if (self.tableStepRef.tableColor != nil) {
+        _tableViewColor = self.tableStepRef.tableColor;
+    } else {
+        _tableViewColor = ORKColor(ORKBackgroundColorKey);
+    }
+    
     [_tableContainer removeFromSuperview];
     _tableContainer = nil;
     
@@ -242,8 +250,10 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
     [self.tableStep configureCell:cell indexPath:indexPath tableView:tableView];
     
-    // Only set the background color if it is using the default cell type
-    if ([reuseIdentifier isEqualToString:ORKBasicCellReuseIdentifier]) {
+    if (self.tableStepRef.tableColor != nil) {
+        [cell setBackgroundColor:self.tableStepRef.tableColor];
+    } else if ([reuseIdentifier isEqualToString:ORKBasicCellReuseIdentifier]) {
+        // Only set the background color if it is using the default cell type
         [cell setBackgroundColor:_tableViewColor];
     }
     
