@@ -1005,7 +1005,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                      PROPERTY(isBulleted, NSNumber, NSObject, YES, nil, nil),
                      PROPERTY(bulletIconNames, NSString, NSArray, YES, nil, nil),
                      PROPERTY(allowsSelection, NSNumber, NSObject, YES, nil, nil),
-                     PROPERTY(bulletType, NSNumber, NSObject, YES, nil, nil)
+                     PROPERTY(bulletType, NSNumber, NSObject, YES, nil, nil),
                      }))),
            ENTRY(ORKTimedWalkStep,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
@@ -1254,6 +1254,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     PROPERTY(formItems, ORKFormItem, NSArray, YES, nil, nil),
                     PROPERTY(footnote, NSString, NSObject, YES, nil, nil),
                     PROPERTY(useCardView, NSNumber, NSObject, YES, nil, nil),
+                    PROPERTY(footerText, NSString, NSObject, YES, nil, nil),
                     })),
            ENTRY(ORKFormItem,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {

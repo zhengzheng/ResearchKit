@@ -115,6 +115,7 @@
     if (self) {
         ORK_DECODE_OBJ_ARRAY(aDecoder, formItems, ORKFormItem);
         ORK_DECODE_BOOL(aDecoder, useCardView);
+        ORK_DECODE_OBJ(aDecoder, footerText);
     }
     return self;
 }
@@ -123,6 +124,7 @@
     [super encodeWithCoder:aCoder];
     ORK_ENCODE_OBJ(aCoder, formItems);
     ORK_ENCODE_BOOL(aCoder, useCardView);
+    ORK_ENCODE_OBJ(aCoder, footerText);
 }
 
 + (BOOL)supportsSecureCoding {
