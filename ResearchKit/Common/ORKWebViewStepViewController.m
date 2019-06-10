@@ -78,7 +78,6 @@
     if (!_navigationFooterView) {
         _navigationFooterView = [ORKNavigationContainerView new];
     }
-    _navigationFooterView.cancelButtonItem = self.cancelButtonItem;
     _navigationFooterView.neverHasContinueButton = YES;
     [self.view addSubview:_navigationFooterView];
 }
