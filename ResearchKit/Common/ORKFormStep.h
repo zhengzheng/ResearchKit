@@ -94,7 +94,7 @@ ORK_CLASS_AVAILABLE
 /**
    Footer text to display beneath the last formItem.
 */
-@property (nonatomic, strong) NSString *footerText;
+@property (nonatomic, copy, nullable) NSString *footerText;
 
 @end
 
