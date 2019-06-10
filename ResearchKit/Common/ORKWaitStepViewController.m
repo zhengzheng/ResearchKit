@@ -93,6 +93,7 @@
 - (void)setupNavigationFooterView {
     if (!_navigationFooterView) {
         _navigationFooterView = _waitStepView.navigationFooterView;
+        _navigationFooterView.neverHasContinueButton = YES;
     }
 }
 
