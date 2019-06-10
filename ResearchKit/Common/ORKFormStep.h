@@ -91,6 +91,11 @@ ORK_CLASS_AVAILABLE
  */
 @property (nonatomic) BOOL useCardView;
 
+/**
+   Footer text to display beneath the last formItem.
+*/
+@property (nonatomic, copy, nullable) NSString *footerText;
+
 @end
 
 
