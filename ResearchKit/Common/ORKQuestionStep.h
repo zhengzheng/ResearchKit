@@ -74,7 +74,7 @@ ORK_CLASS_AVAILABLE
                                     answer:(nullable ORKAnswerFormat *)answerFormat;
 
 /**
- Returns a new question step that includes the specified identifier, title, question, and answer format.
+ Returns a new question step that includes the specified identifier, title, question, answer, and learnMoreItem format.
  
  @param identifier    The identifier of the step (a step identifier should be unique within the task).
  @param title         A localized string that represents the primary text of the question.
