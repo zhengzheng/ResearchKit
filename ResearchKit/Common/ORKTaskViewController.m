@@ -1008,7 +1008,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
             _pageViewController.navigationItem.title = viewController.navigationItem.title;
         }
         if (![self shouldDisplayProgressLabel]) {
-            _pageViewController.navigationItem.rightBarButtonItem = viewController.navigationItem.rightBarButtonItem;
+            _pageViewController.navigationItem.title = @"";
         }
     }
 }
