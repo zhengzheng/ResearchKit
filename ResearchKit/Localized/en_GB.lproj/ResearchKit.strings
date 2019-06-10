@@ -287,7 +287,7 @@
 
 /* Amsler Grid Task.*/
 "AMSLER_GRID_TITLE" = "Amsler Grid";
-"AMSLER_GRID_INTRO_TEXT" = "This activity helps in detecting problems in a user's vision.";
+"AMSLER_GRID_INTRO_TEXT" = "This activity helps in detecting problems in a user‘s vision.";
 "AMSLER_GRID_INSTRUCTION_TEXT" = "Hold the device 30 centimetres (12 inches) from your face and at eye level throughout the test.";
 "AMSLER_GRID_INSTRUCTION_DETAIL_TEXT" = "Close your %@ and stare at the dot in the centre of the square grid.\n\nUsing your finger or stylus, mark any distortions you see such as blurred or wavy lines.\n\nWhen you’ve finished, swipe left anywhere outside the grid.";
 "AMSLER_GRID_LEFT_EYE" = "Left Eye";

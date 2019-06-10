@@ -55,6 +55,7 @@ NSString *const ORKProgressLabelColorKey = @"ORKProgressLabelColorKey";
 NSString *const ORKiPadBackgroundViewColorKey = @"ORKiPadBacgroundViewColorKey";
 NSString *const ORKTopContentImageViewBackgroundColorKey = @"ORKTopContentImageViewBackgroundColorKey";
 NSString *const ORKBulletItemTextColorKey = @"ORKBulletItemTextColorKey";
+NSString *const ORKStepTopContentImageChangedKey = @"ORKStepTopContentImageChanged";
 CGFloat ORKQuestionStepMinimumHeaderHeight = 29.75;
 CGFloat ORKCardDefaultCornerRadii = 10.0;
 CGFloat ORKCardDefaultBorderWidth = 0.5;

@@ -797,7 +797,12 @@ enum TaskListRow: Int, CustomStringConvertible {
         
         let question1 = NSLocalizedString("Would you like to subscribe to our newsletter?", comment: "")
         
-        let question1Step = ORKQuestionStep(identifier: String(describing: Identifier.questionStep), title: "Questionnaire", question: question1, answer: question1StepAnswerFormat)
+        let learnMoreInstructionStep = ORKLearnMoreInstructionStep(identifier: "LearnMoreInstructionStep01")
+        learnMoreInstructionStep.title = NSLocalizedString("Learn more title", comment: "")
+        learnMoreInstructionStep.text = NSLocalizedString("Learn more text", comment: "")
+        let learnMoreItem = ORKLearnMoreItem(text: nil, learnMoreInstructionStep: learnMoreInstructionStep)
+        
+        let question1Step = ORKQuestionStep(identifier: String(describing: Identifier.questionStep), title: "Questionnaire", question: question1, answer: question1StepAnswerFormat, learnMoreItem: learnMoreItem)
         question1Step.text = exampleDetailText
         
         //Add a question step with different layout format.

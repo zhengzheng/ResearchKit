@@ -217,6 +217,7 @@
         _navigationFooterView.skipButtonItem = _skipButtonItem;
         _navigationFooterView.skipEnabled = YES;
     }
+    _navigationFooterView.cancelButtonItem = _cancelButtonItem;
 }
 
 - (void)setVideoFileURL:(NSURL *)videoFileURL {

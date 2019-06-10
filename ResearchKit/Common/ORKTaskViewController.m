@@ -671,9 +671,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
     _dismissedDate = nil;
     
     if (@available(iOS 13.0, *)) {
-        if ([self dismissWithoutConfirmation]) {
-            self.modalInPresentation = NO;
-        } else {
+        if ([self shouldDismissWithSwipe] == NO) {
             self.modalInPresentation = YES;
         }
     }
@@ -963,7 +961,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
         strongSelf->_hasSetProgressLabel = (progressLabel != nil);
         
         strongSelf.pageViewController.navigationItem.rightBarButtonItem = viewController.cancelButtonItem;
-        
+
         // Collect toolbarItems
         [strongSelf collectToolbarItemsFromViewController:viewController];
     }];
@@ -1191,14 +1189,14 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
 }
 
 - (IBAction)cancelAction:(UIBarButtonItem *)sender {
-    if ([self dismissWithoutConfirmation]) {
+    if (self.discardable) {
         [self finishWithReason:ORKTaskViewControllerFinishReasonDiscarded error:nil];
     } else {
         [self presentCancelOptions:_saveable sender:sender];
     }
 }
 
-- (BOOL)dismissWithoutConfirmation {
+- (BOOL)shouldDismissWithSwipe {
     // Should we also include visualConsentStep here? Others?
     BOOL isCurrentInstructionStep = [self.currentStepViewController.step isKindOfClass:[ORKInstructionStep class]];
     
@@ -1219,7 +1217,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
         isStandaloneReviewStep = reviewStep.isStandalone;
     }
     
-    if (self.discardable || (isCurrentInstructionStep && _saveable == NO) || isStandaloneReviewStep || self.currentStepViewController.readOnlyMode) {
+    if ((isCurrentInstructionStep && _saveable == NO) || isStandaloneReviewStep || self.currentStepViewController.readOnlyMode) {
         return YES;
     } else {
         return NO;

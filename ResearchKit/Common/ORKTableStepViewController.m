@@ -86,6 +86,7 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
 
 - (void)setCancelButtonItem:(UIBarButtonItem *)cancelButtonItem {
     [super setCancelButtonItem:cancelButtonItem];
+    self.navigationFooterView.cancelButtonItem = self.cancelButtonItem;
 }
 
 - (void)setSkipButtonItem:(UIBarButtonItem *)skipButtonItem {
@@ -105,7 +106,8 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
 
 - (void)stepDidChange {
     [super stepDidChange];
-    _tableViewColor = ORKNeedWideScreenDesign(self.view) ? [UIColor clearColor] : (ORKColor(ORKBackgroundColorKey));
+
+    _tableViewColor = ORKNeedWideScreenDesign(self.view) ? [UIColor clearColor] : ORKColor(ORKBackgroundColorKey);
     [_tableContainer removeFromSuperview];
     _tableContainer = nil;
     
@@ -148,6 +150,7 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
         _navigationFooterView.skipButtonItem = self.skipButtonItem;
         _navigationFooterView.continueEnabled = [self continueButtonEnabled];
         _navigationFooterView.continueButtonItem = self.continueButtonItem;
+        _navigationFooterView.cancelButtonItem = self.cancelButtonItem;
         _navigationFooterView.optional = self.step.optional;
         
         [self setupConstraints];
@@ -239,10 +242,10 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
     [self.tableStep configureCell:cell indexPath:indexPath tableView:tableView];
-    
+
     // Only set the background color if it is using the default cell type
     if ([reuseIdentifier isEqualToString:ORKBasicCellReuseIdentifier]) {
-        [cell setBackgroundColor:_tableViewColor];
+        [cell setBackgroundColor:[UIColor clearColor]];
     }
     
     return cell;

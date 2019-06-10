@@ -488,6 +488,7 @@
 
 - (void)setCancelButtonItem:(UIBarButtonItem *)cancelButtonItem {
     [super setCancelButtonItem:cancelButtonItem];
+    _navigationFooterView.cancelButtonItem = cancelButtonItem;
 }
 
 - (void)setSkipButtonItem:(UIBarButtonItem *)skipButtonItem {
@@ -542,6 +543,8 @@
                 [self.taskViewController.navigationBar setBarTintColor:[_tableView backgroundColor]];
                 [self.view setBackgroundColor:[_tableView backgroundColor]];
             }
+        } else {
+            [_tableView setBackgroundColor:[UIColor whiteColor]];
         }
         _headerView = _tableContainer.stepContentView;
         _headerView.stepTopContentImage = self.step.image;
@@ -558,6 +561,7 @@
         _navigationFooterView.skipButtonItem = self.skipButtonItem;
         _navigationFooterView.continueEnabled = [self continueButtonEnabled];
         _navigationFooterView.continueButtonItem = self.continueButtonItem;
+        _navigationFooterView.cancelButtonItem = self.cancelButtonItem;
         _navigationFooterView.optional = self.step.optional;
         _navigationFooterView.footnoteLabel.text = [self formStep].footnote;
         if (self.readOnlyMode) {
@@ -1094,6 +1098,15 @@
         
         return view;
     }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+    ORKFormStep *formStep = [self formStep];
+    if (formStep.footerText != nil && (section == (tableView.numberOfSections - 1))) {
+        return formStep.footerText;
+    }
+
+    return nil;
 }
 
 #pragma mark ORKFormItemCellDelegate

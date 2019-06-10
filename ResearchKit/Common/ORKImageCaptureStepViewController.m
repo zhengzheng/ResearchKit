@@ -149,6 +149,7 @@
 
 - (void)setCancelButtonItem:(UIBarButtonItem *)cancelButtonItem {
     [super setCancelButtonItem:cancelButtonItem];
+    _imageCaptureView.cancelButtonItem = cancelButtonItem;
 }
 
 - (void)retakePressed:(void (^)(void))handler {

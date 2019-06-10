@@ -94,6 +94,7 @@
     if (!_navigationFooterView) {
         _navigationFooterView = _waitStepView.navigationFooterView;
     }
+    _navigationFooterView.cancelButtonItem = self.cancelButtonItem;
     _navigationFooterView.neverHasContinueButton = YES;
 }
 
