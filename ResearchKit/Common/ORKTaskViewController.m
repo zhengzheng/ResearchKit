@@ -671,9 +671,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
     _dismissedDate = nil;
     
     if (@available(iOS 13.0, *)) {
-        if ([self shouldDismissWithSwipe]) {
-            self.modalInPresentation = NO;
-        } else {
+        if ([self shouldDismissWithSwipe] == NO) {
             self.modalInPresentation = YES;
         }
     }
