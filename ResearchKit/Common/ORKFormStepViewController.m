@@ -341,6 +341,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self stepDidChange];
+    
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)viewDidLayoutSubviews {
@@ -865,6 +868,17 @@
         self.savedAnswers = [[NSMutableDictionary alloc] initWithDictionary:self.originalAnswers];
     }
     [super goBackward];
+}
+
+#pragma mark NSNotification methods
+
+- (void)keyboardWillShow:(NSNotification *)notification {
+    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+    _tableView.contentInset = UIEdgeInsetsMake(0, 0, keyboardSize.height + 30.0, 0);
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification {
+    _tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
 }
 
 #pragma mark UITableViewDataSource
