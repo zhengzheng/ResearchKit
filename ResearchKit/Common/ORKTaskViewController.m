@@ -955,11 +955,13 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
         
         // Set the progress label only if non-nil or if it is nil having previously set a progress label.
         if (progressLabel || strongSelf->_hasSetProgressLabel) {
-            strongSelf.pageViewController.navigationItem.rightBarButtonItem = [strongSelf rightBarItemWithText:progressLabel];
+            viewController.navigationItem.title = progressLabel;
         }
         
         strongSelf->_hasSetProgressLabel = (progressLabel != nil);
         
+        strongSelf.pageViewController.navigationItem.rightBarButtonItem = viewController.cancelButtonItem;
+
         // Collect toolbarItems
         [strongSelf collectToolbarItemsFromViewController:viewController];
     }];
@@ -1004,7 +1006,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
             _pageViewController.navigationItem.title = viewController.navigationItem.title;
         }
         if (![self shouldDisplayProgressLabel]) {
-            _pageViewController.navigationItem.rightBarButtonItem = viewController.navigationItem.rightBarButtonItem;
+            _pageViewController.navigationItem.title = nil;
         }
     }
 }

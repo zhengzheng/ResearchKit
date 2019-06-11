@@ -137,7 +137,6 @@
     ORKActiveStep *step = [self activeStep];
     _navigationFooterView.useNextForSkip = step.shouldUseNextAsSkipButton;
     _navigationFooterView.optional = step.optional;
-    _navigationFooterView.cancelButtonItem = self.cancelButtonItem;
     BOOL neverHasContinueButton = (step.shouldContinueOnFinish && !step.startsFinished);
     [_navigationFooterView setNeverHasContinueButton:neverHasContinueButton];
     [_navigationFooterView updateContinueAndSkipEnabled];
@@ -249,7 +248,6 @@
 
 - (void)setCancelButtonItem:(UIBarButtonItem *)cancelButtonItem {
     [super setCancelButtonItem:cancelButtonItem];
-    _navigationFooterView.cancelButtonItem = cancelButtonItem;
 }
 
 - (void)setFinished:(BOOL)finished {
