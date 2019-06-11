@@ -406,10 +406,9 @@
 			};
 			buildConfigurationList = 86717A851AC0C0FE00AC2A23 /* Build configuration list for PBXProject "ORKTest" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				Base,
 				fr,
