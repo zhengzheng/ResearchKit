@@ -60,7 +60,7 @@
 #import "ORKHelpers_Internal.h"
 #import "ORKSkin.h"
 
-static const CGFloat tableViewYOffsetStandard = 30.0;
+static const CGFloat TableViewYOffsetStandard = 30.0;
 
 @interface ORKTableCellItem : NSObject
 
@@ -876,7 +876,7 @@ static const CGFloat tableViewYOffsetStandard = 30.0;
 
 - (void)keyboardWillShow:(NSNotification *)notification {
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
-    _tableView.contentInset = UIEdgeInsetsMake(0, 0, keyboardSize.height + tableViewYOffsetStandard, 0);
+    _tableView.contentInset = UIEdgeInsetsMake(0, 0, keyboardSize.height + TableViewYOffsetStandard, 0);
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
