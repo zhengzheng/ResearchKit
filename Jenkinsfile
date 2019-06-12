@@ -38,7 +38,7 @@ pipeline {
                     steps {
                             timeout(time: 20, unit: 'MINUTES') {
                 sh 'echo "Build (ORKTest iOS)"'
-                                    sh 'set -o pipefail && xcodebuild clean build-for-testing -project ./Testing/ORKTest/ORKTest.xcodeproj -scheme "ORKTest" -destination "name=iPhone Xs" | tee output/ResearchKit/ios/build.log | /usr/local/bin/xcpretty'
+                                    sh 'set -o pipefail && xcodebuild clean build-for-testing -project ./Testing/ORKTest/ORKTest.xcodeproj -scheme "ORKTest" -destination "name=iPhone Xs" | tee output/ResearchKit/ios/buildORKTest.log | /usr/local/bin/xcpretty'
                             }
                     }
             }
@@ -46,7 +46,7 @@ pipeline {
                     steps {
                             timeout(time: 20, unit: 'MINUTES') {
                 sh 'echo "Test (ORKTest iOS)"'
-                                    sh 'set -o pipefail && xcodebuild test-without-building -project ./Testing/ORKTest/ORKTest.xcodeproj -scheme "ORKTest" -destination "name=iPhone Xs" | tee output/ResearchKit/ios/test.log | /usr/local/bin/xcpretty -r junit'
+                                    sh 'set -o pipefail && xcodebuild test-without-building -project ./Testing/ORKTest/ORKTest.xcodeproj -scheme "ORKTest" -destination "name=iPhone Xs" | tee output/ResearchKit/ios/testORKTest.log | /usr/local/bin/xcpretty -r junit'
                             }
                     }
             }
