@@ -155,10 +155,9 @@ class TaskListViewController: UITableViewController, ORKTaskViewControllerDelega
     }
     
     func taskViewController(_ taskViewController: ORKTaskViewController, learnMoreButtonPressedWith learnMoreStep: ORKLearnMoreInstructionStep, for stepViewController: ORKStepViewController) {
-        if let navigationController = self.navigationController {
-            navigationController.present(ORKLearnMoreStepViewController(step: learnMoreStep), animated: true) {
-                
-            }
+        //        TODO: Temporary present. Preferably Presentation should be done thru stepViewController itself.
+        stepViewController.present(UINavigationController(rootViewController: ORKLearnMoreStepViewController(step: learnMoreStep)), animated: true) {
+            
         }
     }
     

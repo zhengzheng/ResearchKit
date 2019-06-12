@@ -1247,9 +1247,7 @@ static NSString *const _ORKOriginalAnswersRestoreKey = @"originalAnswers";
 #pragma mark - ORKlearnMoreStepViewControllerDelegate
 
 - (void)learnMoreButtonPressedWithStep:(ORKLearnMoreInstructionStep *)learnMoreStep {
-    ORKLearnMoreStepViewController *learnMoreViewController = [[ORKLearnMoreStepViewController alloc] initWithStep:learnMoreStep];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:learnMoreViewController];
-    [self presentViewController:navigationController animated:YES completion:nil];
+    [self.taskViewController learMoreButtonPressedWithStep:learnMoreStep fromStepViewController:self];
 }
 
 @end
