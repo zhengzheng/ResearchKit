@@ -34,6 +34,22 @@ pipeline {
                             }
                     }
             }
+            stage('Build (ORKTest iOS)') {
+                    steps {
+                            timeout(time: 20, unit: 'MINUTES') {
+                sh 'echo "Build (ORKTest iOS)"'
+                                    sh 'set -o pipefail && xcodebuild clean build-for-testing -project ./ResearchKit.xcodeproj -scheme "ORKTest" -destination "name=iPhone Xs" | tee output/ResearchKit/ios/build.log | /usr/local/bin/xcpretty'
+                            }
+                    }
+            }
+            stage('Test (ORKTest iOS)') {
+                    steps {
+                            timeout(time: 20, unit: 'MINUTES') {
+                sh 'echo "Test (ORKTest iOS)"'
+                                    sh 'set -o pipefail && xcodebuild test-without-building -project ./ResearchKit.xcodeproj -scheme "ORKTest" -destination "name=iPhone Xs" | tee output/ResearchKit/ios/test.log | /usr/local/bin/xcpretty -r junit'
+                            }
+                    }
+            }
     }
     post {
         always {
