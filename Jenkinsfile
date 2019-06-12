@@ -30,7 +30,7 @@ pipeline {
                     steps {
                             timeout(time: 20, unit: 'MINUTES') {
                 sh 'echo "Test (ResearchKit iOS)"'
-                                    sh 'set -o pipefail && xcodebuild test-without-building -project ./ResearchKit.xcodeproj -scheme "ResearchKitTests" -destination "name=iPhone Xs" | tee output/ResearchKit/ios/test.log | /usr/local/bin/xcpretty -r junit'
+                                    sh 'set -o pipefail && xcodebuild test-without-building -project ./ResearchKit.xcodeproj -scheme "ResearchKit" -destination "name=iPhone Xs" | tee output/ResearchKit/ios/test.log | /usr/local/bin/xcpretty -r junit'
                             }
                     }
             }
