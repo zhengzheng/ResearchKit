@@ -481,10 +481,11 @@ NSString *RemoveParenthesisAndCapitalizeString(NSString *string) {
 
     id<ORKTask> task = [[TaskFactory sharedInstance] makeTaskWithIdentifier:identifier];
     NSParameterAssert(task != nil);
+    NSError *error;
     
     if (_savedViewControllers[identifier]) {
         NSData *data = _savedViewControllers[identifier];
-        _taskViewController = [[ORKTaskViewController alloc] initWithTask:task restorationData:data delegate:self];
+        _taskViewController = [[ORKTaskViewController alloc] initWithTask:task restorationData:data delegate:self error: &error];
     } else {
         // No saved data, just create the task and the corresponding task view controller.
         _taskViewController = [[ORKTaskViewController alloc] initWithTask:task taskRunUUID:[NSUUID UUID]];
@@ -493,7 +494,7 @@ NSString *RemoveParenthesisAndCapitalizeString(NSString *string) {
     // If we have stored data then data will contain the stored data.
     // If we don't, data will be nil (and the task will be opened up as a 'new' task.
     NSData *data = _savedViewControllers[identifier];
-    _taskViewController = [[ORKTaskViewController alloc] initWithTask:task restorationData:data delegate:self];
+    _taskViewController = [[ORKTaskViewController alloc] initWithTask:task restorationData:data delegate:self error: &error];
     
     [self beginTask];
 }
