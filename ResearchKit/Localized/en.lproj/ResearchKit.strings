@@ -649,3 +649,6 @@
 
 /* This contains the visual text, followed by a VoiceOver-specific description. */
 "AX_TRAILMAKING_CALL_TO_ACTION_VOICEOVER" = "%@ Using VoiceOver, the buttons in the test will be directly tappable.";
+
+/* Restore error */
+"RESTORE_ERROR_CANNOT_DECODE" = "Cannot decode restoreData for initialization";

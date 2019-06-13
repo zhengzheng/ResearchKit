@@ -335,7 +335,7 @@ ORK_CLASS_AVAILABLE
  
  @return A new task view controller.
  */
-- (instancetype)initWithTask:(nullable id<ORKTask>)task restorationData:(nullable NSData *)data delegate:(nullable id<ORKTaskViewControllerDelegate>)delegate;
+- (instancetype)initWithTask:(id<ORKTask>)task restorationData:(NSData *)data delegate:(id<ORKTaskViewControllerDelegate>)delegate error:(NSError* __autoreleasing *)errorOut;
 
 /**
  The delegate for the task view controller.
