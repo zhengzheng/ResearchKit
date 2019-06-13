@@ -287,7 +287,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
     return [self commonInitWithTask:task taskRunUUID:taskRunUUID];
 }
 
-- (instancetype)initWithTask:(id<ORKTask>)task restorationData:(NSData *)data delegate:(id<ORKTaskViewControllerDelegate>)delegate {
+- (instancetype)initWithTask:(id<ORKTask>)task restorationData:(NSData *)data delegate:(id<ORKTaskViewControllerDelegate>)delegate error:(NSError* __autoreleasing *)errorOut {
     
     self = [self initWithTask:task taskRunUUID:nil];
     
@@ -298,6 +298,10 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
             NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
             [self decodeRestorableStateWithCoder:unarchiver];
             [self applicationFinishedRestoringState];
+            
+            if (unarchiver == nil) {
+                *errorOut = [NSError errorWithDomain:ORKErrorDomain code:ORKErrorException userInfo:@{NSLocalizedDescriptionKey: ORKLocalizedString(@"RESTORE_ERROR_CANNOT_DECODE", nil)}];
+            }
         }
     }
     return self;
