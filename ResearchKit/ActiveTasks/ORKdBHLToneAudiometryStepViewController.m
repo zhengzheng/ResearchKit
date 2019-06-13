@@ -72,6 +72,7 @@
     double _currentdBHL;
     double _dBHLStepUpSize;
     double _dBHLStepDownSize;
+    double _dBHLMinimumThreshold;
     int _currentTestIndex;
     int _indexOfFreqLoopList;
     int _numberOfTransitionsPerFreq;
@@ -131,6 +132,7 @@
     _currentdBHL = [self dBHLToneAudiometryStep].initialdBHLValue;
     _dBHLStepDownSize = [self dBHLToneAudiometryStep].dBHLStepDownSize;
     _dBHLStepUpSize = [self dBHLToneAudiometryStep].dBHLStepUpSize;
+    _dBHLMinimumThreshold = [self dBHLToneAudiometryStep].dBHLMinimumThreshold;
     
     self.dBHLToneAudiometryContentView = [[ORKdBHLToneAudiometryContentView alloc] init];
     self.activeStepView.activeCustomView = self.dBHLToneAudiometryContentView;
@@ -265,6 +267,7 @@
         if (currentTransition) {
             currentTransition.userInitiated += 1;
             currentTransition.totalTransitions += 1;
+            
         } else {
             currentTransition = [[ORKdBHLToneAudiometryTransitions alloc] init];
             [_transitionsDictionary setObject:currentTransition forKey:[NSNumber numberWithFloat:_currentdBHL]];
@@ -292,15 +295,15 @@
     ORKWeakTypeOf(self)weakSelf = self;
     _postStimulusDelayWorkBlock = dispatch_block_create(DISPATCH_BLOCK_INHERIT_QOS_CLASS, ^{
         ORKStrongTypeOf(self) strongSelf = weakSelf;
-        NSUInteger storedTestIndex = _currentTestIndex;
-        if (_currentTestIndex == storedTestIndex) {
+        //NSUInteger storedTestIndex = _currentTestIndex;
+        //if (_currentTestIndex == storedTestIndex) {
             if (_initialDescent && _ackOnce) {
                 _initialDescent = NO;
                 ORKdBHLToneAudiometryTransitions *newTransition = [[ORKdBHLToneAudiometryTransitions alloc] init];
                 newTransition.userInitiated -= 1;
                 [_transitionsDictionary setObject:newTransition forKey:[NSNumber numberWithFloat:_currentdBHL]];
             }
-            
+        
             _currentdBHL = _currentdBHL + _dBHLStepUpSize;
 
             if (currentTransition) {
@@ -310,7 +313,7 @@
             _currentTestIndex += 1;
             [strongSelf estimatedBHLAndPlayToneWithFrequency:_freqLoopList[_indexOfFreqLoopList]];
             return;
-        }
+        //}
     });
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)((preStimulusDelay + toneDuration + postStimulusDelay) * NSEC_PER_SEC)), dispatch_get_main_queue(), _postStimulusDelayWorkBlock);
 
@@ -327,9 +330,9 @@
         dispatch_block_cancel(_pulseDurationWorkBlock);
         dispatch_block_cancel(_postStimulusDelayWorkBlock);
     }
+    NSNumber *currentKey = [NSNumber numberWithFloat:_currentdBHL];
+    ORKdBHLToneAudiometryTransitions *currentTransitionObject = [_transitionsDictionary objectForKey:currentKey];
     if (_resultUnit.userTapTimeStamp - _resultUnit.startOfUnitTimeStamp < _resultUnit.preStimulusDelay) {
-        NSNumber *currentKey = [NSNumber numberWithFloat:_currentdBHL];
-        ORKdBHLToneAudiometryTransitions *currentTransitionObject = [_transitionsDictionary objectForKey:currentKey];
         currentTransitionObject.userInitiated -= 1;
     } else if ([self validateResultFordBHL:_currentdBHL]) {
         _resultSample.calculatedThreshold = _currentdBHL;
@@ -344,7 +347,21 @@
             return;
         }
     }
+    
     _currentdBHL = _currentdBHL - _dBHLStepDownSize;
+    if (_currentdBHL < _dBHLMinimumThreshold) {
+        // Fix rdar://51305554 dBHL Tone Audiometry - Minimum threshold parameter
+        _currentdBHL = _dBHLMinimumThreshold;
+        ORKdBHLToneAudiometryTransitions *minimumThresholdTransition = [_transitionsDictionary objectForKey:[NSNumber numberWithFloat:_currentdBHL]];
+        
+        if (!minimumThresholdTransition) {
+            _initialDescent = NO;
+            minimumThresholdTransition = [[ORKdBHLToneAudiometryTransitions alloc] init];
+            minimumThresholdTransition.userInitiated -= 1;
+            [_transitionsDictionary setObject:minimumThresholdTransition forKey:[NSNumber numberWithFloat:_currentdBHL]];
+        }
+    }
+    
     [self estimatedBHLAndPlayToneWithFrequency:_freqLoopList[_indexOfFreqLoopList]];
     return;
 }
@@ -353,8 +370,15 @@
     NSNumber *currentKey = [NSNumber numberWithFloat:_currentdBHL];
     ORKdBHLToneAudiometryTransitions *currentTransitionObject = [_transitionsDictionary objectForKey:currentKey];
     if ((currentTransitionObject.userInitiated/currentTransitionObject.totalTransitions >= 0.5) && currentTransitionObject.totalTransitions >= 2) {
-        ORKdBHLToneAudiometryTransitions *previousTransitionObject = [_transitionsDictionary objectForKey:[NSNumber numberWithFloat:(dBHL - _dBHLStepUpSize)]];
-        if ((previousTransitionObject.userInitiated/previousTransitionObject.totalTransitions <= 0.5) && (previousTransitionObject.totalTransitions >= 2)) {
+        float previousdBHL = dBHL - _dBHLStepUpSize;
+        if (previousdBHL < _dBHLMinimumThreshold) {
+            previousdBHL = _dBHLMinimumThreshold;
+        }
+        ORKdBHLToneAudiometryTransitions *previousTransitionObject = [_transitionsDictionary objectForKey:[NSNumber numberWithFloat:previousdBHL]];
+        if (
+            ((previousTransitionObject.userInitiated/previousTransitionObject.totalTransitions <= 0.5) && (previousTransitionObject.totalTransitions >= 2)) ||
+            ((previousdBHL == _dBHLMinimumThreshold) && (previousTransitionObject.totalTransitions >= 2))
+            )  {
             if (currentTransitionObject.totalTransitions == 2) {
                 if (currentTransitionObject.userInitiated/currentTransitionObject.totalTransitions == 1.0) {
                     _resultSample.calculatedThreshold = dBHL;
