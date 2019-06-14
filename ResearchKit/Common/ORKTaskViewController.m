@@ -798,7 +798,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
     }
 }
 
-- (void)learMoreButtonPressedWithStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep fromStepViewController:(nonnull ORKStepViewController *)stepViewController {
+- (void)learnMoreButtonPressedWithStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep fromStepViewController:(nonnull ORKStepViewController *)stepViewController {
     if ([self.delegate respondsToSelector:@selector(taskViewController:learnMoreButtonPressedWithStep:forStepViewController:)]) {
         [self.delegate taskViewController:self learnMoreButtonPressedWithStep:learnMoreInstructionStep forStepViewController:stepViewController];
     }

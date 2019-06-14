@@ -930,7 +930,7 @@ static NSString *const _ORKOriginalAnswerRestoreKey = @"originalAnswer";
 #pragma mark - ORKLearnViewDelegate
 
 - (void)learnMoreButtonPressedWithStep:(ORKLearnMoreInstructionStep *)learnMoreStep {
-    [self.taskViewController learMoreButtonPressedWithStep:learnMoreStep fromStepViewController:self];
+    [self.taskViewController learnMoreButtonPressedWithStep:learnMoreStep fromStepViewController:self];
 }
 
 @end
