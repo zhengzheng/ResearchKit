@@ -252,7 +252,6 @@ task view controller and pass that data to `initWithTask:restorationData:` when 
  */
 - (void)taskViewController:(ORKTaskViewController *)taskViewController didChangeResult:(ORKTaskResult *)result;
 
-//TODO: modify implementation with learnMoreItem
 /**
  */
 - (void)taskViewController:(ORKTaskViewController *)taskViewController learnMoreButtonPressedWithStep:(ORKLearnMoreInstructionStep *)learnMoreStep forStepViewController:(ORKStepViewController *)stepViewController;
