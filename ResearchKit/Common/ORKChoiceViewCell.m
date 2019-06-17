@@ -93,11 +93,16 @@ static const CGFloat LabelLeadingPadding = 10.0;
             _contentMaskLayer = nil;
         }
         _contentMaskLayer = [[CAShapeLayer alloc] init];
-        UIColor *fillColor = [UIColor ork_borderGrayColor];
+        UIColor *fillColor;
+        if (@available(iOS 13.0, *)) {
+            fillColor = [UIColor secondarySystemGroupedBackgroundColor];
+        } else {
+            fillColor = [UIColor ork_borderGrayColor];
+        }
         [_contentMaskLayer setFillColor:[fillColor CGColor]];
         
         CAShapeLayer *foreLayer = [CAShapeLayer layer];
-        [foreLayer setFillColor:[[UIColor whiteColor] CGColor]];
+        [foreLayer setFillColor:[fillColor CGColor]];
         foreLayer.zPosition = 0.0f;
         
         CAShapeLayer *lineLayer = [CAShapeLayer layer];

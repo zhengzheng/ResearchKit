@@ -548,7 +548,7 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
                 [self.view setBackgroundColor:[_tableView backgroundColor]];
             }
         } else {
-            [_tableView setBackgroundColor:[UIColor whiteColor]];
+            [_tableView setBackgroundColor:[UIColor clearColor]];
         }
         _headerView = _tableContainer.stepContentView;
         _headerView.stepTopContentImage = self.step.image;
