@@ -155,7 +155,7 @@ class TaskListViewController: UITableViewController, ORKTaskViewControllerDelega
     }
     
     func taskViewController(_ taskViewController: ORKTaskViewController, learnMoreButtonPressedWith learnMoreStep: ORKLearnMoreInstructionStep, for stepViewController: ORKStepViewController) {
-        //        TODO: Temporary present. Preferably Presentation should be done thru stepViewController itself.
+        //        FIXME: Temporary fix. This method should not be called if it is only used to present the learnMoreStepViewController, the stepViewController should present the learnMoreStepViewController.
         stepViewController.present(UINavigationController(rootViewController: ORKLearnMoreStepViewController(step: learnMoreStep)), animated: true) {
             
         }
