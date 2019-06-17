@@ -58,6 +58,9 @@ ORK_EXTERN const NSUInteger NumberOfPaddingSpacesForIndentationLevel;
 - (NSString *)descriptionSuffix;
 - (NSString *)descriptionWithNumberOfPaddingSpaces:(NSUInteger)numberOfPaddingSpaces;
 
+// Equivalent to isEqual:, ignoring the result's `startDate` and `endDate`
+- (BOOL)isEqualIgnoringMetadata:(ORKResult *)result;
+
 @end
 
 NS_ASSUME_NONNULL_END
