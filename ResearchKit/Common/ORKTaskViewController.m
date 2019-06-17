@@ -57,6 +57,7 @@
 #import "ORKObserver.h"
 #import "ORKSkin.h"
 #import "ORKBorderedButton.h"
+#import "ORKTaskReviewViewController.h"
 
 @import AVFoundation;
 @import CoreMotion;
@@ -161,7 +162,7 @@ static void *_ORKViewControllerToolbarObserverContext = &_ORKViewControllerToolb
 @end
 
 
-@interface ORKTaskViewController () <ORKViewControllerToolbarObserverDelegate> {
+@interface ORKTaskViewController () <ORKViewControllerToolbarObserverDelegate, ORKTaskReviewViewControllerDelegate> {
     NSMutableDictionary *_managedResults;
     NSMutableArray *_managedStepIdentifiers;
     ORKViewControllerToolbarObserver *_stepViewControllerObserver;
@@ -190,6 +191,7 @@ static void *_ORKViewControllerToolbarObserverContext = &_ORKViewControllerToolb
 @property (nonatomic, strong) UINavigationController *childNavigationController;
 @property (nonatomic, strong) UIPageViewController *pageViewController;
 @property (nonatomic, strong) ORKStepViewController *currentStepViewController;
+@property (nonatomic) ORKTaskReviewViewController *taskReviewViewController;
 
 @end
 
@@ -674,6 +676,14 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
         if ([self shouldDismissWithSwipe] == NO) {
             self.modalInPresentation = YES;
         }
+    }
+    if (_taskReviewViewController) {
+        if (@available(iOS 13.0, *)) {
+            self.modalInPresentation = YES;
+        }
+        [self.pageViewController setViewControllers:@[[[UINavigationController alloc] initWithRootViewController:_taskReviewViewController]] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:^(BOOL finished) {
+            
+        }];
     }
 }
 
@@ -1550,5 +1560,42 @@ static NSString *const _ORKPresentedDate = @"presentedDate";
 - (UINavigationBar *)navigationBar {
     return self.childNavigationController.navigationBar;
 }
+
+#pragma mark Review mode
+
+- (void)setReviewMode:(ORKTaskViewControllerReviewMode)reviewMode {
+    if (_hasBeenPresented) {
+        @throw [NSException exceptionWithName:NSGenericException reason:@"Cannot change review mode after presenting the task controller for now." userInfo:nil];
+    }
+    _reviewMode = reviewMode;
+    [self setupTaskReviewViewController];
+}
+
+- (void)setupTaskReviewViewController {
+    if (_reviewMode == ORKTaskViewControllerReviewModeNever) {
+        _taskReviewViewController = nil;
+        return;
+    }
+    
+    if ([self.task isKindOfClass:[ORKOrderedTask class]]) {
+        ORKOrderedTask *orderedTask = (ORKOrderedTask *)self.task;
+        if (!_taskReviewViewController) {
+            _taskReviewViewController = [[ORKTaskReviewViewController alloc] initWithDefaultResultSource:_defaultResultSource forSteps:orderedTask.steps];
+            _taskReviewViewController.delegate = self;
+        }
+    }
+}
+
+#pragma mark ORKTaskReviewViewControllerDelegate
+
+- (void)doneButtonTapped {
+    NSLog(@"Done!");
+}
+
+- (void)editAnswerTappedForStep:(ORKStep *)step {
+    NSLog(@"Step needs to be editted %@", step.identifier);
+    [self showViewController:[self viewControllerForStep:step] goForward:YES animated:YES];
+}
+
 
 @end

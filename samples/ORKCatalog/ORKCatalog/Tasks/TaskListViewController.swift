@@ -47,6 +47,8 @@ class TaskListViewController: UITableViewController, ORKTaskViewControllerDelega
     var waitStepUpdateTimer: Timer?
     var waitStepProgress: CGFloat = 0.0
     
+    var groupedFormTaskResult: ORKTaskResult?
+    
     // MARK: Types
     
     enum TableViewCellIdentifier: String {
@@ -107,7 +109,12 @@ class TaskListViewController: UITableViewController, ORKTaskViewControllerDelega
         
         // Assign a directory to store `taskViewController` output.
         taskViewController.outputDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-
+        
+        if (task.identifier == String(describing: TaskListRow.Identifier.groupedFormTask) && (groupedFormTaskResult != nil)) {
+            taskViewController.defaultResultSource = groupedFormTaskResult
+            taskViewController.reviewMode = .standalone
+        }
+        
         /*
             We present the task directly, but it is also possible to use segues.
             The task property of the task view controller can be set any time before
@@ -128,6 +135,10 @@ class TaskListViewController: UITableViewController, ORKTaskViewControllerDelega
             view controller.
         */
         taskResultFinishedCompletionHandler?(taskViewController.result)
+        
+        if (taskViewController.task?.identifier == String(describing: TaskListRow.Identifier.groupedFormTask)) {
+            groupedFormTaskResult = taskViewController.result
+        }
 
         taskViewController.dismiss(animated: true, completion: nil)
     }
