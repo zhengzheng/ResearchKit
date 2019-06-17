@@ -75,24 +75,16 @@ const NSUInteger NumberOfPaddingSpacesForIndentationLevel = 4;
     return self;
 }
 
-- (BOOL)isEqual:(id)object ignoreMetadata:(BOOL)ignoreMetadata {
+- (BOOL)isEqual:(id)object {
     if ([self class] != [object class]) {
         return NO;
     }
     
     __typeof(self) castObject = object;
     return (ORKEqualObjects(self.identifier, castObject.identifier)
-            && (ignoreMetadata || ORKEqualObjects(self.startDate, castObject.startDate))
-            && (ignoreMetadata || ORKEqualObjects(self.endDate, castObject.endDate))
+            && ORKEqualObjects(self.startDate, castObject.startDate)
+            && ORKEqualObjects(self.endDate, castObject.endDate)
             && ORKEqualObjects(self.userInfo, castObject.userInfo));
-}
-
-- (BOOL)isEqual:(id)object {
-    return [self isEqual:object ignoreMetadata:NO];
-}
-
-- (BOOL)isEqualIgnoringMetadata:(ORKResult *)result {
-    return [self isEqual:result ignoreMetadata:YES];
 }
 
 - (NSUInteger)hash {
