@@ -40,6 +40,8 @@ NS_ASSUME_NONNULL_BEGIN
 @class ORKStepViewController;
 @class ORKTaskResult;
 @class ORKTaskViewController;
+@class ORKLearnMoreInstructionStep;
+@class ORKLearnMoreStepViewController;
 @protocol ORKStepViewControllerDelegate;
 @protocol ORKTask;
 @protocol ORKTaskResultSource;
@@ -249,6 +251,10 @@ task view controller and pass that data to `initWithTask:restorationData:` when 
  @param result              The current value of the result.
  */
 - (void)taskViewController:(ORKTaskViewController *)taskViewController didChangeResult:(ORKTaskResult *)result;
+
+/**
+ */
+- (void)taskViewController:(ORKTaskViewController *)taskViewController learnMoreButtonPressedWithStep:(ORKLearnMoreInstructionStep *)learnMoreStep forStepViewController:(ORKStepViewController *)stepViewController;
 
 @end
 
