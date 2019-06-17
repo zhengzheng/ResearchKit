@@ -927,12 +927,10 @@ static NSString *const _ORKOriginalAnswerRestoreKey = @"originalAnswer";
 //        [elements addObject:self.continueSkipContainer.skipButton];
 //    }
 
-#pragma mark - ORKlearnMoreStepViewControllerDelegate
+#pragma mark - ORKLearnViewDelegate
 
 - (void)learnMoreButtonPressedWithStep:(ORKLearnMoreInstructionStep *)learnMoreStep {
-    ORKLearnMoreStepViewController *learnMoreViewController = [[ORKLearnMoreStepViewController alloc] initWithStep:learnMoreStep];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:learnMoreViewController];
-    [self presentViewController:navigationController animated:YES completion:nil];
+    [self.taskViewController learnMoreButtonPressedWithStep:learnMoreStep fromStepViewController:self];
 }
 
 @end

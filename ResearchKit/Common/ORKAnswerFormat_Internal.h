@@ -89,8 +89,6 @@ ORK_DESIGNATE_CODING_AND_SERIALIZATION_INITIALIZERS(ORKWeightAnswerFormat)
 
 - (nonnull Class)questionResultClass;
 
-- (ORKQuestionResult *)resultWithIdentifier:(NSString *)identifier answer:(id)answer;
-
 - (nullable NSString *)stringForAnswer:(id)answer;
 
 @end

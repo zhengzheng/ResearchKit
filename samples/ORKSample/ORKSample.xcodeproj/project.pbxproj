@@ -263,10 +263,11 @@
 			};
 			buildConfigurationList = 161479BB1BD6CE8F0099A068 /* Build configuration list for PBXProject "ORKSample" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				Base,
+				en,
 			);
 			mainGroup = 161479B71BD6CE8F0099A068;
 			productRefGroup = 161479C11BD6CE8F0099A068 /* Products */;
