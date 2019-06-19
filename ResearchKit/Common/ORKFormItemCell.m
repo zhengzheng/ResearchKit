@@ -682,7 +682,6 @@ static const CGFloat HorizontalSpacer = 16.0;
         }
         [self showValidityAlertWithMessage:[self.formItem.answerFormat localizedInvalidValueStringWithAnswerString:textField.text]];
     }
-    
     return YES;
 }
 
