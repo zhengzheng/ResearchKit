@@ -588,7 +588,6 @@ static const CGFloat HorizontalSpacer = 16.0;
         
         return NO;
     }
-
     return YES;
 }
 

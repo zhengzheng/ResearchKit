@@ -1196,12 +1196,10 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
         ORKQuestionType type = nextCell.formItem.impliedAnswerFormat.questionType;
         
         if ([self doesTableCellTypeUseKeyboard:type]) {
-//            [_tableView deselectRowAtIndexPath:currentIndexPath animated:NO];
             if ([nextCell isKindOfClass:[ORKFormItemCell class]]) {
                 [nextCell becomeFirstResponder];
                 [_tableView scrollToRowAtIndexPath:nextIndexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
             }
-            
         }
         return;
     }
