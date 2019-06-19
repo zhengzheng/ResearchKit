@@ -60,6 +60,8 @@
 #import "ORKHelpers_Internal.h"
 #import "ORKSkin.h"
 
+static const CGFloat TableViewYOffsetStandard = 30.0;
+
 @interface ORKTableCellItem : NSObject
 
 - (instancetype)initWithFormItem:(ORKFormItem *)formItem;
@@ -341,6 +343,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self stepDidChange];
+    
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)viewDidLayoutSubviews {
@@ -919,6 +924,17 @@
     return YES;
 }
 
+#pragma mark NSNotification methods
+
+- (void)keyboardWillShow:(NSNotification *)notification {
+    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+    _tableView.contentInset = UIEdgeInsetsMake(0, 0, keyboardSize.height + TableViewYOffsetStandard, 0);
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification {
+    _tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+}
+
 #pragma mark UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -1309,9 +1325,7 @@ static NSString *const _ORKOriginalAnswersRestoreKey = @"originalAnswers";
 #pragma mark - ORKlearnMoreStepViewControllerDelegate
 
 - (void)learnMoreButtonPressedWithStep:(ORKLearnMoreInstructionStep *)learnMoreStep {
-    ORKLearnMoreStepViewController *learnMoreViewController = [[ORKLearnMoreStepViewController alloc] initWithStep:learnMoreStep];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:learnMoreViewController];
-    [self presentViewController:navigationController animated:YES completion:nil];
+    [self.taskViewController learnMoreButtonPressedWithStep:learnMoreStep fromStepViewController:self];
 }
 
 @end

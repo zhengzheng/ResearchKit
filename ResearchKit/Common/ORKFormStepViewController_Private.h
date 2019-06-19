@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2015, Apple Inc. All rights reserved.
+ Copyright (c) 2019, Apple Inc. All rights reserved.
  
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
@@ -29,25 +29,17 @@
  */
 
 
-#import "ORKTaskViewController_Private.h"
-#import "ORKReviewStepViewController.h"
-@import HealthKit;
+#import <ResearchKit/ORKFormStepViewController.h>
 
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class ORKLearnMoreInstructionStep;
+@interface ORKFormStepViewController ()
 
-@interface ORKTaskViewController () <ORKReviewStepViewControllerDelegate, UIViewControllerRestoration>
-
-- (nullable NSSet<HKObjectType *> *)requestedHealthTypesForRead;
-- (nullable NSSet<HKObjectType *> *)requestedHealthTypesForWrite;
-
-// Any StepVC contains a vertical scroll view should register here.
-// So taskVC can monitor scroll view's content offset and update hairline's alpha.
-@property (nonatomic, weak, nullable) UIScrollView *registeredScrollView;
-
-- (void)learnMoreButtonPressedWithStep:(ORKLearnMoreInstructionStep *)learnMoreInstructionStep fromStepViewController:(ORKStepViewController *)stepViewController;
+/**
+ Set the answer for the specified formItem identifier.
+ */
+- (void)setAnswer:(id)answer forIdentifier:(NSString *)identifier;
 
 @end
 

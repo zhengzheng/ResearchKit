@@ -40,6 +40,8 @@ NS_ASSUME_NONNULL_BEGIN
 @class ORKStepViewController;
 @class ORKTaskResult;
 @class ORKTaskViewController;
+@class ORKLearnMoreInstructionStep;
+@class ORKLearnMoreStepViewController;
 @protocol ORKStepViewControllerDelegate;
 @protocol ORKTask;
 @protocol ORKTaskResultSource;
@@ -250,6 +252,10 @@ task view controller and pass that data to `initWithTask:restorationData:` when 
  */
 - (void)taskViewController:(ORKTaskViewController *)taskViewController didChangeResult:(ORKTaskResult *)result;
 
+/**
+ */
+- (void)taskViewController:(ORKTaskViewController *)taskViewController learnMoreButtonPressedWithStep:(ORKLearnMoreInstructionStep *)learnMoreStep forStepViewController:(ORKStepViewController *)stepViewController;
+
 @end
 
 
@@ -335,7 +341,7 @@ ORK_CLASS_AVAILABLE
  
  @return A new task view controller.
  */
-- (instancetype)initWithTask:(nullable id<ORKTask>)task restorationData:(nullable NSData *)data delegate:(nullable id<ORKTaskViewControllerDelegate>)delegate;
+- (instancetype)initWithTask:(id<ORKTask>)task restorationData:(NSData *)data delegate:(id<ORKTaskViewControllerDelegate>)delegate error:(NSError* __autoreleasing *)errorOut;
 
 /**
  The delegate for the task view controller.
