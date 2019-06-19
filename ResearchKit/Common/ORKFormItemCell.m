@@ -582,7 +582,10 @@ static const CGFloat HorizontalSpacer = 16.0;
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
     if (textField.text.length > 0 && ![[self.formItem impliedAnswerFormat] isAnswerValidWithString:textField.text]) {
         [self showValidityAlertWithMessage:[[self.formItem impliedAnswerFormat] localizedInvalidValueStringWithAnswerString:textField.text]];
+    } else if (self.delegate && ![self.delegate formItemCellShouldDismissKeyboard:self]) {
+        return NO;
     }
+
     return YES;
 }
 
@@ -677,6 +680,7 @@ static const CGFloat HorizontalSpacer = 16.0;
         }
         [self showValidityAlertWithMessage:[self.formItem.answerFormat localizedInvalidValueStringWithAnswerString:textField.text]];
     }
+    
     return YES;
 }
 

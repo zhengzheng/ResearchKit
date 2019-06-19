@@ -867,6 +867,58 @@
     [super goBackward];
 }
 
+- (BOOL)shouldAutoScrollToNextItem:(ORKFormItemCell *)cell {
+    
+    NSIndexPath *currentIndexPath = [self.tableView indexPathForCell:cell];
+    
+    NSLog(@"The indexPath has section of: %li and a row of: %li", (long)currentIndexPath.section, (long)currentIndexPath.row);
+    
+    if (cell.isLastItem && currentIndexPath.section == _sections.count - 1) {
+        return NO;
+    } else if (!cell.isLastItem) {
+        NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:currentIndexPath.row + 1 inSection:currentIndexPath.section];
+        ORKFormItemCell *nextCell = [self.tableView cellForRowAtIndexPath:nextIndexPath];
+        
+        if (nextCell.answer) {
+            return NO;
+        }
+        
+        NSLog(@"the identifier of the next cell is: %@", nextCell.formItem.identifier);
+        ORKQuestionType type = nextCell.formItem.impliedAnswerFormat.questionType;
+        
+        switch (type) {
+            case ORKQuestionTypeText: {
+//                if ([formItem.answerFormat isKindOfClass:[ORKConfirmTextAnswerFormat class]]) {
+//                    class = [ORKFormItemConfirmTextCell class];
+//                } else {
+//                    ORKTextAnswerFormat *textFormat = (ORKTextAnswerFormat *)answerFormat;
+//                    if (!textFormat.multipleLines) {
+//                        class = [ORKFormItemTextFieldCell class];
+//                    } else {
+//                        class = [ORKFormItemTextCell class];
+//                    }
+//                }
+                
+                [_tableView deselectRowAtIndexPath:currentIndexPath animated:NO];
+                
+                if ([nextCell isKindOfClass:[ORKFormItemCell class]]) {
+                    [nextCell becomeFirstResponder];
+                    [_tableView scrollToRowAtIndexPath:nextIndexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
+                }
+                
+                break;
+            }
+                
+            default:
+                return NO;
+        }
+        
+        
+    }
+    
+    return YES;
+}
+
 #pragma mark UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -1121,6 +1173,18 @@
     if (_currentFirstResponderCell == cell) {
         _currentFirstResponderCell = nil;
     }
+    
+    NSIndexPath *path = [_tableView indexPathForCell:cell];
+    
+    if (path) {
+        ORKTableSection *sectionObject = (ORKTableSection *)_sections[path.section];
+        if (path.row < sectionObject.items.count - 1) {
+            NSLog(@"move to next index");
+            NSIndexPath *nextPath = [NSIndexPath indexPathForRow:(path.row + 1) inSection:path.section];
+            [_tableView scrollToRowAtIndexPath:nextPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+        }
+    }
+
 }
 
 - (void)formItemCell:(ORKFormItemCell *)cell invalidInputAlertWithMessage:(NSString *)input {
@@ -1141,6 +1205,20 @@
     _skipped = NO;
     [self updateButtonStates];
     [self notifyDelegateOnResultChange];
+}
+
+- (BOOL)formItemCellShouldDismissKeyboard:(ORKFormItemCell *)cell {
+    
+    if ([self shouldAutoScrollToNextItem:cell]) {
+        NSLog(@"you should autoscroll to next item");
+        return NO;
+    }
+    
+    if (cell.isLastItem) {
+        return YES;
+    }
+    
+    return YES;
 }
 
 #pragma mark ORKTableContainerViewDelegate
