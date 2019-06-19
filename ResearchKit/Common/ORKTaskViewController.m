@@ -685,9 +685,9 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
         if (@available(iOS 13.0, *)) {
             self.modalInPresentation = YES;
         }
-        [self.pageViewController setViewControllers:@[[[UINavigationController alloc] initWithRootViewController:_taskReviewViewController]] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:^(BOOL finished) {
-            
+        [self.pageViewController setViewControllers:@[_taskReviewViewController] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:^(BOOL finished) {
         }];
+        [self setTaskReviewViewControllerNavbar];
     }
 }
 
@@ -705,7 +705,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
     NSMutableArray *results = [NSMutableArray new];
     
     [_managedStepIdentifiers enumerateObjectsUsingBlock:^(NSString *identifier, NSUInteger idx, BOOL *stop) {
-        id <NSCopying> key = [self uniqueManagedKey:identifier index:idx];
+        id <NSCopying> key = identifier;
         ORKResult *result = _managedResults[key];
         NSAssert2(result, @"Result should not be nil for identifier %@ with key %@", identifier, key);
         [results addObject:result];
@@ -741,16 +741,12 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
     if ([_managedStepIdentifiers.lastObject isEqualToString:aKey]) {
         idx--;
     }
-    id <NSCopying> uniqueKey = [self uniqueManagedKey:aKey index:idx];
-    _managedResults[uniqueKey] = result;
-}
-
-- (id <NSCopying>)uniqueManagedKey:(NSString*)stepIdentifier index:(NSUInteger)index {
-    return [NSString stringWithFormat:@"%@:%@", stepIdentifier, @(index)];
+    _managedResults[aKey] = result;
 }
 
 - (ORKTaskResult *)result {
-    
+    //    TODO: update current implementation.
+    //    setManagedResult for currentStepViewController should not be called every single time this method is called.
     ORKTaskResult *result = [[ORKTaskResult alloc] initWithTaskIdentifier:[self.task identifier] taskRunUUID:self.taskRunUUID outputDirectory:self.outputDirectory];
     result.startDate = _presentedDate;
     result.endDate = _dismissedDate ? :[NSDate date];
@@ -1269,7 +1265,29 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
             [self.delegate taskViewController:self didChangeResult:[self result]];
         }
         [self finishAudioPromptSession];
-        [self finishWithReason:ORKTaskViewControllerFinishReasonCompleted error:nil];
+        if (self.reviewMode == ORKTaskViewControllerReviewModeStandalone) {
+            [_taskReviewViewController removeFromParentViewController];
+            _taskReviewViewController = nil;
+            //          TODO: Remove copy code into single method to generate and present _taskReviewViewController
+            if ([self.task isKindOfClass:[ORKOrderedTask class]]) {
+                ORKOrderedTask *orderedTask = (ORKOrderedTask *)self.task;
+                if (!_taskReviewViewController) {
+                    _taskReviewViewController = [[ORKTaskReviewViewController alloc] initWithResultSource:self.result forSteps:orderedTask.steps];
+                    _taskReviewViewController.delegate = self;
+                    
+                    if (@available(iOS 13.0, *)) {
+                        self.modalInPresentation = YES;
+                    }
+                    [self.pageViewController setViewControllers:@[_taskReviewViewController] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:^(BOOL finished) {
+                    }];
+                    [self setTaskReviewViewControllerNavbar];
+                    
+                }
+            }
+        }
+        else {
+            [self finishWithReason:ORKTaskViewControllerFinishReasonCompleted error:nil];
+        }
     } else if ([self shouldPresentStep:step]) {
         ORKStepViewController *stepViewController = [self viewControllerForStep:step];
         NSAssert(stepViewController != nil, @"A non-nil step should always generate a step view controller");
@@ -1279,6 +1297,14 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
         [self showViewController:stepViewController goForward:YES animated:YES];
     }
     
+}
+
+- (void)setTaskReviewViewControllerNavbar {
+    if (_taskReviewViewController && _taskReviewViewController.navigationController) {
+        _taskReviewViewController.navigationController.navigationBar.topItem.title = @"Review";
+        [_taskReviewViewController.navigationController.navigationBar setBackgroundColor:UIColor.groupTableViewBackgroundColor];
+        _pageViewController.navigationItem.rightBarButtonItem = nil;
+    }
 }
 
 - (void)flipToPreviousPageFrom:(ORKStepViewController *)fromController {
@@ -1573,6 +1599,23 @@ static NSString *const _ORKPresentedDate = @"presentedDate";
 
 #pragma mark Review mode
 
+- (void)addStepResultsUntilStepWithIdentifier:(NSString *)stepIdentifier {
+    NSLog(@"%@", _defaultResultSource);
+    ORKTaskResult * taskResult = (ORKTaskResult *) _defaultResultSource;
+    for (ORKStepResult * stepResult in taskResult.results) {
+        if (![stepIdentifier isEqualToString: stepResult.identifier]) {
+            if (![_managedStepIdentifiers containsObject:stepResult.identifier]) {
+                [_managedStepIdentifiers addObject:stepResult.identifier];
+            }
+            _managedResults[stepResult.identifier] = stepResult;
+        }
+        else {
+            break;
+        }
+    }
+    
+}
+
 - (void)setReviewMode:(ORKTaskViewControllerReviewMode)reviewMode {
     if (_hasBeenPresented) {
         @throw [NSException exceptionWithName:NSGenericException reason:@"Cannot change review mode after presenting the task controller for now." userInfo:nil];
@@ -1590,7 +1633,7 @@ static NSString *const _ORKPresentedDate = @"presentedDate";
     if ([self.task isKindOfClass:[ORKOrderedTask class]]) {
         ORKOrderedTask *orderedTask = (ORKOrderedTask *)self.task;
         if (!_taskReviewViewController) {
-            _taskReviewViewController = [[ORKTaskReviewViewController alloc] initWithDefaultResultSource:_defaultResultSource forSteps:orderedTask.steps];
+            _taskReviewViewController = [[ORKTaskReviewViewController alloc] initWithResultSource:_defaultResultSource forSteps:orderedTask.steps];
             _taskReviewViewController.delegate = self;
         }
     }
@@ -1599,12 +1642,13 @@ static NSString *const _ORKPresentedDate = @"presentedDate";
 #pragma mark ORKTaskReviewViewControllerDelegate
 
 - (void)doneButtonTapped {
-    NSLog(@"Done!");
+    NSLog(@"Last Res: %@", self.result);
+    [self finishWithReason:ORKTaskViewControllerFinishReasonCompleted error:nil];
 }
 
-- (void)editAnswerTappedForStep:(ORKStep *)step {
-    NSLog(@"Step needs to be editted %@", step.identifier);
-    [self showViewController:[self viewControllerForStep:step] goForward:YES animated:YES];
+- (void)editAnswerTappedForStepWithIdentifier:(NSString *)stepIdentifier {
+    [self showViewController:[self viewControllerForStep:[self.task stepWithIdentifier:stepIdentifier]] goForward:YES animated:YES];
+    [self addStepResultsUntilStepWithIdentifier:stepIdentifier];
 }
 
 

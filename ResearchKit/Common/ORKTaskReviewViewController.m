@@ -31,6 +31,7 @@
 #import "ORKTaskReviewViewController.h"
 #import "ORKStepView_Private.h"
 #import "ORKTableContainerView.h"
+#import "ORKNavigationContainerView_Internal.h"
 #import "ORKStepContentView_Private.h"
 #import "ORKStep.h"
 #import "ORKFormStep.h"
@@ -228,13 +229,15 @@
 
 @end
 
-@implementation ORKTaskReviewViewController
+@implementation ORKTaskReviewViewController {
+    ORKNavigationContainerView *_navigationFooterView;
+}
 
-- (instancetype)initWithDefaultResultSource:(id<ORKTaskResultSource>)defaultResultSource forSteps:(NSArray<ORKStep *> *)steps {
+- (instancetype)initWithResultSource:(id<ORKTaskResultSource>)resultSource forSteps:(NSArray<ORKStep *> *)steps {
     self = [super init];
     if (self) {
         _steps = steps;
-        [self createReviewSectionsWithDefaultResultSource:defaultResultSource];
+        [self createReviewSectionsWithDefaultResultSource:resultSource];
     }
     return self;
 }
@@ -242,6 +245,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupTableContainerView];
+    [self setupNavigationFooterView];
     _tableContainerView.stepTitle = @"Medical History";
     _tableContainerView.stepContentView.stepText = @"These questions detail your current and historical medical conditions. The answers on this list are shared as a whole with a study that you share it with.";
     [_tableContainerView setNeedsLayout];
@@ -286,16 +290,13 @@
     [[_tableContainerView.rightAnchor constraintEqualToAnchor:self.view.rightAnchor] setActive:YES];
 }
 
-- (void)updateResultSource:(ORKTaskResult *)resultSource forSteps:(NSArray<ORKStep *> *)steps {
-    _resultSource = resultSource;
-    _steps = steps;
-    [self createReviewSectionsWithResultSource];
-}
-
-- (void)createReviewSectionsWithResultSource {
-    if (_resultSource) {
-        NSLog(@"Stuff");
-    }
+- (void)setupNavigationFooterView {
+    _navigationFooterView = _tableContainerView.navigationFooterView;
+    [_navigationFooterView removeStyling];
+    _navigationFooterView.skipButtonItem = nil;
+    _navigationFooterView.continueEnabled = YES;
+    //    TODO: Localize
+    _navigationFooterView.continueButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonTapped)];
 }
 
 - (void)createReviewSectionsWithDefaultResultSource:(id<ORKTaskResultSource>)defaultResultSource {
@@ -436,9 +437,14 @@
 
 - (void)footerButtonTappedForSection:(id)sender {
     UIButton *button = (UIButton *)sender;
-    if (self.delegate && [self.delegate respondsToSelector:@selector(editAnswerTappedForStep:)]) {
-        [self.delegate editAnswerTappedForStep:_steps[button.tag]];
-//        use _reviewSections[button.tag].stepIdentifier to find step.
+    if (self.delegate && [self.delegate respondsToSelector:@selector(editAnswerTappedForStepWithIdentifier:)]) {
+        [self.delegate editAnswerTappedForStepWithIdentifier:_reviewSections[button.tag].stepIdentifier];
+    }
+}
+
+- (void)doneButtonTapped {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(doneButtonTapped)]) {
+        [self.delegate doneButtonTapped];
     }
 }
 

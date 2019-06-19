@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol ORKTaskReviewViewControllerDelegate <NSObject>
 
 @required
-- (void)editAnswerTappedForStep:(ORKStep *)step;
+- (void)editAnswerTappedForStepWithIdentifier:(NSString *)stepIdentifier;
 
 - (void)doneButtonTapped;
 
@@ -49,9 +49,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak) id<ORKTaskReviewViewControllerDelegate> delegate;
 
-- (instancetype)initWithDefaultResultSource:(id<ORKTaskResultSource>)defaultResultSource forSteps:(NSArray<ORKStep *> *)steps;
+- (instancetype)initWithResultSource:(id<ORKTaskResultSource>)resultSource forSteps:(NSArray<ORKStep *> *)steps;
 
-- (void)updateResultSource:(ORKTaskResult *)resultSource forSteps:(NSArray<ORKStep *> *)steps;
 @end
 
 NS_ASSUME_NONNULL_END
