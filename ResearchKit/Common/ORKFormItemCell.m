@@ -583,6 +583,9 @@ static const CGFloat HorizontalSpacer = 16.0;
     if (textField.text.length > 0 && ![[self.formItem impliedAnswerFormat] isAnswerValidWithString:textField.text]) {
         [self showValidityAlertWithMessage:[[self.formItem impliedAnswerFormat] localizedInvalidValueStringWithAnswerString:textField.text]];
     } else if (self.delegate && ![self.delegate formItemCellShouldDismissKeyboard:self]) {
+        self.editingHighlight = NO;
+        [self inputValueDidChange];
+        
         return NO;
     }
 

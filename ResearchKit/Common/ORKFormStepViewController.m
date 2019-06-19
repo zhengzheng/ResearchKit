@@ -873,52 +873,48 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
 }
 
 - (BOOL)shouldAutoScrollToNextItem:(ORKFormItemCell *)cell {
-    
     NSIndexPath *currentIndexPath = [self.tableView indexPathForCell:cell];
     
-    NSLog(@"The indexPath has section of: %li and a row of: %li", (long)currentIndexPath.section, (long)currentIndexPath.row);
+    NSIndexPath *nextIndexPath;
+    ORKFormItemCell *nextCell;
+    ORKQuestionType type;
     
     if (cell.isLastItem && currentIndexPath.section == _sections.count - 1) {
         return NO;
     } else if (!cell.isLastItem) {
-        NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:currentIndexPath.row + 1 inSection:currentIndexPath.section];
-        ORKFormItemCell *nextCell = [self.tableView cellForRowAtIndexPath:nextIndexPath];
-        
-        if (nextCell.answer) {
-            return NO;
-        }
-        
-        NSLog(@"the identifier of the next cell is: %@", nextCell.formItem.identifier);
-        ORKQuestionType type = nextCell.formItem.impliedAnswerFormat.questionType;
-        
-        switch (type) {
-            case ORKQuestionTypeText: {
-//                if ([formItem.answerFormat isKindOfClass:[ORKConfirmTextAnswerFormat class]]) {
-//                    class = [ORKFormItemConfirmTextCell class];
-//                } else {
-//                    ORKTextAnswerFormat *textFormat = (ORKTextAnswerFormat *)answerFormat;
-//                    if (!textFormat.multipleLines) {
-//                        class = [ORKFormItemTextFieldCell class];
-//                    } else {
-//                        class = [ORKFormItemTextCell class];
-//                    }
-//                }
-                
-                [_tableView deselectRowAtIndexPath:currentIndexPath animated:NO];
-                
-                if ([nextCell isKindOfClass:[ORKFormItemCell class]]) {
-                    [nextCell becomeFirstResponder];
-                    [_tableView scrollToRowAtIndexPath:nextIndexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
-                }
-                
-                break;
+        nextIndexPath = [NSIndexPath indexPathForRow:currentIndexPath.row + 1 inSection:currentIndexPath.section];
+    } else if (cell.isLastItem && currentIndexPath.section < _sections.count - 1) {
+        nextIndexPath = [NSIndexPath indexPathForRow:0 inSection:(currentIndexPath.section + 1)];
+    }
+    
+    nextCell = [self.tableView cellForRowAtIndexPath:nextIndexPath];
+    type = nextCell.formItem.impliedAnswerFormat.questionType;
+    
+    switch (type) {
+        case ORKQuestionTypeSingleChoice:
+        case ORKQuestionTypeMultipleChoice:
+        case ORKQuestionTypeDateAndTime:
+        case ORKQuestionTypeDate:
+        case ORKQuestionTypeTimeOfDay:
+        case ORKQuestionTypeTimeInterval:
+        case ORKQuestionTypeMultiplePicker:
+        case ORKQuestionTypeHeight:
+        case ORKQuestionTypeWeight:
+        case ORKQuestionTypeDecimal:
+        case ORKQuestionTypeInteger:
+        case ORKQuestionTypeText: {
+            [_tableView deselectRowAtIndexPath:currentIndexPath animated:NO];
+
+            if ([nextCell isKindOfClass:[ORKFormItemCell class]]) {
+                [nextCell becomeFirstResponder];
+                [_tableView scrollToRowAtIndexPath:nextIndexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
             }
-                
-            default:
-                return NO;
+            
+            break;
         }
-        
-        
+            
+        default:
+            return NO;
     }
     
     return YES;
@@ -1226,7 +1222,7 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
 - (BOOL)formItemCellShouldDismissKeyboard:(ORKFormItemCell *)cell {
     
     if ([self shouldAutoScrollToNextItem:cell]) {
-        NSLog(@"you should autoscroll to next item");
+        
         return NO;
     }
     
