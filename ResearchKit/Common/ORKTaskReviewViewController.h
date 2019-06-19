@@ -41,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 @required
 - (void)editAnswerTappedForStepWithIdentifier:(NSString *)stepIdentifier;
 
-- (void)doneButtonTapped;
+- (void)doneButtonTappedWithResultSource:(id<ORKTaskResultSource>)resultSource;
 
 @end
 

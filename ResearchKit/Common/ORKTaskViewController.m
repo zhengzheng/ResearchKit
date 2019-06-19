@@ -1600,7 +1600,6 @@ static NSString *const _ORKPresentedDate = @"presentedDate";
 #pragma mark Review mode
 
 - (void)addStepResultsUntilStepWithIdentifier:(NSString *)stepIdentifier {
-    NSLog(@"%@", _defaultResultSource);
     ORKTaskResult * taskResult = (ORKTaskResult *) _defaultResultSource;
     for (ORKStepResult * stepResult in taskResult.results) {
         if (![stepIdentifier isEqualToString: stepResult.identifier]) {
@@ -1613,7 +1612,16 @@ static NSString *const _ORKPresentedDate = @"presentedDate";
             break;
         }
     }
-    
+}
+
+- (void)updateResultWithSource:(id<ORKTaskResultSource>)resultSource {
+    ORKTaskResult * taskResult = (ORKTaskResult *) resultSource;
+    for (ORKStepResult * stepResult in taskResult.results) {
+        if (![_managedStepIdentifiers containsObject:stepResult.identifier]) {
+            [_managedStepIdentifiers addObject:stepResult.identifier];
+        }
+        _managedResults[stepResult.identifier] = stepResult;
+    }
 }
 
 - (void)setReviewMode:(ORKTaskViewControllerReviewMode)reviewMode {
@@ -1641,8 +1649,9 @@ static NSString *const _ORKPresentedDate = @"presentedDate";
 
 #pragma mark ORKTaskReviewViewControllerDelegate
 
-- (void)doneButtonTapped {
-    NSLog(@"Last Res: %@", self.result);
+- (void)doneButtonTappedWithResultSource:(id<ORKTaskResultSource>)resultSource {
+    //    FIXME: might need to queue the operations if the number of steps are too many. open to debate.
+    [self updateResultWithSource:resultSource];
     [self finishWithReason:ORKTaskViewControllerFinishReasonCompleted error:nil];
 }
 

@@ -224,7 +224,7 @@
 
 @property (nonatomic, nonnull) ORKTableContainerView *tableContainerView;
 @property (nonatomic) NSMutableArray<ORKReviewSection *> *reviewSections;
-@property (nonatomic, nonnull) ORKTaskResult * resultSource;
+@property (nonatomic) id<ORKTaskResultSource> resultSource;
 @property (nonatomic, nonnull) NSArray<ORKStep *> *steps;
 
 @end
@@ -237,6 +237,7 @@
     self = [super init];
     if (self) {
         _steps = steps;
+        _resultSource = resultSource;
         [self createReviewSectionsWithDefaultResultSource:resultSource];
     }
     return self;
@@ -443,8 +444,8 @@
 }
 
 - (void)doneButtonTapped {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(doneButtonTapped)]) {
-        [self.delegate doneButtonTapped];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(doneButtonTappedWithResultSource:)]) {
+        [self.delegate doneButtonTappedWithResultSource:_resultSource];
     }
 }
 
