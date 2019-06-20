@@ -1200,15 +1200,18 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
     if (cell.isLastItem && indexPath.section < (_sections.count - 1)) {
         NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:0 inSection:(indexPath.section + 1)];
         ORKFormItemCell *nextCell = [self.tableView cellForRowAtIndexPath:nextIndexPath];
-        ORKQuestionType type = nextCell.formItem.impliedAnswerFormat.questionType;
         
-        if ([self doesTableCellTypeUseKeyboard:type]) {
-            if ([nextCell isKindOfClass:[ORKFormItemCell class]]) {
-                [nextCell becomeFirstResponder];
-                [_tableView scrollToRowAtIndexPath:nextIndexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
+        if ([nextCell respondsToSelector:@selector(formItem)]) {
+            ORKQuestionType type = nextCell.formItem.impliedAnswerFormat.questionType;
+            
+            if ([self doesTableCellTypeUseKeyboard:type]) {
+                if ([nextCell isKindOfClass:[ORKFormItemCell class]]) {
+                    [nextCell becomeFirstResponder];
+                    [_tableView scrollToRowAtIndexPath:nextIndexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
+                }
             }
+            return;
         }
-        return;
     }
     
     NSIndexPath *path = [_tableView indexPathForCell:cell];
