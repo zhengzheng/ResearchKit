@@ -82,7 +82,7 @@ class ORKStepViewControllerTests: XCTestCase {
         let step = ORKStep(identifier: "STEP")
         testController = ORKStepViewController(step: step)
         testController.viewDidLoad()
-        XCTAssertEqual(testController.view.backgroundColor, ORKColor(ORKBackgroundColorKey))
+        XCTAssertEqual(testController.view.backgroundColor?.cgColor, ORKColor(ORKBackgroundColorKey).cgColor)
     }
     
     func testViewWillAppear() {
