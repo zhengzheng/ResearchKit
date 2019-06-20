@@ -872,7 +872,7 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
     [super goBackward];
 }
 
-- (BOOL)shouldAutoScrollToNextItem:(ORKFormItemCell *)cell {
+- (BOOL)didAutoScrollToNextItem:(ORKFormItemCell *)cell {
     NSIndexPath *currentIndexPath = [self.tableView indexPathForCell:cell];
     
     if (cell.isLastItem && currentIndexPath.section == _sections.count - 1) {
@@ -883,20 +883,20 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
         NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:currentIndexPath.row + 1 inSection:currentIndexPath.section];
         ORKFormItemCell *nextCell = [self.tableView cellForRowAtIndexPath:nextIndexPath];
         ORKQuestionType type = nextCell.formItem.impliedAnswerFormat.questionType;
-        
+
         if ([self doesTableCellTypeUseKeyboard:type]) {
             [_tableView deselectRowAtIndexPath:currentIndexPath animated:NO];
-            
+
             if ([nextCell isKindOfClass:[ORKFormItemCell class]]) {
                 [nextCell becomeFirstResponder];
                 [_tableView scrollToRowAtIndexPath:nextIndexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
             }
-            
+
         } else {
             return NO;
         }
     }
-    
+
     return YES;
 }
 
@@ -916,7 +916,7 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
         case ORKQuestionTypeText: {
             return YES;
         }
-        
+
         default:
             return NO;
     }
@@ -1176,6 +1176,13 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
 #pragma mark ORKFormItemCellDelegate
 
 - (void)formItemCellDidBecomeFirstResponder:(ORKFormItemCell *)cell {
+    if (_currentFirstResponderCell) {
+        ORKFormItemTextFieldBasedCell *previousSelectedCell = (ORKFormItemTextFieldBasedCell*)_currentFirstResponderCell;
+        if (previousSelectedCell != nil) {
+            [previousSelectedCell removeEditingHighlight];
+        }
+    }
+    
     _currentFirstResponderCell = cell;
     NSIndexPath *path = [_tableView indexPathForCell:cell];
     if (path) {
@@ -1209,7 +1216,6 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
     if (path) {
         ORKTableSection *sectionObject = (ORKTableSection *)_sections[path.section];
         if (path.row < sectionObject.items.count - 1) {
-            NSLog(@"move to next index");
             NSIndexPath *nextPath = [NSIndexPath indexPathForRow:(path.row + 1) inSection:path.section];
             [_tableView scrollToRowAtIndexPath:nextPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
         }
@@ -1238,15 +1244,9 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
 }
 
 - (BOOL)formItemCellShouldDismissKeyboard:(ORKFormItemCell *)cell {
-    
-    if ([self shouldAutoScrollToNextItem:cell]) {
+    if ([self didAutoScrollToNextItem:cell]) {
         return NO;
     }
-    
-    if (cell.isLastItem) {
-        return YES;
-    }
-    
     return YES;
 }
 

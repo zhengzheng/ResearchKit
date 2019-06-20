@@ -77,6 +77,9 @@
 }
 
 - (void)keyboardAccessoryViewDoneButtonPressed {
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:@"ORKDoneButtonPressed"
+     object:self];
     [self resignFirstResponder];
 }
 
