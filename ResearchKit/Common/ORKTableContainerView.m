@@ -228,7 +228,8 @@
 }
 
 - (void)sizeHeaderToFit {
-    [self.stepContentView.titleLabel setPreferredMaxLayoutWidth:self.stepContentView.bounds.size.width];
+    [self.stepContentView.titleLabel setPreferredMaxLayoutWidth:self.bounds.size.width];
+    [self.stepContentView.textLabel setPreferredMaxLayoutWidth:self.bounds.size.width];
     CGFloat estimatedHeight = [self.stepContentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
     CGRect bounds = CGRectMake(0.0, 0.0, self.stepContentView.bounds.size.width, self.stepContentView.bounds.size.height);
     bounds.size.height = estimatedHeight;
