@@ -676,7 +676,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
     
     if (@available(iOS 13.0, *)) {
         if ([self shouldDismissWithSwipe] == NO) {
-            //self.modalInPresentation = YES;
+            self.modalInPresentation = YES;
         }
     }
 }
