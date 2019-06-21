@@ -900,6 +900,29 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
     return YES;
 }
 
+- (BOOL)shouldAutoScrollToNextSection:(NSIndexPath *)indexPath {
+    NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:0 inSection:(indexPath.section + 1)];
+    ORKFormItemCell *nextCell = [self.tableView cellForRowAtIndexPath:nextIndexPath];
+    
+    if ([nextCell respondsToSelector:@selector(formItem)]) {
+        ORKQuestionType type = nextCell.formItem.impliedAnswerFormat.questionType;
+        if ([self doesTableCellTypeUseKeyboard:type]) {
+            if ([nextCell isKindOfClass:[ORKFormItemCell class]]) {
+                return YES;
+            }
+        }
+    }
+    
+    return NO;
+}
+
+- (void)autoScrollToNextSection:(NSIndexPath *)indexPath {
+    NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:0 inSection:(indexPath.section + 1)];
+    ORKFormItemCell *nextCell = [self.tableView cellForRowAtIndexPath:nextIndexPath];
+    [nextCell becomeFirstResponder];
+    [_tableView scrollToRowAtIndexPath:nextIndexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
+}
+
 - (BOOL)doesTableCellTypeUseKeyboard:(ORKQuestionType)questionType {
     switch (questionType) {
         case ORKQuestionTypeSingleChoice:
@@ -921,6 +944,8 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
             return NO;
     }
 }
+
+
 
 #pragma mark NSNotification methods
 
@@ -1109,6 +1134,10 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
         
         ORKTableSection *section = _sections[indexPath.section];
         [section.textChoiceCellGroup didSelectCellAtIndexPath:indexPath];
+        
+        if (section.textChoiceCellGroup.answerFormat.style == ORKChoiceAnswerStyleSingleChoice && (indexPath.section < _sections.count - 1) && [self shouldAutoScrollToNextSection:indexPath]) {
+            [self autoScrollToNextSection:indexPath];
+        }
     }
 }
 
@@ -1197,21 +1226,9 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
     
     //determines if the table should autoscroll to the next section
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    if (cell.isLastItem && indexPath.section < (_sections.count - 1)) {
-        NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:0 inSection:(indexPath.section + 1)];
-        ORKFormItemCell *nextCell = [self.tableView cellForRowAtIndexPath:nextIndexPath];
-        
-        if ([nextCell respondsToSelector:@selector(formItem)]) {
-            ORKQuestionType type = nextCell.formItem.impliedAnswerFormat.questionType;
-            
-            if ([self doesTableCellTypeUseKeyboard:type]) {
-                if ([nextCell isKindOfClass:[ORKFormItemCell class]]) {
-                    [nextCell becomeFirstResponder];
-                    [_tableView scrollToRowAtIndexPath:nextIndexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
-                }
-            }
-            return;
-        }
+    if ([self shouldAutoScrollToNextSection:indexPath]) {
+        [self autoScrollToNextSection:indexPath];
+        return;
     }
     
     NSIndexPath *path = [_tableView indexPathForCell:cell];

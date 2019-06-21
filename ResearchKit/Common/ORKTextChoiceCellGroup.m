@@ -58,6 +58,7 @@
     if (self) {
         _beginningIndexPath = indexPath;
         _helper = [[ORKChoiceAnswerFormatHelper alloc] initWithAnswerFormat:answerFormat];
+        self.answerFormat = answerFormat;
         _singleChoice = answerFormat.style == ORKChoiceAnswerStyleSingleChoice;
         _immediateNavigation = immediateNavigation;
         _cells = [NSMutableDictionary new];
