@@ -295,8 +295,8 @@
     ORKWeakTypeOf(self)weakSelf = self;
     _postStimulusDelayWorkBlock = dispatch_block_create(DISPATCH_BLOCK_INHERIT_QOS_CLASS, ^{
         ORKStrongTypeOf(self) strongSelf = weakSelf;
-        //NSUInteger storedTestIndex = _currentTestIndex;
-        //if (_currentTestIndex == storedTestIndex) {
+        NSUInteger storedTestIndex = _currentTestIndex;
+        if (_currentTestIndex == storedTestIndex) {
             if (_initialDescent && _ackOnce) {
                 _initialDescent = NO;
                 ORKdBHLToneAudiometryTransitions *newTransition = [[ORKdBHLToneAudiometryTransitions alloc] init];
@@ -313,7 +313,7 @@
             _currentTestIndex += 1;
             [strongSelf estimatedBHLAndPlayToneWithFrequency:_freqLoopList[_indexOfFreqLoopList]];
             return;
-        //}
+        }
     });
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)((preStimulusDelay + toneDuration + postStimulusDelay) * NSEC_PER_SEC)), dispatch_get_main_queue(), _postStimulusDelayWorkBlock);
 
@@ -330,9 +330,10 @@
         dispatch_block_cancel(_pulseDurationWorkBlock);
         dispatch_block_cancel(_postStimulusDelayWorkBlock);
     }
-    NSNumber *currentKey = [NSNumber numberWithFloat:_currentdBHL];
-    ORKdBHLToneAudiometryTransitions *currentTransitionObject = [_transitionsDictionary objectForKey:currentKey];
+    
     if (_resultUnit.userTapTimeStamp - _resultUnit.startOfUnitTimeStamp < _resultUnit.preStimulusDelay) {
+        NSNumber *currentKey = [NSNumber numberWithFloat:_currentdBHL];
+        ORKdBHLToneAudiometryTransitions *currentTransitionObject = [_transitionsDictionary objectForKey:currentKey];
         currentTransitionObject.userInitiated -= 1;
     } else if ([self validateResultFordBHL:_currentdBHL]) {
         _resultSample.calculatedThreshold = _currentdBHL;
@@ -350,10 +351,9 @@
     
     _currentdBHL = _currentdBHL - _dBHLStepDownSize;
     if (_currentdBHL < _dBHLMinimumThreshold) {
-        // Fix rdar://51305554 dBHL Tone Audiometry - Minimum threshold parameter
         _currentdBHL = _dBHLMinimumThreshold;
         ORKdBHLToneAudiometryTransitions *minimumThresholdTransition = [_transitionsDictionary objectForKey:[NSNumber numberWithFloat:_currentdBHL]];
-        
+
         if (!minimumThresholdTransition) {
             _initialDescent = NO;
             minimumThresholdTransition = [[ORKdBHLToneAudiometryTransitions alloc] init];
@@ -361,7 +361,6 @@
             [_transitionsDictionary setObject:minimumThresholdTransition forKey:[NSNumber numberWithFloat:_currentdBHL]];
         }
     }
-    
     [self estimatedBHLAndPlayToneWithFrequency:_freqLoopList[_indexOfFreqLoopList]];
     return;
 }
