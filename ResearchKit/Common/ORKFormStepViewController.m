@@ -889,7 +889,7 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
 
             if ([nextCell isKindOfClass:[ORKFormItemCell class]]) {
                 [nextCell becomeFirstResponder];
-                [_tableView scrollToRowAtIndexPath:nextIndexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
+                [_tableView scrollToRowAtIndexPath:nextIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
             }
 
         } else {
@@ -920,7 +920,7 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
     NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:0 inSection:(indexPath.section + 1)];
     ORKFormItemCell *nextCell = [self.tableView cellForRowAtIndexPath:nextIndexPath];
     [nextCell becomeFirstResponder];
-    [_tableView scrollToRowAtIndexPath:nextIndexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
+    [_tableView scrollToRowAtIndexPath:nextIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
 - (BOOL)doesTableCellTypeUseKeyboard:(ORKQuestionType)questionType {
@@ -1125,7 +1125,7 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
     ORKFormItemCell *cell = (ORKFormItemCell *)[tableView cellForRowAtIndexPath:indexPath];
     if ([cell isKindOfClass:[ORKFormItemCell class]]) {
         [cell becomeFirstResponder];
-        [_tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
+        [_tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
     } else {
         // Dismiss other textField's keyboard
         [tableView endEditing:NO];
@@ -1137,7 +1137,7 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
             [self autoScrollToNextSection:indexPath];
         } else if (indexPath.section < (_sections.count - 1)) {
             NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:0 inSection:(indexPath.section + 1)];
-            [_tableView scrollToRowAtIndexPath:nextIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+            [_tableView scrollToRowAtIndexPath:nextIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
         }
     }
 }
@@ -1208,7 +1208,7 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
 - (void)formItemCellDidBecomeFirstResponder:(ORKFormItemCell *)cell {
     if (_currentFirstResponderCell) {
         ORKFormItemTextFieldBasedCell *previousSelectedCell = (ORKFormItemTextFieldBasedCell*)_currentFirstResponderCell;
-        if (previousSelectedCell != nil) {
+        if (previousSelectedCell != nil && [previousSelectedCell respondsToSelector:@selector(removeEditingHighlight)]) {
             [previousSelectedCell removeEditingHighlight];
         }
     }
@@ -1238,7 +1238,7 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
         ORKTableSection *sectionObject = (ORKTableSection *)_sections[path.section];
         if (path.row < sectionObject.items.count - 1) {
             NSIndexPath *nextPath = [NSIndexPath indexPathForRow:(path.row + 1) inSection:path.section];
-            [_tableView scrollToRowAtIndexPath:nextPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+            [_tableView scrollToRowAtIndexPath:nextPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
         }
     }
 
