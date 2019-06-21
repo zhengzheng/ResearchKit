@@ -945,8 +945,6 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
     }
 }
 
-
-
 #pragma mark NSNotification methods
 
 - (void)keyboardWillShow:(NSNotification *)notification {
@@ -1137,6 +1135,9 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
         
         if (section.textChoiceCellGroup.answerFormat.style == ORKChoiceAnswerStyleSingleChoice && (indexPath.section < _sections.count - 1) && [self shouldAutoScrollToNextSection:indexPath]) {
             [self autoScrollToNextSection:indexPath];
+        } else if (indexPath.section < (_sections.count - 1)) {
+            NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:0 inSection:(indexPath.section + 1)];
+            [_tableView scrollToRowAtIndexPath:nextIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
         }
     }
 }
