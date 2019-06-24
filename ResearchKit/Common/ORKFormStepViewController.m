@@ -875,9 +875,7 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
 - (BOOL)didAutoScrollToNextItem:(ORKFormItemCell *)cell {
     NSIndexPath *currentIndexPath = [self.tableView indexPathForCell:cell];
     
-    if (cell.isLastItem && currentIndexPath.section == _sections.count - 1) {
-        return NO;
-    } else if (cell.isLastItem && currentIndexPath.section < _sections.count - 1) {
+    if (cell.isLastItem) {
         return NO;
     } else if (!cell.isLastItem) {
         NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:currentIndexPath.row + 1 inSection:currentIndexPath.section];
@@ -925,8 +923,6 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
 
 - (BOOL)doesTableCellTypeUseKeyboard:(ORKQuestionType)questionType {
     switch (questionType) {
-        case ORKQuestionTypeSingleChoice:
-        case ORKQuestionTypeMultipleChoice:
         case ORKQuestionTypeDateAndTime:
         case ORKQuestionTypeDate:
         case ORKQuestionTypeTimeOfDay:
@@ -936,10 +932,9 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
         case ORKQuestionTypeWeight:
         case ORKQuestionTypeDecimal:
         case ORKQuestionTypeInteger:
-        case ORKQuestionTypeText: {
+        case ORKQuestionTypeText:
             return YES;
-        }
-
+            
         default:
             return NO;
     }
