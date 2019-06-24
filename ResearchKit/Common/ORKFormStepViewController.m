@@ -877,7 +877,7 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
     
     if (cell.isLastItem) {
         return NO;
-    } else if (!cell.isLastItem) {
+    } else {
         NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:currentIndexPath.row + 1 inSection:currentIndexPath.section];
         ORKFormItemCell *nextCell = [self.tableView cellForRowAtIndexPath:nextIndexPath];
         ORKQuestionType type = nextCell.formItem.impliedAnswerFormat.questionType;
