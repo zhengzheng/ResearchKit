@@ -243,7 +243,11 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
 
     // Only set the background color if it is using the default cell type
     if ([reuseIdentifier isEqualToString:ORKBasicCellReuseIdentifier]) {
-        [cell setBackgroundColor:[UIColor clearColor]];
+        if (@available(iOS 13.0, *)) {
+            [cell setBackgroundColor:[UIColor clearColor]];
+        } else {
+            [cell setBackgroundColor:[UIColor whiteColor]];
+        }
     }
     
     return cell;

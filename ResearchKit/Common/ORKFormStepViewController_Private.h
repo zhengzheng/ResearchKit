@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2015, Apple Inc. All rights reserved.
+ Copyright (c) 2019, Apple Inc. All rights reserved.
  
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
@@ -29,27 +29,17 @@
  */
 
 
-#import <ResearchKit/ORKQuestionStepViewController.h>
-#import <ResearchKit/ORKCustomStepView.h>
+#import <ResearchKit/ORKFormStepViewController.h>
 
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ORKQuestionStepViewController () <ORKQuestionStepCustomViewDelegate>
+@interface ORKFormStepViewController ()
 
 /**
- Provide a custom question view.
-
- If a question requires a custom control for data entry, provide a suitable
- custom step view. This view should provide `-sizeThatFits:` or autolayout
- constraints which determine the vertical space required.
+ Set the answer for the specified formItem identifier.
  */
-@property (nonatomic, strong, nullable) ORKQuestionStepCustomView *customQuestionView;
-
-/**
- Set the step answer.
- */
-- (void)setAnswer:(id)answer;
+- (void)setAnswer:(id)answer forIdentifier:(NSString *)identifier;
 
 @end
 

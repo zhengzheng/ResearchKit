@@ -61,6 +61,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)resume;
 
+
+/**
+ Creates a default step view controller suitable for presenting the passed step,
+ and, if applicable, prefills its results using the `defaultResultSource`.
+ */
+- (ORKStepViewController *)viewControllerForStep:(ORKStep *)step;
+
 @end
 
 NS_ASSUME_NONNULL_END

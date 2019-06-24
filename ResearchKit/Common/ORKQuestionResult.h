@@ -103,7 +103,7 @@ ORK_CLASS_AVAILABLE
  
  If the user skipped the question, the value of the corresponding array member is `nil`.
  */
-@property (nonatomic, copy, nullable) NSArray *choiceAnswers;
+@property (nonatomic, copy, nullable) NSArray<id<NSCopying, NSCoding, NSObject>> *choiceAnswers;
 
 @end
 

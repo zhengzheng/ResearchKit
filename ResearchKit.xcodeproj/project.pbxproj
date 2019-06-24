@@ -627,6 +627,8 @@
 		BC1C032C1CA301E300869355 /* ORKHeightPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = BC1C032A1CA301E300869355 /* ORKHeightPicker.h */; };
 		BC1C032D1CA301E300869355 /* ORKHeightPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = BC1C032B1CA301E300869355 /* ORKHeightPicker.m */; };
 		BC2908BC1FBD628F0030AB89 /* ORKTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2908BB1FBD628F0030AB89 /* ORKTypes.m */; };
+		BC37323222B76D1A0021F665 /* ORKTextButton_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = BC37323122B76D190021F665 /* ORKTextButton_Internal.h */; };
+		BC37323622B76DC70021F665 /* ORKFormStepViewController_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = BC37323522B76DC70021F665 /* ORKFormStepViewController_Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BC40696121104DDF00A4100C /* ResearchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B183A5951A8535D100C76870 /* ResearchKit.framework */; };
 		BC4194291AE8453A00073D6B /* ORKObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = BC4194271AE8453A00073D6B /* ORKObserver.h */; };
 		BC41942A1AE8453A00073D6B /* ORKObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = BC4194281AE8453A00073D6B /* ORKObserver.m */; };
@@ -1441,6 +1443,8 @@
 		BC1C032A1CA301E300869355 /* ORKHeightPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ORKHeightPicker.h; sourceTree = "<group>"; };
 		BC1C032B1CA301E300869355 /* ORKHeightPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ORKHeightPicker.m; sourceTree = "<group>"; };
 		BC2908BB1FBD628F0030AB89 /* ORKTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ORKTypes.m; sourceTree = "<group>"; };
+		BC37323122B76D190021F665 /* ORKTextButton_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ORKTextButton_Internal.h; sourceTree = "<group>"; };
+		BC37323522B76DC70021F665 /* ORKFormStepViewController_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ORKFormStepViewController_Private.h; sourceTree = "<group>"; };
 		BC4194271AE8453A00073D6B /* ORKObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ORKObserver.h; sourceTree = "<group>"; };
 		BC4194281AE8453A00073D6B /* ORKObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ORKObserver.m; sourceTree = "<group>"; };
 		BC4A213D1C85FC0000BFC271 /* ORKBarGraphChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ORKBarGraphChartView.h; path = Charts/ORKBarGraphChartView.h; sourceTree = "<group>"; };
@@ -1518,7 +1522,6 @@
 		FA7A9D321B0843A9005A2BEA /* ORKConsentSignatureFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ORKConsentSignatureFormatter.m; sourceTree = "<group>"; };
 		FA7A9D361B09365F005A2BEA /* ORKConsentSectionFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ORKConsentSectionFormatterTests.m; sourceTree = "<group>"; };
 		FA7A9D381B0969A7005A2BEA /* ORKConsentSignatureFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ORKConsentSignatureFormatterTests.m; sourceTree = "<group>"; };
-		FB30E8571C7D030F0005AD25 /* ORKTextButton_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ORKTextButton_Internal.h; path = ../../../ResearchKit/ResearchKit/Common/ORKTextButton_Internal.h; sourceTree = "<group>"; };
 		FF0CB3881FD5C4C3002D838C /* ORKWebViewStepResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKWebViewStepResult.h; sourceTree = "<group>"; };
 		FF0CB3891FD5C4C3002D838C /* ORKWebViewStepResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKWebViewStepResult.m; sourceTree = "<group>"; };
 		FF154FB21E82EF5E004ED908 /* ORKOrderedTask+ORKPredefinedActiveTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ORKOrderedTask+ORKPredefinedActiveTask.h"; sourceTree = "<group>"; };
@@ -2068,7 +2071,6 @@
 		8419D66A1FB73C5A0088D7E5 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
-				FB30E8571C7D030F0005AD25 /* ORKTextButton_Internal.h */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -2330,6 +2332,7 @@
 				86C40BD41A8D7C5C00081FAC /* ORKTapCountLabel.m */,
 				86C40BDB1A8D7C5C00081FAC /* ORKTextButton.h */,
 				86C40BDC1A8D7C5C00081FAC /* ORKTextButton.m */,
+				BC37323122B76D190021F665 /* ORKTextButton_Internal.h */,
 				86C40B5E1A8D7C5B00081FAC /* ORKTextFieldView.h */,
 				86C40B5F1A8D7C5B00081FAC /* ORKTextFieldView.m */,
 				BC01B0FA1B0EB99700863803 /* ORKTintedImageView_Internal.h */,
@@ -2519,6 +2522,7 @@
 				86C40B841A8D7C5C00081FAC /* ORKFormStepViewController.h */,
 				86C40B851A8D7C5C00081FAC /* ORKFormStepViewController.m */,
 				249F44E31BCD9EAC0000D57E /* ORKFormStepViewController_Internal.h */,
+				BC37323522B76DC70021F665 /* ORKFormStepViewController_Private.h */,
 			);
 			name = "Form Step";
 			sourceTree = "<group>";
@@ -3350,6 +3354,7 @@
 				86C40C221A8D7C5C00081FAC /* ORKCountdownStep.h in Headers */,
 				86C40DB61A8D7C5C00081FAC /* ORKSurveyAnswerCellForText.h in Headers */,
 				86C40E281A8D7C5C00081FAC /* ORKSignatureView.h in Headers */,
+				BC37323622B76DC70021F665 /* ORKFormStepViewController_Private.h in Headers */,
 				2489F7AF1D65214D008DEF20 /* ORKVideoCaptureCameraPreviewView.h in Headers */,
 				BCB6E65D1B7D534C000D5B34 /* ORKGraphChartView_Internal.h in Headers */,
 				86C40C8C1A8D7C5C00081FAC /* ORKActiveStepViewController.h in Headers */,
@@ -3478,6 +3483,7 @@
 				6146D0A31B84A91E0068491D /* ORKGraphChartAccessibilityElement.h in Headers */,
 				86C40C841A8D7C5C00081FAC /* ORKActiveStepTimer.h in Headers */,
 				86B781BD1AA668ED00688151 /* ORKValuePicker.h in Headers */,
+				BC37323222B76D1A0021F665 /* ORKTextButton_Internal.h in Headers */,
 				86C40DE21A8D7C5C00081FAC /* ORKVerticalContainerView_Internal.h in Headers */,
 				BC01B0FB1B0EB99700863803 /* ORKTintedImageView_Internal.h in Headers */,
 				FF919A591E81C628005C2A1E /* ORKQuestionResult.h in Headers */,
