@@ -332,6 +332,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [_tableContainerView sizeHeaderToFit];
+    [_tableContainerView.tableView reloadData];
     [self.view layoutSubviews];
 }
 
