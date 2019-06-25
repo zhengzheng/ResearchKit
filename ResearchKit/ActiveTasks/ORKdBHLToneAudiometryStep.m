@@ -42,6 +42,7 @@
 #define ORKdBHLToneAudiometryTaskInitialdBHLValue 30.0
 #define ORKdBHLToneAudiometryTaskdBHLStepUpSize 5.0
 #define ORKdBHLToneAudiometryTaskdBHLStepDownSize 10.0
+#define ORKdBHLToneAudiometryTaskdBHLMinimumThreshold -10.0
 
 @implementation ORKdBHLToneAudiometryStep
 
@@ -65,6 +66,7 @@
     self.initialdBHLValue = ORKdBHLToneAudiometryTaskInitialdBHLValue;
     self.dBHLStepUpSize = ORKdBHLToneAudiometryTaskdBHLStepUpSize;
     self.dBHLStepDownSize = ORKdBHLToneAudiometryTaskdBHLStepDownSize;
+    self.dBHLMinimumThreshold = ORKdBHLToneAudiometryTaskdBHLMinimumThreshold;
     self.frequencyList = @[@1000.0, @2000.0, @3000.0, @4000.0, @8000.0, @1000.0, @500.0, @250.0];
     self.shouldShowDefaultTimer = NO;
 }
@@ -114,6 +116,7 @@
         ORK_DECODE_DOUBLE(aDecoder, initialdBHLValue);
         ORK_DECODE_DOUBLE(aDecoder, dBHLStepDownSize);
         ORK_DECODE_DOUBLE(aDecoder, dBHLStepUpSize);
+        ORK_DECODE_DOUBLE(aDecoder, dBHLMinimumThreshold);
         ORK_DECODE_INTEGER(aDecoder, maxNumberOfTransitionsPerFrequency);
         ORK_DECODE_INTEGER(aDecoder, earPreference);
         ORK_DECODE_OBJ(aDecoder, headphoneType);
@@ -130,6 +133,7 @@
     ORK_ENCODE_DOUBLE(aCoder, initialdBHLValue);
     ORK_ENCODE_DOUBLE(aCoder, dBHLStepDownSize);
     ORK_ENCODE_DOUBLE(aCoder, dBHLStepUpSize);
+    ORK_ENCODE_DOUBLE(aCoder, dBHLMinimumThreshold);
     ORK_ENCODE_INTEGER(aCoder, maxNumberOfTransitionsPerFrequency);
     ORK_ENCODE_INTEGER(aCoder, earPreference);
     ORK_ENCODE_OBJ(aCoder, headphoneType);
@@ -152,6 +156,7 @@
             && (self.initialdBHLValue == castObject.initialdBHLValue)
             && (self.dBHLStepDownSize == castObject.dBHLStepDownSize)
             && (self.dBHLStepUpSize == castObject.dBHLStepUpSize)
+            && (self.dBHLMinimumThreshold == castObject.dBHLMinimumThreshold)
             && (self.earPreference == castObject.earPreference)
             && ORKEqualObjects(self.headphoneType, castObject.headphoneType)
             && ORKEqualObjects(self.frequencyList, castObject.frequencyList));

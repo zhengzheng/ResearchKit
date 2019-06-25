@@ -72,6 +72,7 @@
     double _currentdBHL;
     double _dBHLStepUpSize;
     double _dBHLStepDownSize;
+    double _dBHLMinimumThreshold;
     int _currentTestIndex;
     int _indexOfFreqLoopList;
     int _numberOfTransitionsPerFreq;
@@ -131,6 +132,7 @@
     _currentdBHL = [self dBHLToneAudiometryStep].initialdBHLValue;
     _dBHLStepDownSize = [self dBHLToneAudiometryStep].dBHLStepDownSize;
     _dBHLStepUpSize = [self dBHLToneAudiometryStep].dBHLStepUpSize;
+    _dBHLMinimumThreshold = [self dBHLToneAudiometryStep].dBHLMinimumThreshold;
     
     self.dBHLToneAudiometryContentView = [[ORKdBHLToneAudiometryContentView alloc] init];
     self.activeStepView.activeCustomView = self.dBHLToneAudiometryContentView;
@@ -300,7 +302,6 @@
                 newTransition.userInitiated -= 1;
                 [_transitionsDictionary setObject:newTransition forKey:[NSNumber numberWithFloat:_currentdBHL]];
             }
-            
             _currentdBHL = _currentdBHL + _dBHLStepUpSize;
 
             if (currentTransition) {
@@ -344,7 +345,11 @@
             return;
         }
     }
-    _currentdBHL = _currentdBHL - _dBHLStepDownSize;
+    
+    if (_currentdBHL - _dBHLStepDownSize >= _dBHLMinimumThreshold) {
+        _currentdBHL = _currentdBHL - _dBHLStepDownSize;
+    }
+
     [self estimatedBHLAndPlayToneWithFrequency:_freqLoopList[_indexOfFreqLoopList]];
     return;
 }
