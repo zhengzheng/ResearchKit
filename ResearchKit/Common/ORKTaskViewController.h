@@ -45,6 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol ORKStepViewControllerDelegate;
 @protocol ORKTask;
 @protocol ORKTaskResultSource;
+@class ORKInstructionStep;
 
 
 /**
@@ -520,6 +521,8 @@ ORK_CLASS_AVAILABLE
 @property (nonatomic, assign) BOOL discardable;
 
 @property (nonatomic) ORKTaskViewControllerReviewMode reviewMode;
+
+@property (nonatomic, nullable) ORKInstructionStep * reviewContentStep;
 
 @end
 

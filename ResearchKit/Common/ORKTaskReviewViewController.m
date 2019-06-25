@@ -297,13 +297,15 @@
 
 @implementation ORKTaskReviewViewController {
     ORKNavigationContainerView *_navigationFooterView;
+    ORKStep *_reviewContentStep;
 }
 
-- (instancetype)initWithResultSource:(id<ORKTaskResultSource>)resultSource forSteps:(NSArray<ORKStep *> *)steps {
+- (instancetype)initWithResultSource:(id<ORKTaskResultSource>)resultSource forSteps:(NSArray<ORKStep *> *)steps withContentFrom:(ORKInstructionStep *)reviewContentStep {
     self = [super init];
     if (self) {
         _steps = steps;
         _resultSource = resultSource;
+        _reviewContentStep = (ORKStep *)reviewContentStep;
         [self createReviewSectionsWithDefaultResultSource:resultSource];
     }
     return self;
@@ -313,8 +315,14 @@
     [super viewDidLoad];
     [self setupTableContainerView];
     [self setupNavigationFooterView];
-    _tableContainerView.stepTitle = @"Medical History";
-    _tableContainerView.stepContentView.stepText = @"These questions detail your current and historical medical conditions. The answers on this list are shared as a whole with a study that you share it with.";
+    if (_reviewContentStep) {
+        _tableContainerView.stepTitle = _reviewContentStep.title;
+        _tableContainerView.stepText = _reviewContentStep.text;
+        _tableContainerView.stepDetailText = _reviewContentStep.detailText;
+        _tableContainerView.titleIconImage = _reviewContentStep.iconImage;
+        _tableContainerView.stepTopContentImage = _reviewContentStep.image;
+        _tableContainerView.bodyItems = _reviewContentStep.bodyItems;
+    }
     [_tableContainerView setNeedsLayout];
 }
 

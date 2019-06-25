@@ -1271,7 +1271,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
             if ([self.task isKindOfClass:[ORKOrderedTask class]]) {
                 ORKOrderedTask *orderedTask = (ORKOrderedTask *)self.task;
                 if (!_taskReviewViewController) {
-                    _taskReviewViewController = [[ORKTaskReviewViewController alloc] initWithResultSource:self.result forSteps:orderedTask.steps];
+                    _taskReviewViewController = [[ORKTaskReviewViewController alloc] initWithResultSource:self.result forSteps:orderedTask.steps withContentFrom:_reviewContentStep];
                     _taskReviewViewController.delegate = self;
                     
                     if (@available(iOS 13.0, *)) {
@@ -1300,7 +1300,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
 
 - (void)setTaskReviewViewControllerNavbar {
     if (_taskReviewViewController && _taskReviewViewController.navigationController) {
-        _taskReviewViewController.navigationController.navigationBar.topItem.title = @"Review";
+        _taskReviewViewController.navigationController.navigationBar.topItem.title = @"";
         [_taskReviewViewController.navigationController.navigationBar setBackgroundColor:ORKColor(ORKBackgroundColorKey)];
         _pageViewController.navigationItem.rightBarButtonItem = nil;
     }
@@ -1640,10 +1640,18 @@ static NSString *const _ORKPresentedDate = @"presentedDate";
     if ([self.task isKindOfClass:[ORKOrderedTask class]]) {
         ORKOrderedTask *orderedTask = (ORKOrderedTask *)self.task;
         if (!_taskReviewViewController) {
-            _taskReviewViewController = [[ORKTaskReviewViewController alloc] initWithResultSource:_defaultResultSource forSteps:orderedTask.steps];
+            _taskReviewViewController = [[ORKTaskReviewViewController alloc] initWithResultSource:_defaultResultSource forSteps:orderedTask.steps withContentFrom:_reviewContentStep];
             _taskReviewViewController.delegate = self;
         }
     }
+}
+
+- (void)setReviewContentStep:(ORKInstructionStep *)reviewContentStep {
+    _reviewContentStep = reviewContentStep;
+    if (_taskReviewViewController) {
+        _taskReviewViewController = nil;
+    }
+    [self setupTaskReviewViewController];
 }
 
 #pragma mark ORKTaskReviewViewControllerDelegate
