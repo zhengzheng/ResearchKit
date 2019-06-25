@@ -36,6 +36,7 @@
 #import "ORKCollectionResult_Private.h"
 #import "ORKWebViewStepResult.h"
 #import "ORKNavigationContainerView_Internal.h"
+#import "ORKSkin.h"
 
 @implementation ORKWebViewStepViewController {
     WKWebView *_webView;
@@ -78,7 +79,11 @@
     if (!_navigationFooterView) {
         _navigationFooterView = [ORKNavigationContainerView new];
     }
-    _navigationFooterView.neverHasContinueButton = YES;
+    [_navigationFooterView removeStyling];
+    
+    _navigationFooterView.continueButtonItem = self.continueButtonItem;
+    _navigationFooterView.continueEnabled = YES;
+    [_navigationFooterView updateContinueAndSkipEnabled];
     [self.view addSubview:_navigationFooterView];
 }
 
@@ -92,6 +97,7 @@
     _constraints = nil;
     _webView.translatesAutoresizingMaskIntoConstraints = NO;
     _navigationFooterView.translatesAutoresizingMaskIntoConstraints = NO;
+    CGFloat padding = ORKStepContainerLeftRightPaddingForWindow(self.view.window);
     
     _constraints = @[
                      [NSLayoutConstraint constraintWithItem:_webView
@@ -128,14 +134,14 @@
                                                      toItem:viewForiPad ? : self.view
                                                   attribute:NSLayoutAttributeLeft
                                                  multiplier:1.0
-                                                   constant:0.0],
+                                                   constant:padding],
                      [NSLayoutConstraint constraintWithItem:_navigationFooterView
                                                   attribute:NSLayoutAttributeRight
                                                   relatedBy:NSLayoutRelationEqual
                                                      toItem:viewForiPad ? : self.view
                                                   attribute:NSLayoutAttributeRight
                                                  multiplier:1.0
-                                                   constant:0.0],
+                                                   constant:-padding],
                      [NSLayoutConstraint constraintWithItem:_webView
                                                   attribute:NSLayoutAttributeBottom
                                                   relatedBy:NSLayoutRelationEqual
@@ -150,6 +156,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self stepDidChange];
+}
+
+- (void)setContinueButtonItem:(UIBarButtonItem *)continueButtonItem {
+    [super setContinueButtonItem:continueButtonItem];
+    _navigationFooterView.continueButtonItem = continueButtonItem;
 }
 
 - (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message
