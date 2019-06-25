@@ -267,7 +267,6 @@
         if (currentTransition) {
             currentTransition.userInitiated += 1;
             currentTransition.totalTransitions += 1;
-            
         } else {
             currentTransition = [[ORKdBHLToneAudiometryTransitions alloc] init];
             [_transitionsDictionary setObject:currentTransition forKey:[NSNumber numberWithFloat:_currentdBHL]];
@@ -303,7 +302,6 @@
                 newTransition.userInitiated -= 1;
                 [_transitionsDictionary setObject:newTransition forKey:[NSNumber numberWithFloat:_currentdBHL]];
             }
-        
             _currentdBHL = _currentdBHL + _dBHLStepUpSize;
 
             if (currentTransition) {
@@ -330,7 +328,6 @@
         dispatch_block_cancel(_pulseDurationWorkBlock);
         dispatch_block_cancel(_postStimulusDelayWorkBlock);
     }
-    
     if (_resultUnit.userTapTimeStamp - _resultUnit.startOfUnitTimeStamp < _resultUnit.preStimulusDelay) {
         NSNumber *currentKey = [NSNumber numberWithFloat:_currentdBHL];
         ORKdBHLToneAudiometryTransitions *currentTransitionObject = [_transitionsDictionary objectForKey:currentKey];
