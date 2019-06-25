@@ -1268,7 +1268,6 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
         if (self.reviewMode == ORKTaskViewControllerReviewModeStandalone) {
             [_taskReviewViewController removeFromParentViewController];
             _taskReviewViewController = nil;
-            //          TODO: Remove copy code into single method to generate and present _taskReviewViewController
             if ([self.task isKindOfClass:[ORKOrderedTask class]]) {
                 ORKOrderedTask *orderedTask = (ORKOrderedTask *)self.task;
                 if (!_taskReviewViewController) {

@@ -80,6 +80,10 @@
 /* Progress indication (in formItem section header). */
 "FORM_ITEM_PROGRESS" = "QUESTION %1$@ OF %2$@";
 
+/* ORKTaskReviewViewController */
+"REVIEW_SKIPPED_ANSWER" = "Skipped";
+"REVIEW_EDIT_ANSWER" = "Edit Answer";
+
 /* Alert for out of range values. */
 "RANGE_ALERT_TITLE" = "Invalid value";
 "RANGE_ALERT_MESSAGE_ABOVE_MAXIMUM" = "%1$@ exceeds the maximum allowed value (%2$@).";

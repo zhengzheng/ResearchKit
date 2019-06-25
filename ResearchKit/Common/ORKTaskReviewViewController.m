@@ -42,6 +42,7 @@
 #import "ORKSurveyCardHeaderView.h"
 #import "ORKChoiceViewCell_Internal.h"
 #import "ORKSkin.h"
+#import "ORKHelpers_Internal.h"
 
 @interface ORKReviewItem : NSObject
 @property (nonatomic) NSString *question;
@@ -162,8 +163,7 @@
     _answerLabel.text = _answer;
     if (!_answer) {
         _answerLabel.textColor = UIColor.lightGrayColor;
-        //        TODO: Localize
-        _answerLabel.text = @"Skipped";
+        _answerLabel.text = ORKLocalizedString(@"REVIEW_SKIPPED_ANSWER", nil);
     }
     
     [_containerView addSubview:_questionLabel];
@@ -263,8 +263,7 @@
     if(!_button) {
         _button = [[UIButton alloc] init];
     }
-    //    TODO: Localize
-    [_button setTitle:@"Edit Answer" forState:UIControlStateNormal];
+    [_button setTitle:ORKLocalizedString(@"REVIEW_EDIT_ANSWER", nil) forState:UIControlStateNormal];
     [_button setTitleColor:self.tintColor forState:UIControlStateNormal];
     
     _button.translatesAutoresizingMaskIntoConstraints = NO;
@@ -364,8 +363,7 @@
     [_navigationFooterView removeStyling];
     _navigationFooterView.skipButtonItem = nil;
     _navigationFooterView.continueEnabled = YES;
-    //    TODO: Localize
-    _navigationFooterView.continueButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonTapped)];
+    _navigationFooterView.continueButtonItem = [[UIBarButtonItem alloc] initWithTitle:ORKLocalizedString(@"BUTTON_DONE", nil) style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonTapped)];
 }
 
 - (void)createReviewSectionsWithDefaultResultSource:(id<ORKTaskResultSource>)defaultResultSource {
