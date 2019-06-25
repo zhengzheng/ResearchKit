@@ -375,11 +375,11 @@ static const CGFloat HorizontalSpacer = 16.0;
         _doneButtonWasPressed = NO;
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(orkDoneButtonPressed:)
-                                                     name:@"ORKDoneButtonPressed"
+                                                     name:ORKDoneButtonPressedKey
                                                    object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(resetDoneButtonWasPressed:)
-                                                     name:@"ResetDoneButtonWasPressed"
+                                                 selector:@selector(resetDoneButton:)
+                                                     name:ORKResetDoneButtonKey
                                                    object:nil];
     }
     return self;
@@ -597,7 +597,7 @@ static const CGFloat HorizontalSpacer = 16.0;
     BOOL wasDoneButtonPressed = _doneButtonWasPressed;
     
     [[NSNotificationCenter defaultCenter]
-     postNotificationName:@"ResetDoneButtonWasPressed"
+     postNotificationName:ORKResetDoneButtonKey
      object:self];
     
     if (textField.text.length > 0 && ![[self.formItem impliedAnswerFormat] isAnswerValidWithString:textField.text]) {
@@ -643,13 +643,13 @@ static const CGFloat HorizontalSpacer = 16.0;
 #pragma mark NSNotification Methods
 
 - (void) orkDoneButtonPressed:(NSNotification *) notification {
-    if ([[notification name] isEqualToString:@"ORKDoneButtonPressed"]) {
+    if ([[notification name] isEqualToString:ORKDoneButtonPressedKey]) {
         _doneButtonWasPressed = YES;
     }
 }
 
-- (void) resetDoneButtonWasPressed:(NSNotification *) notification {
-    if ([[notification name] isEqualToString:@"ResetDoneButtonWasPressed"]) {
+- (void) resetDoneButton:(NSNotification *) notification {
+    if ([[notification name] isEqualToString:ORKResetDoneButtonKey]) {
         _doneButtonWasPressed = NO;
     }
 }
