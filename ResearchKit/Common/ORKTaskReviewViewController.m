@@ -63,6 +63,7 @@
 
 @interface ORKReviewCell : UITableViewCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier question:(NSString *)question answer:(NSString *) answer;
+@property (nonatomic) BOOL isLastCell;
 @end
 
 @implementation ORKReviewCell {
@@ -73,6 +74,7 @@
     UILabel *_answerLabel;
     
     UIView *_containerView;
+    CAShapeLayer *_contentMaskLayer;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier question:(NSString *)question answer:(NSString *)answer {
@@ -86,6 +88,52 @@
         [self setBackgroundColor:UIColor.clearColor];
     }
     return self;
+}
+
+- (void) drawRect:(CGRect)rect {
+    [super drawRect:rect];
+    [self setMaskLayers];
+}
+
+- (void)setMaskLayers {
+    if (_contentMaskLayer) {
+        for (CALayer *sublayer in [_contentMaskLayer.sublayers mutableCopy]) {
+            [sublayer removeFromSuperlayer];
+        }
+        [_contentMaskLayer removeFromSuperlayer];
+        _contentMaskLayer = nil;
+    }
+    _contentMaskLayer = [[CAShapeLayer alloc] init];
+    UIColor *fillColor;
+    UIColor *borderColor;
+    if (@available(iOS 13.0, *)) {
+        fillColor = [UIColor secondarySystemGroupedBackgroundColor];
+        borderColor = UIColor.separatorColor;
+    } else {
+        fillColor = [UIColor ork_borderGrayColor];
+        borderColor = [UIColor ork_midGrayTintColor];
+    }
+    [_contentMaskLayer setFillColor:[fillColor CGColor]];
+    CAShapeLayer *foreLayer = [CAShapeLayer layer];
+    [foreLayer setFillColor:[fillColor CGColor]];
+    foreLayer.zPosition = 0.0f;
+    
+    CAShapeLayer *lineLayer = [CAShapeLayer layer];
+    
+    
+    CGRect foreLayerBounds = CGRectMake(ORKCardDefaultBorderWidth, 0, _containerView.bounds.size.width - 2 * ORKCardDefaultBorderWidth, _containerView.bounds.size.height);
+    foreLayer.path = [UIBezierPath bezierPathWithRect:foreLayerBounds].CGPath;
+    _contentMaskLayer.path = [UIBezierPath bezierPathWithRect:_containerView.bounds].CGPath;
+    CGFloat leftRightMargin = ORKCardLeftRightMarginForWindow(self.window);
+    CGRect lineBounds = CGRectMake(leftRightMargin, _containerView.bounds.size.height - 1.0, _containerView.bounds.size.width - leftRightMargin, 0.5);
+    lineLayer.path = [UIBezierPath bezierPathWithRect:lineBounds].CGPath;
+    lineLayer.zPosition = 0.0f;
+        
+    lineLayer.fillColor = _isLastCell ? UIColor.clearColor.CGColor : borderColor.CGColor;
+    _contentMaskLayer.fillColor = borderColor.CGColor;
+    [_contentMaskLayer addSublayer:foreLayer];
+    [_contentMaskLayer addSublayer:lineLayer];
+    [_containerView.layer insertSublayer:_contentMaskLayer atIndex:0];
 }
 
 - (void)setupContainerView {
@@ -151,7 +199,7 @@
 
 @implementation ORKReviewSectionFooter {
     UIView *_containerView;
-    UIView *_roundedView;
+    CAShapeLayer *_contentLayer;
 }
 
 - (instancetype)init
@@ -159,11 +207,45 @@
     self = [super init];
     if (self) {
         [self setupContainerView];
-        [self setupRoundedView];
         [self setupButton];
         [self setupConstraints];
     }
     return self;
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    if (!_contentLayer) {
+        _contentLayer = [CAShapeLayer layer];
+    }
+    for (CALayer *sublayer in [_contentLayer.sublayers mutableCopy]) {
+        [sublayer removeFromSuperlayer];
+    }
+    [_contentLayer removeFromSuperlayer];
+    CGRect contentBounds = _containerView.bounds;
+    _contentLayer.path = [UIBezierPath bezierPathWithRoundedRect: contentBounds byRoundingCorners: UIRectCornerBottomLeft | UIRectCornerBottomRight cornerRadii: (CGSize){ORKCardDefaultCornerRadii, ORKCardDefaultCornerRadii}].CGPath;
+    CAShapeLayer *foreLayer = [CAShapeLayer layer];
+    UIColor *fillColor;
+    UIColor *borderColor;
+    if (@available(iOS 13.0, *)) {
+        fillColor = [UIColor secondarySystemGroupedBackgroundColor];
+        borderColor = UIColor.separatorColor;
+    } else {
+        fillColor = [UIColor whiteColor];
+        borderColor = [UIColor ork_midGrayTintColor];
+    }
+    [foreLayer setFillColor:[fillColor CGColor]];
+    
+    CGFloat foreLayerCornerRadii = ORKCardDefaultCornerRadii >= ORKCardDefaultBorderWidth ? ORKCardDefaultCornerRadii - ORKCardDefaultBorderWidth : ORKCardDefaultCornerRadii;
+    
+    CGRect foreLayerBounds = CGRectMake(ORKCardDefaultBorderWidth, ORKCardDefaultBorderWidth, contentBounds.size.width - 2 * ORKCardDefaultBorderWidth, contentBounds.size.height - 2*ORKCardDefaultBorderWidth);
+    foreLayer.path = [UIBezierPath bezierPathWithRoundedRect: foreLayerBounds byRoundingCorners: UIRectCornerBottomLeft | UIRectCornerBottomRight cornerRadii: (CGSize){foreLayerCornerRadii, foreLayerCornerRadii}].CGPath;
+    foreLayer.zPosition = 0.0f;
+    foreLayer.borderWidth = ORKCardDefaultBorderWidth;
+    [_contentLayer addSublayer:foreLayer];
+    [_contentLayer setFillColor:[borderColor CGColor]];
+    [_containerView.layer insertSublayer:_contentLayer atIndex:0];
 }
 
 - (void)setupContainerView {
@@ -175,16 +257,6 @@
     _containerView.translatesAutoresizingMaskIntoConstraints = NO;
 
     [self addSubview:_containerView];
-}
-
-- (void)setupRoundedView {
-    if (!_roundedView) {
-        _roundedView = [UIView new];
-    }
-    _roundedView.backgroundColor = _containerView.backgroundColor;
-    _roundedView.translatesAutoresizingMaskIntoConstraints = NO;
-    _roundedView.layer.cornerRadius = ORKCardDefaultCornerRadii;
-    [_containerView addSubview:_roundedView];
 }
 
 - (void)setupButton {
@@ -201,17 +273,12 @@
 
 - (void)setupConstraints {
     //    TODO: replace padding constants
-    [[_containerView.topAnchor constraintEqualToAnchor:self.topAnchor constant:1.0] setActive:YES];
+    [[_containerView.topAnchor constraintEqualToAnchor:self.topAnchor constant:0.0] setActive:YES];
     [[_containerView.leftAnchor constraintEqualToAnchor:self.leftAnchor constant:ORKSurveyItemMargin+2.0] setActive:YES];
     [[_containerView.rightAnchor constraintEqualToAnchor:self.rightAnchor constant:-ORKSurveyItemMargin-2.0] setActive:YES];
     [[_button.topAnchor constraintEqualToAnchor:_containerView.topAnchor constant:ORKSurveyItemMargin] setActive:YES];
     [[_button.centerXAnchor constraintEqualToAnchor:_containerView.centerXAnchor] setActive:YES];
     [[_containerView.bottomAnchor constraintEqualToAnchor:_button.bottomAnchor constant:ORKSurveyItemMargin] setActive:YES];
-    [[_roundedView.heightAnchor constraintEqualToConstant:2*ORKCardDefaultCornerRadii] setActive:YES];
-    [[_roundedView.centerYAnchor constraintEqualToAnchor:_containerView.bottomAnchor] setActive:YES];
-    [[_roundedView.leftAnchor constraintEqualToAnchor:_containerView.leftAnchor] setActive:YES];
-    [[_roundedView.rightAnchor constraintEqualToAnchor:_containerView.rightAnchor] setActive:YES];
-    
     
     [[self.bottomAnchor constraintEqualToAnchor:_containerView.bottomAnchor constant:50.0] setActive:YES];
 }
@@ -397,6 +464,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     if (cell == nil) {
         ORKReviewCell *reviewCell = [[ORKReviewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell" question:_reviewSections[indexPath.section].items[indexPath.row].question answer:_reviewSections[indexPath.section].items[indexPath.row].answer];
+        reviewCell.isLastCell = _reviewSections[indexPath.section].items.count - 1 == indexPath.row;
         cell = reviewCell;
     }
     

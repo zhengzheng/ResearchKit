@@ -1302,7 +1302,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
 - (void)setTaskReviewViewControllerNavbar {
     if (_taskReviewViewController && _taskReviewViewController.navigationController) {
         _taskReviewViewController.navigationController.navigationBar.topItem.title = @"Review";
-        [_taskReviewViewController.navigationController.navigationBar setBackgroundColor:UIColor.groupTableViewBackgroundColor];
+        [_taskReviewViewController.navigationController.navigationBar setBackgroundColor:ORKColor(ORKBackgroundColorKey)];
         _pageViewController.navigationItem.rightBarButtonItem = nil;
     }
 }
