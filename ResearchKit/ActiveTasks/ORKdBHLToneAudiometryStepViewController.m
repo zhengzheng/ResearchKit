@@ -349,18 +349,10 @@
         }
     }
     
-    _currentdBHL = _currentdBHL - _dBHLStepDownSize;
-    if (_currentdBHL < _dBHLMinimumThreshold) {
-        _currentdBHL = _dBHLMinimumThreshold;
-        ORKdBHLToneAudiometryTransitions *minimumThresholdTransition = [_transitionsDictionary objectForKey:[NSNumber numberWithFloat:_currentdBHL]];
-
-        if (!minimumThresholdTransition) {
-            _initialDescent = NO;
-            minimumThresholdTransition = [[ORKdBHLToneAudiometryTransitions alloc] init];
-            minimumThresholdTransition.userInitiated -= 1;
-            [_transitionsDictionary setObject:minimumThresholdTransition forKey:[NSNumber numberWithFloat:_currentdBHL]];
-        }
+    if (_currentdBHL > _dBHLMinimumThreshold) {
+        _currentdBHL = _currentdBHL - _dBHLStepDownSize;
     }
+
     [self estimatedBHLAndPlayToneWithFrequency:_freqLoopList[_indexOfFreqLoopList]];
     return;
 }
@@ -369,15 +361,8 @@
     NSNumber *currentKey = [NSNumber numberWithFloat:_currentdBHL];
     ORKdBHLToneAudiometryTransitions *currentTransitionObject = [_transitionsDictionary objectForKey:currentKey];
     if ((currentTransitionObject.userInitiated/currentTransitionObject.totalTransitions >= 0.5) && currentTransitionObject.totalTransitions >= 2) {
-        float previousdBHL = dBHL - _dBHLStepUpSize;
-        if (previousdBHL < _dBHLMinimumThreshold) {
-            previousdBHL = _dBHLMinimumThreshold;
-        }
-        ORKdBHLToneAudiometryTransitions *previousTransitionObject = [_transitionsDictionary objectForKey:[NSNumber numberWithFloat:previousdBHL]];
-        if (
-            ((previousTransitionObject.userInitiated/previousTransitionObject.totalTransitions <= 0.5) && (previousTransitionObject.totalTransitions >= 2)) ||
-            ((previousdBHL == _dBHLMinimumThreshold) && (previousTransitionObject.totalTransitions >= 2))
-            )  {
+        ORKdBHLToneAudiometryTransitions *previousTransitionObject = [_transitionsDictionary objectForKey:[NSNumber numberWithFloat:(dBHL - _dBHLStepUpSize)]];
+        if ((previousTransitionObject.userInitiated/previousTransitionObject.totalTransitions <= 0.5) && (previousTransitionObject.totalTransitions >= 2)) {
             if (currentTransitionObject.totalTransitions == 2) {
                 if (currentTransitionObject.userInitiated/currentTransitionObject.totalTransitions == 1.0) {
                     _resultSample.calculatedThreshold = dBHL;
