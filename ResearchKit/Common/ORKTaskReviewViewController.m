@@ -464,10 +464,10 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     if (cell == nil) {
         ORKReviewCell *reviewCell = [[ORKReviewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell" question:_reviewSections[indexPath.section].items[indexPath.row].question answer:_reviewSections[indexPath.section].items[indexPath.row].answer];
-        reviewCell.isLastCell = _reviewSections[indexPath.section].items.count - 1 == indexPath.row;
         cell = reviewCell;
     }
-    
+    ORKReviewCell *reviewCell = (ORKReviewCell *)cell;
+    reviewCell.isLastCell = _reviewSections[indexPath.section].items.count - 1 == indexPath.row;
     return cell;
 }
 
