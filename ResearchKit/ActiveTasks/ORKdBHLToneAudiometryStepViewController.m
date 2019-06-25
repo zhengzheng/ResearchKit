@@ -349,7 +349,7 @@
         }
     }
     
-    if (_currentdBHL > _dBHLMinimumThreshold) {
+    if (_currentdBHL - _dBHLStepDownSize >= _dBHLMinimumThreshold) {
         _currentdBHL = _currentdBHL - _dBHLStepDownSize;
     }
 
