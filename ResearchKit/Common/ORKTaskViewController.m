@@ -682,9 +682,6 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
         }
     }
     if (_taskReviewViewController) {
-        if (@available(iOS 13.0, *)) {
-            self.modalInPresentation = YES;
-        }
         [self.pageViewController setViewControllers:@[_taskReviewViewController] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:^(BOOL finished) {
         }];
         [self setTaskReviewViewControllerNavbar];
@@ -1273,10 +1270,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
                 if (!_taskReviewViewController) {
                     _taskReviewViewController = [[ORKTaskReviewViewController alloc] initWithResultSource:self.result forSteps:orderedTask.steps withContentFrom:_reviewContentStep];
                     _taskReviewViewController.delegate = self;
-                    
-                    if (@available(iOS 13.0, *)) {
-                        self.modalInPresentation = YES;
-                    }
+
                     [self.pageViewController setViewControllers:@[_taskReviewViewController] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:^(BOOL finished) {
                     }];
                     [self setTaskReviewViewControllerNavbar];
