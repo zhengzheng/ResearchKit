@@ -56,7 +56,8 @@ typedef NS_ENUM(NSInteger, ORKTaskViewControllerReviewMode) {
     ORKTaskViewControllerReviewModeNever = 0,
     
     ORKTaskViewControllerReviewModeStandalone,
-    
+
+    // TODO: support future modes
 //    ORKTaskViewControllerReviewModeContinuous,
 //    
 //    ORKTaskViewControllerReviewModeStartAndEnd,
