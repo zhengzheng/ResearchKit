@@ -1159,30 +1159,13 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
         learnMoreView.delegate = self;
     }
     
-    //ORKFormStep *formStep = [self formStep];
+    ORKSurveyCardHeaderView *cardHeaderView = (ORKSurveyCardHeaderView *)[tableView dequeueReusableHeaderFooterViewWithIdentifier:@(section).stringValue];
     
-    //if (formStep.useCardView && _sections[section].items.count > 0) {
-        
-        ORKSurveyCardHeaderView *cardHeaderView = (ORKSurveyCardHeaderView *)[tableView dequeueReusableHeaderFooterViewWithIdentifier:@(section).stringValue];
-        
-        if (cardHeaderView == nil && title) {
-            cardHeaderView = [[ORKSurveyCardHeaderView alloc] initWithTitle:title detailText:detailText learnMoreView:learnMoreView progressText:sectionProgressText];
-        }
-        
-        return cardHeaderView;
-//    }
-//    else {
-//        ORKFormSectionHeaderView *view = (ORKFormSectionHeaderView *)[tableView dequeueReusableHeaderFooterViewWithIdentifier:@(section).stringValue];
-//
-//        if (view == nil) {
-//            // Do not create a header view if first section header has no title
-//            if (title.length > 0 || section > 0) {
-//                view = [[ORKFormSectionHeaderView alloc] initWithTitle:title tableView:tableView firstSection:(section == 0)];
-//            }
-//        }
-//
-//        return view;
-//    }
+    if (cardHeaderView == nil && title) {
+        cardHeaderView = [[ORKSurveyCardHeaderView alloc] initWithTitle:title detailText:detailText learnMoreView:learnMoreView progressText:sectionProgressText];
+    }
+    
+    return cardHeaderView;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
