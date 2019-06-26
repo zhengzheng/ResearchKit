@@ -624,17 +624,12 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
     NSArray *items = [self allFormItems];
     _sections = [NSMutableArray new];
     ORKTableSection *section = nil;
-    
-    if (items.count > 0) {
-        ORKFormItem *firstFormItem = items.firstObject;
-        if (firstFormItem.answerFormat) {
-            [self buildSectionsWithoutGrouping];
-            return;
-        }
-    }
+    BOOL foundItemForGroupedSection = NO;
     
     for (ORKFormItem *item in items) {
         if (!item.answerFormat) {
+            foundItemForGroupedSection = YES;
+            
             // Add new section
             section = [[ORKTableSection alloc] initWithSectionIndex:_sections.count];
             [_sections addObject:section];
@@ -644,6 +639,8 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
             section.detailText = item.detailText;
             section.learnMoreItem = item.learnMoreItem;
             section.showsProgress = item.showsProgress;
+        } else if (!foundItemForGroupedSection || [item.answerFormat isKindOfClass:[ORKBooleanAnswerFormat class]]) {
+            [self buildSingleSection:item];
         } else {
             if (section) {
                 [section addFormItem:item];
@@ -652,58 +649,57 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
     }
 }
 
-- (void)buildSectionsWithoutGrouping {
-    NSArray *items = [self allFormItems];
-
-    _sections = [NSMutableArray new];
+- (void)buildSingleSection:(ORKFormItem *)item {
     ORKTableSection *section = nil;
-
+    
     NSArray *singleSectionTypes = @[@(ORKQuestionTypeBoolean),
                                     @(ORKQuestionTypeSingleChoice),
                                     @(ORKQuestionTypeMultipleChoice),
                                     @(ORKQuestionTypeLocation)];
 
-    for (ORKFormItem *item in items) {
-        // Section header
-        if ([item impliedAnswerFormat] == nil) {
+    // Section header
+    if ([item impliedAnswerFormat] == nil) {
+        // Add new section
+        section = [[ORKTableSection alloc] initWithSectionIndex:_sections.count];
+        [_sections addObject:section];
+
+        // Save title
+        section.title = item.text;
+        section.detailText = item.detailText;
+        section.learnMoreItem = item.learnMoreItem;
+        section.showsProgress = item.showsProgress;
+        
+    // Actual item
+    } else {
+        ORKAnswerFormat *answerFormat = [item impliedAnswerFormat];
+        
+        BOOL multiCellChoices = ([singleSectionTypes containsObject:@(answerFormat.questionType)] &&
+                                 NO == [answerFormat isKindOfClass:[ORKValuePickerAnswerFormat class]]);
+        
+        BOOL multilineTextEntry = (answerFormat.questionType == ORKQuestionTypeText && [(ORKTextAnswerFormat *)answerFormat multipleLines]);
+        
+        BOOL scale = (answerFormat.questionType == ORKQuestionTypeScale);
+
+        // Items require individual section
+        if (multiCellChoices || multilineTextEntry || scale) {
             // Add new section
-            section = [[ORKTableSection alloc] initWithSectionIndex:_sections.count];
+            section = [[ORKTableSection alloc]  initWithSectionIndex:_sections.count];
             [_sections addObject:section];
 
             // Save title
             section.title = item.text;
-        // Actual item
+
+            [section addFormItem:item];
+
+            // following item should start a new section
+            section = nil;
         } else {
-            ORKAnswerFormat *answerFormat = [item impliedAnswerFormat];
-
-            BOOL multiCellChoices = ([singleSectionTypes containsObject:@(answerFormat.questionType)] &&
-                                     NO == [answerFormat isKindOfClass:[ORKValuePickerAnswerFormat class]]);
-
-            BOOL multilineTextEntry = (answerFormat.questionType == ORKQuestionTypeText && [(ORKTextAnswerFormat *)answerFormat multipleLines]);
-
-            BOOL scale = (answerFormat.questionType == ORKQuestionTypeScale);
-
-            // Items require individual section
-            if (multiCellChoices || multilineTextEntry || scale) {
-                // Add new section
+            // In case no section available, create new one.
+            if (section == nil) {
                 section = [[ORKTableSection alloc]  initWithSectionIndex:_sections.count];
                 [_sections addObject:section];
-
-                // Save title
-                section.title = item.text;
-
-                [section addFormItem:item];
-
-                // following item should start a new section
-                section = nil;
-            } else {
-                // In case no section available, create new one.
-                if (section == nil) {
-                    section = [[ORKTableSection alloc]  initWithSectionIndex:_sections.count];
-                    [_sections addObject:section];
-                }
-                [section addFormItem:item];
             }
+            [section addFormItem:item];
         }
     }
 }
@@ -1163,9 +1159,9 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
         learnMoreView.delegate = self;
     }
     
-    ORKFormStep *formStep = [self formStep];
+    //ORKFormStep *formStep = [self formStep];
     
-    if (formStep.useCardView && _sections[section].items.count > 0) {
+    //if (formStep.useCardView && _sections[section].items.count > 0) {
         
         ORKSurveyCardHeaderView *cardHeaderView = (ORKSurveyCardHeaderView *)[tableView dequeueReusableHeaderFooterViewWithIdentifier:@(section).stringValue];
         
@@ -1174,19 +1170,19 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
         }
         
         return cardHeaderView;
-    }
-    else {
-        ORKFormSectionHeaderView *view = (ORKFormSectionHeaderView *)[tableView dequeueReusableHeaderFooterViewWithIdentifier:@(section).stringValue];
-        
-        if (view == nil) {
-            // Do not create a header view if first section header has no title
-            if (title.length > 0 || section > 0) {
-                view = [[ORKFormSectionHeaderView alloc] initWithTitle:title tableView:tableView firstSection:(section == 0)];
-            }
-        }
-        
-        return view;
-    }
+//    }
+//    else {
+//        ORKFormSectionHeaderView *view = (ORKFormSectionHeaderView *)[tableView dequeueReusableHeaderFooterViewWithIdentifier:@(section).stringValue];
+//
+//        if (view == nil) {
+//            // Do not create a header view if first section header has no title
+//            if (title.length > 0 || section > 0) {
+//                view = [[ORKFormSectionHeaderView alloc] initWithTitle:title tableView:tableView firstSection:(section == 0)];
+//            }
+//        }
+//
+//        return view;
+//    }
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
