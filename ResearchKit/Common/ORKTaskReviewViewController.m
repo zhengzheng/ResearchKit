@@ -63,8 +63,10 @@
 @end
 
 @interface ORKReviewCell : UITableViewCell
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier question:(NSString *)question answer:(NSString *) answer;
+
 @property (nonatomic) BOOL isLastCell;
+@property (nonatomic) NSString *question;
+@property (nonatomic) NSString *answer;
 @end
 
 @implementation ORKReviewCell {
@@ -78,11 +80,9 @@
     CAShapeLayer *_contentMaskLayer;
 }
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier question:(NSString *)question answer:(NSString *)answer {
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        _question = question;
-        _answer = answer;
         [self setupContainerView];
         [self setupLabels];
         [self setupConstraints];
@@ -94,6 +94,16 @@
 - (void) drawRect:(CGRect)rect {
     [super drawRect:rect];
     [self setMaskLayers];
+}
+
+- (void)setQuestion:(NSString *)question {
+    _question = question;
+    _questionLabel.text = _question;
+}
+
+- (void)setAnswer:(NSString *)answer {
+    _answer = answer;
+    _answerLabel.text = _answer;
 }
 
 - (void)setMaskLayers {
@@ -470,10 +480,12 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     if (cell == nil) {
-        ORKReviewCell *reviewCell = [[ORKReviewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell" question:_reviewSections[indexPath.section].items[indexPath.row].question answer:_reviewSections[indexPath.section].items[indexPath.row].answer];
+        ORKReviewCell *reviewCell = [[ORKReviewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
         cell = reviewCell;
     }
     ORKReviewCell *reviewCell = (ORKReviewCell *)cell;
+    reviewCell.question = _reviewSections[indexPath.section].items[indexPath.row].question;
+                                     reviewCell.answer = _reviewSections[indexPath.section].items[indexPath.row].answer;
     reviewCell.isLastCell = _reviewSections[indexPath.section].items.count - 1 == indexPath.row;
     return cell;
 }
