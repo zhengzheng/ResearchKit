@@ -1297,6 +1297,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
         _taskReviewViewController.navigationController.navigationBar.topItem.title = @"";
         [_taskReviewViewController.navigationController.navigationBar setBackgroundColor:ORKColor(ORKBackgroundColorKey)];
         _pageViewController.navigationItem.rightBarButtonItem = nil;
+        _pageViewController.navigationItem.leftBarButtonItem = nil;
     }
 }
 
@@ -1657,8 +1658,8 @@ static NSString *const _ORKPresentedDate = @"presentedDate";
 }
 
 - (void)editAnswerTappedForStepWithIdentifier:(NSString *)stepIdentifier {
-    [self showViewController:[self viewControllerForStep:[self.task stepWithIdentifier:stepIdentifier]] goForward:YES animated:YES];
     [self addStepResultsUntilStepWithIdentifier:stepIdentifier];
+    [self showViewController:[self viewControllerForStep:[self.task stepWithIdentifier:stepIdentifier]] goForward:YES animated:YES];
 }
 
 
