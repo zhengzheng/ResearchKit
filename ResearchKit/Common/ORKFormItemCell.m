@@ -352,6 +352,7 @@ static const CGFloat HorizontalSpacer = 16.0;
 
 @property (nonatomic, readonly) ORKTextFieldView *textFieldView;
 @property (nonatomic, assign) BOOL editingHighlight;
+@property (nonatomic) BOOL doneButtonWasPressed;
 
 @end
 
@@ -376,6 +377,15 @@ static const CGFloat HorizontalSpacer = 16.0;
         UITextField *textField = self.textFieldView.textField;
         textField.isAccessibilityElement = YES;
         textField.accessibilityLabel = label.text;
+        _doneButtonWasPressed = NO;
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(orkDoneButtonPressed:)
+                                                     name:ORKDoneButtonPressedKey
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(resetDoneButton:)
+                                                     name:ORKResetDoneButtonKey
+                                                   object:nil];
     }
     return self;
 }
@@ -577,6 +587,10 @@ static const CGFloat HorizontalSpacer = 16.0;
     [super inputValueDidClear];
 }
 
+- (void)removeEditingHighlight {
+    self.editingHighlight = NO;
+}
+
 #pragma mark UITextFieldDelegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
@@ -591,9 +605,21 @@ static const CGFloat HorizontalSpacer = 16.0;
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
+    BOOL wasDoneButtonPressed = _doneButtonWasPressed;
+    
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:ORKResetDoneButtonKey
+     object:self];
+    
     if (textField.text.length > 0 && ![[self.formItem impliedAnswerFormat] isAnswerValidWithString:textField.text]) {
         [self showValidityAlertWithMessage:[[self.formItem impliedAnswerFormat] localizedInvalidValueStringWithAnswerString:textField.text]];
+    } else if (self.delegate && wasDoneButtonPressed && ![self.delegate formItemCellShouldDismissKeyboard:self]) {
+        self.editingHighlight = NO;
+        [self inputValueDidChange];
+        
+        return NO;
     }
+    
     return YES;
 }
 
@@ -623,6 +649,20 @@ static const CGFloat HorizontalSpacer = 16.0;
 
 - (BOOL)isAccessibilityElement {
     return NO;
+}
+
+#pragma mark NSNotification Methods
+
+- (void) orkDoneButtonPressed:(NSNotification *) notification {
+    if ([[notification name] isEqualToString:ORKDoneButtonPressedKey]) {
+        _doneButtonWasPressed = YES;
+    }
+}
+
+- (void) resetDoneButton:(NSNotification *) notification {
+    if ([[notification name] isEqualToString:ORKResetDoneButtonKey]) {
+        _doneButtonWasPressed = NO;
+    }
 }
 
 @end

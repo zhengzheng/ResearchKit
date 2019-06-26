@@ -45,6 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)formItemCellDidResignFirstResponder:(ORKFormItemCell *)cell;
 - (void)formItemCell:(ORKFormItemCell *)cell invalidInputAlertWithMessage:(NSString *)input;
 - (void)formItemCell:(ORKFormItemCell *)cell invalidInputAlertWithTitle:(NSString *)title message:(NSString *)message;
+- (BOOL)formItemCellShouldDismissKeyboard:(ORKFormItemCell *)cell;
 
 @end
 
@@ -72,6 +73,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 @interface ORKFormItemTextFieldBasedCell : ORKFormItemCell <UITextFieldDelegate>
+
+- (void)removeEditingHighlight;
 
 @end
 

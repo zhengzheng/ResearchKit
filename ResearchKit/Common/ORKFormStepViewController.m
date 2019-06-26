@@ -872,6 +872,74 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
     [super goBackward];
 }
 
+- (BOOL)didAutoScrollToNextItem:(ORKFormItemCell *)cell {
+    NSIndexPath *currentIndexPath = [self.tableView indexPathForCell:cell];
+    
+    if (cell.isLastItem) {
+        return NO;
+    } else {
+        NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:currentIndexPath.row + 1 inSection:currentIndexPath.section];
+        ORKFormItemCell *nextCell = [self.tableView cellForRowAtIndexPath:nextIndexPath];
+        ORKQuestionType type = nextCell.formItem.impliedAnswerFormat.questionType;
+
+        if ([self doesTableCellTypeUseKeyboard:type]) {
+            [_tableView deselectRowAtIndexPath:currentIndexPath animated:NO];
+
+            if ([nextCell isKindOfClass:[ORKFormItemCell class]]) {
+                [nextCell becomeFirstResponder];
+                [_tableView scrollToRowAtIndexPath:nextIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            }
+
+        } else {
+            return NO;
+        }
+    }
+
+    return YES;
+}
+
+- (BOOL)shouldAutoScrollToNextSection:(NSIndexPath *)indexPath {
+    NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:0 inSection:(indexPath.section + 1)];
+    ORKFormItemCell *nextCell = [self.tableView cellForRowAtIndexPath:nextIndexPath];
+    
+    if ([nextCell respondsToSelector:@selector(formItem)]) {
+        ORKQuestionType type = nextCell.formItem.impliedAnswerFormat.questionType;
+        if ([self doesTableCellTypeUseKeyboard:type]) {
+            if ([nextCell isKindOfClass:[ORKFormItemCell class]]) {
+                return YES;
+            }
+        }
+    }
+    
+    return NO;
+}
+
+- (void)autoScrollToNextSection:(NSIndexPath *)indexPath {
+    NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:0 inSection:(indexPath.section + 1)];
+    ORKFormItemCell *nextCell = [self.tableView cellForRowAtIndexPath:nextIndexPath];
+    [nextCell becomeFirstResponder];
+    [_tableView scrollToRowAtIndexPath:nextIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+}
+
+- (BOOL)doesTableCellTypeUseKeyboard:(ORKQuestionType)questionType {
+    switch (questionType) {
+        case ORKQuestionTypeDateAndTime:
+        case ORKQuestionTypeDate:
+        case ORKQuestionTypeTimeOfDay:
+        case ORKQuestionTypeTimeInterval:
+        case ORKQuestionTypeMultiplePicker:
+        case ORKQuestionTypeHeight:
+        case ORKQuestionTypeWeight:
+        case ORKQuestionTypeDecimal:
+        case ORKQuestionTypeInteger:
+        case ORKQuestionTypeText:
+            return YES;
+            
+        default:
+            return NO;
+    }
+}
+
 #pragma mark NSNotification methods
 
 - (void)keyboardWillShow:(NSNotification *)notification {
@@ -1052,13 +1120,20 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
     ORKFormItemCell *cell = (ORKFormItemCell *)[tableView cellForRowAtIndexPath:indexPath];
     if ([cell isKindOfClass:[ORKFormItemCell class]]) {
         [cell becomeFirstResponder];
-        [_tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
+        [_tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
     } else {
         // Dismiss other textField's keyboard
         [tableView endEditing:NO];
         
         ORKTableSection *section = _sections[indexPath.section];
         [section.textChoiceCellGroup didSelectCellAtIndexPath:indexPath];
+        
+        if (section.textChoiceCellGroup.answerFormat.style == ORKChoiceAnswerStyleSingleChoice && (indexPath.section < _sections.count - 1) && [self shouldAutoScrollToNextSection:indexPath]) {
+            [self autoScrollToNextSection:indexPath];
+        } else if (indexPath.section < (_sections.count - 1)) {
+            NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:0 inSection:(indexPath.section + 1)];
+            [_tableView scrollToRowAtIndexPath:nextIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        }
     }
 }
 
@@ -1126,6 +1201,13 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
 #pragma mark ORKFormItemCellDelegate
 
 - (void)formItemCellDidBecomeFirstResponder:(ORKFormItemCell *)cell {
+    if (_currentFirstResponderCell) {
+        ORKFormItemTextFieldBasedCell *previousSelectedCell = (ORKFormItemTextFieldBasedCell*)_currentFirstResponderCell;
+        if (previousSelectedCell != nil && [previousSelectedCell respondsToSelector:@selector(removeEditingHighlight)]) {
+            [previousSelectedCell removeEditingHighlight];
+        }
+    }
+    
     _currentFirstResponderCell = cell;
     NSIndexPath *path = [_tableView indexPathForCell:cell];
     if (path) {
@@ -1137,6 +1219,24 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
     if (_currentFirstResponderCell == cell) {
         _currentFirstResponderCell = nil;
     }
+    
+    //determines if the table should autoscroll to the next section
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    if ([self shouldAutoScrollToNextSection:indexPath]) {
+        [self autoScrollToNextSection:indexPath];
+        return;
+    }
+    
+    NSIndexPath *path = [_tableView indexPathForCell:cell];
+    
+    if (path) {
+        ORKTableSection *sectionObject = (ORKTableSection *)_sections[path.section];
+        if (path.row < sectionObject.items.count - 1) {
+            NSIndexPath *nextPath = [NSIndexPath indexPathForRow:(path.row + 1) inSection:path.section];
+            [_tableView scrollToRowAtIndexPath:nextPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        }
+    }
+
 }
 
 - (void)formItemCell:(ORKFormItemCell *)cell invalidInputAlertWithMessage:(NSString *)input {
@@ -1157,6 +1257,13 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
     _skipped = NO;
     [self updateButtonStates];
     [self notifyDelegateOnResultChange];
+}
+
+- (BOOL)formItemCellShouldDismissKeyboard:(ORKFormItemCell *)cell {
+    if ([self didAutoScrollToNextItem:cell]) {
+        return NO;
+    }
+    return YES;
 }
 
 #pragma mark ORKTableContainerViewDelegate
