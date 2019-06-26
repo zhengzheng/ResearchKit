@@ -113,6 +113,10 @@ class TaskListViewController: UITableViewController, ORKTaskViewControllerDelega
         if (task.identifier == String(describing: TaskListRow.Identifier.groupedFormTask) && (groupedFormTaskResult != nil)) {
             taskViewController.defaultResultSource = groupedFormTaskResult
             taskViewController.reviewMode = .standalone
+            let instructionStep = ORKInstructionStep.init(identifier: "ContentReviewStepIdentifier")
+            instructionStep.title = "Medical History"
+            instructionStep.text = "These questions detail your current and historical medical conditions. The answers on this list are shared as a whole with a study that you share it with."
+            taskViewController.reviewContentStep = instructionStep;
         }
         
         /*
