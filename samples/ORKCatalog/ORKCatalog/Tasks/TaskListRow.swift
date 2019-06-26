@@ -753,8 +753,6 @@ enum TaskListRow: Int, CustomStringConvertible {
         let learnMoreItem01 = ORKLearnMoreItem(text: nil, learnMoreInstructionStep: learnMoreInstructionStep01)
         let section01 = ORKFormItem(sectionTitle: NSLocalizedString("Section title", comment: ""), detailText: NSLocalizedString("Section detail text", comment: ""), learnMoreItem: learnMoreItem01, showsProgress: true)
         
-        let testFormItem = ORKFormItem(identifier: "testFormItemIdentifier", text: "This is a test question", answerFormat: ORKAnswerFormat.booleanAnswerFormat());
-        
         // A first field, for entering an integer.
         let formItem01Text = NSLocalizedString("Field01", comment: "")
         let formItem01 = ORKFormItem(identifier: String(describing: Identifier.formItem01), text: formItem01Text, answerFormat: ORKAnswerFormat.integerAnswerFormat(withUnit: nil))
@@ -775,7 +773,6 @@ enum TaskListRow: Int, CustomStringConvertible {
         step.formItems = [
             section01,
             formItem01,
-            testFormItem,
             formItem02,
             section02,
             formItem03
