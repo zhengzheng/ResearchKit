@@ -328,7 +328,8 @@
         dispatch_block_cancel(_pulseDurationWorkBlock);
         dispatch_block_cancel(_postStimulusDelayWorkBlock);
     }
-    if (_resultUnit.userTapTimeStamp - _resultUnit.startOfUnitTimeStamp < _resultUnit.preStimulusDelay) {
+    BOOL falseResponseTap = (_resultUnit.userTapTimeStamp - _resultUnit.startOfUnitTimeStamp < _resultUnit.preStimulusDelay);
+    if (falseResponseTap) {
         NSNumber *currentKey = [NSNumber numberWithFloat:_currentdBHL];
         ORKdBHLToneAudiometryTransitions *currentTransitionObject = [_transitionsDictionary objectForKey:currentKey];
         currentTransitionObject.userInitiated -= 1;
@@ -346,7 +347,7 @@
         }
     }
     
-    if (_currentdBHL - _dBHLStepDownSize >= _dBHLMinimumThreshold) {
+    if ((_currentdBHL - _dBHLStepDownSize >= _dBHLMinimumThreshold) && !falseResponseTap) {
         _currentdBHL = _currentdBHL - _dBHLStepDownSize;
     }
 
