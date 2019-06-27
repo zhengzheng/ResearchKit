@@ -627,7 +627,7 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
     BOOL groupItemsWithCurrentSection = NO;
     
     for (ORKFormItem *item in items) {
-        BOOL itemsRequiresSingleSection = [self doesItemRequireSingleSection:item];
+        BOOL itemRequiresSingleSection = [self doesItemRequireSingleSection:item];
         
         if (!item.answerFormat) {
             // Add new section
@@ -641,7 +641,7 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
             section.showsProgress = item.showsProgress;
             
             groupItemsWithCurrentSection = YES;
-        } else if (itemsRequiresSingleSection || !groupItemsWithCurrentSection) {
+        } else if (itemRequiresSingleSection || !groupItemsWithCurrentSection) {
             groupItemsWithCurrentSection = NO;
             [self buildSingleSection:item];
         } else {
