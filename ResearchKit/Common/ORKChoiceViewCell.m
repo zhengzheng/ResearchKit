@@ -94,10 +94,13 @@ static const CGFloat LabelLeadingPadding = 10.0;
         }
         _contentMaskLayer = [[CAShapeLayer alloc] init];
         UIColor *fillColor;
+        UIColor *borderColor;
         if (@available(iOS 13.0, *)) {
             fillColor = [UIColor secondarySystemGroupedBackgroundColor];
+            borderColor = UIColor.separatorColor;
         } else {
             fillColor = [UIColor ork_borderGrayColor];
+            borderColor = [UIColor ork_midGrayTintColor];
         }
         [_contentMaskLayer setFillColor:[fillColor CGColor]];
         
@@ -136,12 +139,13 @@ static const CGFloat LabelLeadingPadding = 10.0;
             foreLayer.path = [UIBezierPath bezierPathWithRect:foreLayerBounds].CGPath;
             _contentMaskLayer.path = [UIBezierPath bezierPathWithRect:self.containerView.bounds].CGPath;
             
-            CGRect lineBounds = CGRectMake(_leftRightMargin, self.containerView.bounds.size.height - 1.0, self.containerView.bounds.size.width - 2 * _leftRightMargin, 0.5);
+            CGRect lineBounds = CGRectMake(_leftRightMargin, self.containerView.bounds.size.height - 1.0, self.containerView.bounds.size.width - _leftRightMargin, 0.5);
             lineLayer.path = [UIBezierPath bezierPathWithRect:lineBounds].CGPath;
             lineLayer.zPosition = 0.0f;
-            [lineLayer setFillColor:[[UIColor ork_midGrayTintColor] CGColor]];
 
         }
+        lineLayer.fillColor = borderColor.CGColor;
+        _contentMaskLayer.fillColor = borderColor.CGColor;
         [_contentMaskLayer addSublayer:foreLayer];
         [_contentMaskLayer addSublayer:lineLayer];
         [_containerView.layer insertSublayer:_contentMaskLayer atIndex:0];

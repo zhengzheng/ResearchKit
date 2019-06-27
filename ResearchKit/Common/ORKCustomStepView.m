@@ -310,7 +310,11 @@
 
         [_contentMaskLayer addSublayer:foreLayer];
         [_contentMaskLayer addSublayer:lineLayer];
-        
+        if (@available(iOS 13.0, *)) {
+            _contentMaskLayer.fillColor = UIColor.separatorColor.CGColor;
+        } else {
+            _contentMaskLayer.fillColor = [UIColor ork_midGrayTintColor].CGColor;
+        }
         [_containerView.layer insertSublayer:_contentMaskLayer atIndex:0];
     }
 }
