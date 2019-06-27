@@ -28,27 +28,30 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#import <UIKit/UIKit.h>
 
-#import "ORKTitleLabel.h"
-#import "ORKSkin.h"
+NS_ASSUME_NONNULL_BEGIN
 
-@implementation ORKTitleLabel
+@protocol ORKTaskResultSource;
+@class ORKInstructionStep;
+@class ORKTaskResult;
+@class ORKStep;
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        self.numberOfLines = 2;
-        self.textAlignment = NSTextAlignmentLeft;
-    }
-    return self;
-}
+@protocol ORKTaskReviewViewControllerDelegate <NSObject>
 
-+ (UIFont *)defaultFont {
-    UIFontTextStyle style = ORKTitleLabelFontTextStyleForWindow([UIView new].window);
-    UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:style];
-    UIFontDescriptor *fontDescriptor = [descriptor fontDescriptorWithSymbolicTraits:style == UIFontTextStyleTitle1 ? (UIFontDescriptorTraitBold | UIFontDescriptorTraitTightLeading) : (UIFontDescriptorTraitBold)];
-    return [UIFont fontWithDescriptor:fontDescriptor size:0];
-}
+@required
+- (void)editAnswerTappedForStepWithIdentifier:(NSString *)stepIdentifier;
+
+- (void)doneButtonTappedWithResultSource:(id<ORKTaskResultSource>)resultSource;
 
 @end
+
+@interface ORKTaskReviewViewController : UIViewController
+
+@property (nonatomic, weak) id<ORKTaskReviewViewControllerDelegate> delegate;
+
+- (instancetype)initWithResultSource:(id<ORKTaskResultSource>)resultSource forSteps:(NSArray<ORKStep *> *)steps withContentFrom:(nullable ORKInstructionStep *)reviewInstructionStep;
+
+@end
+
+NS_ASSUME_NONNULL_END

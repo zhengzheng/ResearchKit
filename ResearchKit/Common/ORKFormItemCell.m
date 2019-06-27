@@ -182,10 +182,13 @@ static const CGFloat HorizontalSpacer = 16.0;
         _contentMaskLayer = [[CAShapeLayer alloc] init];
 
         UIColor *fillColor;
+        UIColor *borderColor;
         if (@available(iOS 13.0, *)) {
             fillColor = [UIColor secondarySystemGroupedBackgroundColor];
+            borderColor = UIColor.separatorColor;
         } else {
             fillColor = [UIColor ork_borderGrayColor];
+            borderColor = [UIColor ork_midGrayTintColor];
         }
         [_contentMaskLayer setFillColor:[fillColor CGColor]];
         
@@ -196,18 +199,21 @@ static const CGFloat HorizontalSpacer = 16.0;
         CAShapeLayer *lineLayer = [CAShapeLayer layer];
 
         if (_isLastItem || _isFirstItemInSectionWithoutTitle) {
+            CGRect foreLayerBounds;
             NSUInteger rectCorners;
             if (_isLastItem && !_isFirstItemInSectionWithoutTitle) {
                 rectCorners = UIRectCornerBottomLeft | UIRectCornerBottomRight;
+                foreLayerBounds = CGRectMake(ORKCardDefaultBorderWidth, 0, self.containerView.bounds.size.width - 2 * ORKCardDefaultBorderWidth, self.containerView.bounds.size.height - ORKCardDefaultBorderWidth);
             }
             else if (!_isLastItem && _isFirstItemInSectionWithoutTitle) {
                 rectCorners = UIRectCornerTopLeft | UIRectCornerTopRight;
+                foreLayerBounds = CGRectMake(ORKCardDefaultBorderWidth, ORKCardDefaultBorderWidth, self.containerView.bounds.size.width - 2 * ORKCardDefaultBorderWidth, self.containerView.bounds.size.height - 2 * ORKCardDefaultBorderWidth);
             }
             else {
+                foreLayerBounds = CGRectMake(ORKCardDefaultBorderWidth, ORKCardDefaultBorderWidth, self.containerView.bounds.size.width - 2 * ORKCardDefaultBorderWidth, self.containerView.bounds.size.height - 2 * ORKCardDefaultBorderWidth);
                 rectCorners = UIRectCornerTopLeft | UIRectCornerTopRight | UIRectCornerBottomLeft | UIRectCornerBottomRight;
             }
             
-            CGRect foreLayerBounds = CGRectMake(ORKCardDefaultBorderWidth, 0, self.containerView.bounds.size.width - 2 * ORKCardDefaultBorderWidth, self.containerView.bounds.size.height - ORKCardDefaultBorderWidth);
             
             _contentMaskLayer.path = [UIBezierPath bezierPathWithRoundedRect: self.containerView.bounds
                                                            byRoundingCorners: rectCorners
@@ -218,19 +224,17 @@ static const CGFloat HorizontalSpacer = 16.0;
             foreLayer.path = [UIBezierPath bezierPathWithRoundedRect: foreLayerBounds
                                                    byRoundingCorners: rectCorners
                                                          cornerRadii: (CGSize){foreLayerCornerRadii, foreLayerCornerRadii}].CGPath;
-            
         }
         else {
             CGRect foreLayerBounds = CGRectMake(ORKCardDefaultBorderWidth, 0, self.containerView.bounds.size.width - 2 * ORKCardDefaultBorderWidth, self.containerView.bounds.size.height);
             foreLayer.path = [UIBezierPath bezierPathWithRect:foreLayerBounds].CGPath;
-
             _contentMaskLayer.path = [UIBezierPath bezierPathWithRect:self.containerView.bounds].CGPath;
             CGRect lineBounds = CGRectMake(0.0, self.containerView.bounds.size.height - 1.0, self.containerView.bounds.size.width, 0.5);
             lineLayer.path = [UIBezierPath bezierPathWithRect:lineBounds].CGPath;
             lineLayer.zPosition = 0.0f;
-            [lineLayer setFillColor:[[UIColor ork_midGrayTintColor] CGColor]];
-
         }
+        _contentMaskLayer.fillColor = borderColor.CGColor;
+        [lineLayer setFillColor:[borderColor CGColor]];
         [_contentMaskLayer addSublayer:foreLayer];
         [_contentMaskLayer addSublayer:lineLayer];
 

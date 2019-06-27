@@ -282,6 +282,7 @@ ORKTDefineStringKey(CollectionViewCellReuseIdentifier);
     NSArray<NSDictionary<NSString *, NSArray<NSString *> *> *> *_buttonSections;
     NSMutableArray<NSLayoutConstraint *> *_constraints;
     UIView *_statusBarBackground;
+    ORKTaskResult * _miniFormTaskResult;
 }
 
 
@@ -522,6 +523,11 @@ NSString *RemoveParenthesisAndCapitalizeString(NSString *string) {
         _taskViewController.defaultResultSource = _lastRouteResult;
     }
     
+    if ([_taskViewController.task.identifier isEqualToString: @"MiniFormTaskIdentifier"] && _miniFormTaskResult) {
+        _taskViewController.defaultResultSource = _miniFormTaskResult;
+        _taskViewController.reviewMode = ORKTaskViewControllerReviewModeStandalone;
+    }
+    
     /*
      We set a restoration identifier so that UI state restoration is enabled
      for the task view controller. We don't need to do anything else to prepare
@@ -759,6 +765,9 @@ stepViewControllerWillAppear:(ORKStepViewController *)stepViewController {
             NSObject<ORKTask> *task = taskViewController.task;
             if (task.isEmbeddedReviewTask) {
                 [TaskFactory sharedInstance].embeddedReviewTaskResult = taskViewController.result;
+            }
+            if ([task.identifier isEqualToString: @"MiniFormTaskIdentifier"]) {
+                _miniFormTaskResult = taskViewController.result;
             }
             [self taskViewControllerDidComplete:taskViewController];
         }
