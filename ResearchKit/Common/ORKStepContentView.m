@@ -355,6 +355,7 @@ typedef NS_CLOSED_ENUM(NSInteger, ORKUpdateConstraintSequence) {
     if (!_titleLabel) {
         _titleLabel = [ORKTitleLabel new];
     }
+    _titleLabel.textAlignment = _stepHeaderTextAlignment;
     [self addSubview:_titleLabel];
     [self setupTitleLabelConstraints];
 }
@@ -443,7 +444,7 @@ typedef NS_CLOSED_ENUM(NSInteger, ORKUpdateConstraintSequence) {
     }
     UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody];
     [_textLabel setFont:[UIFont fontWithDescriptor:descriptor size:[[descriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue]]];
-    _textLabel.textAlignment = NSTextAlignmentLeft;
+    _textLabel.textAlignment = _stepHeaderTextAlignment;
     _textLabel.numberOfLines = 0;
     [self addSubview:_textLabel];
     [self setupTextLabelConstraints];
@@ -553,10 +554,17 @@ typedef NS_CLOSED_ENUM(NSInteger, ORKUpdateConstraintSequence) {
     }
     UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody];
     [_detailTextLabel setFont:[UIFont fontWithDescriptor:descriptor size:[[descriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue]]];
-    _detailTextLabel.textAlignment = NSTextAlignmentLeft;
+    _detailTextLabel.textAlignment = _stepHeaderTextAlignment;
     _detailTextLabel.numberOfLines = 0;
     [self addSubview:_detailTextLabel];
     [self setupDetailTextLabelConstraints];
+}
+
+- (void)setStepHeaderTextAlignment:(NSTextAlignment)stepHeaderTextAlignment {
+    _stepHeaderTextAlignment = stepHeaderTextAlignment;
+    _titleLabel.textAlignment = _stepHeaderTextAlignment;
+    _detailTextLabel.textAlignment = _stepHeaderTextAlignment;
+    _textLabel.textAlignment = _stepHeaderTextAlignment;
 }
 
 - (void)setupDetailTextLabelConstraints {

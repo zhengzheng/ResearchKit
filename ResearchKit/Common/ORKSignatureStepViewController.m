@@ -291,6 +291,7 @@
     _signingView.stepTitle = self.step.title;
     _signingView.stepText = self.step.text;
     _signingView.stepDetailText = self.step.detailText;
+    _signingView.stepHeaderTextAlignment = self.step.headerTextAlignment;
     _signingView.stepTopContentImage = self.step.image;
     _signingView.stepTopContentImageContentMode = self.step.imageContentMode;
     _signingView.bodyItems = self.step.bodyItems;

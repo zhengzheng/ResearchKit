@@ -48,6 +48,7 @@
     self.stepTitle = _instructionStep.title;
     self.stepText = _instructionStep.text;
     self.stepDetailText = _instructionStep.detailText;
+    self.stepHeaderTextAlignment = _instructionStep.headerTextAlignment;
 
     self.bodyItems = _instructionStep.bodyItems;
     

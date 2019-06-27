@@ -85,6 +85,7 @@
         _waitStepView.stepTitle = self.step.title;
         _waitStepView.stepText = _updatedText;
         _waitStepView.stepDetailText = self.step.detailText;
+        _waitStepView.stepHeaderTextAlignment = self.step.headerTextAlignment;
         _waitStepView.bodyItems = self.step.bodyItems;
         _waitStepView.stepTopContentImageContentMode = self.step.imageContentMode;
     }
