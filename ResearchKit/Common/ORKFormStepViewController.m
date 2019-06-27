@@ -624,14 +624,12 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
     NSArray *items = [self allFormItems];
     _sections = [NSMutableArray new];
     ORKTableSection *section = nil;
-    BOOL foundItemForGroupedSection = NO;
+    BOOL groupItemsWithCurrentSection = NO;
     
     for (ORKFormItem *item in items) {
         BOOL itemsRequiresSingleSection = [self doesItemRequireSingleSection:item];
         
         if (!item.answerFormat) {
-            foundItemForGroupedSection = YES;
-            
             // Add new section
             section = [[ORKTableSection alloc] initWithSectionIndex:_sections.count];
             [_sections addObject:section];
@@ -641,12 +639,13 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
             section.detailText = item.detailText;
             section.learnMoreItem = item.learnMoreItem;
             section.showsProgress = item.showsProgress;
-        } else if (foundItemForGroupedSection && itemsRequiresSingleSection) {
-            continue;
-        } else if (!foundItemForGroupedSection || ( item.impliedAnswerFormat == nil || itemsRequiresSingleSection)) {
+            
+            groupItemsWithCurrentSection = YES;
+        } else if (itemsRequiresSingleSection || !groupItemsWithCurrentSection) {
+            groupItemsWithCurrentSection = NO;
             [self buildSingleSection:item];
         } else {
-            if (section) {
+            if (section && groupItemsWithCurrentSection) {
                 [section addFormItem:item];
             }
         }
