@@ -101,6 +101,9 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     [_tableContainer sizeHeaderToFit];
+    
+    // Recalculate the footer view size if needed.
+    [_tableContainer layoutSubviews];
 }
 
 - (void)stepDidChange {
