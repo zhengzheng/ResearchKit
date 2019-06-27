@@ -103,7 +103,8 @@
 
 - (void)setAnswer:(NSString *)answer {
     _answer = answer;
-    _answerLabel.text = _answer;
+    _answerLabel.textColor = _answer ? UIColor.blackColor : UIColor.lightGrayColor;
+    _answerLabel.text = _answer ? : ORKLocalizedString(@"REVIEW_SKIPPED_ANSWER", nil);
 }
 
 - (void)setMaskLayers {
@@ -168,13 +169,6 @@
     
     _answerLabel.numberOfLines = 0;
     _answerLabel.textAlignment = NSTextAlignmentRight;
-    
-    _questionLabel.text = _question;
-    _answerLabel.text = _answer;
-    if (!_answer) {
-        _answerLabel.textColor = UIColor.lightGrayColor;
-        _answerLabel.text = ORKLocalizedString(@"REVIEW_SKIPPED_ANSWER", nil);
-    }
     
     [_containerView addSubview:_questionLabel];
     [_containerView addSubview:_answerLabel];
