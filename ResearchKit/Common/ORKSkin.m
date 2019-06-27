@@ -118,10 +118,16 @@ static NSMutableDictionary *colors() {
     static NSMutableDictionary *colors = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+        UIColor *backgroundColor;
+        if (@available(iOS 13.0, *)) {
+            backgroundColor = [UIColor systemGroupedBackgroundColor];
+        } else {
+            backgroundColor = [UIColor colorWithRed:239.0 / 255.0 green:239.0 / 255.0 blue:244.0 / 255.0 alpha:1.0];
+        }
 
         colors = [@{
                     ORKSignatureColorKey: ORKRGB(0x000000),
-                    ORKBackgroundColorKey: [UIColor whiteColor],
+                    ORKBackgroundColorKey: backgroundColor,
                     ORKConsentBackgroundColorKey: ORKRGB(0xffffff),
                     ORKToolBarTintColorKey: ORKRGB(0xffffff),
                     ORKLightTintColorKey: ORKRGB(0xeeeeee),
