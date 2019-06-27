@@ -1268,7 +1268,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
             if ([self.task isKindOfClass:[ORKOrderedTask class]]) {
                 ORKOrderedTask *orderedTask = (ORKOrderedTask *)self.task;
                 if (!_taskReviewViewController) {
-                    _taskReviewViewController = [[ORKTaskReviewViewController alloc] initWithResultSource:self.result forSteps:orderedTask.steps withContentFrom:_reviewContentStep];
+                    _taskReviewViewController = [[ORKTaskReviewViewController alloc] initWithResultSource:self.result forSteps:orderedTask.steps withContentFrom:_reviewInstructionStep];
                     _taskReviewViewController.delegate = self;
 
                     [self.pageViewController setViewControllers:@[_taskReviewViewController] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:^(BOOL finished) {
@@ -1635,14 +1635,14 @@ static NSString *const _ORKPresentedDate = @"presentedDate";
     if ([self.task isKindOfClass:[ORKOrderedTask class]]) {
         ORKOrderedTask *orderedTask = (ORKOrderedTask *)self.task;
         if (!_taskReviewViewController) {
-            _taskReviewViewController = [[ORKTaskReviewViewController alloc] initWithResultSource:_defaultResultSource forSteps:orderedTask.steps withContentFrom:_reviewContentStep];
+            _taskReviewViewController = [[ORKTaskReviewViewController alloc] initWithResultSource:_defaultResultSource forSteps:orderedTask.steps withContentFrom:_reviewInstructionStep];
             _taskReviewViewController.delegate = self;
         }
     }
 }
 
-- (void)setReviewContentStep:(ORKInstructionStep *)reviewContentStep {
-    _reviewContentStep = reviewContentStep;
+- (void)setReviewInstructionStep:(ORKInstructionStep *)reviewInstructionStep {
+    _reviewInstructionStep = reviewInstructionStep;
     if (_taskReviewViewController) {
         _taskReviewViewController = nil;
     }

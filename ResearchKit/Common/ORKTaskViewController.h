@@ -523,7 +523,7 @@ ORK_CLASS_AVAILABLE
 
 @property (nonatomic) ORKTaskViewControllerReviewMode reviewMode;
 
-@property (nonatomic, nullable) ORKInstructionStep * reviewContentStep;
+@property (nonatomic, nullable) ORKInstructionStep * reviewInstructionStep;
 
 @end
 

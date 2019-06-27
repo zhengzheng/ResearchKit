@@ -114,9 +114,9 @@ class TaskListViewController: UITableViewController, ORKTaskViewControllerDelega
             taskViewController.defaultResultSource = groupedFormTaskResult
             taskViewController.reviewMode = .standalone
             let instructionStep = ORKInstructionStep.init(identifier: "ContentReviewStepIdentifier")
-            instructionStep.title = "Medical History"
-            instructionStep.text = "These questions detail your current and historical medical conditions. The answers on this list are shared as a whole with a study that you share it with."
-            taskViewController.reviewContentStep = instructionStep;
+            instructionStep.title = "Review Survey"
+            instructionStep.text = "Please review the answers you provided for the questionnaire. Press the 'Edit Answer' button to change your entry."
+            taskViewController.reviewInstructionStep = instructionStep;
         }
         
         /*

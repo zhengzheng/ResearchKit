@@ -307,15 +307,15 @@
 
 @implementation ORKTaskReviewViewController {
     ORKNavigationContainerView *_navigationFooterView;
-    ORKStep *_reviewContentStep;
+    ORKStep *_reviewInstructionStep;
 }
 
-- (instancetype)initWithResultSource:(id<ORKTaskResultSource>)resultSource forSteps:(NSArray<ORKStep *> *)steps withContentFrom:(ORKInstructionStep *)reviewContentStep {
+- (instancetype)initWithResultSource:(id<ORKTaskResultSource>)resultSource forSteps:(NSArray<ORKStep *> *)steps withContentFrom:(ORKInstructionStep *)reviewInstructionStep {
     self = [super init];
     if (self) {
         _steps = steps;
         _resultSource = resultSource;
-        _reviewContentStep = (ORKStep *)reviewContentStep;
+        _reviewInstructionStep = (ORKStep *)reviewInstructionStep;
         [self createReviewSectionsWithDefaultResultSource:resultSource];
     }
     return self;
@@ -325,13 +325,13 @@
     [super viewDidLoad];
     [self setupTableContainerView];
     [self setupNavigationFooterView];
-    if (_reviewContentStep) {
-        _tableContainerView.stepTitle = _reviewContentStep.title;
-        _tableContainerView.stepText = _reviewContentStep.text;
-        _tableContainerView.stepDetailText = _reviewContentStep.detailText;
-        _tableContainerView.titleIconImage = _reviewContentStep.iconImage;
-        _tableContainerView.stepTopContentImage = _reviewContentStep.image;
-        _tableContainerView.bodyItems = _reviewContentStep.bodyItems;
+    if (_reviewInstructionStep) {
+        _tableContainerView.stepTitle = _reviewInstructionStep.title;
+        _tableContainerView.stepText = _reviewInstructionStep.text;
+        _tableContainerView.stepDetailText = _reviewInstructionStep.detailText;
+        _tableContainerView.titleIconImage = _reviewInstructionStep.iconImage;
+        _tableContainerView.stepTopContentImage = _reviewInstructionStep.image;
+        _tableContainerView.bodyItems = _reviewInstructionStep.bodyItems;
     }
     [_tableContainerView setNeedsLayout];
 }

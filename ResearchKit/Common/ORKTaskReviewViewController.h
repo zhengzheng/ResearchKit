@@ -50,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak) id<ORKTaskReviewViewControllerDelegate> delegate;
 
-- (instancetype)initWithResultSource:(id<ORKTaskResultSource>)resultSource forSteps:(NSArray<ORKStep *> *)steps withContentFrom:(nullable ORKInstructionStep *)reviewContentStep;
+- (instancetype)initWithResultSource:(id<ORKTaskResultSource>)resultSource forSteps:(NSArray<ORKStep *> *)steps withContentFrom:(nullable ORKInstructionStep *)reviewInstructionStep;
 
 @end
 
