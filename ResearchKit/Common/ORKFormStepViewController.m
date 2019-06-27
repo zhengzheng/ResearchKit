@@ -627,6 +627,8 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
     BOOL foundItemForGroupedSection = NO;
     
     for (ORKFormItem *item in items) {
+        BOOL itemsRequiresSingleSection = [self doesItemRequireSingleSection:item];
+        
         if (!item.answerFormat) {
             foundItemForGroupedSection = YES;
             
@@ -639,7 +641,9 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
             section.detailText = item.detailText;
             section.learnMoreItem = item.learnMoreItem;
             section.showsProgress = item.showsProgress;
-        } else if (!foundItemForGroupedSection || [item.answerFormat isKindOfClass:[ORKBooleanAnswerFormat class]]) {
+        } else if (foundItemForGroupedSection && itemsRequiresSingleSection) {
+            continue;
+        } else if (!foundItemForGroupedSection || ( item.impliedAnswerFormat == nil || itemsRequiresSingleSection)) {
             [self buildSingleSection:item];
         } else {
             if (section) {
@@ -651,11 +655,6 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
 
 - (void)buildSingleSection:(ORKFormItem *)item {
     ORKTableSection *section = nil;
-    
-    NSArray *singleSectionTypes = @[@(ORKQuestionTypeBoolean),
-                                    @(ORKQuestionTypeSingleChoice),
-                                    @(ORKQuestionTypeMultipleChoice),
-                                    @(ORKQuestionTypeLocation)];
 
     // Section header
     if ([item impliedAnswerFormat] == nil) {
@@ -671,17 +670,9 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
         
     // Actual item
     } else {
-        ORKAnswerFormat *answerFormat = [item impliedAnswerFormat];
-        
-        BOOL multiCellChoices = ([singleSectionTypes containsObject:@(answerFormat.questionType)] &&
-                                 NO == [answerFormat isKindOfClass:[ORKValuePickerAnswerFormat class]]);
-        
-        BOOL multilineTextEntry = (answerFormat.questionType == ORKQuestionTypeText && [(ORKTextAnswerFormat *)answerFormat multipleLines]);
-        
-        BOOL scale = (answerFormat.questionType == ORKQuestionTypeScale);
 
         // Items require individual section
-        if (multiCellChoices || multilineTextEntry || scale) {
+        if ([self doesItemRequireSingleSection:item]) {
             // Add new section
             section = [[ORKTableSection alloc]  initWithSectionIndex:_sections.count];
             [_sections addObject:section];
@@ -702,6 +693,33 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
             [section addFormItem:item];
         }
     }
+}
+
+- (BOOL)doesItemRequireSingleSection:(ORKFormItem *)item {
+    if (item.impliedAnswerFormat == nil) {
+        return NO;
+    }
+    
+    ORKAnswerFormat *answerFormat = [item impliedAnswerFormat];
+    
+    NSArray *singleSectionTypes = @[@(ORKQuestionTypeBoolean),
+                                    @(ORKQuestionTypeSingleChoice),
+                                    @(ORKQuestionTypeMultipleChoice),
+                                    @(ORKQuestionTypeLocation)];
+    
+    BOOL multiCellChoices = ([singleSectionTypes containsObject:@(answerFormat.questionType)] &&
+                             NO == [answerFormat isKindOfClass:[ORKValuePickerAnswerFormat class]]);
+    
+    BOOL multilineTextEntry = (answerFormat.questionType == ORKQuestionTypeText && [(ORKTextAnswerFormat *)answerFormat multipleLines]);
+    
+    BOOL scale = (answerFormat.questionType == ORKQuestionTypeScale);
+    
+    // Items require individual section
+    if (multiCellChoices || multilineTextEntry || scale) {
+        return YES;
+    }
+    
+    return NO;
 }
 
 - (NSInteger)numberOfAnsweredFormItemsInDictionary:(NSDictionary *)dictionary {
