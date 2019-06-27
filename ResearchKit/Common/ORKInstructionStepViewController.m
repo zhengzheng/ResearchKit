@@ -157,7 +157,7 @@
     [super setSkipButtonItem:skipButtonItem];
 
     _navigationFooterView.skipButtonItem = self.skipButtonItem;
-    _navigationFooterView.skipEnabled = self.skipButtonItem;
+    _navigationFooterView.skipEnabled = self.skipButtonItem ? YES : NO;
 }
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
