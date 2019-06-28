@@ -45,6 +45,25 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol ORKStepViewControllerDelegate;
 @protocol ORKTask;
 @protocol ORKTaskResultSource;
+@class ORKInstructionStep;
+
+
+/**
+ The `ORKTaskViewControllerReviewMode` value indicates how the task view controller reviews the task.
+ */
+typedef NS_ENUM(NSInteger, ORKTaskViewControllerReviewMode) {
+    
+    ORKTaskViewControllerReviewModeNever = 0,
+    
+    ORKTaskViewControllerReviewModeStandalone,
+
+    // TODO: support future modes
+//    ORKTaskViewControllerReviewModeContinuous,
+//    
+//    ORKTaskViewControllerReviewModeStartAndEnd,
+//    
+//    ORKTaskViewControllerReviewModeStartAndContinuous
+};
 
 /**
  The `ORKTaskViewControllerFinishReason` value indicates how the task view controller has finished
@@ -501,6 +520,10 @@ ORK_CLASS_AVAILABLE
  the value to `YES`.
  */
 @property (nonatomic, assign) BOOL discardable;
+
+@property (nonatomic) ORKTaskViewControllerReviewMode reviewMode;
+
+@property (nonatomic, nullable) ORKInstructionStep * reviewInstructionStep;
 
 @end
 

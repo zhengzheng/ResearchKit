@@ -692,6 +692,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     PROPERTY(title, NSString, NSObject, YES, nil, nil),
                     PROPERTY(text, NSString, NSObject, YES, nil, nil),
                     PROPERTY(detailText, NSString, NSObject, YES, nil, nil),
+                    PROPERTY(headerTextAlignment, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(footnote, NSString, NSObject, YES, nil, nil),
                     PROPERTY(shouldTintImages, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(useSurveyMode, NSNumber, NSObject, YES, nil, nil),

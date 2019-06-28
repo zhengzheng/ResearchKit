@@ -28,34 +28,30 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#import <UIKit/UIKit.h>
 
-#import "ORKInstructionStepContainerView.h"
-#import "ORKBodyItem.h"
+NS_ASSUME_NONNULL_BEGIN
 
-@implementation ORKInstructionStepContainerView
+@protocol ORKTaskResultSource;
+@class ORKInstructionStep;
+@class ORKTaskResult;
+@class ORKStep;
 
+@protocol ORKTaskReviewViewControllerDelegate <NSObject>
 
-- (instancetype)initWithInstructionStep:(ORKInstructionStep *)instructionStep {
-    self = [super init];
-    if (self) {
-        self.instructionStep = instructionStep;
-    }
-    [self setVariables];
-    return self;
-}
+@required
+- (void)editAnswerTappedForStepWithIdentifier:(NSString *)stepIdentifier;
 
-- (void)setVariables {
-    self.stepTitle = _instructionStep.title;
-    self.stepText = _instructionStep.text;
-    self.stepDetailText = _instructionStep.detailText;
-    self.stepHeaderTextAlignment = _instructionStep.headerTextAlignment;
-
-    self.bodyItems = _instructionStep.bodyItems;
-    
-    self.stepTopContentImage = _instructionStep.image;
-    self.stepTopContentImageContentMode = _instructionStep.imageContentMode;
-    self.auxiliaryImage = _instructionStep.auxiliaryImage;
-    self.titleIconImage = _instructionStep.iconImage;
-}
+- (void)doneButtonTappedWithResultSource:(id<ORKTaskResultSource>)resultSource;
 
 @end
+
+@interface ORKTaskReviewViewController : UIViewController
+
+@property (nonatomic, weak) id<ORKTaskReviewViewControllerDelegate> delegate;
+
+- (instancetype)initWithResultSource:(id<ORKTaskResultSource>)resultSource forSteps:(NSArray<ORKStep *> *)steps withContentFrom:(nullable ORKInstructionStep *)reviewInstructionStep;
+
+@end
+
+NS_ASSUME_NONNULL_END

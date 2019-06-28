@@ -57,6 +57,7 @@
 #import "ORKObserver.h"
 #import "ORKSkin.h"
 #import "ORKBorderedButton.h"
+#import "ORKTaskReviewViewController.h"
 
 @import AVFoundation;
 @import CoreMotion;
@@ -161,7 +162,7 @@ static void *_ORKViewControllerToolbarObserverContext = &_ORKViewControllerToolb
 @end
 
 
-@interface ORKTaskViewController () <ORKViewControllerToolbarObserverDelegate> {
+@interface ORKTaskViewController () <ORKViewControllerToolbarObserverDelegate, ORKTaskReviewViewControllerDelegate> {
     NSMutableDictionary *_managedResults;
     NSMutableArray *_managedStepIdentifiers;
     ORKViewControllerToolbarObserver *_stepViewControllerObserver;
@@ -190,6 +191,7 @@ static void *_ORKViewControllerToolbarObserverContext = &_ORKViewControllerToolb
 @property (nonatomic, strong) UINavigationController *childNavigationController;
 @property (nonatomic, strong) UIPageViewController *pageViewController;
 @property (nonatomic, strong) ORKStepViewController *currentStepViewController;
+@property (nonatomic) ORKTaskReviewViewController *taskReviewViewController;
 
 @end
 
@@ -679,6 +681,11 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
             self.modalInPresentation = YES;
         }
     }
+    if (_taskReviewViewController) {
+        [self.pageViewController setViewControllers:@[_taskReviewViewController] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:^(BOOL finished) {
+        }];
+        [self setTaskReviewViewControllerNavbar];
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -695,7 +702,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
     NSMutableArray *results = [NSMutableArray new];
     
     [_managedStepIdentifiers enumerateObjectsUsingBlock:^(NSString *identifier, NSUInteger idx, BOOL *stop) {
-        id <NSCopying> key = [self uniqueManagedKey:identifier index:idx];
+        id <NSCopying> key = identifier;
         ORKResult *result = _managedResults[key];
         NSAssert2(result, @"Result should not be nil for identifier %@ with key %@", identifier, key);
         [results addObject:result];
@@ -731,16 +738,12 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
     if ([_managedStepIdentifiers.lastObject isEqualToString:aKey]) {
         idx--;
     }
-    id <NSCopying> uniqueKey = [self uniqueManagedKey:aKey index:idx];
-    _managedResults[uniqueKey] = result;
-}
-
-- (id <NSCopying>)uniqueManagedKey:(NSString*)stepIdentifier index:(NSUInteger)index {
-    return [NSString stringWithFormat:@"%@:%@", stepIdentifier, @(index)];
+    _managedResults[aKey] = result;
 }
 
 - (ORKTaskResult *)result {
-    
+    //    TODO: update current implementation.
+    //    setManagedResult for currentStepViewController should not be called every single time this method is called.
     ORKTaskResult *result = [[ORKTaskResult alloc] initWithTaskIdentifier:[self.task identifier] taskRunUUID:self.taskRunUUID outputDirectory:self.outputDirectory];
     result.startDate = _presentedDate;
     result.endDate = _dismissedDate ? :[NSDate date];
@@ -1259,7 +1262,25 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
             [self.delegate taskViewController:self didChangeResult:[self result]];
         }
         [self finishAudioPromptSession];
-        [self finishWithReason:ORKTaskViewControllerFinishReasonCompleted error:nil];
+        if (self.reviewMode == ORKTaskViewControllerReviewModeStandalone) {
+            [_taskReviewViewController removeFromParentViewController];
+            _taskReviewViewController = nil;
+            if ([self.task isKindOfClass:[ORKOrderedTask class]]) {
+                ORKOrderedTask *orderedTask = (ORKOrderedTask *)self.task;
+                if (!_taskReviewViewController) {
+                    _taskReviewViewController = [[ORKTaskReviewViewController alloc] initWithResultSource:self.result forSteps:orderedTask.steps withContentFrom:_reviewInstructionStep];
+                    _taskReviewViewController.delegate = self;
+
+                    [self.pageViewController setViewControllers:@[_taskReviewViewController] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:^(BOOL finished) {
+                    }];
+                    [self setTaskReviewViewControllerNavbar];
+                    
+                }
+            }
+        }
+        else {
+            [self finishWithReason:ORKTaskViewControllerFinishReasonCompleted error:nil];
+        }
     } else if ([self shouldPresentStep:step]) {
         ORKStepViewController *stepViewController = [self viewControllerForStep:step];
         NSAssert(stepViewController != nil, @"A non-nil step should always generate a step view controller");
@@ -1269,6 +1290,15 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
         [self showViewController:stepViewController goForward:YES animated:YES];
     }
     
+}
+
+- (void)setTaskReviewViewControllerNavbar {
+    if (_taskReviewViewController && _taskReviewViewController.navigationController) {
+        _taskReviewViewController.navigationController.navigationBar.topItem.title = @"";
+        [_taskReviewViewController.navigationController.navigationBar setBackgroundColor:ORKColor(ORKBackgroundColorKey)];
+        _pageViewController.navigationItem.rightBarButtonItem = nil;
+        _pageViewController.navigationItem.leftBarButtonItem = nil;
+    }
 }
 
 - (void)flipToPreviousPageFrom:(ORKStepViewController *)fromController {
@@ -1560,5 +1590,83 @@ static NSString *const _ORKPresentedDate = @"presentedDate";
 - (UINavigationBar *)navigationBar {
     return self.childNavigationController.navigationBar;
 }
+
+#pragma mark Review mode
+
+- (void)addStepResultsUntilStepWithIdentifier:(NSString *)stepIdentifier {
+    ORKTaskResult * taskResult = (ORKTaskResult *) _defaultResultSource;
+    for (ORKStepResult * stepResult in taskResult.results) {
+        if (![stepIdentifier isEqualToString: stepResult.identifier]) {
+            if (![_managedStepIdentifiers containsObject:stepResult.identifier]) {
+                [_managedStepIdentifiers addObject:stepResult.identifier];
+            }
+            _managedResults[stepResult.identifier] = stepResult;
+        }
+        else {
+            break;
+        }
+    }
+}
+
+- (void)updateResultWithSource:(id<ORKTaskResultSource>)resultSource {
+    ORKTaskResult * taskResult = (ORKTaskResult *) resultSource;
+    for (ORKStepResult * stepResult in taskResult.results) {
+        if (![_managedStepIdentifiers containsObject:stepResult.identifier]) {
+            [_managedStepIdentifiers addObject:stepResult.identifier];
+        }
+        _managedResults[stepResult.identifier] = stepResult;
+    }
+}
+
+- (void)setDefaultResultSource:(id<ORKTaskResultSource>)defaultResultSource {
+    _defaultResultSource = defaultResultSource;
+    [self setReviewMode:_reviewMode];
+}
+
+- (void)setReviewMode:(ORKTaskViewControllerReviewMode)reviewMode {
+    if (_hasBeenPresented) {
+        @throw [NSException exceptionWithName:NSGenericException reason:@"Cannot change review mode after presenting the task controller for now." userInfo:nil];
+    }
+    _reviewMode = reviewMode;
+    [self setupTaskReviewViewController];
+}
+
+- (void)setupTaskReviewViewController {
+    if (_reviewMode == ORKTaskViewControllerReviewModeNever) {
+        _taskReviewViewController = nil;
+        return;
+    }
+    
+    _taskReviewViewController = nil;
+    
+    if ([self.task isKindOfClass:[ORKOrderedTask class]]) {
+        ORKOrderedTask *orderedTask = (ORKOrderedTask *)self.task;
+        
+        _taskReviewViewController = [[ORKTaskReviewViewController alloc] initWithResultSource:_defaultResultSource forSteps:orderedTask.steps withContentFrom:_reviewInstructionStep];
+        _taskReviewViewController.delegate = self;
+    }
+}
+
+- (void)setReviewInstructionStep:(ORKInstructionStep *)reviewInstructionStep {
+    _reviewInstructionStep = reviewInstructionStep;
+    if (_taskReviewViewController) {
+        _taskReviewViewController = nil;
+    }
+    [self setupTaskReviewViewController];
+}
+
+#pragma mark ORKTaskReviewViewControllerDelegate
+
+- (void)doneButtonTappedWithResultSource:(id<ORKTaskResultSource>)resultSource {
+    //    FIXME: might need to queue the operations if the number of steps are too many. open to debate.
+    [self updateResultWithSource:resultSource];
+    [self finishWithReason:ORKTaskViewControllerFinishReasonCompleted error:nil];
+}
+
+- (void)editAnswerTappedForStepWithIdentifier:(NSString *)stepIdentifier {
+    [self addStepResultsUntilStepWithIdentifier:stepIdentifier];
+    [self showViewController:[self viewControllerForStep:[self.task stepWithIdentifier:stepIdentifier]] goForward:YES animated:YES];
+}
+
 
 @end

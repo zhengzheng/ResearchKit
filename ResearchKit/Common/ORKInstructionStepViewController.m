@@ -79,6 +79,7 @@
         _navigationFooterView.continueButtonItem = self.continueButtonItem;
         _navigationFooterView.continueEnabled = YES;
         _navigationFooterView.hidden = self.isBeingReviewed;
+        _navigationFooterView.optional = [self instructionStep].isOptional;
         _navigationFooterView.footnoteLabel.text = [self instructionStep].footnote;
         [_navigationFooterView updateContinueAndSkipEnabled];
     }
@@ -150,6 +151,13 @@
 
 - (void)setCancelButtonItem:(UIBarButtonItem *)cancelButtonItem {
     [super setCancelButtonItem:cancelButtonItem];
+}
+
+- (void)setSkipButtonItem:(UIBarButtonItem *)skipButtonItem {
+    [super setSkipButtonItem:skipButtonItem];
+
+    _navigationFooterView.skipButtonItem = self.skipButtonItem;
+    _navigationFooterView.skipEnabled = self.skipButtonItem ? YES : NO;
 }
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder {

@@ -56,6 +56,7 @@
     self.titleIconImage = step.iconImage;
     self.stepText = step.text;
     self.stepDetailText = step.detailText;
+    self.stepHeaderTextAlignment = step.headerTextAlignment;
     self.bodyItems = step.bodyItems;
 }
 

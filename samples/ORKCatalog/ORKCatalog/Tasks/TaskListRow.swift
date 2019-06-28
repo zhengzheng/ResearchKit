@@ -62,6 +62,7 @@ class SystemSound {
 enum TaskListRow: Int, CustomStringConvertible {
     case form = 0
     case groupedForm
+    case groupedFormReview
     case survey
     case booleanQuestion
     case customBooleanQuestion
@@ -125,11 +126,13 @@ enum TaskListRow: Int, CustomStringConvertible {
     
     /// Returns an array of all the task list row enum cases.
     static var sections: [ TaskListRowSection ] {
+        
         return [
             TaskListRowSection(title: "Surveys", rows:
                 [
                     .form,
                     .groupedForm,
+                    .groupedFormReview,
                     .survey
                 ]),
             TaskListRowSection(title: "Survey Questions", rows:
@@ -204,6 +207,9 @@ enum TaskListRow: Int, CustomStringConvertible {
             
         case .groupedForm:
             return NSLocalizedString("Grouped Form Survey Example", comment: "")
+        
+        case .groupedFormReview:
+            return NSLocalizedString("Review Grouped Form Survey Example", comment: "")
             
         case .survey:
             return NSLocalizedString("Simple Survey Example", comment: "")
@@ -371,9 +377,10 @@ enum TaskListRow: Int, CustomStringConvertible {
         come from a database, or in a smaller application, might have some
         human-readable meaning.
     */
-    private enum Identifier {
+    enum Identifier {
         // Task with a form, where multiple items appear on one page.
         case formTask
+        case groupedFormTask
         case formStep
         case groupedFormStep
         case formItem01
@@ -557,6 +564,9 @@ enum TaskListRow: Int, CustomStringConvertible {
             
         case .groupedForm:
             return groupedFormTask
+            
+        case .groupedFormReview:
+            return groupedFormTaskReview
             
         case .survey:
             return surveyTask
@@ -778,9 +788,43 @@ enum TaskListRow: Int, CustomStringConvertible {
             formItem03
         ]
         
-        return ORKOrderedTask(identifier: String(describing: Identifier.formTask), steps: [step])
+        // Add a question step.
+        let question1StepAnswerFormat = ORKBooleanAnswerFormat()
+        
+        let question1 = NSLocalizedString("Would you like to subscribe to our newsletter?", comment: "")
+        
+        let learnMoreInstructionStep = ORKLearnMoreInstructionStep(identifier: "LearnMoreInstructionStep01")
+        learnMoreInstructionStep.title = NSLocalizedString("Learn more title", comment: "")
+        learnMoreInstructionStep.text = NSLocalizedString("Learn more text", comment: "")
+        let learnMoreItem = ORKLearnMoreItem(text: nil, learnMoreInstructionStep: learnMoreInstructionStep)
+        
+        let question1Step = ORKQuestionStep(identifier: String(describing: Identifier.questionStep), title: "Questionnaire", question: question1, answer: question1StepAnswerFormat, learnMoreItem: learnMoreItem)
+        question1Step.text = exampleDetailText
+        
+        //Add a question step with different layout format.
+        let question2StepAnswerFormat = ORKAnswerFormat.dateAnswerFormat(withDefaultDate: nil, minimumDate: nil, maximumDate: Date(), calendar: nil)
+        
+        let question2 = NSLocalizedString("When is your birthday?", comment: "")
+        let question2Step = ORKQuestionStep(identifier: String(describing: Identifier.birthdayQuestion), title: "Questionnaire", question: question2, answer: question2StepAnswerFormat)
+        question2Step.text = exampleDetailText
+        
+        
+        let appleChoices: [ORKTextChoice] = [ORKTextChoice(text: "Granny Smith", value: 1 as NSCoding & NSCopying & NSObjectProtocol), ORKTextChoice(text: "Honeycrisp", value: 2 as NSCoding & NSCopying & NSObjectProtocol), ORKTextChoice(text: "Fuji", value: 3 as NSCoding & NSCopying & NSObjectProtocol), ORKTextChoice(text: "McIntosh", value: 10 as NSCoding & NSCopying & NSObjectProtocol), ORKTextChoice(text: "Kanzi", value: 5 as NSCoding & NSCopying & NSObjectProtocol)]
+        
+        let appleAnswerFormat = ORKTextChoiceAnswerFormat(style: .singleChoice, textChoices: appleChoices)
+        
+        let appleFormItem = ORKFormItem(identifier: "appleFormItemIdentifier", text: "Which is your favorite apple?", answerFormat: appleAnswerFormat)
+        
+        let appleFormStep = ORKFormStep(identifier: "appleFormStepIdentifier", title: "Fruit!", text: "Select the fruit you like.")
+        
+        appleFormStep.formItems = [appleFormItem]
+        
+        return ORKOrderedTask(identifier: String(describing: Identifier.groupedFormTask), steps: [step, question1Step, question2Step, appleFormStep])
     }
 
+    private var groupedFormTaskReview: ORKTask {
+        return groupedFormTask
+    }
     /**
     A task demonstrating how the ResearchKit framework can be used to present a simple
     survey with an introduction, a question, and a conclusion.

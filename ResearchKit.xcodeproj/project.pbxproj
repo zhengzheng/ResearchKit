@@ -607,6 +607,8 @@
 		BABBB1B72097E58300CB29E5 /* ORKPDFViewerStepView.m in Sources */ = {isa = PBXBuildFile; fileRef = BABBB1B52097E58300CB29E5 /* ORKPDFViewerStepView.m */; };
 		BABBB1BA2097EF3800CB29E5 /* ORKFreehandDrawingView.h in Headers */ = {isa = PBXBuildFile; fileRef = BABBB1B82097EF3800CB29E5 /* ORKFreehandDrawingView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BABBB1BB2097EF3800CB29E5 /* ORKFreehandDrawingView.m in Sources */ = {isa = PBXBuildFile; fileRef = BABBB1B92097EF3800CB29E5 /* ORKFreehandDrawingView.m */; };
+		BAC6F1A922AF535100E31C22 /* ORKTaskReviewViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = BAC6F1A722AF535100E31C22 /* ORKTaskReviewViewController.h */; };
+		BAC6F1AA22AF535100E31C22 /* ORKTaskReviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BAC6F1A822AF535100E31C22 /* ORKTaskReviewViewController.m */; };
 		BAD65E4B2284EFF9008A5DCE /* ORKStepView.h in Headers */ = {isa = PBXBuildFile; fileRef = BAD65E492284EFF9008A5DCE /* ORKStepView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BAD65E4C2284EFF9008A5DCE /* ORKStepView.m in Sources */ = {isa = PBXBuildFile; fileRef = BAD65E4A2284EFF9008A5DCE /* ORKStepView.m */; };
 		BAD65E502284F266008A5DCE /* ORKStepView_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = BAD65E4F2284F266008A5DCE /* ORKStepView_Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1421,6 +1423,8 @@
 		BABBB1B52097E58300CB29E5 /* ORKPDFViewerStepView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKPDFViewerStepView.m; sourceTree = "<group>"; };
 		BABBB1B82097EF3800CB29E5 /* ORKFreehandDrawingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKFreehandDrawingView.h; sourceTree = "<group>"; };
 		BABBB1B92097EF3800CB29E5 /* ORKFreehandDrawingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKFreehandDrawingView.m; sourceTree = "<group>"; };
+		BAC6F1A722AF535100E31C22 /* ORKTaskReviewViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKTaskReviewViewController.h; sourceTree = "<group>"; };
+		BAC6F1A822AF535100E31C22 /* ORKTaskReviewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKTaskReviewViewController.m; sourceTree = "<group>"; };
 		BAD65E492284EFF9008A5DCE /* ORKStepView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKStepView.h; sourceTree = "<group>"; };
 		BAD65E4A2284EFF9008A5DCE /* ORKStepView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKStepView.m; sourceTree = "<group>"; };
 		BAD65E4F2284F266008A5DCE /* ORKStepView_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKStepView_Private.h; sourceTree = "<group>"; };
@@ -2368,6 +2372,8 @@
 				86C40BD81A8D7C5C00081FAC /* ORKTaskViewController.m */,
 				86C40BD91A8D7C5C00081FAC /* ORKTaskViewController_Internal.h */,
 				86C40BDA1A8D7C5C00081FAC /* ORKTaskViewController_Private.h */,
+				BAC6F1A722AF535100E31C22 /* ORKTaskReviewViewController.h */,
+				BAC6F1A822AF535100E31C22 /* ORKTaskReviewViewController.m */,
 			);
 			name = Task;
 			sourceTree = "<group>";
@@ -3268,6 +3274,7 @@
 				86C40D8E1A8D7C5C00081FAC /* ORKStep.h in Headers */,
 				618DA04E1A93D0D600E63AA8 /* ORKAccessibility.h in Headers */,
 				BA6E1EB6209E9A3F00DA9D55 /* ORKPDFViewerStepView_Internal.h in Headers */,
+				BAC6F1A922AF535100E31C22 /* ORKTaskReviewViewController.h in Headers */,
 				FFF65AB81E318F2D0043FB40 /* ORKMultipleValuePicker.h in Headers */,
 				86B781BB1AA668ED00688151 /* ORKTimeIntervalPicker.h in Headers */,
 				24C296751BD052F800B42EF1 /* ORKVerificationStep_Internal.h in Headers */,
@@ -4019,6 +4026,7 @@
 				6146D0A41B84A91E0068491D /* ORKGraphChartAccessibilityElement.m in Sources */,
 				D42FEFB91AF7557000A124F8 /* ORKImageCaptureView.m in Sources */,
 				86C40C401A8D7C5C00081FAC /* ORKSpatialSpanMemoryContentView.m in Sources */,
+				BAC6F1AA22AF535100E31C22 /* ORKTaskReviewViewController.m in Sources */,
 				BCB6E6671B7D535F000D5B34 /* ORKXAxisView.m in Sources */,
 				BA8078F4224AC8AA0013B554 /* ORKStepContainerView.m in Sources */,
 				71769E322088260B00A19914 /* ORKdBHLToneAudiometryOnboardingStepViewController.m in Sources */,

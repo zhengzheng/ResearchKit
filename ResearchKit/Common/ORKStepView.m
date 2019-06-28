@@ -110,6 +110,11 @@
     [_stepContentView setStepDetailText:_stepDetailText];
 }
 
+- (void)setStepHeaderTextAlignment:(NSTextAlignment)stepHeaderTextAlignment {
+    _stepHeaderTextAlignment = stepHeaderTextAlignment;
+    [_stepContentView setStepHeaderTextAlignment:_stepHeaderTextAlignment];
+}
+
 - (void)setBodyItems:(NSArray<ORKBodyItem *> *)bodyItems {
     _bodyItems = bodyItems;
     [_stepContentView setBodyItems:_bodyItems];
