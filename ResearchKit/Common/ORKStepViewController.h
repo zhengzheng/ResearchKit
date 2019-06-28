@@ -318,7 +318,7 @@ ORK_CLASS_AVAILABLE
 /**
  A boolean indicating if the step was skipped or not.
  */
-@property (nonatomic, assign) BOOL wasSkipped;
+@property (nonatomic, assign, readonly) BOOL wasSkipped;
 
 /**
  Add a result to the step view controller's `ORKStepResult`. By default, the property for
