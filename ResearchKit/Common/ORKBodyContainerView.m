@@ -77,7 +77,7 @@ static NSString *ORKBulletUnicode = @"\u2981";
 @end
 
 @interface ORKBodyItemView()<ORKLearnMoreViewDelegate>
-
+@property (nonatomic) NSTextAlignment textAlignment;
 @end
 
 @implementation ORKBodyItemView
@@ -86,6 +86,18 @@ static NSString *ORKBulletUnicode = @"\u2981";
     self = [super init];
     if (self) {
         self.bodyItem = bodyItem;
+        self.textAlignment = NSTextAlignmentLeft;
+        [self setupBodyStyleView];
+        
+    }
+    return self;
+}
+
+- (instancetype)initWithBodyItem:(ORKBodyItem *)bodyItem textAlignment:(NSTextAlignment)textAlignment {
+    self = [super init];
+    if (self) {
+        self.bodyItem = bodyItem;
+        self.textAlignment = textAlignment;
         [self setupBodyStyleView];
         
     }
@@ -104,10 +116,15 @@ static NSString *ORKBulletUnicode = @"\u2981";
     }
 }
 
-+ (UIFont *)bodyTitleFont {
++ (UIFont *)bodyTitleFontBold {
     UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody];
     UIFontDescriptor *fontDescriptor = [descriptor fontDescriptorWithSymbolicTraits:(UIFontDescriptorTraitBold)];
     return [UIFont fontWithDescriptor:fontDescriptor size:[[fontDescriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue]];
+}
+
++ (UIFont *)bodyTitleFont {
+    UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody];
+    return [UIFont fontWithDescriptor:descriptor size:[[descriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue]];
 }
 
 + (UIFont *)bodyTextFont {
@@ -121,9 +138,15 @@ static NSString *ORKBulletUnicode = @"\u2981";
     return [UIFont fontWithDescriptor:descriptor size:0];
 }
 
-+ (UIFont *)bulletTextFont {
++ (UIFont *)bulletTextFontBold {
     UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleSubheadline];
     UIFontDescriptor *fontDescriptor = [descriptor fontDescriptorWithSymbolicTraits:(UIFontDescriptorTraitBold | UIFontDescriptorTraitLooseLeading)];
+    return [UIFont fontWithDescriptor:fontDescriptor size:[[fontDescriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue]];
+}
+
++ (UIFont *)bulletTextFont {
+    UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleSubheadline];
+    UIFontDescriptor *fontDescriptor = [descriptor fontDescriptorWithSymbolicTraits:(UIFontDescriptorTraitLooseLeading)];
     return [UIFont fontWithDescriptor:fontDescriptor size:[[fontDescriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue]];
 }
 
@@ -137,15 +160,16 @@ static NSString *ORKBulletUnicode = @"\u2981";
 - (void)setupBodyStyleTextView {
     self.axis = UILayoutConstraintAxisVertical;
     self.distribution = UIStackViewDistributionFill;
-    self.alignment = UIStackViewAlignmentLeading;
+    self.alignment = self.textAlignment == NSTextAlignmentCenter ? UIStackViewAlignmentCenter : UIStackViewAlignmentLeading;
     UILabel *textLabel;
     UILabel *detailTextLabel;
     
     if (_bodyItem.text) {
         textLabel = [UILabel new];
         textLabel.numberOfLines = 0;
-        textLabel.font = [ORKBodyItemView bodyTitleFont];
+        textLabel.font = _bodyItem.detailText == nil ? [ORKBodyItemView bodyTitleFont] : [ORKBodyItemView bodyTitleFontBold];
         textLabel.text = _bodyItem.text;
+        textLabel.textAlignment = _textAlignment;
         textLabel.translatesAutoresizingMaskIntoConstraints = NO;
         [self addArrangedSubview:textLabel];
     }
@@ -218,8 +242,17 @@ static NSString *ORKBulletUnicode = @"\u2981";
     imageView.image = self.bodyItem.image;
     imageView.contentMode = UIViewContentModeScaleAspectFit;
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
-    [imageView.heightAnchor constraintEqualToConstant:ORKBulletIconDimension].active = YES;
-    [imageView.widthAnchor constraintEqualToConstant:ORKBulletIconDimension].active = YES;
+    
+    if (@available(iOS 13.0, *)) {
+        // To allow symbols to handle their own configuration
+        if (imageView.image.configuration == nil) {
+            [imageView.heightAnchor constraintEqualToConstant:ORKBulletIconDimension].active = YES;
+            [imageView.widthAnchor constraintEqualToConstant:ORKBulletIconDimension].active = YES;
+        }
+    } else {
+        [imageView.heightAnchor constraintEqualToConstant:ORKBulletIconDimension].active = YES;
+        [imageView.widthAnchor constraintEqualToConstant:ORKBulletIconDimension].active = YES;
+    }
     return imageView;
 }
 
@@ -236,7 +269,7 @@ static NSString *ORKBulletUnicode = @"\u2981";
     if (_bodyItem.text) {
         textLabel = [UILabel new];
         textLabel.numberOfLines = 0;
-        textLabel.font = [ORKBodyItemView bulletTextFont];
+        textLabel.font = _bodyItem.detailText ? [ORKBodyItemView bulletTextFontBold] : [ORKBodyItemView bulletTextFont];
         textLabel.text = _bodyItem.text;
         textLabel.translatesAutoresizingMaskIntoConstraints = NO;
         [subStackView addArrangedSubview:textLabel];
@@ -268,13 +301,14 @@ static NSString *ORKBulletUnicode = @"\u2981";
 @end
 
 @interface ORKBodyContainerView()<ORKBodyItemViewDelegate>
-
+@property (nonatomic) NSTextAlignment textAlignment;
 @end
 
 @implementation ORKBodyContainerView
 
-- (instancetype)initWithBodyItems:(NSArray<ORKBodyItem *> *)bodyItems delegate:(nonnull id<ORKBodyContainerViewDelegate>)delegate {
+- (instancetype)initWithBodyItems:(NSArray<ORKBodyItem *> *)bodyItems textAlignment:(NSTextAlignment)textAlignment delegate:(nonnull id<ORKBodyContainerViewDelegate>)delegate {
     self.delegate = delegate;
+    self.textAlignment = textAlignment;
     if (bodyItems && bodyItems.count <= 0) {
         NSAssert(NO, @"Body Items array cannot be empty");
     }
@@ -289,7 +323,7 @@ static NSString *ORKBulletUnicode = @"\u2981";
 }
 
 - (void)addBodyItemViews {
-    NSArray<ORKBodyItemView *> *views = [ORKBodyContainerView bodyItemViewsWithBodyItems:_bodyItems];
+    NSArray<ORKBodyItemView *> *views = [ORKBodyContainerView bodyItemViewsWithBodyItems:_bodyItems textAlignment:_textAlignment];
     for (NSInteger i = 0; i < views.count; i++) {
         [self addArrangedSubview:views[i]];
         views[i].delegate = self;
@@ -311,10 +345,10 @@ static NSString *ORKBulletUnicode = @"\u2981";
     }
 }
 
-+ (NSArray<ORKBodyItemView *> *)bodyItemViewsWithBodyItems:(NSArray<ORKBodyItem *> *)bodyItems {
++ (NSArray<ORKBodyItemView *> *)bodyItemViewsWithBodyItems:(NSArray<ORKBodyItem *> *)bodyItems textAlignment:(NSTextAlignment)textAlignment {
     NSMutableArray<ORKBodyItemView *> *viewsArray = [[NSMutableArray alloc] init];
     [bodyItems enumerateObjectsUsingBlock:^(ORKBodyItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        ORKBodyItemView *itemView = [[ORKBodyItemView alloc] initWithBodyItem:obj];
+        ORKBodyItemView *itemView = [[ORKBodyItemView alloc] initWithBodyItem:obj textAlignment:textAlignment];
         itemView.translatesAutoresizingMaskIntoConstraints = NO;
         [viewsArray addObject:itemView];
     }];

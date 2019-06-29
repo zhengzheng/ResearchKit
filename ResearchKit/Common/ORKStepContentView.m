@@ -567,6 +567,10 @@ typedef NS_CLOSED_ENUM(NSInteger, ORKUpdateConstraintSequence) {
     _textLabel.textAlignment = _stepHeaderTextAlignment;
 }
 
+- (void)setBodyTextAlignment:(NSTextAlignment)bodyTextAlignment {
+    _bodyTextAlignment = bodyTextAlignment;
+}
+
 - (void)setupDetailTextLabelConstraints {
     _detailTextLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [self setDetailTextLabelTopConstraint];
@@ -668,6 +672,7 @@ typedef NS_CLOSED_ENUM(NSInteger, ORKUpdateConstraintSequence) {
     __weak id<ORKBodyContainerViewDelegate> weakSelf = self;
     if (!_bodyContainerView) {
         _bodyContainerView = [[ORKBodyContainerView alloc] initWithBodyItems:_bodyItems
+                                                               textAlignment:_bodyTextAlignment // KELSEY
                                                                     delegate:weakSelf];
     }
     [self addSubview:_bodyContainerView];

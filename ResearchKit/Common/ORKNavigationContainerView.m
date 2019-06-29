@@ -169,10 +169,10 @@ static const CGFloat shadowRadius = 1.0;
     [constraints addObject:[NSLayoutConstraint constraintWithItem:_skipButtonView
                                                         attribute:NSLayoutAttributeHeight
                                                         relatedBy:NSLayoutRelationEqual
-                                                           toItem:_skipButton
+                                                           toItem:nil
                                                         attribute:NSLayoutAttributeHeight
                                                        multiplier:1.0
-                                                         constant:0.0]];
+                                                         constant:50.0]];
     _skipButtonConstraints = constraints;
     [NSLayoutConstraint activateConstraints:_skipButtonConstraints];
 }
@@ -408,6 +408,14 @@ static const CGFloat shadowRadius = 1.0;
     
     _skipButton.alpha = [self skipButtonAlpha];
     
+    // The skip button needs to be laid out so the continue button is in the same place
+    // regardless of if there is skip or not. Assign an empty string title to lay out to the
+    // skip button but prevent it from being selectable
+    if ([_skipButtonItem.title isEqual: @""]) {
+        _skipButton.alpha = 1;
+        _skipButton.enabled = NO;
+    }
+    
     [self setNeedsUpdateConstraints];
     [self arrangeSubStacks];
 }
@@ -434,7 +442,7 @@ static const CGFloat shadowRadius = 1.0;
 
 - (void)setUpConstraints {
     NSMutableArray *constraints = [NSMutableArray new];
-
+    
     [constraints addObjectsFromArray:@[
                                        [NSLayoutConstraint constraintWithItem:_parentStackView
                                                                     attribute:NSLayoutAttributeTop
