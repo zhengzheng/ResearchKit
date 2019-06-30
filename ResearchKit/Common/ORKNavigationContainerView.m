@@ -37,6 +37,7 @@ static const CGFloat ORKStackViewSpacing = 5.0;
 static const CGFloat shadowHeight = 0.75;
 static const CGFloat shadowOpacity = 0.2;
 static const CGFloat shadowRadius = 1.0;
+static const CGFloat skipButtonHeight = 50.0;
 
 @implementation ORKNavigationContainerView {
     
@@ -143,7 +144,15 @@ static const CGFloat shadowRadius = 1.0;
                                                                                          toItem:_skipButtonView
                                                                                       attribute:NSLayoutAttributeCenterY
                                                                                      multiplier:1.0
-                                                                                       constant:0.0], nil];
+                                                                                       constant:0.0],
+                                                         
+                                                         [NSLayoutConstraint constraintWithItem:_skipButton
+                                                                                      attribute:NSLayoutAttributeHeight
+                                                                                      relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                                                         toItem:nil
+                                                                                      attribute:NSLayoutAttributeHeight
+                                                                                     multiplier:1.0
+                                                                                       constant:skipButtonHeight], nil];
     if (_skipButtonStyle == ORKNavigationContainerButtonStyleRoundedRect) {
         [constraints addObjectsFromArray:@[
                                            [NSLayoutConstraint constraintWithItem:_skipButton
@@ -169,10 +178,10 @@ static const CGFloat shadowRadius = 1.0;
     [constraints addObject:[NSLayoutConstraint constraintWithItem:_skipButtonView
                                                         attribute:NSLayoutAttributeHeight
                                                         relatedBy:NSLayoutRelationEqual
-                                                           toItem:nil
+                                                           toItem:_skipButton
                                                         attribute:NSLayoutAttributeHeight
                                                        multiplier:1.0
-                                                         constant:50.0]];
+                                                         constant:0.0]];
     _skipButtonConstraints = constraints;
     [NSLayoutConstraint activateConstraints:_skipButtonConstraints];
 }
