@@ -277,7 +277,6 @@ static const CGFloat skipButtonHeight = 50.0;
         if ([_subStackView2.subviews count] > 0) {
             [_parentStackView addArrangedSubview:_subStackView2];
         }
-        [_skipButtonView setHidden:(!_skipButton || _skipButton.isHidden || _skipButton.alpha == 0)];
     }
 }
 
@@ -416,14 +415,6 @@ static const CGFloat skipButtonHeight = 50.0;
     }
     
     _skipButton.alpha = [self skipButtonAlpha];
-    
-    // The skip button needs to be laid out so the continue button is in the same place
-    // regardless of if there is skip or not. Assign an empty string title to lay out to the
-    // skip button but prevent it from being selectable
-    if ([_skipButtonItem.title isEqual: @""]) {
-        _skipButton.alpha = 1;
-        _skipButton.enabled = NO;
-    }
     
     [self setNeedsUpdateConstraints];
     [self arrangeSubStacks];
