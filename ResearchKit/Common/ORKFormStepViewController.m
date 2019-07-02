@@ -631,14 +631,8 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
         
         if (!item.answerFormat) {
             // Add new section
-            section = [[ORKTableSection alloc] initWithSectionIndex:_sections.count];
+            section = [self createSectionWithItem:item];
             [_sections addObject:section];
-            
-            // Save title
-            section.title = item.text;
-            section.detailText = item.detailText;
-            section.learnMoreItem = item.learnMoreItem;
-            section.showsProgress = item.showsProgress;
             
             groupItemsWithCurrentSection = YES;
         } else if (itemsRequiresSingleSection || !groupItemsWithCurrentSection) {
@@ -658,14 +652,8 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
     // Section header
     if ([item impliedAnswerFormat] == nil) {
         // Add new section
-        section = [[ORKTableSection alloc] initWithSectionIndex:_sections.count];
+        section = [self createSectionWithItem:item];
         [_sections addObject:section];
-
-        // Save title
-        section.title = item.text;
-        section.detailText = item.detailText;
-        section.learnMoreItem = item.learnMoreItem;
-        section.showsProgress = item.showsProgress;
         
     // Actual item
     } else {
@@ -673,11 +661,8 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
         // Items require individual section
         if ([self doesItemRequireSingleSection:item]) {
             // Add new section
-            section = [[ORKTableSection alloc]  initWithSectionIndex:_sections.count];
+            section = [self createSectionWithItem:item];
             [_sections addObject:section];
-
-            // Save title
-            section.title = item.text;
 
             [section addFormItem:item];
 
@@ -686,12 +671,22 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
         } else {
             // In case no section available, create new one.
             if (section == nil) {
-                section = [[ORKTableSection alloc]  initWithSectionIndex:_sections.count];
+                section = [self createSectionWithItem:item];
                 [_sections addObject:section];
             }
             [section addFormItem:item];
         }
     }
+}
+
+- (ORKTableSection *)createSectionWithItem:(ORKFormItem *)item {
+    ORKTableSection *section = [[ORKTableSection alloc]  initWithSectionIndex:_sections.count];
+    section.title = item.text;
+    section.detailText = item.detailText;
+    section.learnMoreItem = item.learnMoreItem;
+    section.showsProgress = item.showsProgress;
+    
+    return section;
 }
 
 - (BOOL)doesItemRequireSingleSection:(ORKFormItem *)item {
