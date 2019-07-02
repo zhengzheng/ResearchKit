@@ -60,6 +60,8 @@ ORK_CLASS_AVAILABLE
 
 @property (nonatomic, nullable) NSString *stepDetailText;
 
+@property (nonatomic) NSTextAlignment stepHeaderTextAlignment;
+
 @property (nonatomic, nullable) UIImage *titleIconImage;
 
 @property (nonatomic) BOOL showScrollIndicator;

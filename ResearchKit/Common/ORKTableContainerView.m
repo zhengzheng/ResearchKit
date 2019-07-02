@@ -228,8 +228,11 @@
 }
 
 - (void)sizeHeaderToFit {
-    [self.stepContentView.titleLabel setPreferredMaxLayoutWidth:self.bounds.size.width];
-    [self.stepContentView.textLabel setPreferredMaxLayoutWidth:self.bounds.size.width];
+    CGFloat width = self.stepContentView.bounds.size.width > CGFLOAT_MIN ? self.stepContentView.bounds.size.width : self.bounds.size.width;
+
+    [self.stepContentView.titleLabel setPreferredMaxLayoutWidth:width];
+    [self.stepContentView.textLabel setPreferredMaxLayoutWidth:width];
+    [self.stepContentView.detailTextLabel setPreferredMaxLayoutWidth:width];
     CGFloat estimatedHeight = [self.stepContentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
     CGRect bounds = CGRectMake(0.0, 0.0, self.stepContentView.bounds.size.width, self.stepContentView.bounds.size.height);
     bounds.size.height = estimatedHeight;

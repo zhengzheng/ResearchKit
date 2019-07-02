@@ -83,7 +83,7 @@ static const CGFloat HeadlineStackViewSpacing = 4.0;
 - (void)setupStackView {
     _headlineStackView = [[UIStackView alloc] init];
     _headlineStackView.axis = UILayoutConstraintAxisVertical;
-    _headlineStackView.distribution = UIStackViewDistributionEqualSpacing;
+    _headlineStackView.distribution = UIStackViewDistributionFill;
     _headlineStackView.alignment = UIStackViewAlignmentLeading;
     _headlineStackView.spacing = HeadlineStackViewSpacing;
 }
@@ -182,10 +182,13 @@ static const CGFloat HeadlineStackViewSpacing = 4.0;
         
         CAShapeLayer *foreLayer = [CAShapeLayer layer];
         UIColor *fillColor;
+        UIColor *borderColor;
         if (@available(iOS 13.0, *)) {
             fillColor = [UIColor secondarySystemGroupedBackgroundColor];
+            borderColor = UIColor.separatorColor;
         } else {
             fillColor = [UIColor whiteColor];
+            borderColor = [UIColor ork_midGrayTintColor];
         }
         
         [foreLayer setFillColor:[fillColor CGColor]];
@@ -203,12 +206,12 @@ static const CGFloat HeadlineStackViewSpacing = 4.0;
             CGRect lineBounds = CGRectMake(0.0, _headlineView.bounds.size.height - 1.0, _headlineView.bounds.size.width, 0.5);
             lineLayer.path = [UIBezierPath bezierPathWithRect:lineBounds].CGPath;
             lineLayer.zPosition = 0.0f;
-            [lineLayer setFillColor:[[UIColor ork_midGrayTintColor] CGColor]];
+            [lineLayer setFillColor:[borderColor CGColor]];
             
             [_headlineMaskLayer addSublayer:lineLayer];
         }
         
-        [_headlineMaskLayer setFillColor:[fillColor CGColor]];
+        [_headlineMaskLayer setFillColor:[borderColor CGColor]];
         [_headlineView.layer insertSublayer:_headlineMaskLayer atIndex:0];
     }
 }

@@ -95,6 +95,7 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
 - (instancetype)initWithStep:(ORKStep *)step {
     self = [self init];
     if (self) {
+        _wasSkipped = false;
         [self initializeInternalButtonItems];
         [self setStep:step];
     }
@@ -469,7 +470,6 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
 }
 
 - (void)goBackward {
-    
     ORKStrongTypeOf(self.delegate) strongDelegate = self.delegate;
     [strongDelegate stepViewController:self didFinishWithNavigationDirection:ORKStepViewControllerNavigationDirectionReverse];
     UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
@@ -500,6 +500,7 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
 }
 
 - (void)skipForward {
+    _wasSkipped = true;
     [self goForward];
 }
 

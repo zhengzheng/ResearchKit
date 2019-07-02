@@ -556,6 +556,7 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
         _headerView.stepTitle = self.step.title;
         _headerView.stepText = self.step.text;
         _headerView.stepDetailText = self.step.detailText;
+        _headerView.stepHeaderTextAlignment = self.step.headerTextAlignment;
         _headerView.bodyItems = self.step.bodyItems;
         _tableContainer.stepTopContentImageContentMode = self.step.imageContentMode;
         
@@ -627,7 +628,7 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
     BOOL groupItemsWithCurrentSection = NO;
     
     for (ORKFormItem *item in items) {
-        BOOL itemsRequiresSingleSection = [self doesItemRequireSingleSection:item];
+        BOOL itemRequiresSingleSection = [self doesItemRequireSingleSection:item];
         
         if (!item.answerFormat) {
             // Add new section
@@ -635,7 +636,7 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
             [_sections addObject:section];
             
             groupItemsWithCurrentSection = YES;
-        } else if (itemsRequiresSingleSection || !groupItemsWithCurrentSection) {
+        } else if (itemRequiresSingleSection || !groupItemsWithCurrentSection) {
             groupItemsWithCurrentSection = NO;
             [self buildSingleSection:item];
         } else {

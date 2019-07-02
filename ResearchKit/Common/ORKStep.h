@@ -162,6 +162,11 @@ ORK_CLASS_AVAILABLE
 @property (nonatomic, copy, nullable) NSString *detailText;
 
 /**
+ An 'NSTextAlignment' that controls the text alignment for step title, text and detailText.
+ */
+@property (nonatomic) NSTextAlignment headerTextAlignment;
+
+/**
  Array of `ORKBodyItem` type items to display textual info.
  */
 @property (nonatomic) NSArray<ORKBodyItem *> *bodyItems;
