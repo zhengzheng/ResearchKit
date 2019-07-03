@@ -71,8 +71,6 @@ ORK_CLASS_AVAILABLE
                    onChannel:(ORKAudioChannel)playChannel
                         dBHL:(double)dBHL;
 
-- (BOOL)checkClippingFor: (double)dBHL atFrequency:(double)frequency;
-
 /**
  Stops the audio being played.
  */

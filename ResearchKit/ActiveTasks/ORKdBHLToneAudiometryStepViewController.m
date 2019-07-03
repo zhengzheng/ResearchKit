@@ -75,13 +75,15 @@
     double _dBHLMinimumThreshold;
     int _currentTestIndex;
     int _indexOfFreqLoopList;
+    NSUInteger _indexOfStepUpMissingList;
     int _numberOfTransitionsPerFreq;
     NSInteger _maxNumberOfTransitionsPerFreq;
     BOOL _initialDescent;
     BOOL _ackOnce;
-    BOOL _validatingHearingLoss;
+    BOOL _usingMissingList;
     ORKdBHLToneAudiometryAudioGenerator *_audioGenerator;
     NSArray *_freqLoopList;
+    NSArray *_stepUpMissingList;
     NSMutableArray *_arrayOfResultSamples;
     NSMutableArray *_arrayOfResultUnits;
     NSMutableDictionary *_transitionsDictionary;
@@ -106,9 +108,10 @@
     if (self) {
         self.suspendIfInactive = YES;
         _indexOfFreqLoopList = 0;
+        _indexOfStepUpMissingList = 0;
         _initialDescent = YES;
         _ackOnce = NO;
-        _validatingHearingLoss = NO;
+        _usingMissingList = YES;
         _prevFreq = 0;
         _currentTestIndex = 0;
         _transitionsDictionary = [NSMutableDictionary dictionary];
@@ -131,6 +134,9 @@
     [super viewDidLoad];
     _maxNumberOfTransitionsPerFreq = [self dBHLToneAudiometryStep].maxNumberOfTransitionsPerFrequency;
     _freqLoopList = [self dBHLToneAudiometryStep].frequencyList;
+    _stepUpMissingList = @[ [NSNumber numberWithDouble:[self dBHLToneAudiometryStep].dBHLStepUpSizeFirstMiss],
+                            [NSNumber numberWithDouble:[self dBHLToneAudiometryStep].dBHLStepUpSizeSecondMiss],
+                            [NSNumber numberWithDouble:[self dBHLToneAudiometryStep].dBHLStepUpSizeThirdMiss] ];
     _currentdBHL = [self dBHLToneAudiometryStep].initialdBHLValue;
     _dBHLStepDownSize = [self dBHLToneAudiometryStep].dBHLStepDownSize;
     _dBHLStepUpSize = [self dBHLToneAudiometryStep].dBHLStepUpSize;
@@ -232,7 +238,8 @@
         _currentdBHL = [self dBHLToneAudiometryStep].initialdBHLValue;
         _initialDescent = YES;
         _ackOnce = NO;
-        _validatingHearingLoss = NO;
+        _usingMissingList = YES;
+        _indexOfStepUpMissingList = 0;
         _transitionsDictionary = nil;
         _transitionsDictionary = [NSMutableDictionary dictionary];
         if (_resultSample) {
@@ -305,9 +312,13 @@
                 newTransition.userInitiated -= 1;
                 [_transitionsDictionary setObject:newTransition forKey:[NSNumber numberWithFloat:_currentdBHL]];
             }
-            double multiplier = (_currentdBHL == [self dBHLToneAudiometryStep].initialdBHLValue ? 4 : 2);
-            double dBHLIncreaseValue = _dBHLStepUpSize * ((_validatingHearingLoss || _ackOnce) ? 1 : multiplier);
-            _currentdBHL = _currentdBHL + dBHLIncreaseValue;
+            if (_usingMissingList && (_indexOfStepUpMissingList < _stepUpMissingList.count)) {
+                _currentdBHL = _currentdBHL + [_stepUpMissingList[_indexOfStepUpMissingList] doubleValue];
+                _indexOfStepUpMissingList = _indexOfStepUpMissingList + 1;
+            } else {
+                _usingMissingList = NO;
+                _currentdBHL = _currentdBHL + _dBHLStepUpSize;
+            }
             if (currentTransition) {
                 currentTransition.userInitiated -= 1;
             }
@@ -338,7 +349,6 @@
         ORKdBHLToneAudiometryTransitions *currentTransitionObject = [_transitionsDictionary objectForKey:currentKey];
         currentTransitionObject.userInitiated -= 1;
     } else if ([self validateResultFordBHL:_currentdBHL]) {
-        _validatingHearingLoss = NO;
         _resultSample.calculatedThreshold = _currentdBHL;
         _indexOfFreqLoopList += 1;
         if (_indexOfFreqLoopList >= _freqLoopList.count) {
@@ -353,6 +363,7 @@
     }
     
     if ((_currentdBHL - _dBHLStepDownSize >= _dBHLMinimumThreshold) && !falseResponseTap) {
+        _usingMissingList = NO;
         _currentdBHL = _currentdBHL - _dBHLStepDownSize;
     }
 
@@ -383,18 +394,11 @@
 }
 
 - (void)toneWillStartClipping {
-    if (!_ackOnce && !_validatingHearingLoss) {
-        _validatingHearingLoss = YES;
-        // get the hightest dBHL level that do not clip and test that value
-        double hightestdBHL = _currentdBHL - _dBHLStepUpSize;
-        for (int i = 0; i < 4; i++) {
-            if ([_audioGenerator checkClippingFor:hightestdBHL atFrequency:[_freqLoopList[_indexOfFreqLoopList] doubleValue]]) {
-                hightestdBHL = hightestdBHL - _dBHLStepUpSize;
-            } else {
-                _currentdBHL = hightestdBHL;
-                break;
-            }
-        }
+    if (_usingMissingList
+        && (_indexOfStepUpMissingList <= _stepUpMissingList.count)
+        && (_indexOfStepUpMissingList > 0)) {
+        _usingMissingList = NO;
+        _currentdBHL = _currentdBHL - [_stepUpMissingList[_indexOfStepUpMissingList - 1] doubleValue] + _dBHLStepUpSize;
         [self estimatedBHLAndPlayToneWithFrequency:_freqLoopList[_indexOfFreqLoopList]];
     } else {
         _indexOfFreqLoopList += 1;

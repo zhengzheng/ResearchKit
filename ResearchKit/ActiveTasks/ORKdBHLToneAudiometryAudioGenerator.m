@@ -78,7 +78,6 @@
     int _lastNodeInput;
 }
 
-- (NSDecimalNumber *)getAttenuationFor: (double)dBHL atFrequency:(double)frequency;
 - (NSNumber *)dbHLtoAmplitude: (double)dbHL atFrequency:(double)frequency;
 
 @end
@@ -331,15 +330,8 @@ static OSStatus ORKdBHLAudioGeneratorZeroTone(void *inRefCon,
     return [[AVAudioSession sharedInstance] outputVolume];
 }
 
-- (BOOL)checkClippingFor: (double)dBHL atFrequency:(double)frequency {
-    if ([[self getAttenuationFor:dBHL atFrequency:frequency] doubleValue] >= -1) {
-        return YES;
-    }
-    
-    return NO;
-}
 
-- (NSDecimalNumber *)getAttenuationFor: (double)dBHL atFrequency:(double)frequency {
+- (NSNumber *)dbHLtoAmplitude: (double)dbHL atFrequency:(double)frequency {
     NSDecimalNumber *dBSPL =  [NSDecimalNumber decimalNumberWithString:_sensitivityPerFrequency[[NSString stringWithFormat:@"%.0f",frequency]]];
     
     // get current volume
@@ -358,15 +350,10 @@ static OSStatus ORKdBHLAudioGeneratorZeroTone(void *inRefCon,
     
     NSDecimalNumber *baselinedBSPL = [NSDecimalNumber decimalNumberWithString:_retspl[[NSString stringWithFormat:@"%.0f",frequency]]];
     
-    NSDecimalNumber *tempdBHL = [NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%f", dBHL]];
+    NSDecimalNumber *tempdBHL = [NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%f", dbHL]];
     NSDecimalNumber *attenuationOffset = [baselinedBSPL decimalNumberByAdding:tempdBHL];
-    
-    return [attenuationOffset decimalNumberBySubtracting:updated_dBSPLFor_dBFS];
-}
 
-
-- (NSNumber *)dbHLtoAmplitude: (double)dbHL atFrequency:(double)frequency {
-    NSDecimalNumber *attenuation = [self getAttenuationFor:dbHL atFrequency:frequency];// [attenuationOffset decimalNumberBySubtracting:updated_dBSPLFor_dBFS];
+    NSDecimalNumber *attenuation = [attenuationOffset decimalNumberBySubtracting:updated_dBSPLFor_dBFS];
 
     // if the signal starts clipping
     if ([attenuation doubleValue] >= -1) {
