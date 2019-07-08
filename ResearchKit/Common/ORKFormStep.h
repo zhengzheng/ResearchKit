@@ -182,11 +182,11 @@ ORK_CLASS_AVAILABLE
  */
 @property (nonatomic, copy, readonly, nullable) NSString *text;
 
-@property (nonatomic, copy, readonly, nullable) NSString *detailText;
+@property (nonatomic, copy, nullable) NSString *detailText;
 
-@property (nonatomic, readonly) BOOL showsProgress;
+@property (nonatomic) BOOL showsProgress;
 
-@property (nonatomic, copy, readonly, nullable) ORKLearnMoreItem *learnMoreItem;
+@property (nonatomic, copy, nullable) ORKLearnMoreItem *learnMoreItem;
 
 /**
  A localized string that displays placeholder information for the form item.
