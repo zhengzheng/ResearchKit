@@ -214,6 +214,7 @@ static NSString *ORKBulletUnicode = @"\u2981";
 
 - (void)setupBodyStyleImage {
     UIImageView *imageView = [self imageView];
+    self.alignment = UIStackViewAlignmentTop;
     [self addArrangedSubview:imageView];
     [self setCustomSpacing:ORKBulletIconToBodyPadding afterView:imageView];
     [self addSubStackView];
