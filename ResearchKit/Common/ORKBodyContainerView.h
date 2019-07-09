@@ -50,10 +50,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 - (instancetype)initWithBodyItems:(NSArray<ORKBodyItem *> *)bodyItems
-                        textAlignment:(NSTextAlignment)textAlignment
+                    textAlignment:(NSTextAlignment)textAlignment
                          delegate:(id<ORKBodyContainerViewDelegate>)delegate;
 
+- (void)updateBodyItemViews;
+
 @property (nonatomic, nonnull) NSArray<ORKBodyItem *> *bodyItems;
+
+@property (nonatomic) BOOL buildsInBodyItems;
 
 @property (nonatomic, weak) id<ORKBodyContainerViewDelegate> delegate;
 

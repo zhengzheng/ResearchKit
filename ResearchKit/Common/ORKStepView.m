@@ -33,7 +33,7 @@
 #import "ORKNavigationContainerView_Internal.h"
 #import "ORKSkin.h"
 
-@interface ORKStepView ()<ORKStepContentLearnMoreItemDelegate>
+@interface ORKStepView ()<ORKStepContentLearnMoreItemDelegate, ORKBodyItemDelegate>
 
 @end
 
@@ -125,6 +125,11 @@
     [_stepContentView setBodyItems:_bodyItems];
 }
 
+- (void)setBuildInBodyItems:(BOOL)buildInBodyItems {
+    _buildInBodyItems = buildInBodyItems;
+    [_stepContentView setBuildsInBodyItems:_buildInBodyItems];
+}
+
 - (UIImage *)topContentAndAuxiliaryImage {
     if (!_auxiliaryImage) {
         return _stepTopContentImage;
@@ -146,6 +151,11 @@
 
 - (void)stepContentLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep {
     [_delegate stepViewLearnMoreButtonPressed:learnMoreStep];
+}
+
+#pragma mark - ORKBodyItemDelegate
+
+- (void)buildInBodyItem {
 }
 
 @end

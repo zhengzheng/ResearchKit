@@ -302,20 +302,23 @@ static NSString *ORKBulletUnicode = @"\u2981";
 @end
 
 @interface ORKBodyContainerView()<ORKBodyItemViewDelegate>
+@property (nonatomic, strong) NSArray<ORKBodyItemView *> *views;
 @property (nonatomic) NSTextAlignment textAlignment;
 @end
 
 @implementation ORKBodyContainerView
 
-- (instancetype)initWithBodyItems:(NSArray<ORKBodyItem *> *)bodyItems textAlignment:(NSTextAlignment)textAlignment delegate:(nonnull id<ORKBodyContainerViewDelegate>)delegate {
+- (instancetype)initWithBodyItems:(NSArray<ORKBodyItem *> *)bodyItems
+                    textAlignment:(NSTextAlignment)textAlignment
+                         delegate:(nonnull id<ORKBodyContainerViewDelegate>)delegate {
     self.delegate = delegate;
-    self.textAlignment = textAlignment;
     if (bodyItems && bodyItems.count <= 0) {
         NSAssert(NO, @"Body Items array cannot be empty");
     }
     self = [super init];
     if (self) {
         self.bodyItems = bodyItems;
+        self.textAlignment = textAlignment;
         self.axis = UILayoutConstraintAxisVertical;
         self.distribution = UIStackViewDistributionFill;
         [self addBodyItemViews];
@@ -324,15 +327,36 @@ static NSString *ORKBulletUnicode = @"\u2981";
 }
 
 - (void)addBodyItemViews {
-    NSArray<ORKBodyItemView *> *views = [ORKBodyContainerView bodyItemViewsWithBodyItems:_bodyItems textAlignment:_textAlignment];
-    for (NSInteger i = 0; i < views.count; i++) {
-        [self addArrangedSubview:views[i]];
-        views[i].delegate = self;
-        if (i < views.count - 1) {
-            
+    _views = [ORKBodyContainerView bodyItemViewsWithBodyItems:_bodyItems textAlignment:_textAlignment];
+    for (NSInteger i = 0; i < _views.count; i++) {
+        [self addArrangedSubview:_views[i]];
+        _views[i].delegate = self;
+        
+        if (i < _views.count - 1) {
             CGFloat padding = [self spacingWithAboveStyle:_bodyItems[i].bodyItemStyle belowStyle:_bodyItems[i + 1].bodyItemStyle];
-            
-            [self setCustomSpacing:padding afterView:views[i]];
+            [self setCustomSpacing:padding afterView:_views[i]];
+        }
+    }
+}
+
+- (void)setBuildsInBodyItems:(BOOL)buildsInBodyItems {
+    _buildsInBodyItems = buildsInBodyItems;
+    for (NSInteger i = 0; i < _views.count; i++) {
+        if ((_buildsInBodyItems == YES) && (i != 0)) {
+            _views[i].hidden = true;
+        }
+    }
+}
+
+- (void)updateBodyItemViews {
+    for (NSInteger i = 0; i < _views.count; i++) {
+        if ((_buildsInBodyItems == YES) && (i != 0)) {
+            UIView *previousView = _views[i - 1];
+            if (previousView.isHidden == false) {
+                _views[i].hidden = false;
+            } else {
+                _views[i].hidden = true;
+            }
         }
     }
 }

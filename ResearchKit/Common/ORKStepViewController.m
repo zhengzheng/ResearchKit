@@ -463,10 +463,14 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
 #pragma mark - Action Handlers
 
 - (void)goForward {
-    ORKStepViewControllerNavigationDirection direction = self.isBeingReviewed ? ORKStepViewControllerNavigationDirectionReverse : ORKStepViewControllerNavigationDirectionForward;
-    ORKStrongTypeOf(self.delegate) strongDelegate = self.delegate;
-    [strongDelegate stepViewController:self didFinishWithNavigationDirection:direction];
-    UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
+    if (_step.buildInbodyItems == YES) {
+        //_step.stepViewControllerClass
+    } else {
+        ORKStepViewControllerNavigationDirection direction = self.isBeingReviewed ? ORKStepViewControllerNavigationDirectionReverse : ORKStepViewControllerNavigationDirectionForward;
+        ORKStrongTypeOf(self.delegate) strongDelegate = self.delegate;
+        [strongDelegate stepViewController:self didFinishWithNavigationDirection:direction];
+        UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
+    }
 }
 
 - (void)goBackward {

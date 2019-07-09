@@ -668,11 +668,16 @@ typedef NS_CLOSED_ENUM(NSInteger, ORKUpdateConstraintSequence) {
     }
 }
 
+- (void)setBuildsInBodyItems:(BOOL)buildsInBodyItems {
+    _buildsInBodyItems = buildsInBodyItems;
+    _bodyContainerView.buildsInBodyItems = _buildsInBodyItems;
+}
+
 - (void)setupBodyContainerView {
     __weak id<ORKBodyContainerViewDelegate> weakSelf = self;
     if (!_bodyContainerView) {
         _bodyContainerView = [[ORKBodyContainerView alloc] initWithBodyItems:_bodyItems
-                                                               textAlignment:_bodyTextAlignment // KELSEY
+                                                               textAlignment:_bodyTextAlignment
                                                                     delegate:weakSelf];
     }
     [self addSubview:_bodyContainerView];
