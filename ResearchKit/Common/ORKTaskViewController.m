@@ -309,6 +309,24 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
     return self;
 }
 
+- (instancetype)initWithTask:(id<ORKTask>)task
+          startStepIdentifer:(NSString *)startStepIdentifier
+         defaultResultSource:(nullable id<ORKTaskResultSource>)defaultResultSource
+                    delegate:(id<ORKTaskViewControllerDelegate>)delegate {
+    
+    self = [self initWithTask:task taskRunUUID:nil];
+    
+    if (self) {
+        _delegate = delegate;
+        _defaultResultSource = defaultResultSource;
+        if (startStepIdentifier != nil) {
+            _restoredStepIdentifier = startStepIdentifier;
+            [self applicationFinishedRestoringState];
+        }
+    }
+    return self;
+}
+
 - (void)setTaskRunUUID:(NSUUID *)taskRunUUID {
     if (_hasBeenPresented) {
         @throw [NSException exceptionWithName:NSGenericException reason:@"Cannot change task instance UUID after presenting task controller" userInfo:nil];
@@ -1624,7 +1642,7 @@ static NSString *const _ORKPresentedDate = @"presentedDate";
 }
 
 - (void)setReviewMode:(ORKTaskViewControllerReviewMode)reviewMode {
-    if (_hasBeenPresented) {
+    if (_reviewMode != reviewMode && _hasBeenPresented) {
         @throw [NSException exceptionWithName:NSGenericException reason:@"Cannot change review mode after presenting the task controller for now." userInfo:nil];
     }
     _reviewMode = reviewMode;
