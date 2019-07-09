@@ -1642,7 +1642,7 @@ static NSString *const _ORKPresentedDate = @"presentedDate";
 }
 
 - (void)setReviewMode:(ORKTaskViewControllerReviewMode)reviewMode {
-    if (_reviewMode != reviewMode && _hasBeenPresented) {
+    if (_hasBeenPresented) {
         @throw [NSException exceptionWithName:NSGenericException reason:@"Cannot change review mode after presenting the task controller for now." userInfo:nil];
     }
     _reviewMode = reviewMode;
