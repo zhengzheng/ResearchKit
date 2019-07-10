@@ -45,6 +45,7 @@ static const CGFloat HeadlineStackViewSpacing = 4.0;
     ORKLearnMoreView *_learnMoreView;
     NSString *_progressText;
     UILabel *_progressLabel;
+    BOOL _showBorder;
     CAShapeLayer *_headlineMaskLayer;
     UIStackView *_headlineStackView;
     NSArray<NSLayoutConstraint *> *_headerViewConstraints;
@@ -72,6 +73,24 @@ static const CGFloat HeadlineStackViewSpacing = 4.0;
         _detailText = text;
         _learnMoreView = learnMoreView;
         _progressText = progressText;
+        _showBorder = NO;
+        [self setBackgroundColor:[UIColor clearColor]];
+        [self setupStackView];
+        [self setupHeaderView];
+        [self setupConstraints];
+    }
+    return self;
+}
+
+- (instancetype)initWithTitle:(NSString *)title detailText:(NSString *)text learnMoreView:(ORKLearnMoreView *)learnMoreView progressText:(NSString *)progressText showBorder:(BOOL)showBorder {
+    
+    self = [super init];
+    if (self) {
+        _title = title;
+        _detailText = text;
+        _learnMoreView = learnMoreView;
+        _progressText = progressText;
+        _showBorder = showBorder;
         [self setBackgroundColor:[UIColor clearColor]];
         [self setupStackView];
         [self setupHeaderView];
@@ -211,7 +230,12 @@ static const CGFloat HeadlineStackViewSpacing = 4.0;
             [_headlineMaskLayer addSublayer:lineLayer];
         }
         
-        [_headlineMaskLayer setFillColor:[borderColor CGColor]];
+        if (_showBorder) {
+            [_headlineMaskLayer setFillColor:[borderColor CGColor]];
+        } else {
+            [_headlineMaskLayer setFillColor:[[UIColor clearColor] CGColor]];
+        }
+        
         [_headlineView.layer insertSublayer:_headlineMaskLayer atIndex:0];
     }
 }

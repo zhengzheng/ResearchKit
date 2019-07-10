@@ -54,6 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
                          delegate:(id<ORKBodyContainerViewDelegate>)delegate;
 
 - (void)updateBodyItemViews;
+- (BOOL)hasShownAllBodyItem;
 
 @property (nonatomic, nonnull) NSArray<ORKBodyItem *> *bodyItems;
 

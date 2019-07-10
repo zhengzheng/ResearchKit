@@ -42,13 +42,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@protocol ORKBodyItemDelegate <NSObject>
-
-@required
-- (void)buildInBodyItem;
-
-@end
-
 @class ORKBodyItem;
 @interface ORKStepContentView : UIView
 
@@ -73,8 +66,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) BOOL buildsInBodyItems;
 
 @property (nonatomic, weak) id<ORKStepContentLearnMoreItemDelegate> delegate;
-
-@property (nonatomic, weak) id<ORKBodyItemDelegate> bodyItemDelegate;
 
 @end
 

@@ -33,7 +33,7 @@
 #import "ORKNavigationContainerView_Internal.h"
 #import "ORKSkin.h"
 
-@interface ORKStepView ()<ORKStepContentLearnMoreItemDelegate, ORKBodyItemDelegate>
+@interface ORKStepView ()<ORKStepContentLearnMoreItemDelegate>
 
 @end
 
@@ -151,11 +151,6 @@
 
 - (void)stepContentLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep {
     [_delegate stepViewLearnMoreButtonPressed:learnMoreStep];
-}
-
-#pragma mark - ORKBodyItemDelegate
-
-- (void)buildInBodyItem {
 }
 
 @end

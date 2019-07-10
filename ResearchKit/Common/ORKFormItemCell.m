@@ -229,15 +229,19 @@ static const CGFloat HorizontalSpacer = 16.0;
             CGRect foreLayerBounds = CGRectMake(ORKCardDefaultBorderWidth, 0, self.containerView.bounds.size.width - 2 * ORKCardDefaultBorderWidth, self.containerView.bounds.size.height);
             foreLayer.path = [UIBezierPath bezierPathWithRect:foreLayerBounds].CGPath;
             _contentMaskLayer.path = [UIBezierPath bezierPathWithRect:self.containerView.bounds].CGPath;
+            
             CGRect lineBounds = CGRectMake(0.0, self.containerView.bounds.size.height - 1.0, self.containerView.bounds.size.width, 0.5);
             lineLayer.path = [UIBezierPath bezierPathWithRect:lineBounds].CGPath;
             lineLayer.zPosition = 0.0f;
         }
-        _contentMaskLayer.fillColor = borderColor.CGColor;
+        
         [lineLayer setFillColor:[borderColor CGColor]];
+        if (_cardViewStyle == ORKCardViewStyleBordered) {
+            _contentMaskLayer.fillColor = borderColor.CGColor;
+        }
+        
         [_contentMaskLayer addSublayer:foreLayer];
         [_contentMaskLayer addSublayer:lineLayer];
-
         [_containerView.layer insertSublayer:_contentMaskLayer atIndex:0];
     }
 }

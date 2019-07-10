@@ -41,6 +41,7 @@
 
 #import "ORKHelpers_Internal.h"
 #import "ORKSkin.h"
+#import "ORKStepContentView.h"
 
 static const CGFloat iPadStepTitleLabelPadding = 15.0;
 static const CGFloat iPadStepTitleLabelFontSize = 50.0;
@@ -82,6 +83,7 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
     }
     return self;
 }
+
 #pragma clang diagnostic pop
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -109,7 +111,7 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     self.view.backgroundColor = ORKColor(ORKBackgroundColorKey);
     if (!_shouldIgnoreiPadDesign && ORKNeedWideScreenDesign(self.view)) {
         [self setupiPadBackgroundView];
@@ -146,13 +148,13 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
 
 - (void)setiPadStepTitleLabelText:(NSString *)text {
     if (_iPadStepTitleLabel) {
-//        [_iPadStepTitleLabel setText: text];
+        //        [_iPadStepTitleLabel setText: text];
     }
 }
 
 - (void)setiPadBackgroundViewColor:(UIColor *)color {
     if (_iPadBackgroundView) {
-//        [_iPadBackgroundView setBackgroundColor:color];
+        //        [_iPadBackgroundView setBackgroundColor:color];
     }
 }
 
@@ -166,84 +168,84 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
     }
     
     _iPadConstraints = @[
-                         [NSLayoutConstraint constraintWithItem:_iPadBackgroundView
-                                                      attribute:NSLayoutAttributeTop
-                                                      relatedBy:NSLayoutRelationEqual
-                                                         toItem:self.view.safeAreaLayoutGuide
-                                                      attribute:NSLayoutAttributeTop
-                                                     multiplier:1.0
-                                                       constant:0.0],
-                         [NSLayoutConstraint constraintWithItem:_iPadBackgroundView
-                                                      attribute:NSLayoutAttributeLeft
-                                                      relatedBy:NSLayoutRelationEqual
-                                                         toItem:self.view.safeAreaLayoutGuide
-                                                      attribute:NSLayoutAttributeLeft
-                                                     multiplier:1.0
-                                                       constant:ORKiPadBackgroundViewLeftRightPadding],
-                         [NSLayoutConstraint constraintWithItem:_iPadBackgroundView
-                                                      attribute:NSLayoutAttributeRight
-                                                      relatedBy:NSLayoutRelationEqual
-                                                         toItem:self.view.safeAreaLayoutGuide
-                                                      attribute:NSLayoutAttributeRight
-                                                     multiplier:1.0
-                                                       constant:-ORKiPadBackgroundViewLeftRightPadding],
-                         [NSLayoutConstraint constraintWithItem:_iPadBackgroundView
-                                                      attribute:NSLayoutAttributeBottom
-                                                      relatedBy:NSLayoutRelationEqual
-                                                         toItem:self.view.safeAreaLayoutGuide
-                                                      attribute:NSLayoutAttributeBottom
-                                                     multiplier:1.0
-                                                       constant:-ORKiPadBackgroundViewBottomPadding],
-                         [NSLayoutConstraint constraintWithItem:_iPadStepTitleLabel
-                                                      attribute:NSLayoutAttributeTop
-                                                      relatedBy:NSLayoutRelationEqual
-                                                         toItem:_iPadBackgroundView
-                                                      attribute:NSLayoutAttributeTop
-                                                     multiplier:1.0
-                                                       constant:ORKiPadBackgroundViewBottomPadding],
-                         [NSLayoutConstraint constraintWithItem:_iPadStepTitleLabel
-                                                      attribute:NSLayoutAttributeLeft
-                                                      relatedBy:NSLayoutRelationEqual
-                                                         toItem:_iPadBackgroundView
-                                                      attribute:NSLayoutAttributeLeft
-                                                     multiplier:1.0
-                                                       constant:iPadStepTitleLabelPadding],
-                         [NSLayoutConstraint constraintWithItem:_iPadStepTitleLabel
-                                                      attribute:NSLayoutAttributeRight
-                                                      relatedBy:NSLayoutRelationEqual
-                                                         toItem:_iPadBackgroundView
-                                                      attribute:NSLayoutAttributeRight
-                                                     multiplier:1.0
-                                                       constant:-iPadStepTitleLabelPadding],
-                         [NSLayoutConstraint constraintWithItem:_iPadContentView
-                                                      attribute:NSLayoutAttributeTop
-                                                      relatedBy:NSLayoutRelationEqual
-                                                         toItem:_iPadStepTitleLabel
-                                                      attribute:NSLayoutAttributeBottom
-                                                     multiplier:1.0
-                                                       constant:iPadStepTitleLabelPadding],
-                         [NSLayoutConstraint constraintWithItem:_iPadContentView
-                                                      attribute:NSLayoutAttributeLeft
-                                                      relatedBy:NSLayoutRelationEqual
-                                                         toItem:_iPadBackgroundView
-                                                      attribute:NSLayoutAttributeLeft
-                                                     multiplier:1.0
-                                                       constant:iPadStepTitleLabelPadding],
-                         [NSLayoutConstraint constraintWithItem:_iPadContentView
-                                                      attribute:NSLayoutAttributeRight
-                                                      relatedBy:NSLayoutRelationEqual
-                                                         toItem:_iPadBackgroundView
-                                                      attribute:NSLayoutAttributeRight
-                                                     multiplier:1.0
-                                                       constant:-iPadStepTitleLabelPadding],
-                         [NSLayoutConstraint constraintWithItem:_iPadContentView
-                                                      attribute:NSLayoutAttributeBottom
-                                                      relatedBy:NSLayoutRelationEqual
-                                                         toItem:_iPadBackgroundView
-                                                      attribute:NSLayoutAttributeBottom
-                                                     multiplier:1.0
-                                                       constant:-iPadStepTitleLabelPadding]
-                         ];
+        [NSLayoutConstraint constraintWithItem:_iPadBackgroundView
+                                     attribute:NSLayoutAttributeTop
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.view.safeAreaLayoutGuide
+                                     attribute:NSLayoutAttributeTop
+                                    multiplier:1.0
+                                      constant:0.0],
+        [NSLayoutConstraint constraintWithItem:_iPadBackgroundView
+                                     attribute:NSLayoutAttributeLeft
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.view.safeAreaLayoutGuide
+                                     attribute:NSLayoutAttributeLeft
+                                    multiplier:1.0
+                                      constant:ORKiPadBackgroundViewLeftRightPadding],
+        [NSLayoutConstraint constraintWithItem:_iPadBackgroundView
+                                     attribute:NSLayoutAttributeRight
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.view.safeAreaLayoutGuide
+                                     attribute:NSLayoutAttributeRight
+                                    multiplier:1.0
+                                      constant:-ORKiPadBackgroundViewLeftRightPadding],
+        [NSLayoutConstraint constraintWithItem:_iPadBackgroundView
+                                     attribute:NSLayoutAttributeBottom
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.view.safeAreaLayoutGuide
+                                     attribute:NSLayoutAttributeBottom
+                                    multiplier:1.0
+                                      constant:-ORKiPadBackgroundViewBottomPadding],
+        [NSLayoutConstraint constraintWithItem:_iPadStepTitleLabel
+                                     attribute:NSLayoutAttributeTop
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:_iPadBackgroundView
+                                     attribute:NSLayoutAttributeTop
+                                    multiplier:1.0
+                                      constant:ORKiPadBackgroundViewBottomPadding],
+        [NSLayoutConstraint constraintWithItem:_iPadStepTitleLabel
+                                     attribute:NSLayoutAttributeLeft
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:_iPadBackgroundView
+                                     attribute:NSLayoutAttributeLeft
+                                    multiplier:1.0
+                                      constant:iPadStepTitleLabelPadding],
+        [NSLayoutConstraint constraintWithItem:_iPadStepTitleLabel
+                                     attribute:NSLayoutAttributeRight
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:_iPadBackgroundView
+                                     attribute:NSLayoutAttributeRight
+                                    multiplier:1.0
+                                      constant:-iPadStepTitleLabelPadding],
+        [NSLayoutConstraint constraintWithItem:_iPadContentView
+                                     attribute:NSLayoutAttributeTop
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:_iPadStepTitleLabel
+                                     attribute:NSLayoutAttributeBottom
+                                    multiplier:1.0
+                                      constant:iPadStepTitleLabelPadding],
+        [NSLayoutConstraint constraintWithItem:_iPadContentView
+                                     attribute:NSLayoutAttributeLeft
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:_iPadBackgroundView
+                                     attribute:NSLayoutAttributeLeft
+                                    multiplier:1.0
+                                      constant:iPadStepTitleLabelPadding],
+        [NSLayoutConstraint constraintWithItem:_iPadContentView
+                                     attribute:NSLayoutAttributeRight
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:_iPadBackgroundView
+                                     attribute:NSLayoutAttributeRight
+                                    multiplier:1.0
+                                      constant:-iPadStepTitleLabelPadding],
+        [NSLayoutConstraint constraintWithItem:_iPadContentView
+                                     attribute:NSLayoutAttributeBottom
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:_iPadBackgroundView
+                                     attribute:NSLayoutAttributeBottom
+                                    multiplier:1.0
+                                      constant:-iPadStepTitleLabelPadding]
+    ];
     [NSLayoutConstraint activateConstraints:_iPadConstraints];
 }
 
@@ -319,14 +321,14 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
 - (void)viewDidDisappear:(BOOL)animated {
     
     [super viewDidDisappear:animated];
-
+    
     // Set endDate if current stepVC is dismissed
     // Because stepVC is embeded in a UIPageViewController,
     // when current stepVC is out of screen, it didn't belongs to UIPageViewController's viewControllers any more.
     // If stepVC is just covered by a modal view, dismissedDate should not be set.
     if (self.nextResponder == nil ||
         ([self.parentViewController isKindOfClass:[UIPageViewController class]]
-            && NO == [[(UIPageViewController *)self.parentViewController viewControllers] containsObject:self])) {
+         && NO == [[(UIPageViewController *)self.parentViewController viewControllers] containsObject:self])) {
         self.dismissedDate = [NSDate date];
     }
     _dismissing = NO;
@@ -463,14 +465,10 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
 #pragma mark - Action Handlers
 
 - (void)goForward {
-    if (_step.buildInbodyItems == YES) {
-        //_step.stepViewControllerClass
-    } else {
-        ORKStepViewControllerNavigationDirection direction = self.isBeingReviewed ? ORKStepViewControllerNavigationDirectionReverse : ORKStepViewControllerNavigationDirectionForward;
-        ORKStrongTypeOf(self.delegate) strongDelegate = self.delegate;
-        [strongDelegate stepViewController:self didFinishWithNavigationDirection:direction];
-        UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
-    }
+    ORKStepViewControllerNavigationDirection direction = self.isBeingReviewed ? ORKStepViewControllerNavigationDirectionReverse : ORKStepViewControllerNavigationDirectionForward;
+    ORKStrongTypeOf(self.delegate) strongDelegate = self.delegate;
+    [strongDelegate stepViewController:self didFinishWithNavigationDirection:direction];
+    UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
 }
 
 - (void)goBackward {
@@ -487,10 +485,10 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
         [alert addAction:[UIAlertAction actionWithTitle:ORKLocalizedString(@"BUTTON_CLEAR_ANSWER", nil)
                                                   style:UIAlertActionStyleDestructive
                                                 handler:^(UIAlertAction *action) {
-                                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                                        [self skipForward];
-                                                    });
-                                                }]];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self skipForward];
+            });
+        }]];
         [alert addAction:[UIAlertAction actionWithTitle:ORKLocalizedString(@"BUTTON_CANCEL", nil)
                                                   style:UIAlertActionStyleCancel
                                                 handler:nil
