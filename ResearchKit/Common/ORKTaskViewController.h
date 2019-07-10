@@ -368,17 +368,17 @@ ORK_CLASS_AVAILABLE
  Call this method to start a task from a specific step. Additionally, you can supply a defaultResultSource to resume a
  partially completed task, or to provide your own prefilled results.
 
- if `startStepIdentifier` is nil, the task starts from the first step.
+ if `startingStepIdentifier` is nil, the task starts from the first step.
  
- @param task                 The task to be presented.
- @param startStepIdentifer   The identifier of the step to start the task on.
- @param defaultResultSource  A source that the task view controller can consult to obtain default answers for questions provided in question steps and form steps.
- @param delegate             The delegate for the task view controller.
+ @param task                    The task to be presented.
+ @param startingStepIdentifier  The identifier of the step to start the task on.
+ @param defaultResultSource     A source that the task view controller can consult to obtain default answers for questions provided in question steps and form steps.
+ @param delegate                The delegate for the task view controller.
  
  @return A new task view controller.
  */
 - (instancetype)initWithTask:(id<ORKTask>)task
-          startStepIdentifer:(nullable NSString *)startStepIdentifer
+      startingStepIdentifier:(nullable NSString *)startingStepIdentifier
          defaultResultSource:(nullable id<ORKTaskResultSource>)defaultResultSource
                     delegate:(id<ORKTaskViewControllerDelegate>)delegate;
 
