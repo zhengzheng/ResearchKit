@@ -114,6 +114,7 @@ static const CGFloat HeadlineStackViewSpacing = 4.0;
     if (_progressText) {
         [self setUpProgressLabel];
         [_headlineStackView addArrangedSubview:_progressLabel];
+        [_headlineStackView setCustomSpacing:6.0 afterView:_progressLabel];
     }
     
     [self setupTitleLabel];
@@ -126,7 +127,14 @@ static const CGFloat HeadlineStackViewSpacing = 4.0;
     
     [_headlineView addSubview:_headlineStackView];
     if (_learnMoreView) {
-        [_headlineView addSubview:_learnMoreView];
+        if ([_learnMoreView isTextLink] == YES) {
+            UIView *previousLabel = _detailText ? _detailTextLabel : _titleLabel;
+            [_headlineStackView setCustomSpacing:6.0 afterView:previousLabel];
+            [_headlineStackView addArrangedSubview:_learnMoreView];
+            [_learnMoreView setLearnMoreButtonFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
+        } else {
+            [_headlineView addSubview:_learnMoreView];
+        }
     }
 }
 
@@ -142,6 +150,11 @@ static const CGFloat HeadlineStackViewSpacing = 4.0;
     }
     _titleLabel.text = _title;
     _titleLabel.numberOfLines = 0;
+    if (@available(iOS 13.0, *)) {
+        _titleLabel.textColor = [UIColor labelColor];
+    } else {
+        _titleLabel.textColor = [UIColor blackColor];
+    }
     _titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     _titleLabel.textAlignment = NSTextAlignmentNatural;
     [_titleLabel setFont:[self titleLabelFont]];
@@ -162,26 +175,32 @@ static const CGFloat HeadlineStackViewSpacing = 4.0;
     if (!_progressLabel) {
         _progressLabel = [UILabel new];
     }
-    _progressLabel.text = _progressText.uppercaseString;
+    _progressLabel.text = _progressText;
     _progressLabel.numberOfLines = 0;
-    _progressLabel.textColor = [UIColor grayColor];
+    if (@available(iOS 13.0, *)) {
+        _progressLabel.textColor = [UIColor secondaryLabelColor];
+    } else {
+        _progressLabel.textColor = [UIColor lightGrayColor];
+    }
     _progressLabel.textAlignment = NSTextAlignmentNatural;
     [_progressLabel setFont:[self progressLabelFont]];
 }
 
 - (UIFont *)titleLabelFont {
-    UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleTitle2];
+    UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody];
     UIFontDescriptor *fontDescriptor = [descriptor fontDescriptorWithSymbolicTraits:(UIFontDescriptorTraitBold)];
     return [UIFont fontWithDescriptor:fontDescriptor size:[[fontDescriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue]];
 }
 
 - (UIFont *)detailTextLabelFont {
-    UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleFootnote];
+    UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleSubheadline];
     return [UIFont fontWithDescriptor:descriptor size:[[descriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue]];
 }
 
 - (UIFont *)progressLabelFont {
-    return [self detailTextLabelFont];
+    UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleFootnote];
+    UIFontDescriptor *fontDescriptor = [descriptor fontDescriptorWithSymbolicTraits:(UIFontDescriptorTraitBold)];
+    return [UIFont fontWithDescriptor:fontDescriptor size:[[fontDescriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue]];
 }
 
 - (void)layoutSubviews {
@@ -238,6 +257,10 @@ static const CGFloat HeadlineStackViewSpacing = 4.0;
         
         [_headlineView.layer insertSublayer:_headlineMaskLayer atIndex:0];
     }
+}
+
+- (BOOL)useLearnMoreLeftAlignmentLayout {
+    return ((_learnMoreView != nil) && ([_learnMoreView isTextLink] == NO));
 }
 
 - (void)setupConstraints {
@@ -299,8 +322,8 @@ static const CGFloat HeadlineStackViewSpacing = 4.0;
                                [NSLayoutConstraint constraintWithItem:_headlineStackView
                                                             attribute:NSLayoutAttributeTrailing
                                                             relatedBy:NSLayoutRelationEqual
-                                                               toItem:_learnMoreView ? : _headlineView
-                                                            attribute:_learnMoreView ? NSLayoutAttributeLeading : NSLayoutAttributeTrailing
+                                                               toItem:[self useLearnMoreLeftAlignmentLayout] ? _learnMoreView : _headlineView
+                                                            attribute:[self useLearnMoreLeftAlignmentLayout] ? NSLayoutAttributeLeading : NSLayoutAttributeTrailing
                                                            multiplier:1.0
                                                              constant:-ORKSurveyItemMargin],
                                
@@ -310,7 +333,7 @@ static const CGFloat HeadlineStackViewSpacing = 4.0;
                                                                toItem:_headlineStackView
                                                             attribute:NSLayoutAttributeBottom
                                                            multiplier:1.0
-                                                             constant:ORKSurveyItemMargin],
+                                                             constant:24.0],
                                [NSLayoutConstraint constraintWithItem:self
                                                             attribute:NSLayoutAttributeBottom
                                                             relatedBy:NSLayoutRelationEqual
@@ -328,22 +351,25 @@ static const CGFloat HeadlineStackViewSpacing = 4.0;
         [NSLayoutConstraint deactivateConstraints:_learnMoreViewConstraints];
     }
     _learnMoreView.translatesAutoresizingMaskIntoConstraints = NO;
-    _learnMoreViewConstraints = @[
-                               [NSLayoutConstraint constraintWithItem:_learnMoreView
-                                                            attribute:NSLayoutAttributeTop
-                                                            relatedBy:NSLayoutRelationEqual
-                                                               toItem:_titleLabel ? : _headlineView
-                                                            attribute:NSLayoutAttributeTop
-                                                           multiplier:1.0
-                                                             constant:_titleLabel ? 0.0 : ORKSurveyItemMargin],
-                               [NSLayoutConstraint constraintWithItem:_learnMoreView
-                                                            attribute:NSLayoutAttributeTrailing
-                                                            relatedBy:NSLayoutRelationEqual
-                                                               toItem: _headlineView
-                                                            attribute:NSLayoutAttributeTrailing
-                                                           multiplier:1.0
-                                                             constant:-ORKSurveyItemMargin]
-                               ];
+
+    if ([_learnMoreView isTextLink] == NO) {
+        _learnMoreViewConstraints = @[
+            [NSLayoutConstraint constraintWithItem:_learnMoreView
+                                         attribute:NSLayoutAttributeTop
+                                         relatedBy:NSLayoutRelationEqual
+                                            toItem:_titleLabel ? : _headlineView
+                                         attribute:NSLayoutAttributeTop
+                                        multiplier:1.0
+                                          constant:_titleLabel ? 0.0 : ORKSurveyItemMargin],
+            [NSLayoutConstraint constraintWithItem:_learnMoreView
+                                         attribute:NSLayoutAttributeTrailing
+                                         relatedBy:NSLayoutRelationEqual
+                                            toItem: _headlineView
+                                         attribute:NSLayoutAttributeTrailing
+                                        multiplier:1.0
+                                          constant:-ORKSurveyItemMargin]
+        ];
+    }
 
     [NSLayoutConstraint activateConstraints:_learnMoreViewConstraints];
 }
