@@ -401,6 +401,17 @@ static NSString * const _SerializedBundleImageNameKey = @"imageName";
 
 - (UIImage *)imageForReference:(NSDictionary *)reference {
     NSString *imageName = [reference objectForKey:_SerializedBundleImageNameKey];
+    
+    /*
+     * Serialization should support the use of SFSymbols as a provided imageName.
+     * If the imageName can be converted to an SFSymbol, the symbol will be used,
+     * otherwise it will attempt to find the image name in the specified bundle.
+     */
+    UIImage *symbolImage = [UIImage systemImageNamed:imageName];
+    if (symbolImage != nil) {
+        return symbolImage;
+    }
+    
     return [UIImage imageNamed:imageName inBundle:_bundle compatibleWithTraitCollection:[UITraitCollection traitCollectionWithUserInterfaceIdiom:[UIDevice currentDevice].userInterfaceIdiom]];
 }
 
