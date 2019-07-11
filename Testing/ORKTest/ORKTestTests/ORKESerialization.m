@@ -702,6 +702,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     IMAGEPROPERTY(auxiliaryImage, NSObject, YES),
                     IMAGEPROPERTY(image, NSObject, YES),
                     PROPERTY(bodyItemTextAlignment, NSNumber, NSObject, YES, nil, nil),
+                    PROPERTY(buildInbodyItems, NSNumber, NSObject, YES, nil, nil),
                     })),
            ENTRY(ORKBodyItem,
                  ^id(__unused NSDictionary *dict, __unused ORKESerializationPropertyGetter getter) {
@@ -709,7 +710,8 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                                                                     detailText:GETPROP(dict, detailText)
                                                                          image:nil
                                                                  learnMoreItem:GETPROP(dict, learnMoreItem)
-                                                                 bodyItemStyle:[GETPROP(dict, bodyItemStyle) intValue]];
+                                                                 bodyItemStyle:[GETPROP(dict, bodyItemStyle) intValue]
+                                                                  useCardStyle:GETPROP(dict, useCardStyle)];
                      return bodyItem;
                  },
                  (@{
@@ -718,6 +720,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     PROPERTY(bodyItemStyle, NSNumber, NSObject, NO, nil, nil),
                     IMAGEPROPERTY(image, NSObject, YES),
                     PROPERTY(learnMoreItem, ORKLearnMoreItem, NSObject, YES, nil, nil),
+                    PROPERTY(useCardStyle, NSNumber, NSObject, YES, nil, nil),
                     })),
            ENTRY(ORKLearnMoreItem,
                  ^id(__unused NSDictionary *dict, __unused ORKESerializationPropertyGetter getter) {
@@ -1259,6 +1262,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     PROPERTY(footnote, NSString, NSObject, YES, nil, nil),
                     PROPERTY(useCardView, NSNumber, NSObject, YES, nil, nil),
                     PROPERTY(footerText, NSString, NSObject, YES, nil, nil),
+                    PROPERTY(cardViewStyle, NSNumber, NSObject, YES, nil, nil),
                     })),
            ENTRY(ORKFormItem,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {

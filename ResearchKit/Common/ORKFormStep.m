@@ -97,6 +97,7 @@
 - (instancetype)copyWithZone:(NSZone *)zone {
     ORKFormStep *step = [super copyWithZone:zone];
     step.formItems = ORKArrayCopyObjects(_formItems);
+    step.cardViewStyle = self.cardViewStyle;
     return step;
 }
 
@@ -104,8 +105,9 @@
     BOOL isParentSame = [super isEqual:object];
     
     __typeof(self) castObject = object;
-    return isParentSame &&
-    ORKEqualObjects(self.formItems, castObject.formItems);
+    return (isParentSame &&
+            (ORKEqualObjects(self.formItems, castObject.formItems)) &&
+            self.cardViewStyle == castObject.cardViewStyle);
 }
 
 - (NSUInteger)hash {
