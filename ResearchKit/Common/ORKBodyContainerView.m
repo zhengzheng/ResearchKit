@@ -270,19 +270,20 @@ static NSString *ORKBulletUnicode = @"\u2981";
 - (UIImageView *)imageView {
     UIImageView *imageView = [UIImageView new];
     imageView.image = self.bodyItem.image;
-    imageView.contentMode = UIViewContentModeScaleAspectFit;
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
     
     if (@available(iOS 13.0, *)) {
         // To allow symbols to handle their own configuration
-        if (imageView.image.configuration == nil) {
-            [imageView.heightAnchor constraintEqualToConstant:ORKBulletIconDimension].active = YES;
-            [imageView.widthAnchor constraintEqualToConstant:ORKBulletIconDimension].active = YES;
+        if (imageView.image.configuration != nil) {
+            imageView.contentMode = UIViewContentModeCenter;
+        } else {
+            imageView.contentMode = UIViewContentModeScaleAspectFit;
         }
-    } else {
-        [imageView.heightAnchor constraintEqualToConstant:ORKBulletIconDimension].active = YES;
-        [imageView.widthAnchor constraintEqualToConstant:ORKBulletIconDimension].active = YES;
     }
+        
+    [imageView.heightAnchor constraintEqualToConstant:ORKBulletIconDimension].active = YES;
+    [imageView.widthAnchor constraintEqualToConstant:ORKBulletIconDimension].active = YES;
+
     return imageView;
 }
 
