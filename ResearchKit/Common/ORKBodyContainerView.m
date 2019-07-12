@@ -278,9 +278,6 @@ static NSString *ORKBulletUnicode = @"\u2981";
         if (imageView.image.configuration == nil) {
             [imageView.heightAnchor constraintEqualToConstant:ORKBulletIconDimension].active = YES;
             [imageView.widthAnchor constraintEqualToConstant:ORKBulletIconDimension].active = YES;
-        } else {
-            [imageView.heightAnchor constraintEqualToConstant:ORKBulletIconDimension].active = YES;
-            [imageView.widthAnchor constraintEqualToConstant:ORKBulletIconDimension].active = YES;
         }
     } else {
         [imageView.heightAnchor constraintEqualToConstant:ORKBulletIconDimension].active = YES;
