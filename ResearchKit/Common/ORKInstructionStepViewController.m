@@ -44,6 +44,11 @@
 #import "ORKHelpers_Internal.h"
 #import "ORKSkin.h"
 
+#import "ORKBodyContainerView.h"
+#import "ORKStepContentView.h"
+#import "ORKStepContentView_Private.h"
+
+@class ORKBodyContainerView;
 
 @interface ORKInstructionStepViewController()<ORKStepViewLearnMoreItemDelegate>
 
@@ -160,6 +165,10 @@
     _navigationFooterView.skipEnabled = self.skipButtonItem ? YES : NO;
 }
 
+- (void)buildInNextBodyItem {
+    [_stepView.stepContentView.bodyContainerView updateBodyItemViews];
+}
+
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
     [super encodeRestorableStateWithCoder:coder];
 }
@@ -172,6 +181,14 @@
 
 - (void)stepViewLearnMoreButtonPressed:(ORKLearnMoreInstructionStep *)learnMoreStep {
     [self presentViewController:[[ORKLearnMoreStepViewController alloc] initWithStep:learnMoreStep] animated:YES completion:nil];
+}
+
+- (void)goForward {
+    if (([self instructionStep].buildInbodyItems == YES) && ([_stepView.stepContentView.bodyContainerView hasShownAllBodyItem] == NO)) {
+        [self buildInNextBodyItem];
+    } else {
+        [super goForward];
+    }
 }
 
 @end

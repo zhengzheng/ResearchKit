@@ -30,7 +30,7 @@
 
 
 @import UIKit;
-
+#import "ORKFormStep.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -68,6 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) BOOL useCardView;
 @property (nonatomic) BOOL isLastItem;
 @property (nonatomic) BOOL isFirstItemInSectionWithoutTitle;
+@property (nonatomic) ORKCardViewStyle cardViewStyle;
 
 @end
 
