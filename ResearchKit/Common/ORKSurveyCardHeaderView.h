@@ -43,6 +43,12 @@ NS_ASSUME_NONNULL_BEGIN
                  learnMoreView:(nullable ORKLearnMoreView *)learnMoreView
                  progressText:(nullable NSString *)progressText;
 
+- (instancetype) initWithTitle:(NSString *)title
+                    detailText:(nullable NSString *)text
+                 learnMoreView:(nullable ORKLearnMoreView *)learnMoreView
+                  progressText:(nullable NSString *)progressText
+                    showBorder:(BOOL)showBorder;
+
 @end
 
 NS_ASSUME_NONNULL_END

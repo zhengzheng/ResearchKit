@@ -998,6 +998,7 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
                 choiceOtherViewCell.delegate = self;
             }
             choiceViewCell.useCardView = [self formStep].useCardView;
+            choiceViewCell.cardViewStyle = [self formStep].cardViewStyle;
             choiceViewCell.isLastItem = isLastItem;
             choiceViewCell.isFirstItemInSectionWithoutTitle = isFirstItemWithSectionWithoutTitle;
             cell = choiceViewCell;
@@ -1079,6 +1080,7 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
                     }
                     formCell.savedAnswers = _savedAnswers;
                     formCell.useCardView = [self formStep].useCardView;
+                    formCell.cardViewStyle = [self formStep].cardViewStyle;
                     formCell.isLastItem = isLastItem;
                     formCell.isFirstItemInSectionWithoutTitle = isFirstItemWithSectionWithoutTitle;
                     cell = formCell;
@@ -1175,7 +1177,11 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
     ORKSurveyCardHeaderView *cardHeaderView = (ORKSurveyCardHeaderView *)[tableView dequeueReusableHeaderFooterViewWithIdentifier:@(section).stringValue];
     
     if (cardHeaderView == nil && title) {
-        cardHeaderView = [[ORKSurveyCardHeaderView alloc] initWithTitle:title detailText:detailText learnMoreView:learnMoreView progressText:sectionProgressText];
+        cardHeaderView = [[ORKSurveyCardHeaderView alloc] initWithTitle:title
+                                                             detailText:detailText
+                                                          learnMoreView:learnMoreView
+                                                           progressText:sectionProgressText
+                                                             showBorder:([self formStep].cardViewStyle == ORKCardViewStyleBordered)];
     }
     
     return cardHeaderView;

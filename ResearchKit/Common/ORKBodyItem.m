@@ -43,6 +43,21 @@
         self.learnMoreItem = learnMoreItem;
         self.bodyItemStyle = bodyItemStyle;
         self.image = image;
+        self.useCardStyle = NO;
+    }
+    [self validateParameters];
+    return self;
+}
+
+- (instancetype)initWithText:(NSString *)text detailText:(NSString *)detailText image:(nullable UIImage *)image learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem bodyItemStyle:(ORKBodyItemStyle)bodyItemStyle useCardStyle:(BOOL)useCardStyle {
+    self = [super init];
+    if (self) {
+        self.text = text;
+        self.detailText = detailText;
+        self.learnMoreItem = learnMoreItem;
+        self.bodyItemStyle = bodyItemStyle;
+        self.image = image;
+        self.useCardStyle = useCardStyle;
     }
     [self validateParameters];
     return self;
@@ -66,6 +81,7 @@
         ORK_DECODE_OBJ_CLASS(aDecoder, learnMoreItem, ORKLearnMoreItem);
         ORK_DECODE_INTEGER(aDecoder, bodyItemStyle);
         ORK_DECODE_IMAGE(aDecoder, image);
+        ORK_DECODE_BOOL(aDecoder, useCardStyle);
     }
     return self;
 }
@@ -76,6 +92,7 @@
     ORK_ENCODE_OBJ(aCoder, learnMoreItem);
     ORK_ENCODE_INTEGER(aCoder, bodyItemStyle);
     ORK_ENCODE_IMAGE(aCoder, image);
+    ORK_ENCODE_BOOL(aCoder, useCardStyle);
 }
 
 - (nonnull id)copyWithZone:(nullable NSZone *)zone {
@@ -85,6 +102,7 @@
     bodyItem->_learnMoreItem = [self.learnMoreItem copy];
     bodyItem->_bodyItemStyle = self.bodyItemStyle;
     bodyItem->_image = [self.image copy];
+    bodyItem->_useCardStyle = self.useCardStyle;
     return bodyItem;
 }
 
@@ -102,7 +120,8 @@
             && ORKEqualObjects(self.detailText, castObject.detailText)
             && ORKEqualObjects(self.learnMoreItem, castObject.learnMoreItem)
             && (self.bodyItemStyle == castObject.bodyItemStyle)
-            && ORKEqualObjects(self.image, castObject.image));
+            && ORKEqualObjects(self.image, castObject.image)
+            && (self.useCardStyle == castObject.useCardStyle));
 }
 
 @end

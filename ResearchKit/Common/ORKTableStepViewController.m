@@ -147,6 +147,7 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
         _headerView.stepTopContentImage = [[self step] image];
         _headerView.auxiliaryImage = [[self step] auxiliaryImage];
         _headerView.titleIconImage = [[self step] iconImage];
+        _headerView.stepHeaderTextAlignment = [[self step] headerTextAlignment];
         _tableContainer.stepTopContentImageContentMode = [[self step] imageContentMode];
         _navigationFooterView = _tableContainer.navigationFooterView;
         _navigationFooterView.skipButtonItem = self.skipButtonItem;
