@@ -34,16 +34,6 @@
 
 @implementation ORKTitleLabel
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        self.numberOfLines = 2;
-        self.textAlignment = NSTextAlignmentLeft;
-    }
-    return self;
-}
-
 + (UIFont *)defaultFont {
     UIFontTextStyle style = ORKTitleLabelFontTextStyleForWindow([UIView new].window);
     UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:style];
