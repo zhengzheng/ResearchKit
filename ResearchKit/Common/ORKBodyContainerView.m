@@ -52,6 +52,8 @@ static const CGFloat ORKBulletStackLeftRightPadding = 10.0;
 
 static const CGFloat ORKBulletIconDimension = 40.0;
 
+static const CGFloat ORKBodyItemHorizontalRuleHeight = 1.0;
+
 static const CGFloat ORKCardStylePadding = 16.0;
 static const CGFloat ORKCardStyleLeadingPadding = 12.0;
 static const CGFloat ORKCardStyleMediumTextPadding = 6.0;
@@ -133,6 +135,9 @@ static NSString *ORKBulletUnicode = @"\u2981";
         [self setupBulletPointStackView];
         [self setupBodyStyleBulletPointView];
     }
+    else if (_bodyItem.bodyItemStyle == ORKBodyItemStyleHorizontalRule) {
+        [self setupBodyStyleHorizontalRule];
+    }
 }
 
 + (UIFont *)bodyTitleFontBold {
@@ -180,6 +185,16 @@ static NSString *ORKBulletUnicode = @"\u2981";
     UIFontDescriptor *fontDescriptor = [descriptor fontDescriptorWithSymbolicTraits:(UIFontDescriptorTraitLooseLeading)];
     return [UIFont fontWithDescriptor:fontDescriptor size:[[descriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue]];
     
+}
+
+- (void)setupBodyStyleHorizontalRule {
+    self.axis = UILayoutConstraintAxisVertical;
+    self.distribution = UIStackViewDistributionFill;
+    UIView *separator = [UIView new];
+    separator.translatesAutoresizingMaskIntoConstraints = NO;
+    separator.backgroundColor = UIColor.lightGrayColor;
+    [separator.heightAnchor constraintEqualToConstant:ORKBodyItemHorizontalRuleHeight].active = YES;
+    [self addArrangedSubview:separator];
 }
 
 - (void)setupBodyStyleTextView {

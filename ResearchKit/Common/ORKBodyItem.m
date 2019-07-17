@@ -63,8 +63,16 @@
     return self;
 }
 
+- (instancetype)initWithHorizontalRule {
+    return [self initWithText:nil
+                   detailText:nil
+                        image:nil
+                learnMoreItem:nil
+                bodyItemStyle:ORKBodyItemStyleHorizontalRule];
+}
+
 - (void)validateParameters {
-    if (!_text && !_detailText && !_learnMoreItem) {
+    if (_bodyItemStyle != ORKBodyItemStyleHorizontalRule && !_text && !_detailText && !_learnMoreItem) {
         NSAssert(NO, @"Parameters text, detailText and learnMoreItem cannot be nil at the same time.");
     }
 }
