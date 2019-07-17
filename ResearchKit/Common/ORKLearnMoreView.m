@@ -141,6 +141,10 @@ ORK_CLASS_AVAILABLE
     }
 }
 
+- (BOOL)isTextLink {
+    return _learnMoreButton.titleLabel.text.length > 0;
+}
+
 - (void)setupConstraints {
     _learnMoreButton.translatesAutoresizingMaskIntoConstraints = NO;
     NSArray<NSLayoutConstraint *> *constraints = @[

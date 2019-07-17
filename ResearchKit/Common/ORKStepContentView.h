@@ -57,9 +57,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) NSTextAlignment stepHeaderTextAlignment;
 
+@property (nonatomic) NSTextAlignment bodyTextAlignment;
+
 @property (nonatomic, nullable) UIImage *titleIconImage;
 
 @property (nonatomic) NSArray<ORKBodyItem *> *bodyItems;
+
+@property (nonatomic) BOOL buildsInBodyItems;
 
 @property (nonatomic, weak) id<ORKStepContentLearnMoreItemDelegate> delegate;
 

@@ -118,10 +118,16 @@ static NSMutableDictionary *colors() {
     static NSMutableDictionary *colors = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+        UIColor *backgroundColor;
+        if (@available(iOS 13.0, *)) {
+            backgroundColor = [UIColor secondarySystemBackgroundColor];
+        } else {
+            backgroundColor = [UIColor colorWithRed:239.0 / 255.0 green:239.0 / 255.0 blue:244.0 / 255.0 alpha:1.0];
+        }
 
         colors = [@{
                     ORKSignatureColorKey: ORKRGB(0x000000),
-                    ORKBackgroundColorKey: [UIColor whiteColor],
+                    ORKBackgroundColorKey: backgroundColor,
                     ORKConsentBackgroundColorKey: ORKRGB(0xffffff),
                     ORKToolBarTintColorKey: ORKRGB(0xffffff),
                     ORKLightTintColorKey: ORKRGB(0xeeeeee),
@@ -271,7 +277,7 @@ static CGFloat ORKGetMetricForScreenType(ORKScreenMetric metric, ORKScreenType s
         {         30,        30,        30,        20,        20,        30,        30,        30},      // ORKScreenMetricLearnMoreButtonSideMargin
         {         10,        10,        10,         0,         0,        10,        10,        10},      // ORKScreenMetricHeadlineSideMargin
         {         44,        44,        44,        44,        44,        44,        44,        44},      // ORKScreenMetricToolbarHeight
-        {        350,       322,       274,       217,       217,       446,       446,       446},      // ORKScreenMetricVerticalScaleHeight
+        {        274,       322,       274,       217,       217,       446,       446,       446},      // ORKScreenMetricVerticalScaleHeight
         {        208,       208,       208,       208,       198,       256,       256,       256},      // ORKScreenMetricSignatureViewHeight
         {        324,       384,       324,       304,       304,       384,       384,       384},      // ORKScreenMetricPSATKeyboardViewWidth
         {        197,       197,       167,       157,       157,       197,       197,       197},      // ORKScreenMetricPSATKeyboardViewHeight

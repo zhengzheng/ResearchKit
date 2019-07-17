@@ -31,7 +31,12 @@
 
 @import Foundation;
 #import <ResearchKit/ORKStep.h>
+#import <ResearchKit/ORKDefines.h>
 
+typedef NS_ENUM(NSInteger, ORKCardViewStyle) {
+    ORKCardViewStyleDefault,
+    ORKCardViewStyleBordered
+} ORK_ENUM_AVAILABLE;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -95,6 +100,8 @@ ORK_CLASS_AVAILABLE
    Footer text to display beneath the last formItem.
 */
 @property (nonatomic, copy, nullable) NSString *footerText;
+
+@property (nonatomic) ORKCardViewStyle cardViewStyle;
 
 @end
 
@@ -182,11 +189,11 @@ ORK_CLASS_AVAILABLE
  */
 @property (nonatomic, copy, readonly, nullable) NSString *text;
 
-@property (nonatomic, copy, readonly, nullable) NSString *detailText;
+@property (nonatomic, copy, nullable) NSString *detailText;
 
-@property (nonatomic, readonly) BOOL showsProgress;
+@property (nonatomic) BOOL showsProgress;
 
-@property (nonatomic, copy, readonly, nullable) ORKLearnMoreItem *learnMoreItem;
+@property (nonatomic, copy, nullable) ORKLearnMoreItem *learnMoreItem;
 
 /**
  A localized string that displays placeholder information for the form item.

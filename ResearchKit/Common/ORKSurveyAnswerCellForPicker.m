@@ -66,6 +66,10 @@
 - (void)loadPicker {
     if (_picker == nil) {
         _picker = [ORKPicker pickerWithAnswerFormat:[self.step impliedAnswerFormat] answer:self.answer delegate:self];
+
+        if (@available(iOS 13.0, *)) {
+            _picker.pickerView.backgroundColor = UIColor.secondarySystemGroupedBackgroundColor;
+        }
         
         [self.picker pickerWillAppear];
         

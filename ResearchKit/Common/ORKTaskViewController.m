@@ -309,6 +309,24 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
     return self;
 }
 
+- (instancetype)initWithTask:(id<ORKTask>)task
+      startingStepIdentifier:(NSString *)startingStepIdentifier
+         defaultResultSource:(nullable id<ORKTaskResultSource>)defaultResultSource
+                    delegate:(id<ORKTaskViewControllerDelegate>)delegate {
+    
+    self = [self initWithTask:task taskRunUUID:nil];
+    
+    if (self) {
+        _delegate = delegate;
+        _defaultResultSource = defaultResultSource;
+        if (startingStepIdentifier != nil) {
+            _restoredStepIdentifier = startingStepIdentifier;
+            [self applicationFinishedRestoringState];
+        }
+    }
+    return self;
+}
+
 - (void)setTaskRunUUID:(NSUUID *)taskRunUUID {
     if (_hasBeenPresented) {
         @throw [NSException exceptionWithName:NSGenericException reason:@"Cannot change task instance UUID after presenting task controller" userInfo:nil];
@@ -1618,6 +1636,11 @@ static NSString *const _ORKPresentedDate = @"presentedDate";
     }
 }
 
+- (void)setDefaultResultSource:(id<ORKTaskResultSource>)defaultResultSource {
+    _defaultResultSource = defaultResultSource;
+    [self setReviewMode:_reviewMode];
+}
+
 - (void)setReviewMode:(ORKTaskViewControllerReviewMode)reviewMode {
     if (_hasBeenPresented) {
         @throw [NSException exceptionWithName:NSGenericException reason:@"Cannot change review mode after presenting the task controller for now." userInfo:nil];
@@ -1632,12 +1655,13 @@ static NSString *const _ORKPresentedDate = @"presentedDate";
         return;
     }
     
+    _taskReviewViewController = nil;
+    
     if ([self.task isKindOfClass:[ORKOrderedTask class]]) {
         ORKOrderedTask *orderedTask = (ORKOrderedTask *)self.task;
-        if (!_taskReviewViewController) {
-            _taskReviewViewController = [[ORKTaskReviewViewController alloc] initWithResultSource:_defaultResultSource forSteps:orderedTask.steps withContentFrom:_reviewInstructionStep];
-            _taskReviewViewController.delegate = self;
-        }
+        
+        _taskReviewViewController = [[ORKTaskReviewViewController alloc] initWithResultSource:_defaultResultSource forSteps:orderedTask.steps withContentFrom:_reviewInstructionStep];
+        _taskReviewViewController.delegate = self;
     }
 }
 

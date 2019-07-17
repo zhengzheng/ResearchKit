@@ -52,6 +52,11 @@ static const CGFloat ORKBulletStackLeftRightPadding = 10.0;
 
 static const CGFloat ORKBulletIconDimension = 40.0;
 
+static const CGFloat ORKCardStylePadding = 16.0;
+static const CGFloat ORKCardStyleLeadingPadding = 12.0;
+static const CGFloat ORKCardStyleMediumTextPadding = 6.0;
+static const CGFloat ORKCardStyleSmallTextPadding = 2.0;
+
 static NSString *ORKBulletUnicode = @"\u2981";
 
 //  FIXME: Short and Compact paddings
@@ -73,11 +78,13 @@ static NSString *ORKBulletUnicode = @"\u2981";
 
 @property (nonatomic, nonnull) ORKBodyItem *bodyItem;
 @property (nonatomic, weak) id<ORKBodyItemViewDelegate> delegate;
+@property (nonatomic, strong) UIView *cardView;
+@property (nonatomic, strong) UIImageView *imageView;
 
 @end
 
 @interface ORKBodyItemView()<ORKLearnMoreViewDelegate>
-
+@property (nonatomic) NSTextAlignment textAlignment;
 @end
 
 @implementation ORKBodyItemView
@@ -86,6 +93,18 @@ static NSString *ORKBulletUnicode = @"\u2981";
     self = [super init];
     if (self) {
         self.bodyItem = bodyItem;
+        self.textAlignment = NSTextAlignmentLeft;
+        [self setupBodyStyleView];
+        
+    }
+    return self;
+}
+
+- (instancetype)initWithBodyItem:(ORKBodyItem *)bodyItem textAlignment:(NSTextAlignment)textAlignment {
+    self = [super init];
+    if (self) {
+        self.bodyItem = bodyItem;
+        self.textAlignment = textAlignment;
         [self setupBodyStyleView];
         
     }
@@ -93,6 +112,18 @@ static NSString *ORKBulletUnicode = @"\u2981";
 }
 
 - (void)setupBodyStyleView {
+    if (_bodyItem.useCardStyle == YES) {
+        _cardView = [[UIView alloc] init];
+        _cardView.translatesAutoresizingMaskIntoConstraints = NO;
+        if (@available(iOS 13.0, *)) {
+            [_cardView setBackgroundColor:[UIColor secondarySystemBackgroundColor]];
+        } else {
+            [_cardView setBackgroundColor:[UIColor groupTableViewBackgroundColor]];
+        }
+        _cardView.layer.cornerRadius = ORKCardDefaultCornerRadii;
+        [self addArrangedSubview:_cardView];
+    }
+    
     if (_bodyItem.bodyItemStyle == ORKBodyItemStyleText) {
         [self setupBodyStyleTextView];
     } else if (_bodyItem.bodyItemStyle == ORKBodyItemStyleImage) {
@@ -104,10 +135,15 @@ static NSString *ORKBulletUnicode = @"\u2981";
     }
 }
 
-+ (UIFont *)bodyTitleFont {
++ (UIFont *)bodyTitleFontBold {
     UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody];
     UIFontDescriptor *fontDescriptor = [descriptor fontDescriptorWithSymbolicTraits:(UIFontDescriptorTraitBold)];
     return [UIFont fontWithDescriptor:fontDescriptor size:[[fontDescriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue]];
+}
+
++ (UIFont *)bodyTitleFont {
+    UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody];
+    return [UIFont fontWithDescriptor:descriptor size:[[descriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue]];
 }
 
 + (UIFont *)bodyTextFont {
@@ -121,9 +157,21 @@ static NSString *ORKBulletUnicode = @"\u2981";
     return [UIFont fontWithDescriptor:descriptor size:0];
 }
 
-+ (UIFont *)bulletTextFont {
++ (UIFont *)bulletTextFontBold {
     UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleSubheadline];
     UIFontDescriptor *fontDescriptor = [descriptor fontDescriptorWithSymbolicTraits:(UIFontDescriptorTraitBold | UIFontDescriptorTraitLooseLeading)];
+    return [UIFont fontWithDescriptor:fontDescriptor size:[[fontDescriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue]];
+}
+
++ (UIFont *)bulletBodyTextFontBold {
+    UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleSubheadline];
+    UIFontDescriptor *fontDescriptor = [descriptor fontDescriptorWithSymbolicTraits:(UIFontDescriptorTraitBold | UIFontDescriptorTraitLooseLeading)];
+    return [UIFont fontWithDescriptor:fontDescriptor size:[[fontDescriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue]];
+}
+
++ (UIFont *)bulletTextFont {
+    UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleSubheadline];
+    UIFontDescriptor *fontDescriptor = [descriptor fontDescriptorWithSymbolicTraits:(UIFontDescriptorTraitLooseLeading)];
     return [UIFont fontWithDescriptor:fontDescriptor size:[[fontDescriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue]];
 }
 
@@ -137,15 +185,16 @@ static NSString *ORKBulletUnicode = @"\u2981";
 - (void)setupBodyStyleTextView {
     self.axis = UILayoutConstraintAxisVertical;
     self.distribution = UIStackViewDistributionFill;
-    self.alignment = UIStackViewAlignmentLeading;
+    self.alignment = self.textAlignment == NSTextAlignmentCenter ? UIStackViewAlignmentCenter : UIStackViewAlignmentLeading;
     UILabel *textLabel;
     UILabel *detailTextLabel;
     
     if (_bodyItem.text) {
         textLabel = [UILabel new];
         textLabel.numberOfLines = 0;
-        textLabel.font = [ORKBodyItemView bodyTitleFont];
+        textLabel.font = _bodyItem.detailText == nil ? [ORKBodyItemView bodyTitleFont] : [ORKBodyItemView bodyTitleFontBold];
         textLabel.text = _bodyItem.text;
+        textLabel.textAlignment = _textAlignment;
         textLabel.translatesAutoresizingMaskIntoConstraints = NO;
         [self addArrangedSubview:textLabel];
     }
@@ -189,9 +238,19 @@ static NSString *ORKBulletUnicode = @"\u2981";
 }
 
 - (void)setupBodyStyleImage {
-    UIImageView *imageView = [self imageView];
-    [self addArrangedSubview:imageView];
-    [self setCustomSpacing:ORKBulletIconToBodyPadding afterView:imageView];
+    _imageView = [self imageView];
+    self.alignment = UIStackViewAlignmentCenter;
+    
+    if (_bodyItem.useCardStyle == YES) {
+        _imageView.translatesAutoresizingMaskIntoConstraints = NO;
+        [_cardView addSubview:_imageView];
+        [_imageView.leadingAnchor constraintEqualToAnchor:_cardView.leadingAnchor constant:ORKCardStyleLeadingPadding].active = YES;
+        [_imageView.topAnchor constraintEqualToAnchor:_cardView.topAnchor constant:ORKCardStylePadding].active = YES;
+    } else {
+        [self addArrangedSubview:_imageView];
+        [self setCustomSpacing:ORKBulletIconToBodyPadding afterView:_imageView];
+    }
+    
     [self addSubStackView];
 }
 
@@ -216,39 +275,87 @@ static NSString *ORKBulletUnicode = @"\u2981";
 - (UIImageView *)imageView {
     UIImageView *imageView = [UIImageView new];
     imageView.image = self.bodyItem.image;
-    imageView.contentMode = UIViewContentModeScaleAspectFit;
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
-    [imageView.heightAnchor constraintEqualToConstant:ORKBulletIconDimension].active = YES;
-    [imageView.widthAnchor constraintEqualToConstant:ORKBulletIconDimension].active = YES;
+    
+    if (@available(iOS 13.0, *)) {
+        // To allow symbols to handle their own configuration
+        if (imageView.image.configuration != nil) {
+            imageView.contentMode = UIViewContentModeCenter;
+        } else {
+            imageView.contentMode = UIViewContentModeScaleAspectFit;
+        }
+    }
+    
+    if (!_bodyItem.useCardStyle) {
+        [imageView.heightAnchor constraintEqualToConstant:ORKBulletIconDimension].active = YES;
+        [imageView.widthAnchor constraintEqualToConstant:ORKBulletIconDimension].active = YES;
+    } else {
+        [imageView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh + 1 forAxis:UILayoutConstraintAxisHorizontal];
+    }
+
     return imageView;
 }
 
 - (void)addSubStackView {
-    UIStackView *subStackView = [[UIStackView alloc] init];
-    subStackView.axis = UILayoutConstraintAxisVertical;
-    subStackView.distribution = UIStackViewDistributionFill;
-    subStackView.alignment = UIStackViewAlignmentLeading;
-    subStackView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addArrangedSubview:subStackView];
     UILabel *textLabel;
     UILabel *detailTextLabel;
+    UIStackView *subStackView = [[UIStackView alloc] init];
+    
+    if (_bodyItem.useCardStyle == NO) {
+        subStackView.axis = UILayoutConstraintAxisVertical;
+        subStackView.distribution = UIStackViewDistributionFill;
+        subStackView.alignment = UIStackViewAlignmentLeading;
+        subStackView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self addArrangedSubview:subStackView];
+    }
     
     if (_bodyItem.text) {
         textLabel = [UILabel new];
         textLabel.numberOfLines = 0;
-        textLabel.font = [ORKBodyItemView bulletTextFont];
         textLabel.text = _bodyItem.text;
         textLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        [subStackView addArrangedSubview:textLabel];
+        
+        if (_bodyItem.useCardStyle == YES) {
+            textLabel.font = [ORKBodyItemView bulletBodyTextFontBold];
+            
+            [_cardView addSubview:textLabel];
+            [textLabel.leadingAnchor constraintEqualToAnchor: _imageView.trailingAnchor constant:ORKCardStyleMediumTextPadding].active = YES;
+            [textLabel.topAnchor constraintEqualToAnchor:_imageView.topAnchor constant:0].active = YES;
+            [textLabel.trailingAnchor constraintEqualToAnchor:_cardView.trailingAnchor constant:-ORKCardStylePadding].active = YES;
+            
+            if (_bodyItem.detailText == nil) {
+                [textLabel.bottomAnchor constraintEqualToAnchor:_cardView.bottomAnchor constant:-ORKCardStylePadding].active = YES;
+            }
+        } else {
+            textLabel.font = _bodyItem.detailText ? [ORKBodyItemView bulletTextFontBold] : [ORKBodyItemView bulletTextFont];
+            [subStackView addArrangedSubview:textLabel];
+        }
     }
     if (_bodyItem.detailText) {
         detailTextLabel = [UILabel new];
         detailTextLabel.numberOfLines = 0;
         detailTextLabel.font = [ORKBodyItemView bulletDetailTextFont];
         detailTextLabel.text = _bodyItem.detailText;
-        [detailTextLabel setTextColor:ORKColor(ORKBulletItemTextColorKey)];
+        if (_bodyItem.useCardStyle == YES) {
+            if (@available(iOS 13.0, *)) {
+                [detailTextLabel setTextColor:[UIColor labelColor]];
+            } else{
+                [detailTextLabel setTextColor:ORKColor(ORKBulletItemTextColorKey)];
+            }
+        } else {
+            [detailTextLabel setTextColor:ORKColor(ORKBulletItemTextColorKey)];
+        }
         detailTextLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        [subStackView addArrangedSubview:detailTextLabel];
+        
+        if (_bodyItem.useCardStyle == YES) {
+            [_cardView addSubview:detailTextLabel];
+            [detailTextLabel.leadingAnchor constraintEqualToAnchor: _imageView.trailingAnchor constant:ORKCardStyleMediumTextPadding].active = YES;
+            [detailTextLabel.topAnchor constraintEqualToAnchor:textLabel.bottomAnchor constant:ORKCardStyleSmallTextPadding].active = YES;
+            [detailTextLabel.trailingAnchor constraintEqualToAnchor:_cardView.trailingAnchor constant:-ORKCardStylePadding].active = YES;
+            [detailTextLabel.bottomAnchor constraintEqualToAnchor:_cardView.bottomAnchor constant:-ORKCardStylePadding].active = YES;
+        } else {
+            [subStackView addArrangedSubview:detailTextLabel];
+        }
     }
     if (_bodyItem.learnMoreItem) {
         ORKLearnMoreView *learnMoreView = _bodyItem.learnMoreItem.text ? [ORKLearnMoreView learnMoreCustomButtonViewWithText:_bodyItem.learnMoreItem.text LearnMoreInstructionStep:_bodyItem.learnMoreItem.learnMoreInstructionStep] : [ORKLearnMoreView learnMoreDetailDisclosureButtonViewWithLearnMoreInstructionStep:_bodyItem.learnMoreItem.learnMoreInstructionStep];
@@ -268,12 +375,16 @@ static NSString *ORKBulletUnicode = @"\u2981";
 @end
 
 @interface ORKBodyContainerView()<ORKBodyItemViewDelegate>
-
+@property (nonatomic, strong) NSArray<ORKBodyItemView *> *views;
+@property (nonatomic) NSTextAlignment textAlignment;
+@property (nonatomic) NSUInteger currentBodyItemIndex;
 @end
 
 @implementation ORKBodyContainerView
 
-- (instancetype)initWithBodyItems:(NSArray<ORKBodyItem *> *)bodyItems delegate:(nonnull id<ORKBodyContainerViewDelegate>)delegate {
+- (instancetype)initWithBodyItems:(NSArray<ORKBodyItem *> *)bodyItems
+                    textAlignment:(NSTextAlignment)textAlignment
+                         delegate:(nonnull id<ORKBodyContainerViewDelegate>)delegate {
     self.delegate = delegate;
     if (bodyItems && bodyItems.count <= 0) {
         NSAssert(NO, @"Body Items array cannot be empty");
@@ -281,6 +392,7 @@ static NSString *ORKBulletUnicode = @"\u2981";
     self = [super init];
     if (self) {
         self.bodyItems = bodyItems;
+        self.textAlignment = textAlignment;
         self.axis = UILayoutConstraintAxisVertical;
         self.distribution = UIStackViewDistributionFill;
         [self addBodyItemViews];
@@ -289,17 +401,46 @@ static NSString *ORKBulletUnicode = @"\u2981";
 }
 
 - (void)addBodyItemViews {
-    NSArray<ORKBodyItemView *> *views = [ORKBodyContainerView bodyItemViewsWithBodyItems:_bodyItems];
-    for (NSInteger i = 0; i < views.count; i++) {
-        [self addArrangedSubview:views[i]];
-        views[i].delegate = self;
-        if (i < views.count - 1) {
-            
+    _views = [ORKBodyContainerView bodyItemViewsWithBodyItems:_bodyItems textAlignment:_textAlignment];
+    for (NSInteger i = 0; i < _views.count; i++) {
+        [self addArrangedSubview:_views[i]];
+        _views[i].delegate = self;
+        
+        if (i < _views.count - 1) {
             CGFloat padding = [self spacingWithAboveStyle:_bodyItems[i].bodyItemStyle belowStyle:_bodyItems[i + 1].bodyItemStyle];
-            
-            [self setCustomSpacing:padding afterView:views[i]];
+            [self setCustomSpacing:padding afterView:_views[i]];
         }
     }
+}
+
+- (void)setBuildsInBodyItems:(BOOL)buildsInBodyItems {
+    _buildsInBodyItems = buildsInBodyItems;
+    for (NSInteger i = 0; i < _views.count; i++) {
+        if ((_buildsInBodyItems == YES) && (i != 0)) {
+            _views[i].alpha = 0;
+        }
+    }
+    
+    _currentBodyItemIndex = 0;
+}
+
+- (void)updateBodyItemViews {
+    if (_buildsInBodyItems == NO) { return; }
+    
+    NSUInteger indexToShow = _currentBodyItemIndex + 1;
+    for (NSInteger i = 0; i < _views.count; i++) {
+        if ((i <= indexToShow) && (_views[i].alpha == 0)) {
+            [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+                _views[i].alpha = 1;
+            } completion:nil];
+        }
+    }
+    
+    _currentBodyItemIndex++;
+}
+
+- (BOOL)hasShownAllBodyItem {
+    return (_currentBodyItemIndex == (_views.count - 1));
 }
 
 - (CGFloat)spacingWithAboveStyle:(ORKBodyItemStyle )aboveStyle belowStyle:(ORKBodyItemStyle )belowStyle {
@@ -311,10 +452,10 @@ static NSString *ORKBulletUnicode = @"\u2981";
     }
 }
 
-+ (NSArray<ORKBodyItemView *> *)bodyItemViewsWithBodyItems:(NSArray<ORKBodyItem *> *)bodyItems {
++ (NSArray<ORKBodyItemView *> *)bodyItemViewsWithBodyItems:(NSArray<ORKBodyItem *> *)bodyItems textAlignment:(NSTextAlignment)textAlignment {
     NSMutableArray<ORKBodyItemView *> *viewsArray = [[NSMutableArray alloc] init];
     [bodyItems enumerateObjectsUsingBlock:^(ORKBodyItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        ORKBodyItemView *itemView = [[ORKBodyItemView alloc] initWithBodyItem:obj];
+        ORKBodyItemView *itemView = [[ORKBodyItemView alloc] initWithBodyItem:obj textAlignment:textAlignment];
         itemView.translatesAutoresizingMaskIntoConstraints = NO;
         [viewsArray addObject:itemView];
     }];

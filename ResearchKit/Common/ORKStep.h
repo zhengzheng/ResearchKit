@@ -172,12 +172,26 @@ ORK_CLASS_AVAILABLE
 @property (nonatomic) NSArray<ORKBodyItem *> *bodyItems;
 
 /**
+ An 'NSTextAlignment' that controls the text alignment for text bodyItems.
+ */
+@property (nonatomic) NSTextAlignment bodyItemTextAlignment;
+
+/**
+ A `Boolen` value indicating if the body items of the step should build in.
+ 
+ Default value is NO resulting in all body items being displayed. Set to YES to
+ only show the first item and subsequent items will build in on continue.
+ */
+@property (nonatomic, assign) BOOL buildInbodyItems;
+
+/**
  Additional text to display for the step in a localized string at the bottom of the view.
  
  The footnote is displayed in a smaller font below the continue button. It is intended to be used
  in order to include disclaimer, copyright, etc. that is important to display in the step but
  should not distract from the main purpose of the step.
  */
+
 @property (nonatomic, copy, nullable) NSString *footnote;
 
 /**

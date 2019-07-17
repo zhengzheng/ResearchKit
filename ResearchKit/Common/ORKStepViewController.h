@@ -316,6 +316,11 @@ ORK_CLASS_AVAILABLE
 @property (nonatomic, copy, readonly, nullable) ORKStepResult *result;
 
 /**
+ A boolean indicating if the step was skipped or not.
+ */
+@property (nonatomic, assign, readonly) BOOL wasSkipped;
+
+/**
  Add a result to the step view controller's `ORKStepResult`. By default, the property for
  the step view controller's result will instantiate a copy of the result each time it is 
  called. Therefore, the result cannot be mutated by adding a result to its result array.

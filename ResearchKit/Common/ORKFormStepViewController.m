@@ -625,88 +625,96 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
     NSArray *items = [self allFormItems];
     _sections = [NSMutableArray new];
     ORKTableSection *section = nil;
-    
-    if (items.count > 0) {
-        ORKFormItem *firstFormItem = items.firstObject;
-        if (firstFormItem.answerFormat) {
-            [self buildSectionsWithoutGrouping];
-            return;
-        }
-    }
+    BOOL groupItemsWithCurrentSection = NO;
     
     for (ORKFormItem *item in items) {
+        BOOL itemRequiresSingleSection = [self doesItemRequireSingleSection:item];
+        
         if (!item.answerFormat) {
             // Add new section
-            section = [[ORKTableSection alloc] initWithSectionIndex:_sections.count];
+            section = [self createSectionWithItem:item];
             [_sections addObject:section];
             
-            // Save title
-            section.title = item.text;
-            section.detailText = item.detailText;
-            section.learnMoreItem = item.learnMoreItem;
-            section.showsProgress = item.showsProgress;
+            groupItemsWithCurrentSection = YES;
+        } else if (itemRequiresSingleSection || !groupItemsWithCurrentSection) {
+            groupItemsWithCurrentSection = NO;
+            [self buildSingleSection:item];
         } else {
-            if (section) {
+            if (section && groupItemsWithCurrentSection) {
                 [section addFormItem:item];
             }
         }
     }
 }
 
-- (void)buildSectionsWithoutGrouping {
-    NSArray *items = [self allFormItems];
-
-    _sections = [NSMutableArray new];
+- (void)buildSingleSection:(ORKFormItem *)item {
     ORKTableSection *section = nil;
 
+    // Section header
+    if ([item impliedAnswerFormat] == nil) {
+        // Add new section
+        section = [self createSectionWithItem:item];
+        [_sections addObject:section];
+        
+    // Actual item
+    } else {
+
+        // Items require individual section
+        if ([self doesItemRequireSingleSection:item]) {
+            // Add new section
+            section = [self createSectionWithItem:item];
+            [_sections addObject:section];
+
+            [section addFormItem:item];
+
+            // following item should start a new section
+            section = nil;
+        } else {
+            // In case no section available, create new one.
+            if (section == nil) {
+                section = [self createSectionWithItem:item];
+                [_sections addObject:section];
+            }
+            [section addFormItem:item];
+        }
+    }
+}
+
+- (ORKTableSection *)createSectionWithItem:(ORKFormItem *)item {
+    ORKTableSection *section = [[ORKTableSection alloc]  initWithSectionIndex:_sections.count];
+    section.title = item.text;
+    section.detailText = item.detailText;
+    section.learnMoreItem = item.learnMoreItem;
+    section.showsProgress = item.showsProgress;
+    
+    return section;
+}
+
+- (BOOL)doesItemRequireSingleSection:(ORKFormItem *)item {
+    if (item.impliedAnswerFormat == nil) {
+        return NO;
+    }
+    
+    ORKAnswerFormat *answerFormat = [item impliedAnswerFormat];
+    
     NSArray *singleSectionTypes = @[@(ORKQuestionTypeBoolean),
                                     @(ORKQuestionTypeSingleChoice),
                                     @(ORKQuestionTypeMultipleChoice),
                                     @(ORKQuestionTypeLocation)];
-
-    for (ORKFormItem *item in items) {
-        // Section header
-        if ([item impliedAnswerFormat] == nil) {
-            // Add new section
-            section = [[ORKTableSection alloc] initWithSectionIndex:_sections.count];
-            [_sections addObject:section];
-
-            // Save title
-            section.title = item.text;
-        // Actual item
-        } else {
-            ORKAnswerFormat *answerFormat = [item impliedAnswerFormat];
-
-            BOOL multiCellChoices = ([singleSectionTypes containsObject:@(answerFormat.questionType)] &&
-                                     NO == [answerFormat isKindOfClass:[ORKValuePickerAnswerFormat class]]);
-
-            BOOL multilineTextEntry = (answerFormat.questionType == ORKQuestionTypeText && [(ORKTextAnswerFormat *)answerFormat multipleLines]);
-
-            BOOL scale = (answerFormat.questionType == ORKQuestionTypeScale);
-
-            // Items require individual section
-            if (multiCellChoices || multilineTextEntry || scale) {
-                // Add new section
-                section = [[ORKTableSection alloc]  initWithSectionIndex:_sections.count];
-                [_sections addObject:section];
-
-                // Save title
-                section.title = item.text;
-
-                [section addFormItem:item];
-
-                // following item should start a new section
-                section = nil;
-            } else {
-                // In case no section available, create new one.
-                if (section == nil) {
-                    section = [[ORKTableSection alloc]  initWithSectionIndex:_sections.count];
-                    [_sections addObject:section];
-                }
-                [section addFormItem:item];
-            }
-        }
+    
+    BOOL multiCellChoices = ([singleSectionTypes containsObject:@(answerFormat.questionType)] &&
+                             NO == [answerFormat isKindOfClass:[ORKValuePickerAnswerFormat class]]);
+    
+    BOOL multilineTextEntry = (answerFormat.questionType == ORKQuestionTypeText && [(ORKTextAnswerFormat *)answerFormat multipleLines]);
+    
+    BOOL scale = (answerFormat.questionType == ORKQuestionTypeScale);
+    
+    // Items require individual section
+    if (multiCellChoices || multilineTextEntry || scale) {
+        return YES;
     }
+    
+    return NO;
 }
 
 - (NSInteger)numberOfAnsweredFormItemsInDictionary:(NSDictionary *)dictionary {
@@ -990,6 +998,7 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
                 choiceOtherViewCell.delegate = self;
             }
             choiceViewCell.useCardView = [self formStep].useCardView;
+            choiceViewCell.cardViewStyle = [self formStep].cardViewStyle;
             choiceViewCell.isLastItem = isLastItem;
             choiceViewCell.isFirstItemInSectionWithoutTitle = isFirstItemWithSectionWithoutTitle;
             cell = choiceViewCell;
@@ -1071,6 +1080,7 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
                     }
                     formCell.savedAnswers = _savedAnswers;
                     formCell.useCardView = [self formStep].useCardView;
+                    formCell.cardViewStyle = [self formStep].cardViewStyle;
                     formCell.isLastItem = isLastItem;
                     formCell.isFirstItemInSectionWithoutTitle = isFirstItemWithSectionWithoutTitle;
                     cell = formCell;
@@ -1164,30 +1174,17 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
         learnMoreView.delegate = self;
     }
     
-    ORKFormStep *formStep = [self formStep];
+    ORKSurveyCardHeaderView *cardHeaderView = (ORKSurveyCardHeaderView *)[tableView dequeueReusableHeaderFooterViewWithIdentifier:@(section).stringValue];
     
-    if (formStep.useCardView && _sections[section].items.count > 0) {
-        
-        ORKSurveyCardHeaderView *cardHeaderView = (ORKSurveyCardHeaderView *)[tableView dequeueReusableHeaderFooterViewWithIdentifier:@(section).stringValue];
-        
-        if (cardHeaderView == nil && title) {
-            cardHeaderView = [[ORKSurveyCardHeaderView alloc] initWithTitle:title detailText:detailText learnMoreView:learnMoreView progressText:sectionProgressText];
-        }
-        
-        return cardHeaderView;
+    if (cardHeaderView == nil && title) {
+        cardHeaderView = [[ORKSurveyCardHeaderView alloc] initWithTitle:title
+                                                             detailText:detailText
+                                                          learnMoreView:learnMoreView
+                                                           progressText:sectionProgressText
+                                                             showBorder:([self formStep].cardViewStyle == ORKCardViewStyleBordered)];
     }
-    else {
-        ORKFormSectionHeaderView *view = (ORKFormSectionHeaderView *)[tableView dequeueReusableHeaderFooterViewWithIdentifier:@(section).stringValue];
-        
-        if (view == nil) {
-            // Do not create a header view if first section header has no title
-            if (title.length > 0 || section > 0) {
-                view = [[ORKFormSectionHeaderView alloc] initWithTitle:title tableView:tableView firstSection:(section == 0)];
-            }
-        }
-        
-        return view;
-    }
+    
+    return cardHeaderView;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {

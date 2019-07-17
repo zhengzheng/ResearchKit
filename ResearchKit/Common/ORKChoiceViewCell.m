@@ -142,11 +142,15 @@ static const CGFloat LabelLeadingPadding = 10.0;
             CGRect lineBounds = CGRectMake(_leftRightMargin, self.containerView.bounds.size.height - 1.0, self.containerView.bounds.size.width - _leftRightMargin, 0.5);
             lineLayer.path = [UIBezierPath bezierPathWithRect:lineBounds].CGPath;
             lineLayer.zPosition = 0.0f;
-
         }
+        
         lineLayer.fillColor = borderColor.CGColor;
-        _contentMaskLayer.fillColor = borderColor.CGColor;
+        if (_cardViewStyle == ORKCardViewStyleBordered) {
+            _contentMaskLayer.fillColor = borderColor.CGColor;
+        }
+        
         [_contentMaskLayer addSublayer:foreLayer];
+        
         [_contentMaskLayer addSublayer:lineLayer];
         [_containerView.layer insertSublayer:_contentMaskLayer atIndex:0];
     }

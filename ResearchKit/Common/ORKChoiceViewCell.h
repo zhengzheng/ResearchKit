@@ -30,7 +30,7 @@
 
 
 @import UIKit;
-
+#import <ResearchKit/ORKFormStep.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -47,6 +47,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) bool isLastItem;
 
 @property (nonatomic) BOOL isFirstItemInSectionWithoutTitle;
+
+@property (nonatomic) ORKCardViewStyle cardViewStyle;
 
 - (void)setPrimaryText:(NSString *)primaryText;
 - (void)setPrimaryAttributedText: (NSAttributedString *)primaryAttributedText;

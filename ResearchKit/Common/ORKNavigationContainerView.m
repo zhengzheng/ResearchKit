@@ -37,6 +37,7 @@ static const CGFloat ORKStackViewSpacing = 5.0;
 static const CGFloat shadowHeight = 0.75;
 static const CGFloat shadowOpacity = 0.2;
 static const CGFloat shadowRadius = 1.0;
+static const CGFloat skipButtonHeight = 50.0;
 
 @implementation ORKNavigationContainerView {
     
@@ -143,7 +144,15 @@ static const CGFloat shadowRadius = 1.0;
                                                                                          toItem:_skipButtonView
                                                                                       attribute:NSLayoutAttributeCenterY
                                                                                      multiplier:1.0
-                                                                                       constant:0.0], nil];
+                                                                                       constant:0.0],
+                                                         
+                                                         [NSLayoutConstraint constraintWithItem:_skipButton
+                                                                                      attribute:NSLayoutAttributeHeight
+                                                                                      relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                                                         toItem:nil
+                                                                                      attribute:NSLayoutAttributeHeight
+                                                                                     multiplier:1.0
+                                                                                       constant:skipButtonHeight], nil];
     if (_skipButtonStyle == ORKNavigationContainerButtonStyleRoundedRect) {
         [constraints addObjectsFromArray:@[
                                            [NSLayoutConstraint constraintWithItem:_skipButton
@@ -268,7 +277,6 @@ static const CGFloat shadowRadius = 1.0;
         if ([_subStackView2.subviews count] > 0) {
             [_parentStackView addArrangedSubview:_subStackView2];
         }
-        [_skipButtonView setHidden:(!_skipButton || _skipButton.isHidden || _skipButton.alpha == 0)];
     }
 }
 
@@ -434,7 +442,7 @@ static const CGFloat shadowRadius = 1.0;
 
 - (void)setUpConstraints {
     NSMutableArray *constraints = [NSMutableArray new];
-
+    
     [constraints addObjectsFromArray:@[
                                        [NSLayoutConstraint constraintWithItem:_parentStackView
                                                                     attribute:NSLayoutAttributeTop

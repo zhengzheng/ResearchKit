@@ -103,7 +103,11 @@
 
 - (void)setAnswer:(NSString *)answer {
     _answer = answer;
-    _answerLabel.textColor = _answer ? UIColor.blackColor : UIColor.lightGrayColor;
+    if (@available(iOS 13.0, *)) {
+        _answerLabel.textColor = _answer ? UIColor.secondaryLabelColor : UIColor.tertiaryLabelColor;
+    } else {
+        _answerLabel.textColor = _answer ? UIColor.blackColor : UIColor.lightGrayColor;
+    }
     _answerLabel.text = _answer ? : ORKLocalizedString(@"REVIEW_SKIPPED_ANSWER", nil);
 }
 
@@ -152,7 +156,11 @@
     if (!_containerView) {
         _containerView = [UIView new];
     }
-    _containerView.backgroundColor = UIColor.whiteColor;
+    if (@available(iOS 13.0, *)) {
+        _containerView.backgroundColor = UIColor.systemBackgroundColor;
+    } else {
+        _containerView.backgroundColor = UIColor.whiteColor;
+    }
     _containerView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.contentView addSubview:_containerView];
 }
@@ -257,7 +265,11 @@
         _containerView = [UIView new];
     }
     
-    _containerView.backgroundColor = UIColor.whiteColor;
+    if (@available(iOS 13.0, *)) {
+        _containerView.backgroundColor = UIColor.systemBackgroundColor;
+    } else {
+        _containerView.backgroundColor = UIColor.whiteColor;
+    }
     _containerView.translatesAutoresizingMaskIntoConstraints = NO;
 
     [self addSubview:_containerView];
