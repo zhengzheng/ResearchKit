@@ -395,10 +395,9 @@
 
 - (void)toneWillStartClipping {
     if (_usingMissingList
-        && (_indexOfStepUpMissingList <= _stepUpMissingList.count)
-        && (_indexOfStepUpMissingList > 0)) {
+        && (_indexOfStepUpMissingList <= _stepUpMissingList.count)) {
         _usingMissingList = NO;
-        _currentdBHL = _currentdBHL - [_stepUpMissingList[_indexOfStepUpMissingList - 1] doubleValue] + _dBHLStepUpSize;
+        _currentdBHL = _currentdBHL - [_stepUpMissingList[_indexOfStepUpMissingList - (_indexOfStepUpMissingList == 0 ? 0 : 1)] doubleValue] + _dBHLStepUpSize;
         [self estimatedBHLAndPlayToneWithFrequency:_freqLoopList[_indexOfFreqLoopList]];
     } else {
         _indexOfFreqLoopList += 1;
