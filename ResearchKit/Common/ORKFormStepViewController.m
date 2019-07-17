@@ -625,7 +625,6 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
     NSArray *items = [self allFormItems];
     _sections = [NSMutableArray new];
     ORKTableSection *section = nil;
-    BOOL groupItemsWithCurrentSection = NO;
     
     for (ORKFormItem *item in items) {
         BOOL itemRequiresSingleSection = [self doesItemRequireSingleSection:item];
@@ -635,12 +634,12 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
             section = [self createSectionWithItem:item];
             [_sections addObject:section];
             
-            groupItemsWithCurrentSection = YES;
-        } else if (itemRequiresSingleSection || !groupItemsWithCurrentSection) {
-            groupItemsWithCurrentSection = NO;
+        } else if (itemRequiresSingleSection || _sections.count == 0) {
+            
             [self buildSingleSection:item];
+            section = [_sections lastObject];
         } else {
-            if (section && groupItemsWithCurrentSection) {
+            if (section) {
                 [section addFormItem:item];
             }
         }
@@ -667,8 +666,6 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
 
             [section addFormItem:item];
 
-            // following item should start a new section
-            section = nil;
         } else {
             // In case no section available, create new one.
             if (section == nil) {
@@ -988,7 +985,7 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
         ORKFormItem *formItem = cellItem.formItem;
         id answer = _savedAnswers[formItem.identifier];
         
-        if (section.textChoiceCellGroup) {
+        if (section.textChoiceCellGroup && ([section.textChoiceCellGroup cellAtIndexPath:indexPath withReuseIdentifier:identifier] != nil)) {
             [section.textChoiceCellGroup setAnswer:answer];
             section.textChoiceCellGroup.delegate = self;
             ORKChoiceViewCell *choiceViewCell = nil;
