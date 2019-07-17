@@ -192,7 +192,11 @@ static NSString *ORKBulletUnicode = @"\u2981";
     self.distribution = UIStackViewDistributionFill;
     UIView *separator = [UIView new];
     separator.translatesAutoresizingMaskIntoConstraints = NO;
-    separator.backgroundColor = UIColor.lightGrayColor;
+    if (@available(iOS 13.0, *)) {
+        separator.backgroundColor = UIColor.separatorColor;
+    } else {
+        separator.backgroundColor = UIColor.lightGrayColor;
+    }
     [separator.heightAnchor constraintEqualToConstant:ORKBodyItemHorizontalRuleHeight].active = YES;
     [self addArrangedSubview:separator];
 }
