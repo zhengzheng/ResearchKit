@@ -184,7 +184,7 @@
 }
 
 - (void)goForward {
-    if (([self instructionStep].buildInbodyItems == YES) && ([_stepView.stepContentView.bodyContainerView hasShownAllBodyItem] == NO)) {
+    if (([self instructionStep].buildInBodyItems == YES) && ([_stepView.stepContentView.bodyContainerView hasShownAllBodyItem] == NO)) {
         [self buildInNextBodyItem];
     } else {
         [super goForward];
