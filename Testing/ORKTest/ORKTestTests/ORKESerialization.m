@@ -713,7 +713,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     IMAGEPROPERTY(auxiliaryImage, NSObject, YES),
                     IMAGEPROPERTY(image, NSObject, YES),
                     PROPERTY(bodyItemTextAlignment, NSNumber, NSObject, YES, nil, nil),
-                    PROPERTY(buildInbodyItems, NSNumber, NSObject, YES, nil, nil),
+                    PROPERTY(buildInBodyItems, NSNumber, NSObject, YES, nil, nil),
                     })),
            ENTRY(ORKBodyItem,
                  ^id(__unused NSDictionary *dict, __unused ORKESerializationPropertyGetter getter) {

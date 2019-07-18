@@ -96,7 +96,7 @@
     step.detailText = self.detailText;
     step.headerTextAlignment = _headerTextAlignment;
     step.bodyItemTextAlignment = _bodyItemTextAlignment;
-    step.buildInbodyItems = _buildInbodyItems;
+    step.buildInBodyItems = _buildInBodyItems;
     step.footnote = self.footnote;
     step.image = self.image;
     step.imageContentMode = self.imageContentMode;
@@ -122,7 +122,7 @@
             && ORKEqualObjects(self.detailText, castObject.detailText)
             && (self.headerTextAlignment == castObject.headerTextAlignment)
             && (self.bodyItemTextAlignment == castObject.bodyItemTextAlignment)
-            && (self.buildInbodyItems == castObject.buildInbodyItems)
+            && (self.buildInBodyItems == castObject.buildInBodyItems)
             && ORKEqualObjects(self.footnote, castObject.footnote)
             && ORKEqualObjects(self.image, castObject.image)
             && ORKEqualObjects(self.auxiliaryImage, castObject.auxiliaryImage)
@@ -137,7 +137,7 @@
 
 - (NSUInteger)hash {
     // Ignore the task reference - it's not part of the content of the step.
-    return _identifier.hash ^ _title.hash ^ _text.hash ^ self.detailText.hash ^_headerTextAlignment ^ _bodyItemTextAlignment ^ (_buildInbodyItems ? 0xf : 0x0) ^ _imageContentMode ^ self.footnote.hash ^ (_optional ? 0xf : 0x0) ^ _bodyItems.hash ^ (_showsProgress ? 0xf : 0x0);
+    return _identifier.hash ^ _title.hash ^ _text.hash ^ self.detailText.hash ^_headerTextAlignment ^ _bodyItemTextAlignment ^ (_buildInBodyItems ? 0xf : 0x0) ^ _imageContentMode ^ self.footnote.hash ^ (_optional ? 0xf : 0x0) ^ _bodyItems.hash ^ (_showsProgress ? 0xf : 0x0);
 }
 
 + (BOOL)supportsSecureCoding {
@@ -164,7 +164,7 @@
         ORK_DECODE_OBJ_CLASS(aDecoder, task, ORKOrderedTask);
         ORK_DECODE_BOOL(aDecoder, shouldTintImages);
         ORK_DECODE_BOOL(aDecoder, useSurveyMode);
-        ORK_DECODE_BOOL(aDecoder, buildInbodyItems);
+        ORK_DECODE_BOOL(aDecoder, buildInBodyItems);
     }
     return self;
 }
@@ -186,7 +186,7 @@
     ORK_ENCODE_BOOL(aCoder, optional);
     ORK_ENCODE_BOOL(aCoder, shouldTintImages);
     ORK_ENCODE_BOOL(aCoder, useSurveyMode);
-    ORK_ENCODE_BOOL(aCoder, buildInbodyItems);
+    ORK_ENCODE_BOOL(aCoder, buildInBodyItems);
     if ([_task isKindOfClass:[ORKOrderedTask class]]) {
         ORK_ENCODE_OBJ(aCoder, task);
     }
