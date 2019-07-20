@@ -182,7 +182,7 @@ ORK_CLASS_AVAILABLE
  Default value is NO resulting in all body items being displayed. Set to YES to
  only show the first item and subsequent items will build in on continue.
  */
-@property (nonatomic, assign) BOOL buildInbodyItems;
+@property (nonatomic, assign) BOOL buildInBodyItems;
 
 /**
  Additional text to display for the step in a localized string at the bottom of the view.

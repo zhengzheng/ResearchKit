@@ -31,6 +31,7 @@
 
 #import "ORKStepContentView_Private.h"
 #import "ORKTitleLabel.h"
+#import "ORKBodyLabel.h"
 #import "ORKBodyItem.h"
 #import "ORKBodyContainerView.h"
 #import "ORKSkin.h"
@@ -355,6 +356,7 @@ typedef NS_CLOSED_ENUM(NSInteger, ORKUpdateConstraintSequence) {
     if (!_titleLabel) {
         _titleLabel = [ORKTitleLabel new];
     }
+    _titleLabel.numberOfLines = 0;
     _titleLabel.textAlignment = _stepHeaderTextAlignment;
     [self addSubview:_titleLabel];
     [self setupTitleLabelConstraints];
@@ -440,10 +442,8 @@ typedef NS_CLOSED_ENUM(NSInteger, ORKUpdateConstraintSequence) {
 
 - (void)setupTextLabel {
     if (!_textLabel) {
-        _textLabel = [UILabel new];
+        _textLabel = [ORKBodyLabel new];
     }
-    UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody];
-    [_textLabel setFont:[UIFont fontWithDescriptor:descriptor size:[[descriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue]]];
     _textLabel.textAlignment = _stepHeaderTextAlignment;
     _textLabel.numberOfLines = 0;
     [self addSubview:_textLabel];
@@ -550,10 +550,8 @@ typedef NS_CLOSED_ENUM(NSInteger, ORKUpdateConstraintSequence) {
 
 - (void)setupDetailTextLabel {
     if (!_detailTextLabel) {
-        _detailTextLabel = [UILabel new];
+        _detailTextLabel = [ORKBodyLabel new];
     }
-    UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody];
-    [_detailTextLabel setFont:[UIFont fontWithDescriptor:descriptor size:[[descriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue]]];
     _detailTextLabel.textAlignment = _stepHeaderTextAlignment;
     _detailTextLabel.numberOfLines = 0;
     [self addSubview:_detailTextLabel];

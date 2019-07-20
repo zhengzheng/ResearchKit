@@ -34,6 +34,11 @@
 
 @implementation ORKTitleLabel
 
+- (void)updateAppearance {
+    self.font = [[self class] defaultFont];
+    [self invalidateIntrinsicContentSize];
+}
+
 + (UIFont *)defaultFont {
     UIFontTextStyle style = ORKTitleLabelFontTextStyleForWindow([UIView new].window);
     UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:style];
