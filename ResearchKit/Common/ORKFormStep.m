@@ -170,25 +170,44 @@
 @implementation ORKFormItem
 
 - (instancetype)initWithIdentifier:(NSString *)identifier text:(NSString *)text answerFormat:(ORKAnswerFormat *)answerFormat {
-    return [self initWithIdentifier:identifier text:text answerFormat:answerFormat optional:YES];
+    return [self initWithIdentifier:identifier
+                               text:text
+                         detailText:nil
+                      learnMoreItem:nil
+                      showsProgress:NO
+                       answerFormat:answerFormat
+                           optional:YES];
 }
 
 - (instancetype)initWithIdentifier:(NSString *)identifier text:(NSString *)text answerFormat:(ORKAnswerFormat *)answerFormat optional:(BOOL)optional {
-    self = [super init];
-    if (self) {
-        ORKThrowInvalidArgumentExceptionIfNil(identifier);
-        _identifier = [identifier copy];
-        _text = [text copy];
-        _answerFormat = [answerFormat copy];
-        _optional = optional;
-    }
-    return self;
+    return [self initWithIdentifier:identifier
+                               text:text
+                         detailText:nil
+                      learnMoreItem:nil
+                      showsProgress:NO
+                       answerFormat:answerFormat
+                           optional:optional];
 }
 
 - (instancetype)initWithSectionTitle:(NSString *)sectionTitle {
     self = [super init];
     if (self) {
         _text = [sectionTitle copy];
+    }
+    return self;
+}
+
+- (instancetype)initWithIdentifier:(NSString *)identifier text:(nullable NSString *)text detailText:(nullable NSString *)detailText learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem showsProgress:(BOOL)showsProgress answerFormat:(nullable ORKAnswerFormat *)answerFormat optional:(BOOL) optional{
+    self = [super init];
+    if (self) {
+        ORKThrowInvalidArgumentExceptionIfNil(identifier);
+        _identifier = [identifier copy];
+        _text = [text copy];
+        _detailText = [detailText copy];
+        _learnMoreItem = [learnMoreItem copy];
+        _showsProgress = showsProgress;
+        _answerFormat = [answerFormat copy];
+        _optional = optional;
     }
     return self;
 }

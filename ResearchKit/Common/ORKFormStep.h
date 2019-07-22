@@ -152,9 +152,33 @@ ORK_CLASS_AVAILABLE
                           optional:(BOOL) optional;
 
 /**
+ Returns an initialized form item using the specified identifier, title, optionality and answer format.
+ 
+ @param identifier    The string that identifies the form item, which should be unique within the form step.
+ @param text    The text displayed as a prompt for the form item's question.
+ @param detailText     The detail text displayed below the form items title
+ @param learnMoreInstructionStep    The `ORKLearnMoreInstructionStep` to be presented when button is pressed.
+ @param showProgress    A Boolean that determines if the formItem will display a progress indicator
+ @param answerFormat  The answer format for the form item.
+ @param optional      A Boolean that determines whether the item is optional
+ 
+ @return An initialized form item.
+ */
+- (instancetype)initWithIdentifier:(NSString *)identifier
+                              text:(nullable NSString *)text
+                        detailText:(nullable NSString *)detailText
+                     learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem
+                     showsProgress:(BOOL)showsProgress
+                      answerFormat:(nullable ORKAnswerFormat *)answerFormat
+                          optional:(BOOL) optional;
+
+/**
  Returns an initialized form item using the specified section title.
  
  @param sectionTitle   The title of the section.
+ @param detailText     The detail text displayed below the form items title
+ @param learnMoreInstructionStep    The `ORKLearnMoreInstructionStep` to be presented when button is pressed.
+ @param showProgress    A Boolean that determines if the formItem will display a progress indicator
  
  @return An initialized form item for use as a section header in a form.
  */
