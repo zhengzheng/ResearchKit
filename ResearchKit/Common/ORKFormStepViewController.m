@@ -1138,7 +1138,7 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
         
         if (section.textChoiceCellGroup.answerFormat.style == ORKChoiceAnswerStyleSingleChoice && (indexPath.section < _sections.count - 1) && [self shouldAutoScrollToNextSection:indexPath]) {
             [self autoScrollToNextSection:indexPath];
-        } else if (indexPath.section < (_sections.count - 1)) {
+        } else if (indexPath.section < (_sections.count - 1) && section.textChoiceCellGroup.answerFormat.style != ORKChoiceAnswerStyleMultipleChoice ) {
             NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:0 inSection:(indexPath.section + 1)];
             [_tableView scrollToRowAtIndexPath:nextIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
         }
@@ -1217,7 +1217,7 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
     
     //determines if the table should autoscroll to the next section
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    if ([self shouldAutoScrollToNextSection:indexPath]) {
+    if (cell.isLastItem && [self shouldAutoScrollToNextSection:indexPath]) {
         [self autoScrollToNextSection:indexPath];
         return;
     }
