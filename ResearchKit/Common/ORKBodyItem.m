@@ -36,17 +36,7 @@
 @implementation ORKBodyItem
 
 - (instancetype)initWithText:(NSString *)text detailText:(NSString *)detailText image:(nullable UIImage *)image learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem bodyItemStyle:(ORKBodyItemStyle)bodyItemStyle {
-    self = [super init];
-    if (self) {
-        self.text = text;
-        self.detailText = detailText;
-        self.learnMoreItem = learnMoreItem;
-        self.bodyItemStyle = bodyItemStyle;
-        self.image = image;
-        self.useCardStyle = NO;
-    }
-    [self validateParameters];
-    return self;
+    return [self initWithText:text detailText:detailText image:image learnMoreItem:learnMoreItem bodyItemStyle:bodyItemStyle useCardStyle:NO];
 }
 
 - (instancetype)initWithText:(NSString *)text detailText:(NSString *)detailText image:(nullable UIImage *)image learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem bodyItemStyle:(ORKBodyItemStyle)bodyItemStyle useCardStyle:(BOOL)useCardStyle {
@@ -68,7 +58,8 @@
                    detailText:nil
                         image:nil
                 learnMoreItem:nil
-                bodyItemStyle:ORKBodyItemStyleHorizontalRule];
+                bodyItemStyle:ORKBodyItemStyleHorizontalRule
+                 useCardStyle:NO];
 }
 
 - (void)validateParameters {
