@@ -157,8 +157,8 @@ ORK_CLASS_AVAILABLE
  @param identifier    The string that identifies the form item, which should be unique within the form step.
  @param text    The text displayed as a prompt for the form item's question.
  @param detailText     The detail text displayed below the form items title
- @param learnMoreInstructionStep    The `ORKLearnMoreInstructionStep` to be presented when button is pressed.
- @param showProgress    A Boolean that determines if the formItem will display a progress indicator
+ @param learnMoreItem    The `ORKLearnMoreItem` to be presented when button is pressed.
+ @param showsProgress    A Boolean that determines if the formItem will display a progress indicator
  @param answerFormat  The answer format for the form item.
  @param optional      A Boolean that determines whether the item is optional
  
@@ -176,13 +176,21 @@ ORK_CLASS_AVAILABLE
  Returns an initialized form item using the specified section title.
  
  @param sectionTitle   The title of the section.
- @param detailText     The detail text displayed below the form items title
- @param learnMoreInstructionStep    The `ORKLearnMoreInstructionStep` to be presented when button is pressed.
- @param showProgress    A Boolean that determines if the formItem will display a progress indicator
  
  @return An initialized form item for use as a section header in a form.
  */
 - (instancetype)initWithSectionTitle:(nullable NSString *)sectionTitle;
+
+/**
+ Returns an initialized form item using the specified section title.
+ 
+@param sectionTitle   The title of the section.
+@param text     The detail text displayed below the form items title
+@param learnMoreItem    The `ORKLearnMoreItem` to be presented when button is pressed.
+@param showsProgress    A Boolean that determines if the formItem will display a progress indicator
+ 
+@return An initialized form item for use as a section header in a form.
+*/
 
 - (instancetype)initWithSectionTitle:(nullable NSString *)sectionTitle
                           detailText:(nullable NSString *)text
