@@ -62,13 +62,14 @@ ORK_CLASS_AVAILABLE
 @interface ORKBodyItem : NSObject <NSSecureCoding, NSCopying>
 
 - (instancetype)initWithText:(nullable NSString *)text detailText:(nullable NSString *)detailText image:(nullable UIImage *)image learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem bodyItemStyle:(ORKBodyItemStyle)bodyItemStyle;
+
 - (instancetype)initWithText:(nullable NSString *)text detailText:(nullable NSString *)detailText image:(nullable UIImage *)image learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem bodyItemStyle:(ORKBodyItemStyle)bodyItemStyle useCardStyle:(BOOL)useCardStyle;
 
 - (instancetype)initWithHorizontalRule;
 
-@property (nonatomic) NSString *text;
+@property (nonatomic, nullable) NSString *text;
 
-@property (nonatomic) NSString *detailText;
+@property (nonatomic, nullable) NSString *detailText;
 
 @property (nonatomic, nullable) UIImage *image;
 
