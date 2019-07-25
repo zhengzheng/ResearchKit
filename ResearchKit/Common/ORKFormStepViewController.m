@@ -950,7 +950,10 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
 
 - (void)keyboardWillShow:(NSNotification *)notification {
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
-    _tableView.contentInset = UIEdgeInsetsMake(0, 0, keyboardSize.height + TableViewYOffsetStandard, 0);
+    
+    if ((_currentFirstResponderCell.frame.origin.y + _currentFirstResponderCell.frame.size.height) >= (self.view.frame.size.height - keyboardSize.height)) {
+        _tableView.contentInset = UIEdgeInsetsMake(0, 0, keyboardSize.height + TableViewYOffsetStandard, 0);
+    }
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
