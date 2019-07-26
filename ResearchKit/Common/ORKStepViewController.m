@@ -465,6 +465,11 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
 #pragma mark - Action Handlers
 
 - (void)goForward {
+    _wasSkipped = false;
+    [self navigateForward];
+}
+
+- (void)navigateForward {
     ORKStepViewControllerNavigationDirection direction = self.isBeingReviewed ? ORKStepViewControllerNavigationDirectionReverse : ORKStepViewControllerNavigationDirectionForward;
     ORKStrongTypeOf(self.delegate) strongDelegate = self.delegate;
     [strongDelegate stepViewController:self didFinishWithNavigationDirection:direction];
@@ -503,7 +508,7 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
 
 - (void)skipForward {
     _wasSkipped = true;
-    [self goForward];
+    [self navigateForward];
 }
 
 - (UIView *)viewForiPadLayoutConstraints {
