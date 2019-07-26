@@ -64,6 +64,8 @@ ORK_CLASS_AVAILABLE
  */
 @property (nonatomic, copy, nullable) NSString *html;
 
+@property (nonatomic, copy, nullable) NSString *customCSS;
+
 @end
 
 NS_ASSUME_NONNULL_END

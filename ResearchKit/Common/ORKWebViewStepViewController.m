@@ -43,7 +43,6 @@
     NSString *_result;
     ORKNavigationContainerView *_navigationFooterView;
     NSArray<NSLayoutConstraint *> *_constraints;
-
 }
 
 - (ORKWebViewStep *)webViewStep {
@@ -56,14 +55,26 @@
     _webView = nil;
     
     if (self.step && [self isViewLoaded]) {
+        
         WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
         config.allowsInlineMediaPlayback = true;
         if ([config respondsToSelector:@selector(mediaTypesRequiringUserActionForPlayback)]) {
             config.mediaTypesRequiringUserActionForPlayback = WKAudiovisualMediaTypeNone;
         }
+        
         WKUserContentController *controller = [[WKUserContentController alloc] init];
         [controller addScriptMessageHandler:self name:@"ResearchKit"];
         config.userContentController = controller;
+        
+        NSString *css = @"body { font-size: 42px; font-family: \"-apple-system\"; padding-left: 40px; padding-right: 40px; }";
+        if ([self webViewStep].customCSS != nil) {
+            css = [self webViewStep].customCSS;
+        }
+        
+        NSString *js = @"var style = document.createElement('style'); style.innerHTML = '%@'; document.head.appendChild(style)";
+        NSString *formattedString = [NSString stringWithFormat:js, css];
+        WKUserScript *userScript = [[WKUserScript alloc] initWithSource:formattedString injectionTime:WKUserScriptInjectionTimeAtDocumentEnd forMainFrameOnly:true];
+        [controller addUserScript:userScript];
         
         _webView = [[WKWebView alloc] initWithFrame:self.view.bounds configuration:config];
         _webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -189,5 +200,6 @@
 - (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = false;
 }
+
 
 @end
