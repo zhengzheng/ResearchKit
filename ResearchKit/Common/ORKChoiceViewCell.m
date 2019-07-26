@@ -311,11 +311,6 @@ static const CGFloat LabelLeadingPadding = 10.0;
 
 - (void)setImmediateNavigation:(BOOL)immediateNavigation {
     _immediateNavigation = immediateNavigation;
-    
-    if (_immediateNavigation == YES) {
-        self.accessoryView = nil;
-        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    }
 }
 
 - (void)setCellSelected:(BOOL)cellSelected {
