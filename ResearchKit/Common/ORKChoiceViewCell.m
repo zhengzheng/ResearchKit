@@ -419,7 +419,11 @@ static const CGFloat LabelLeadingPadding = 10.0;
     if (_checkView) {
         if (_cellSelected) {
             _checkView.backgroundColor = self.tintColor;
-            _checkView.image = [[UIImage imageNamed:@"checkmark" inBundle:ORKBundle() compatibleWithTraitCollection:nil] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            if (@available(iOS 13.0, *)) {
+                _checkView.image = [[UIImage systemImageNamed:@"checkmark"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            } else {
+                _checkView.image = [[UIImage imageNamed:@"checkmark" inBundle:ORKBundle() compatibleWithTraitCollection:nil] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            }
             _checkView.tintColor = UIColor.whiteColor;
         }
         else {
