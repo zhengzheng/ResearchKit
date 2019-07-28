@@ -42,7 +42,7 @@
 
 static const CGFloat LabelRightMargin = 44.0;
 static const CGFloat CardTopBottomMargin = 2.0;
-static const CGFloat LabelTopBottomMargin = 20.0;
+static const CGFloat LabelTopBottomMargin = 14.0;
 static const CGFloat TextViewTopMargin = 20.0;
 static const CGFloat TextViewHeight = 100.0;
 static const CGFloat CheckViewDimension = 25.0;
@@ -322,6 +322,11 @@ static const CGFloat LabelLeadingPadding = 10.0;
     if (!_primaryLabel) {
         _primaryLabel = [ORKSelectionTitleLabel new];
         _primaryLabel.numberOfLines = 0;
+        if (@available(iOS 13.0, *)) {
+            _primaryLabel.textColor = [UIColor labelColor];
+        } else {
+            _primaryLabel.textColor = [UIColor blackColor];
+        }
         [self.containerView addSubview:_primaryLabel];
         _primaryLabel.translatesAutoresizingMaskIntoConstraints = NO;
         [self setupConstraints];
@@ -339,14 +344,39 @@ static const CGFloat LabelLeadingPadding = 10.0;
     }
 }
 
+- (UIImage *)unCheckedImage {
+    if (@available(iOS 13.0, *)) {
+        UIImageConfiguration *configuration = [UIImageSymbolConfiguration configurationWithFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody] scale:UIImageSymbolScaleLarge];
+        return [UIImage systemImageNamed:@"circle" withConfiguration:configuration];
+    } else {
+        return nil;
+    }
+}
+
+- (UIImage *)checkedImage {
+    if (@available(iOS 13.0, *)) {
+        UIImageConfiguration *configuration = [UIImageSymbolConfiguration configurationWithFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody] scale:UIImageSymbolScaleLarge];
+        return [UIImage systemImageNamed:@"checkmark.circle.fill" withConfiguration:configuration];
+    } else {
+        return [[UIImage imageNamed:@"checkmark" inBundle:ORKBundle() compatibleWithTraitCollection:nil] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    }
+}
+
 - (void)setupCheckView {
     if (!_checkView) {
         _checkView = [UIImageView new];
     }
-    _checkView.layer.cornerRadius = CheckViewDimension * 0.5;
-    _checkView.layer.borderWidth = CheckViewBorderWidth;
-    _checkView.layer.borderColor = self.tintColor.CGColor;
-    _checkView.layer.masksToBounds = YES;
+    
+    if (@available(iOS 13.0, *)) {
+        _checkView.image = [self unCheckedImage];
+        _checkView.tintColor = [UIColor secondaryLabelColor];
+    } else {
+        _checkView.layer.cornerRadius = CheckViewDimension * 0.5;
+        _checkView.layer.borderWidth = CheckViewBorderWidth;
+        _checkView.layer.borderColor = self.tintColor.CGColor;
+        _checkView.layer.masksToBounds = YES;
+    }
+    
     _checkView.contentMode = UIViewContentModeCenter;
     [self.containerView addSubview:_checkView];
 }
@@ -418,17 +448,24 @@ static const CGFloat LabelLeadingPadding = 10.0;
 - (void)updateCheckView {
     if (_checkView) {
         if (_cellSelected) {
-            _checkView.backgroundColor = self.tintColor;
+            _checkView.image = [self checkedImage];
+            
             if (@available(iOS 13.0, *)) {
-                _checkView.image = [[UIImage systemImageNamed:@"checkmark"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+                _checkView.tintColor = self.tintColor;
             } else {
-                _checkView.image = [[UIImage imageNamed:@"checkmark" inBundle:ORKBundle() compatibleWithTraitCollection:nil] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+                _checkView.backgroundColor = [self tintColor];
+                _checkView.tintColor = UIColor.whiteColor;
             }
-            _checkView.tintColor = UIColor.whiteColor;
         }
         else {
-            _checkView.backgroundColor = UIColor.clearColor;
-            _checkView.image = nil;
+            _checkView.image = [self unCheckedImage];
+            if (@available(iOS 13.0, *)) {
+                _checkView.tintColor = [UIColor secondaryLabelColor];
+            } else {
+                _checkView.tintColor = nil;
+                _checkView.image = nil;
+                _checkView.backgroundColor = UIColor.clearColor;
+            }
         }
     }
 }
