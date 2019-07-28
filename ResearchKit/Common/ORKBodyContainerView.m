@@ -277,6 +277,11 @@ static NSString *ORKBulletUnicode = @"\u2981";
     UILabel *bulletIconLabel = [UILabel new];
     bulletIconLabel.numberOfLines = 1;
     bulletIconLabel.font = [ORKBodyItemView bulletIconFont];
+    if (@available(iOS 13.0, *)) {
+        bulletIconLabel.textColor = [UIColor secondaryLabelColor];
+    } else {
+        bulletIconLabel.textColor = [UIColor systemGrayColor];
+    }
     [bulletIconLabel setText:ORKBulletUnicode];
     bulletIconLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [NSLayoutConstraint activateConstraints:@[
