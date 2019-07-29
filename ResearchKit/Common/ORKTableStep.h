@@ -165,6 +165,13 @@ ORK_CLASS_AVAILABLE
 @property (nonatomic) BOOL allowsSelection;
 
 /**
+ Boolean flag representing if the navigation container should get pinned to the bottom of the view
+ 
+ Default value is NO
+ */
+@property (nonatomic) BOOL pinNavigationContainer;
+
+/**
  Returns the number of sections in the tableview used to display this step. Default = `1`.
  
  @return                The number of sections in the tableview.

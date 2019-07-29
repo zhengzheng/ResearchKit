@@ -63,10 +63,10 @@
 }
 
 - (instancetype)init {
-    return [self initWithStyle:UITableViewStyleGrouped];
+    return [self initWithStyle:UITableViewStyleGrouped pinNavigationContainer:YES];
 }
 
-- (instancetype)initWithStyle:(UITableViewStyle)style {
+- (instancetype)initWithStyle:(UITableViewStyle)style pinNavigationContainer:(BOOL)pinNavigationContainer {
     self = [super init];
     if (self) {
         _leftRightPadding = ORKStepContainerLeftRightPaddingForWindow(self.window);
@@ -74,11 +74,12 @@
 
         
         _scrollView = _tableView;
+        self.isNavigationContainerScrollable = !pinNavigationContainer;
+        
         [self addStepContentView];
         [self setupTableViewConstraints];
 
         [self placeNavigationContainerView];
-
         
         _tapOffGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOffAction:)];
         _tapOffGestureRecognizer.delegate = self;
@@ -116,6 +117,7 @@
         [self removeFooterView];
         [self addSubview:self.navigationFooterView];
     }
+    
     [self setupNavigationContainerViewConstraints];
     [self updateTableViewBottomConstraint];
 }
@@ -130,7 +132,7 @@
                                                                                    toItem:_footerView
                                                                                 attribute:NSLayoutAttributeLeft
                                                                                multiplier:1.0
-                                                                                 constant:_leftRightPadding]];
+                                                                                 constant:0.0]];
         
         [_navigationContainerConstraints addObject:[NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                                                 attribute:NSLayoutAttributeRight
@@ -138,7 +140,7 @@
                                                                                    toItem:_footerView
                                                                                 attribute:NSLayoutAttributeRight
                                                                                multiplier:1.0
-                                                                                 constant:-_leftRightPadding]];
+                                                                                 constant:0.0]];
         
         [_navigationContainerConstraints addObject:[NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                                                 attribute:NSLayoutAttributeTop
@@ -166,14 +168,14 @@
                                                                                                toItem:self
                                                                                             attribute:NSLayoutAttributeLeft
                                                                                            multiplier:1.0
-                                                                                             constant:_leftRightPadding],
+                                                                                             constant:0.0],
                                                                [NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                                                             attribute:NSLayoutAttributeRight
                                                                                             relatedBy:NSLayoutRelationEqual
                                                                                                toItem:self
                                                                                             attribute:NSLayoutAttributeRight
                                                                                            multiplier:1.0
-                                                                                             constant:-_leftRightPadding],
+                                                                                             constant:0.0],
                                                                [NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                                                             attribute:NSLayoutAttributeBottom
                                                                                             relatedBy:NSLayoutRelationEqual
@@ -189,10 +191,11 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     [_tableView layoutIfNeeded];
+     CGSize footerSize = [self.navigationFooterView systemLayoutSizeFittingSize:(CGSize){_tableView.bounds.size.width,0} withHorizontalFittingPriority:UILayoutPriorityRequired verticalFittingPriority:UILayoutPriorityFittingSizeLevel];
+    
     if (self.isNavigationContainerScrollable) {
         _tableView.tableFooterView = nil;
         [_footerView removeFromSuperview];
-        CGSize footerSize = [self.navigationFooterView systemLayoutSizeFittingSize:(CGSize){_tableView.bounds.size.width,0} withHorizontalFittingPriority:UILayoutPriorityRequired verticalFittingPriority:UILayoutPriorityFittingSizeLevel];
         CGRect footerBounds = (CGRect){{0,0},footerSize};
         
         CGFloat boundsHeightUnused = _tableView.bounds.size.height - _tableView.contentSize.height;
@@ -204,6 +207,9 @@
         }
         _footerView.frame = footerBounds;
         _tableView.tableFooterView = _footerView;
+    } else {
+        _tableView.tableFooterView = [UIView new];
+        [_tableView setContentInset:UIEdgeInsetsMake(0, 0, footerSize.height, 0)];
     }
 }
 
@@ -311,24 +317,13 @@
 }
 
 - (void)setTableViewBottomConstraint {
-    if (self.isNavigationContainerScrollable) {
-        _tableViewBottomConstraint = [NSLayoutConstraint constraintWithItem:_tableView
-                                                                  attribute:NSLayoutAttributeBottom
-                                                                  relatedBy:NSLayoutRelationEqual
-                                                                     toItem:self
-                                                                  attribute:NSLayoutAttributeBottom
-                                                                 multiplier:1.0
-                                                                   constant:0.0];
-    }
-    else {
-        _tableViewBottomConstraint = [NSLayoutConstraint constraintWithItem:_tableView
-                                                                  attribute:NSLayoutAttributeBottom
-                                                                  relatedBy:NSLayoutRelationEqual
-                                                                     toItem:self.navigationFooterView
-                                                                  attribute:NSLayoutAttributeTop
-                                                                 multiplier:1.0
-                                                                   constant:0.0];
-    }
+    _tableViewBottomConstraint = [NSLayoutConstraint constraintWithItem:_tableView
+                                                              attribute:NSLayoutAttributeBottom
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:self
+                                                              attribute:NSLayoutAttributeBottom
+                                                             multiplier:1.0
+                                                               constant:0.0];
 }
 
 - (void)updateTableViewBottomConstraint {

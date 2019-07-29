@@ -121,7 +121,7 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
     _navigationFooterView = nil;
     
     if (self.step) {
-        _tableContainer = [[ORKTableContainerView alloc] initWithStyle:self.tableViewStyle];
+        _tableContainer = [[ORKTableContainerView alloc] initWithStyle:self.tableViewStyle pinNavigationContainer:self.tableStepRef.pinNavigationContainer];
         if ([self conformsToProtocol:@protocol(ORKTableContainerViewDelegate)]) {
             _tableContainer.tableContainerDelegate = (id)self;
         }
@@ -161,6 +161,10 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
             [self.tableStep registerCellsForTableView:_tableView];
         } else {
             [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:ORKBasicCellReuseIdentifier];
+        }
+        
+        if (self.tableStepRef.pinNavigationContainer == NO) {
+            [_navigationFooterView removeStyling];
         }
     }
 }

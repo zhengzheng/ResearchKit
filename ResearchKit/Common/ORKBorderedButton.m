@@ -62,7 +62,6 @@ static const CGFloat ORKBorderedButtonCornerRadii = 14.0;
         [self setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
         [self setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
         [self setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
-        
     }
     else {
         [self setTitleColor:_normalTintColor forState:UIControlStateNormal];
@@ -77,12 +76,13 @@ static const CGFloat ORKBorderedButtonCornerRadii = 14.0;
 - (void)setDefaultTintColors {
     _normalTintColor = [[self tintColor] colorWithAlphaComponent:0.7f];
     _normalHighlightOrSelectTintColor = [_normalTintColor colorWithAlphaComponent:1.0f];
-    _disableTintColor = [[UIColor darkGrayColor] colorWithAlphaComponent:0.3f];
 }
 
 - (void)setNormalTintColor:(UIColor *)normalTintColor {
     _normalTintColor = normalTintColor;
     _normalHighlightOrSelectTintColor = [normalTintColor colorWithAlphaComponent:1.0f];
+    
+    _disableTintColor = [normalTintColor colorWithAlphaComponent:0.3f];
     [self updateBackgroundColor];
 }
 

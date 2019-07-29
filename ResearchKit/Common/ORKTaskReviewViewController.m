@@ -361,7 +361,7 @@
 
 - (void)setupTableContainerView {
     if (!_tableContainerView) {
-        _tableContainerView = [ORKTableContainerView new];
+        _tableContainerView = [[ORKTableContainerView alloc] initWithStyle:UITableViewStyleGrouped pinNavigationContainer:NO];
         _tableContainerView.tableView.dataSource = self;
         _tableContainerView.tableView.delegate = self;
         _tableContainerView.tableView.clipsToBounds = YES;

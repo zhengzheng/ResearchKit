@@ -186,6 +186,7 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
         ORK_DECODE_INTEGER(aDecoder, bulletType);
         ORK_DECODE_OBJ_ARRAY(aDecoder, bulletIconNames, NSString);
         ORK_DECODE_BOOL(aDecoder, allowsSelection);
+        ORK_DECODE_BOOL(aDecoder, pinNavigationContainer);
     }
     return self;
 }
@@ -196,6 +197,7 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
     ORK_ENCODE_INTEGER(aCoder, bulletType);
     ORK_ENCODE_OBJ(aCoder, bulletIconNames);
     ORK_ENCODE_BOOL(aCoder, allowsSelection);
+    ORK_ENCODE_BOOL(aCoder, pinNavigationContainer);
 }
 
 #pragma mark - Equality
@@ -208,11 +210,12 @@ ORKDefineStringKey(ORKBasicCellReuseIdentifier);
             && ORKEqualObjects(self.items, castObject.items)
             && (self.bulletType == castObject.bulletType)
             && (self.allowsSelection == castObject.allowsSelection)
-            && ORKEqualObjects(self.bulletIconNames, castObject.bulletIconNames));
+            && ORKEqualObjects(self.bulletIconNames, castObject.bulletIconNames)
+            && self.pinNavigationContainer == castObject.pinNavigationContainer);
 }
 
 - (NSUInteger)hash {
-    return super.hash ^ self.items.hash ^ self.bulletIconNames.hash ^ (_bulletType ? 0xf : 0x0) ^ (_allowsSelection ? 0xf : 0x0);
+    return super.hash ^ self.items.hash ^ self.bulletIconNames.hash ^ (_bulletType ? 0xf : 0x0) ^ (_allowsSelection ? 0xf : 0x0) ^ (_pinNavigationContainer ? 0xf : 0x0);
 }
 
 @end

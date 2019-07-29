@@ -34,10 +34,8 @@
 #import "ORKSkin.h"
 
 static const CGFloat ORKStackViewSpacing = 5.0;
-static const CGFloat shadowHeight = 0.75;
-static const CGFloat shadowOpacity = 0.2;
-static const CGFloat shadowRadius = 1.0;
 static const CGFloat skipButtonHeight = 50.0;
+static const CGFloat topSpacing = 24.0;
 
 @implementation ORKNavigationContainerView {
     
@@ -83,8 +81,8 @@ static const CGFloat skipButtonHeight = 50.0;
 
 - (void)setupVisualEffectView {
     if (!effectView && !_removeVisualEffect) {
-        UIVisualEffect *blurEffect;
-        blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
+        self.backgroundColor = [UIColor clearColor];
+        UIVisualEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
         
         effectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
     }
@@ -282,15 +280,6 @@ static const CGFloat skipButtonHeight = 50.0;
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    if (!_removeVisualEffect) {
-        UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:CGRectMake(self.bounds.origin.x, self.bounds.origin.y - shadowHeight, self.bounds.size.width, shadowHeight)];
-        self.layer.shadowPath = shadowPath.CGPath;
-        self.layer.shadowColor = ORKColor(ORKNavigationContainerShadowColorKey).CGColor;
-        self.layer.shadowOffset = CGSizeZero;
-        self.layer.shadowOpacity = shadowOpacity;
-        self.layer.shadowRadius = shadowRadius;
-        self.layer.masksToBounds = NO;
-    }
     [self arrangeSubStacks];
 }
 
@@ -408,6 +397,7 @@ static const CGFloat skipButtonHeight = 50.0;
     }
     
     _continueButton.enabled = (_continueEnabled || (_useNextForSkip && _skipButtonItem));
+    _continueButton.disableTintColor = [[self tintColor] colorWithAlphaComponent:0.3];
     
     // Do not modify _continueButton.userInteractionEnabled during continueButton disable period
     if (_continueButtonJustTapped == NO) {
@@ -441,6 +431,8 @@ static const CGFloat skipButtonHeight = 50.0;
 }
 
 - (void)setUpConstraints {
+    CGFloat leftRightPadding = ORKStepContainerLeftRightPaddingForWindow(self.window);
+    
     NSMutableArray *constraints = [NSMutableArray new];
     
     [constraints addObjectsFromArray:@[
@@ -450,7 +442,7 @@ static const CGFloat skipButtonHeight = 50.0;
                                                                        toItem:self
                                                                     attribute:NSLayoutAttributeTop
                                                                    multiplier:1.0
-                                                                     constant:ORKStackViewSpacing],
+                                                                     constant:topSpacing],
                                        [NSLayoutConstraint constraintWithItem:_footnoteLabel
                                                                     attribute:NSLayoutAttributeTop
                                                                     relatedBy:NSLayoutRelationEqual
@@ -471,14 +463,14 @@ static const CGFloat skipButtonHeight = 50.0;
                                                                        toItem:self.safeAreaLayoutGuide
                                                                     attribute:NSLayoutAttributeLeft
                                                                    multiplier:1.0
-                                                                     constant:ORKStackViewSpacing],
+                                                                     constant:leftRightPadding],
                                        [NSLayoutConstraint constraintWithItem:_parentStackView
                                                                     attribute:NSLayoutAttributeRight
                                                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
                                                                        toItem:self.safeAreaLayoutGuide
                                                                     attribute:NSLayoutAttributeRight
                                                                    multiplier:1.0
-                                                                     constant:-ORKStackViewSpacing]
+                                                                     constant:-leftRightPadding]
                                        ]];
     _contentWidthConstraints = @[
                                             [NSLayoutConstraint constraintWithItem:_footnoteLabel

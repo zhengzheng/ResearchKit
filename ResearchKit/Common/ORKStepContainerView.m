@@ -95,6 +95,7 @@
 
 static const CGFloat ORKStepContainerTopCustomContentPaddingStandard = 20.0;
 static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
+static const CGFloat ORKContentBottomPadding = 19.0;
 
 @implementation ORKStepContainerView {
     CGFloat _leftRightPadding;
@@ -118,6 +119,7 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
     NSLayoutConstraint *_customContentWidthConstraint;
     NSLayoutConstraint *_customContentHeightConstraint;
     NSMutableArray<NSLayoutConstraint *> *_updatedConstraints;
+    NSLayoutConstraint *_scrollContentBottomConstraint;
 }
 
 - (instancetype)init {
@@ -172,6 +174,7 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
         _scrollView = [[UIScrollView alloc] init];
     }
     _scrollView.showsVerticalScrollIndicator = self.showScrollIndicator;
+    _scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     [self addSubview:_scrollView];
 }
 
@@ -293,6 +296,7 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
 
 - (void)placeNavigationContainerView {
     [self removeNavigationFooterView];
+    self.isNavigationContainerScrollable = NO;
     if (self.isNavigationContainerScrollable) {
         [_scrollContainerView addSubview:self.navigationFooterView];
     }
@@ -302,14 +306,33 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
     [self setupNavigationContainerViewConstraints];
 }
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    [self updateScrollContentConstraints];
+}
+
+- (void)updateScrollContentConstraints {
+    if (_scrollContentBottomConstraint != nil) {
+        [NSLayoutConstraint deactivateConstraints:@[_scrollContentBottomConstraint]];
+    }
+    
+    _scrollContentBottomConstraint = [NSLayoutConstraint constraintWithItem:self.stepContentView
+                                                                  attribute:NSLayoutAttributeBottom
+                                                                  relatedBy:NSLayoutRelationLessThanOrEqual
+                                                                     toItem:_scrollContainerView
+                                                                  attribute:NSLayoutAttributeBottom
+                                                                 multiplier:1.0
+                                                                   constant:-(self.navigationFooterView.frame.size.height + ORKContentBottomPadding)];
+    [NSLayoutConstraint activateConstraints:@[_scrollContentBottomConstraint]];
+}
+
 - (void)setupNavigationContainerViewConstraints {
     self.navigationFooterView.translatesAutoresizingMaskIntoConstraints = NO;
-    
     _navigationContainerViewConstraints = @[
                                               [NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                                            attribute:NSLayoutAttributeBottom
                                                                            relatedBy:NSLayoutRelationEqual
-                                                                              toItem:self.isNavigationContainerScrollable ? _scrollContainerView.safeAreaLayoutGuide : self.safeAreaLayoutGuide
+                                                                              toItem:self.isNavigationContainerScrollable ? _scrollContainerView : self
                                                                            attribute:NSLayoutAttributeBottom
                                                                           multiplier:1.0
                                                                             constant:0.0],
@@ -319,14 +342,15 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
                                                                               toItem:self.isNavigationContainerScrollable ? _scrollContainerView : self
                                                                            attribute:NSLayoutAttributeLeft
                                                                           multiplier:1.0
-                                                                            constant:_leftRightPadding],
+                                                                            constant:0.0],
                                               [NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                                            attribute:NSLayoutAttributeRight
                                                                            relatedBy:NSLayoutRelationEqual
                                                                               toItem:self.isNavigationContainerScrollable ? _scrollContainerView : self
                                                                            attribute:NSLayoutAttributeRight
                                                                           multiplier:1.0
-                                                                            constant:-_leftRightPadding]];
+                                                                            constant:0.0]
+    ];
     [_updatedConstraints addObjectsFromArray:_navigationContainerViewConstraints];
     [self updateNavigationContainerViewTopConstraint];
 
@@ -338,8 +362,8 @@ static const CGFloat ORKStepContainerNavigationFooterTopPaddingStandard = 10.0;
         _scrollViewBottomConstraint = [NSLayoutConstraint constraintWithItem:_scrollView
                                                                    attribute:NSLayoutAttributeBottom
                                                                    relatedBy:NSLayoutRelationEqual
-                                                                      toItem:self.navigationFooterView
-                                                                   attribute:NSLayoutAttributeTop
+                                                                      toItem:self
+                                                                   attribute:NSLayoutAttributeBottom
                                                                   multiplier:1.0
                                                                     constant:0.0];
         [_updatedConstraints addObject:_scrollViewBottomConstraint];

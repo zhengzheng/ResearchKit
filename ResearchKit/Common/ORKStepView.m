@@ -66,7 +66,10 @@
     if (!self.navigationFooterView) {
         self.navigationFooterView = [ORKNavigationContainerView new];
     }
-    [self.navigationFooterView removeStyling];
+    
+    if (_isNavigationContainerScrollable == NO) {
+        [self.navigationFooterView removeStyling];
+    }
 }
 
 - (void)setStepTopContentImage:(UIImage *)stepTopContentImage {

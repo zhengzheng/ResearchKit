@@ -90,11 +90,11 @@
     if (!_navigationFooterView) {
         _navigationFooterView = [ORKNavigationContainerView new];
     }
-    [_navigationFooterView removeStyling];
     
     _navigationFooterView.continueButtonItem = self.continueButtonItem;
     _navigationFooterView.continueEnabled = YES;
     [_navigationFooterView updateContinueAndSkipEnabled];
+    
     [self.view addSubview:_navigationFooterView];
 }
 
@@ -108,65 +108,70 @@
     _constraints = nil;
     _webView.translatesAutoresizingMaskIntoConstraints = NO;
     _navigationFooterView.translatesAutoresizingMaskIntoConstraints = NO;
-    CGFloat padding = ORKStepContainerLeftRightPaddingForWindow(self.view.window);
     
     _constraints = @[
-                     [NSLayoutConstraint constraintWithItem:_webView
-                                                  attribute:NSLayoutAttributeTop
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view.safeAreaLayoutGuide
-                                                  attribute:NSLayoutAttributeTop
-                                                 multiplier:1.0
-                                                   constant:0.0],
-                     [NSLayoutConstraint constraintWithItem:_webView
-                                                  attribute:NSLayoutAttributeLeft
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view.safeAreaLayoutGuide
-                                                  attribute:NSLayoutAttributeLeft
-                                                 multiplier:1.0
-                                                   constant:0.0],
-                     [NSLayoutConstraint constraintWithItem:_webView
-                                                  attribute:NSLayoutAttributeRight
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view.safeAreaLayoutGuide
-                                                  attribute:NSLayoutAttributeRight
-                                                 multiplier:1.0
-                                                   constant:0.0],
-                     [NSLayoutConstraint constraintWithItem:_navigationFooterView
-                                                  attribute:NSLayoutAttributeBottom
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view
-                                                  attribute:NSLayoutAttributeBottom
-                                                 multiplier:1.0
-                                                   constant:0.0],
-                     [NSLayoutConstraint constraintWithItem:_navigationFooterView
-                                                  attribute:NSLayoutAttributeLeft
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view
-                                                  attribute:NSLayoutAttributeLeft
-                                                 multiplier:1.0
-                                                   constant:padding],
-                     [NSLayoutConstraint constraintWithItem:_navigationFooterView
-                                                  attribute:NSLayoutAttributeRight
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:viewForiPad ? : self.view
-                                                  attribute:NSLayoutAttributeRight
-                                                 multiplier:1.0
-                                                   constant:-padding],
-                     [NSLayoutConstraint constraintWithItem:_webView
-                                                  attribute:NSLayoutAttributeBottom
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:_navigationFooterView
-                                                  attribute:NSLayoutAttributeTop
-                                                 multiplier:1.0
-                                                   constant:0.0]
-                     ];
+                    [NSLayoutConstraint constraintWithItem:_webView
+                                                 attribute:NSLayoutAttributeTop
+                                                 relatedBy:NSLayoutRelationEqual
+                                                    toItem:viewForiPad ? : self.view.safeAreaLayoutGuide
+                                                 attribute:NSLayoutAttributeTop
+                                                multiplier:1.0
+                                                  constant:0.0],
+                    [NSLayoutConstraint constraintWithItem:_webView
+                                                 attribute:NSLayoutAttributeLeft
+                                                 relatedBy:NSLayoutRelationEqual
+                                                    toItem:viewForiPad ? : self.view.safeAreaLayoutGuide
+                                                 attribute:NSLayoutAttributeLeft
+                                                multiplier:1.0
+                                                  constant:0.0],
+                    [NSLayoutConstraint constraintWithItem:_webView
+                                                 attribute:NSLayoutAttributeRight
+                                                 relatedBy:NSLayoutRelationEqual
+                                                    toItem:viewForiPad ? : self.view.safeAreaLayoutGuide
+                                                 attribute:NSLayoutAttributeRight
+                                                multiplier:1.0
+                                                  constant:0.0],
+                    [NSLayoutConstraint constraintWithItem:_webView
+                                                 attribute:NSLayoutAttributeBottom
+                                                 relatedBy:NSLayoutRelationEqual
+                                                    toItem:self.view
+                                                 attribute:NSLayoutAttributeBottom
+                                                multiplier:1.0
+                                                  constant:0.0],
+                    [NSLayoutConstraint constraintWithItem:_navigationFooterView
+                                                 attribute:NSLayoutAttributeBottom
+                                                 relatedBy:NSLayoutRelationEqual
+                                                    toItem:viewForiPad ? : self.view
+                                                 attribute:NSLayoutAttributeBottom
+                                                multiplier:1.0
+                                                  constant:0.0],
+                    [NSLayoutConstraint constraintWithItem:_navigationFooterView
+                                                 attribute:NSLayoutAttributeLeft
+                                                 relatedBy:NSLayoutRelationEqual
+                                                    toItem:viewForiPad ? : self.view
+                                                 attribute:NSLayoutAttributeLeft
+                                                multiplier:1.0
+                                                  constant:0],
+                    [NSLayoutConstraint constraintWithItem:_navigationFooterView
+                                                 attribute:NSLayoutAttributeRight
+                                                 relatedBy:NSLayoutRelationEqual
+                                                    toItem:viewForiPad ? : self.view
+                                                 attribute:NSLayoutAttributeRight
+                                                multiplier:1.0
+                                                  constant:0]
+    ];
+    
     [NSLayoutConstraint activateConstraints:_constraints];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self stepDidChange];
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [_webView.scrollView setContentInset:UIEdgeInsetsMake(0, 0, _navigationFooterView.frame.size.height, 0)];
 }
 
 - (void)setContinueButtonItem:(UIBarButtonItem *)continueButtonItem {

@@ -520,7 +520,7 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
         
         _formItemCells = [NSMutableSet new];
         
-        _tableContainer = [ORKTableContainerView new];
+        _tableContainer = [[ORKTableContainerView alloc] initWithStyle:UITableViewStyleGrouped pinNavigationContainer:NO];
         _tableContainer.tableContainerDelegate = self;
         [self.view addSubview:_tableContainer];
         _tableContainer.tapOffView = self.view;
@@ -560,14 +560,17 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
         _headerView.bodyItems = self.step.bodyItems;
         _tableContainer.stepTopContentImageContentMode = self.step.imageContentMode;
         
-        
         _navigationFooterView = _tableContainer.navigationFooterView;
-        [_navigationFooterView removeStyling];
         _navigationFooterView.skipButtonItem = self.skipButtonItem;
         _navigationFooterView.continueEnabled = [self continueButtonEnabled];
         _navigationFooterView.continueButtonItem = self.continueButtonItem;
         _navigationFooterView.optional = self.step.optional;
         _navigationFooterView.footnoteLabel.text = [self formStep].footnote;
+        
+        // Form steps should always force the navigation controller to be scrollable
+        // therefore we should always remove the styling.
+        [_navigationFooterView removeStyling];
+        
         if (self.readOnlyMode) {
             _navigationFooterView.optional = YES;
             [_navigationFooterView setNeverHasContinueButton:YES];
