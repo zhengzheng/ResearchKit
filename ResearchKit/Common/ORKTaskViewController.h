@@ -511,6 +511,14 @@ ORK_CLASS_AVAILABLE
 - (void)goBackward;
 
 /**
+ Returns the step after the  provided step
+ 
+ @param step         The `ORKStep` before the one returned.
+ @return        The `ORKStep` after `step`.
+ */
+- (ORKStep *)stepAfterStep:(ORKStep *)step;
+
+/**
  A Boolean value indicating whether the navigation bar is hidden.
  
  By default, the task view controller includes a visible navigation bar. To disable the display of the navigation bar, set this property to `NO`.
