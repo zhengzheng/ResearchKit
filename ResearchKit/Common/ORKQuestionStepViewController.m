@@ -208,6 +208,7 @@ typedef NS_ENUM(NSInteger, ORKQuestionSection) {
             [_tableContainer setNeedsLayout];
         } else if (self.step) {
             _questionView = [ORKQuestionStepView new];
+            _questionView.isNavigationContainerScrollable = YES;
             
             ORKQuestionStep *step = [self questionStep];
             _navigationFooterView = _questionView.navigationFooterView;
