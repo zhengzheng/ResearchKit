@@ -588,6 +588,10 @@
 		BA8078F4224AC8AA0013B554 /* ORKStepContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA8078F2224AC8AA0013B554 /* ORKStepContainerView.m */; };
 		BA87E26D20A79FA100B375A9 /* ORKRingView.h in Headers */ = {isa = PBXBuildFile; fileRef = BA87E26B20A79FA100B375A9 /* ORKRingView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BA87E26E20A79FA100B375A9 /* ORKRingView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA87E26C20A79FA100B375A9 /* ORKRingView.m */; };
+		BA8C066B22ECF7C200ACDE6B /* ORKSecondaryTaskStep.h in Headers */ = {isa = PBXBuildFile; fileRef = BA8C066922ECF7C200ACDE6B /* ORKSecondaryTaskStep.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BA8C066C22ECF7C200ACDE6B /* ORKSecondaryTaskStep.m in Sources */ = {isa = PBXBuildFile; fileRef = BA8C066A22ECF7C200ACDE6B /* ORKSecondaryTaskStep.m */; };
+		BA8C066F22ECF87900ACDE6B /* ORKSecondaryTaskStepViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = BA8C066D22ECF87900ACDE6B /* ORKSecondaryTaskStepViewController.h */; };
+		BA8C067022ECF87900ACDE6B /* ORKSecondaryTaskStepViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BA8C066E22ECF87900ACDE6B /* ORKSecondaryTaskStepViewController.m */; };
 		BA8C067822EEB84B00ACDE6B /* ORKPlaybackButton.h in Headers */ = {isa = PBXBuildFile; fileRef = BA8C067622EEB84B00ACDE6B /* ORKPlaybackButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BA8C067922EEB84B00ACDE6B /* ORKPlaybackButton.m in Sources */ = {isa = PBXBuildFile; fileRef = BA8C067722EEB84B00ACDE6B /* ORKPlaybackButton.m */; };
 		BA8C5021226FFB04001896D0 /* ORKLearnMoreItem.h in Headers */ = {isa = PBXBuildFile; fileRef = BA8C501F226FFB04001896D0 /* ORKLearnMoreItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1407,6 +1411,10 @@
 		BA8078F2224AC8AA0013B554 /* ORKStepContainerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKStepContainerView.m; sourceTree = "<group>"; };
 		BA87E26B20A79FA100B375A9 /* ORKRingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKRingView.h; sourceTree = "<group>"; };
 		BA87E26C20A79FA100B375A9 /* ORKRingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKRingView.m; sourceTree = "<group>"; };
+		BA8C066922ECF7C200ACDE6B /* ORKSecondaryTaskStep.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKSecondaryTaskStep.h; sourceTree = "<group>"; };
+		BA8C066A22ECF7C200ACDE6B /* ORKSecondaryTaskStep.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKSecondaryTaskStep.m; sourceTree = "<group>"; };
+		BA8C066D22ECF87900ACDE6B /* ORKSecondaryTaskStepViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKSecondaryTaskStepViewController.h; sourceTree = "<group>"; };
+		BA8C066E22ECF87900ACDE6B /* ORKSecondaryTaskStepViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKSecondaryTaskStepViewController.m; sourceTree = "<group>"; };
 		BA8C067622EEB84B00ACDE6B /* ORKPlaybackButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKPlaybackButton.h; sourceTree = "<group>"; };
 		BA8C067722EEB84B00ACDE6B /* ORKPlaybackButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKPlaybackButton.m; sourceTree = "<group>"; };
 		BA8C501F226FFB04001896D0 /* ORKLearnMoreItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKLearnMoreItem.h; sourceTree = "<group>"; };
@@ -2426,6 +2434,7 @@
 		B12EFF351AB2116400A80147 /* Instruction Step */ = {
 			isa = PBXGroup;
 			children = (
+				BA8C066822ECF4B100ACDE6B /* SecondaryTask */,
 				BAD9E90F2255E94F0014FA29 /* LearnMore Step */,
 				BADA2F24225DA54B005D2255 /* ORKInstructionStepContainerView.h */,
 				BADA2F25225DA54B005D2255 /* ORKInstructionStepContainerView.m */,
@@ -3090,6 +3099,18 @@
 			name = "Ring View";
 			sourceTree = "<group>";
 		};
+		BA8C066822ECF4B100ACDE6B /* SecondaryTask */ = {
+			isa = PBXGroup;
+			children = (
+				BA8C066922ECF7C200ACDE6B /* ORKSecondaryTaskStep.h */,
+				BA8C066A22ECF7C200ACDE6B /* ORKSecondaryTaskStep.m */,
+				BA8C066D22ECF87900ACDE6B /* ORKSecondaryTaskStepViewController.h */,
+				BA8C066E22ECF87900ACDE6B /* ORKSecondaryTaskStepViewController.m */,
+			);
+			name = SecondaryTask;
+			path = ../ActiveTasks;
+      sourceTree = "<group>";
+		};
 		BA8C067522EEB7FD00ACDE6B /* Playback Button */ = {
 			isa = PBXGroup;
 			children = (
@@ -3528,6 +3549,7 @@
 				9550E6731D58DBCF00C691B8 /* ORKTouchAnywhereStep.h in Headers */,
 				86C40CF61A8D7C5C00081FAC /* ORKBorderedButton.h in Headers */,
 				71769E2D208824D100A19914 /* ORKdBHLToneAudiometryOnboardingStep.h in Headers */,
+				BA8C066B22ECF7C200ACDE6B /* ORKSecondaryTaskStep.h in Headers */,
 				FF919A6D1E81D3B0005C2A1E /* ORKPasscodeResult.h in Headers */,
 				86C40D4A1A8D7C5C00081FAC /* ORKLabel.h in Headers */,
 				250F94041B4C5A6600FA23EB /* ORKTowerOfHanoiStep.h in Headers */,
@@ -3566,6 +3588,7 @@
 				BCC1CD9A1B7ED64F00D86886 /* ORKYAxisView.h in Headers */,
 				86C40DBE1A8D7C5C00081FAC /* ORKTableViewCell.h in Headers */,
 				BCB6E64A1B7D531C000D5B34 /* ORKPieChartView.h in Headers */,
+				BA8C066F22ECF87900ACDE6B /* ORKSecondaryTaskStepViewController.h in Headers */,
 				86C40C2E1A8D7C5C00081FAC /* ORKFitnessStep.h in Headers */,
 				86C40C821A8D7C5C00081FAC /* ORKActiveStep_Internal.h in Headers */,
 				86C40D481A8D7C5C00081FAC /* ORKInstructionStepViewController_Internal.h in Headers */,
@@ -3997,6 +4020,7 @@
 				618DA0521A93D0D600E63AA8 /* ORKAccessibilityFunctions.m in Sources */,
 				BF9155AC1BDE8DA9007FA459 /* ORKWaitStepViewController.m in Sources */,
 				86C40DB81A8D7C5C00081FAC /* ORKSurveyAnswerCellForText.m in Sources */,
+				BA8C067022ECF87900ACDE6B /* ORKSecondaryTaskStepViewController.m in Sources */,
 				86C40CF01A8D7C5C00081FAC /* ORKAnswerTextView.m in Sources */,
 				86C40D3E1A8D7C5C00081FAC /* ORKImageChoiceLabel.m in Sources */,
 				1B4B95B81F5F012E006B629F /* ORKWeightPicker.m in Sources */,
@@ -4064,6 +4088,7 @@
 				86C40C2C1A8D7C5C00081FAC /* ORKFitnessContentView.m in Sources */,
 				BA95AA9F20ACD0E700E7FF8E /* ORKAmslerGridContentView.m in Sources */,
 				CBD34A571BB1FB9000F204EA /* ORKLocationSelectionView.m in Sources */,
+				BA8C066C22ECF7C200ACDE6B /* ORKSecondaryTaskStep.m in Sources */,
 				FF919A5A1E81C628005C2A1E /* ORKQuestionResult.m in Sources */,
 				D458520B1AF6CCFA00A2DE13 /* ORKImageCaptureCameraPreviewView.m in Sources */,
 				BA473FE9224DB38900A362E3 /* ORKBodyItem.m in Sources */,

@@ -574,6 +574,9 @@
 "ENVIRONMENTSPL_OK" = "OK";
 "ENVIRONMENTSPL_NOISE" = "Too Much Background Noise";
 
+/* Secondary Task Step*/
+"SECONDARY_TASK_START_BUTTON" = "Start Task";
+
 /* Charts */
 "CHART_NO_DATA_TEXT" = "No Data";
 

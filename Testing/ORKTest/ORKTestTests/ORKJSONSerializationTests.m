@@ -1226,7 +1226,9 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
                                                                              @"ORKVisualConsentStepViewController" : @"ORKVisualConsentStep",
                                                                              @"ORKWalkingTaskStepViewController" : @"ORKWalkingTaskStep",
                                                                              @"ORKTableStepViewController" : @"ORKTableStep",
-                                                                             @"ORKdBHLToneAudiometryStepViewController" : @"ORKdBHLToneAudiometryStep"
+                                                                             @"ORKdBHLToneAudiometryStepViewController" : @"ORKdBHLToneAudiometryStep",
+
+                                                                             @"ORKSecondaryTaskStepViewController" : @"ORKSecondaryTaskStep"
                                                                              };
     
     NSDictionary <NSString *, NSDictionary *> *kvMapForStep = @{ // Steps that require modification to validate

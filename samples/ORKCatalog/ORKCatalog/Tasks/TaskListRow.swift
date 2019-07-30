@@ -853,6 +853,14 @@ enum TaskListRow: Int, CustomStringConvertible {
         let question2Step = ORKQuestionStep(identifier: String(describing: Identifier.birthdayQuestion), title: "Questionnaire", question: question2, answer: question2StepAnswerFormat)
         question2Step.text = exampleDetailText
         
+        let secondaryTaskStep = ORKSecondaryTaskStep(identifier: "secondaryTask")
+        secondaryTaskStep.title = "Secondary Task step"
+        secondaryTaskStep.detailText = "Please complete the practise test to proceed."
+        secondaryTaskStep.secondaryTask = groupedFormTask as! ORKOrderedTask
+        secondaryTaskStep.requiredAttempts = 1
+        secondaryTaskStep.secondaryTaskButtonTitle = "Practice test"
+        secondaryTaskStep.nextButtonTitle = "Start Test"
+        
         // Add a summary step.
         let summaryStep = ORKInstructionStep(identifier: String(describing: Identifier.summaryStep))
         summaryStep.title = NSLocalizedString("Thanks", comment: "")
@@ -862,6 +870,7 @@ enum TaskListRow: Int, CustomStringConvertible {
             instructionStep,
             question1Step,
             question2Step,
+            secondaryTaskStep,
             summaryStep
             ])
     }

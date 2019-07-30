@@ -831,6 +831,16 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     PROPERTY(text, NSString, NSObject, YES, nil, nil),
                     PROPERTY(learnMoreInstructionStep, ORKLearnMoreInstructionStep, NSObject, YES, nil, nil)
                     })),
+           ENTRY(ORKSecondaryTaskStep,
+                 ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
+                     return [[ORKSecondaryTaskStep alloc] initWithIdentifier:GETPROP(dict, identifier)];
+                 },
+                 (@{
+                    PROPERTY(secondaryTask, ORKOrderedTask, NSObject, YES, nil, nil),
+                    PROPERTY(secondaryTaskButtonTitle, NSString, NSObject, YES, nil, nil),
+                    PROPERTY(nextButtonTitle, NSString, NSObject, YES, nil, nil),
+                    PROPERTY(requiredAttempts, NSNumber, NSObject, YES, nil, nil)
+                    })),
            ENTRY(ORKVideoInstructionStep,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
                      return [[ORKVideoInstructionStep alloc] initWithIdentifier:GETPROP(dict, identifier)];

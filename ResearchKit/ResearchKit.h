@@ -57,6 +57,7 @@
 #import <ResearchKit/ORKWebViewStep.h>
 #import <ResearchKit/ORKEnvironmentSPLMeterStep.h>
 #import <ResearchKit/ORKLearnMoreInstructionStep.h>
+#import <ResearchKit/ORKSecondaryTaskStep.h>
 
 #import <ResearchKit/ORKTask.h>
 #import <ResearchKit/ORKOrderedTask.h>
