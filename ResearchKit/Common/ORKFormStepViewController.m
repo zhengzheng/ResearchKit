@@ -543,7 +543,11 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
                 [self.view setBackgroundColor:ORKColor(ORKBackgroundColorKey)];
             }
             else {
-                [_tableView setBackgroundColor:ORKColor(ORKBackgroundColorKey)];
+                if (@available(iOS 13.0, *)) {
+                    [_tableView setBackgroundColor:[UIColor systemGroupedBackgroundColor]];
+                } else {
+                    [_tableView setBackgroundColor:ORKColor(ORKBackgroundColorKey)];
+                }
                 [self.taskViewController.navigationBar setBarTintColor:[_tableView backgroundColor]];
                 [self.view setBackgroundColor:[_tableView backgroundColor]];
             }
