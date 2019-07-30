@@ -498,7 +498,7 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
 @implementation ORKJSONSerializationTests
 
 - (Class)unarchiver:(NSKeyedUnarchiver *) __unused unarchiver cannotDecodeObjectOfClassName:(NSString *)name originalClasses:(NSArray *)classNames {
-    NSLog(@"Cannot decode object with class: %@ (original classes: %@)", name, classNames);
+    ORK_Log_Info("Cannot decode object with class: %@ (original classes: %@)", name, classNames);
     return nil;
 }
 
@@ -549,7 +549,7 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
     NSData *data = [NSJSONSerialization dataWithJSONObject:dict1 options:NSJSONWritingPrettyPrinted error:nil];
     NSString *tempPath = [NSTemporaryDirectory() stringByAppendingPathComponent:[[NSUUID UUID].UUIDString stringByAppendingPathExtension:@"json"]];
     [data writeToFile:tempPath atomically:YES];
-    NSLog(@"JSON file at %@", tempPath);
+    ORK_Log_Info("JSON file at %@", tempPath);
     
     ORKOrderedTask *task2 = [ORKESerializer objectFromJSONObject:dict1 error:nil];
     
@@ -761,7 +761,7 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
     NSString *outputPath = [[docsDir path] stringByAppendingPathComponent:[NSStringFromClass(aClass) stringByAppendingString:@".json"]];
     NSData *data = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:NULL];
     [data writeToFile:outputPath atomically:YES];
-    NSLog(@"%@", outputPath);
+    ORK_Log_Info("%@", outputPath);
 }
 
 - (BOOL)applySomeValueToClassProperty:(ClassProperty *)p forObject:(id)instance index:(NSInteger)index forEqualityCheck:(BOOL)equality {

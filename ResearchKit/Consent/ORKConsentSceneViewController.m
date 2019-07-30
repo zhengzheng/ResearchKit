@@ -126,7 +126,7 @@ static NSString *localizedLearnMoreForType(ORKConsentSectionType sectionType) {
     [self.view addSubview:_sceneView];
     
     if (_section.content.length||_section.htmlContent.length || _section.contentURL) {
-        NSLog(@"%@", localizedLearnMoreForType(_section.type));
+        ORK_Log_Info("%@", localizedLearnMoreForType(_section.type));
     }
     [self setupNavigationFooterView];
     [self setupConstraints];

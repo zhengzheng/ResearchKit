@@ -276,7 +276,7 @@
 }
 
 - (void)recordersWillStart {
-    NSLog(@"Recorder is starting");
+    ORK_Log_Debug("Recorder is starting");
 }
 
 @end
