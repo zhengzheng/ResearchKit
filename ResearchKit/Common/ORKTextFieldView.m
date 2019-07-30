@@ -410,7 +410,11 @@ static const UIEdgeInsets paddingGuess = (UIEdgeInsets){.left = 2, .right = 6};
 @end
 
 
-@implementation ORKTextFieldView
+@implementation ORKTextFieldView {
+
+    NSMutableArray<NSLayoutConstraint *> *_errorLabelConstraints;
+
+}
 
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
@@ -418,6 +422,7 @@ static const UIEdgeInsets paddingGuess = (UIEdgeInsets){.left = 2, .right = 6};
         _textField = [[ORKUnitTextField alloc] init];
         _textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _textField.translatesAutoresizingMaskIntoConstraints = NO;
+        
         [self addSubview:_textField];
         [self setUpConstraints];
     }
@@ -439,6 +444,14 @@ static const UIEdgeInsets paddingGuess = (UIEdgeInsets){.left = 2, .right = 6};
                                                                              metrics:nil
                                                                                views:views]];
     
+    NSLayoutConstraint *bottomConstraint = [NSLayoutConstraint constraintWithItem:self
+                                                             attribute:NSLayoutAttributeBottom
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:_textField
+                                                             attribute:NSLayoutAttributeBottom
+                                                            multiplier:1.0
+                                                              constant:0.0];
+    
     // Ask to fill the available horizontal space
     NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:_textField
                                                                        attribute:NSLayoutAttributeWidth
@@ -447,7 +460,9 @@ static const UIEdgeInsets paddingGuess = (UIEdgeInsets){.left = 2, .right = 6};
                                                                        attribute:NSLayoutAttributeNotAnAttribute
                                                                       multiplier:1.0
                                                                         constant:ORKScreenMetricMaxDimension];
+
     widthConstraint.priority = UILayoutPriorityDefaultLow;
+    [constraints addObject:bottomConstraint];
     [constraints addObject:widthConstraint];
     
     [NSLayoutConstraint activateConstraints:constraints];

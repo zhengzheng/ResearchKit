@@ -1264,6 +1264,11 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
     [self notifyDelegateOnResultChange];
 }
 
+- (void)formItemCellShouldResizeCells {
+    [_tableView beginUpdates];
+    [_tableView endUpdates];
+}
+
 - (BOOL)formItemCellShouldDismissKeyboard:(ORKFormItemCell *)cell {
     if ([self didAutoScrollToNextItem:cell]) {
         return NO;

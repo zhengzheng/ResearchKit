@@ -69,6 +69,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly) ORKUnitTextField *textField;
 
+@property (nonatomic, strong) UILabel *errorMessageLabel;
+
 @property (nonatomic, readonly) CGFloat estimatedWidth;
 
 @end

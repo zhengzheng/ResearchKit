@@ -40,6 +40,8 @@
 #import "ORKHelpers_Internal.h"
 #import "ORKSkin.h"
 
+static const CGFloat ErrorLabelTopPadding = 4.0;
+static const CGFloat ErrorLabelBottomPadding = 10.0;
 
 @interface ORKSurveyAnswerCellForText () <UITextViewDelegate>
 
@@ -207,11 +209,14 @@
 @interface ORKSurveyAnswerCellForTextField ()
 
 @property (nonatomic, strong) ORKAnswerTextField *textField;
+@property (nonatomic, strong) UILabel *errorLabel;
 
 @end
 
 
-@implementation ORKSurveyAnswerCellForTextField
+@implementation ORKSurveyAnswerCellForTextField {
+    NSMutableArray *constraints;
+}
 
 - (BOOL)becomeFirstResponder {
     return [self.textField becomeFirstResponder];
@@ -231,6 +236,16 @@
     [self addSubview:_textField];
     ORKEnableAutoLayoutForViews(@[_textField]);
     
+    if (_errorLabel == nil) {
+        _errorLabel = [UILabel new];
+        [_errorLabel setTextColor: [UIColor redColor]];
+        [self.errorLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleFootnote]];
+        _errorLabel.numberOfLines = 0;
+        _errorLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        [self addSubview:_errorLabel];
+    }
+    
+    
     [self setUpConstraints];
 }
 
@@ -239,17 +254,49 @@
 }
 
 - (void)setUpConstraints {
-    NSMutableArray *constraints = [NSMutableArray new];
-    NSDictionary *views = NSDictionaryOfVariableBindings(_textField);
-    [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[_textField]-|"
-                                                                             options:NSLayoutFormatDirectionLeadingToTrailing
-                                                                             metrics:nil
-                                                                               views:views]];
-
+    if (constraints != nil) {
+        [NSLayoutConstraint deactivateConstraints:constraints];
+    }
+    
+    constraints = [NSMutableArray new];
+    NSDictionary *metrics = @{@"errorLabelTopPadding":@(ErrorLabelTopPadding), @"errorLabelBottomPadding":@(ErrorLabelBottomPadding)};
+    NSDictionary *views = NSDictionaryOfVariableBindings(_textField, _errorLabel);
+    if (self.errorLabel.attributedText == nil) {
+        [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[_textField]-|"
+                                                                                 options:NSLayoutFormatDirectionLeadingToTrailing | NSLayoutFormatAlignAllLeading
+                                                                                 metrics:nil
+                                                                                   views:views]];
+        
+        [constraints addObjectsFromArray:
+         [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_errorLabel(==0)]"
+                                                 options:0
+                                                 metrics:nil
+                                                   views:views]];
+    } else {
+        [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[_textField]-errorLabelTopPadding-[_errorLabel]-errorLabelBottomPadding-|"
+                                                                                 options:NSLayoutFormatDirectionLeadingToTrailing | NSLayoutFormatAlignAllLeading
+                                                                                 metrics:metrics
+                                                                                   views:views]];
+    }
+    
     [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[_textField]-|"
                                                                              options:NSLayoutFormatDirectionLeadingToTrailing
                                                                              metrics:nil
                                                                                views:views]];
+    
+    [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[_textField]-|"
+                                                                                 options:NSLayoutFormatDirectionLeadingToTrailing
+                                                                                 metrics:nil
+                                                                                   views:views]];
+    
+    [constraints addObject:[NSLayoutConstraint constraintWithItem:_errorLabel
+                                                                   attribute:NSLayoutAttributeRight
+                                                                   relatedBy:NSLayoutRelationEqual
+                                                                      toItem:_textField
+                                                                   attribute:NSLayoutAttributeRight
+                                                                  multiplier:1.0
+                                                                    constant:0.0]];
+    
     // Get a full width layout
     [constraints addObject:[self.class fullWidthLayoutConstraint:_textField]];
     [NSLayoutConstraint activateConstraints:constraints];
@@ -303,6 +350,39 @@
 - (void)textFieldDidChange:(UITextField *)textField {
     NSString *text = self.textField.text;
     [self ork_setAnswer:text.length ? text : ORKNullAnswerValue()];
+}
+
+- (void)showValidityAlertWithMessage:(NSString *)text {
+    [self updateErrorLabelWithMessage:text];
+}
+
+- (void)updateErrorLabelWithMessage:(NSString *)message {
+    NSString *separatorString = @":";
+    NSString *parsedString = [message componentsSeparatedByString:separatorString].firstObject;
+    
+    if (@available(iOS 13.0, *)) {
+        
+        NSString *errorMessage = [NSString stringWithFormat:@" %@", parsedString];
+        NSMutableAttributedString *fullString = [[NSMutableAttributedString alloc] initWithString:errorMessage];
+        NSTextAttachment *imageAttachment = [NSTextAttachment new];
+        
+        UIImageSymbolConfiguration *imageConfig = [UIImageSymbolConfiguration configurationWithPointSize:12 weight:UIImageSymbolWeightRegular scale:UIImageSymbolScaleMedium];
+        UIImage *exclamationMarkImage = [UIImage systemImageNamed:@"exclamationmark.circle"];
+        UIImage *configuredImage = [exclamationMarkImage imageByApplyingSymbolConfiguration:imageConfig];
+        
+        imageAttachment.image = [configuredImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        
+        NSAttributedString *imageString = [NSAttributedString attributedStringWithAttachment:imageAttachment];
+        
+        [fullString insertAttributedString:imageString atIndex:0];
+        
+        self.errorLabel.attributedText = fullString;
+    } else {
+        NSMutableAttributedString *fullString = [[NSMutableAttributedString alloc] initWithString:parsedString];
+        self.errorLabel.attributedText = fullString;
+    }
+    
+    [self setUpConstraints];
 }
 
 #pragma mark - UITextFieldDelegate

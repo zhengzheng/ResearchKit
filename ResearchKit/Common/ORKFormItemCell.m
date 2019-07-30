@@ -55,6 +55,8 @@
 static const CGFloat VerticalMargin = 10.0;
 static const CGFloat VerticalSpacer = 15.0;
 static const CGFloat HorizontalSpacer = 16.0;
+static const CGFloat ErrorLabelTopPadding = 4.0;
+static const CGFloat ErrorLabelBottomPadding = 10.0;
 
 @interface ORKFormItemCell ()
 
@@ -63,11 +65,13 @@ static const CGFloat HorizontalSpacer = 16.0;
 - (void)inputValueDidClear NS_REQUIRES_SUPER;
 - (void)defaultAnswerDidChange NS_REQUIRES_SUPER;
 - (void)answerDidChange;
+- (void)updateErrorLabelWithMessage:(NSString *)message;
 
 // For use when setting the answer in response to user action
 - (void)ork_setAnswer:(id)answer;
 
 @property (nonatomic, strong) ORKCaption1Label *labelLabel;
+@property (nonatomic, strong) UILabel *errorLabel;
 @property (nonatomic, weak) UITableView *_parentTableView;
 
 // If hasChangedAnswer, then a new defaultAnswer should not change the answer
@@ -349,6 +353,36 @@ static const CGFloat HorizontalSpacer = 16.0;
     [self.delegate formItemCell:self invalidInputAlertWithTitle:title message:message];
 }
 
+- (void)updateErrorLabelWithMessage:(NSString *)message {
+    NSString *separatorString = @":";
+    NSString *parsedString = [message componentsSeparatedByString:separatorString].firstObject;
+    
+    if (@available(iOS 13.0, *)) {
+        
+        NSString *errorMessage = [NSString stringWithFormat:@" %@", parsedString];
+        NSMutableAttributedString *fullString = [[NSMutableAttributedString alloc] initWithString:errorMessage];
+        NSTextAttachment *imageAttachment = [NSTextAttachment new];
+        
+        UIImageSymbolConfiguration *imageConfig = [UIImageSymbolConfiguration configurationWithPointSize:12 weight:UIImageSymbolWeightRegular scale:UIImageSymbolScaleMedium];
+        UIImage *exclamationMarkImage = [UIImage systemImageNamed:@"exclamationmark.circle"];
+        UIImage *configuredImage = [exclamationMarkImage imageByApplyingSymbolConfiguration:imageConfig];
+        
+        imageAttachment.image = [configuredImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        
+        NSAttributedString *imageString = [NSAttributedString attributedStringWithAttachment:imageAttachment];
+        
+        [fullString insertAttributedString:imageString atIndex:0];
+        
+        self.errorLabel.attributedText = fullString;
+    } else {
+        NSMutableAttributedString *fullString = [[NSMutableAttributedString alloc] initWithString:parsedString];
+        self.errorLabel.attributedText = fullString;
+    }
+    
+    [self updateConstraints];
+    [self.delegate formItemCellShouldResizeCells];
+}
+
 @end
 
 
@@ -412,9 +446,17 @@ static const CGFloat HorizontalSpacer = 16.0;
     textField.placeholder = self.formItem.placeholder;
     
     [self.containerView addSubview:_textFieldView];
+    
+    self.errorLabel = [UILabel new];
+    [self.errorLabel setTextColor: [UIColor redColor]];
+    [self.errorLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleFootnote]];
+    self.errorLabel.numberOfLines = 0;
+    
+    [self.containerView addSubview:self.errorLabel];
 
     self.labelLabel.translatesAutoresizingMaskIntoConstraints = NO;
     _textFieldView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.errorLabel.translatesAutoresizingMaskIntoConstraints = NO;
     
     [self setUpContentConstraint];
     [self setNeedsUpdateConstraints];
@@ -446,72 +488,78 @@ static const CGFloat HorizontalSpacer = 16.0;
     }
     
     CGFloat labelWidth = self.maxLabelWidth;
-    CGFloat boundWidth = self.expectedLayoutWidth;
     
     NSDictionary *metrics = @{@"vMargin":@(VerticalMargin),
                               @"hMargin":@(ORKSurveyItemMargin),
                               @"hSpacer":@(HorizontalSpacer),
                               @"vSpacer":@(VerticalSpacer),
-                              @"labelWidth": @(labelWidth)};
+                              @"labelWidth":@(labelWidth),
+                              @"errorLabelTopPadding":@(ErrorLabelTopPadding),
+                              @"errorLabelBottomPadding":@(ErrorLabelBottomPadding)};
     
     id labelLabel = self.labelLabel;
     id textFieldView = _textFieldView;
-    NSDictionary *views = NSDictionaryOfVariableBindings(labelLabel,textFieldView);
+    id errorLabel = self.errorLabel;
+    NSDictionary *views = NSDictionaryOfVariableBindings(labelLabel,textFieldView, errorLabel);
     
-    CGFloat fieldWidth = _textFieldView.estimatedWidth;
-    
-    // Leave half space for field, and also to be able to display placeholder in full.
-    if ( labelWidth >= 0.5 * boundWidth || (fieldWidth + labelWidth) > 0.9 * boundWidth ) {
+    if (self.errorLabel.attributedText == nil) {
         [_variableConstraints addObjectsFromArray:
-         [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-hMargin-[labelLabel]-hMargin-|"
-                                                 options:NSLayoutFormatDirectionLeadingToTrailing
+         [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[labelLabel]-|"
+                                                 options:0
                                                  metrics:metrics
                                                    views:views]];
         
         [_variableConstraints addObjectsFromArray:
-         [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-hMargin-[textFieldView]|"
-                                                 options:NSLayoutFormatDirectionLeadingToTrailing
-                                                 metrics:metrics
-                                                   views:views]];
-        
-        [_variableConstraints addObjectsFromArray:
-         [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-vMargin-[labelLabel]-vSpacer-[textFieldView]-vMargin-|"
-                                                 options:NSLayoutFormatDirectionLeadingToTrailing
-                                                 metrics:metrics
-                                                   views:views]];
-        
+                 [NSLayoutConstraint constraintsWithVisualFormat:@"V:[errorLabel(==0)]"
+                                                         options:0
+                                                         metrics:nil
+                                                           views:views]];
     } else {
         [_variableConstraints addObjectsFromArray:
-         [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-hMargin-[labelLabel(==labelWidth)]-hSpacer-[textFieldView]|"
-                                                 options:NSLayoutFormatAlignAllCenterY
+         [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[labelLabel]-errorLabelTopPadding-[errorLabel]-errorLabelBottomPadding-|"
+                                                 options:0
                                                  metrics:metrics
                                                    views:views]];
-        
-        [_variableConstraints addObject:[NSLayoutConstraint constraintWithItem:labelLabel
-                                                                     attribute:NSLayoutAttributeCenterY
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:self.contentView
-                                                                     attribute:NSLayoutAttributeCenterY
-                                                                    multiplier:1.0
-                                                                      constant:0]];
-        
-        [_variableConstraints addObject:[NSLayoutConstraint constraintWithItem:self.contentView
-                                                                     attribute:NSLayoutAttributeHeight
-                                                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                                                        toItem:labelLabel
-                                                                     attribute:NSLayoutAttributeHeight
-                                                                    multiplier:1.0
-                                                                      constant:0.0]];
-        
-        [_variableConstraints addObject:[NSLayoutConstraint constraintWithItem:self.contentView
-                                                                     attribute:NSLayoutAttributeHeight
-                                                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                                                        toItem:textFieldView
-                                                                     attribute:NSLayoutAttributeHeight
-                                                                    multiplier:1.0
-                                                                      constant:0.0]];
     }
     
+    [_variableConstraints addObjectsFromArray:
+     [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-hMargin-[labelLabel(==labelWidth)]-hSpacer-[textFieldView]|"
+                                             options:NSLayoutFormatAlignAllCenterY
+                                             metrics:metrics
+                                               views:views]];
+    
+    [_variableConstraints addObject:[NSLayoutConstraint constraintWithItem:self.errorLabel
+                                                                 attribute:NSLayoutAttributeRight
+                                                                 relatedBy:NSLayoutRelationEqual
+                                                                    toItem:self.containerView
+                                                                 attribute:NSLayoutAttributeRight
+                                                                multiplier:1.0
+                                                                  constant: 0.0]];
+    
+    [_variableConstraints addObject:[NSLayoutConstraint constraintWithItem:self.errorLabel
+                                                                 attribute:NSLayoutAttributeLeft
+                                                                 relatedBy:NSLayoutRelationEqual
+                                                                    toItem:self.labelLabel
+                                                                 attribute:NSLayoutAttributeLeft
+                                                                multiplier:1.0
+                                                                  constant: 0.0]];
+
+    [_variableConstraints addObject:[NSLayoutConstraint constraintWithItem:self.contentView
+                                                                 attribute:NSLayoutAttributeHeight
+                                                                 relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                                    toItem:labelLabel
+                                                                 attribute:NSLayoutAttributeHeight
+                                                                multiplier:1.0
+                                                                  constant:0.0]];
+    
+    [_variableConstraints addObject:[NSLayoutConstraint constraintWithItem:self.contentView
+                                                                 attribute:NSLayoutAttributeHeight
+                                                                 relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                                    toItem:textFieldView
+                                                                 attribute:NSLayoutAttributeHeight
+                                                                multiplier:1.0
+                                                                  constant:0.0]];
+
     CGFloat defaultTableCelltHeight = ORKGetMetricForWindow(ORKScreenMetricTableCellDefaultHeight, self.window);
     NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self.contentView
                                                                         attribute:NSLayoutAttributeHeight
@@ -520,6 +568,7 @@ static const CGFloat HorizontalSpacer = 16.0;
                                                                         attribute:NSLayoutAttributeNotAnAttribute
                                                                        multiplier:1.0
                                                                          constant:defaultTableCelltHeight];
+    
     // Lower the priority to avoid conflicts with system supplied UIView-Encapsulated-Layout-Height constraint.
     heightConstraint.priority = 999;
     [_variableConstraints addObject:heightConstraint];
@@ -620,14 +669,21 @@ static const CGFloat HorizontalSpacer = 16.0;
      object:self];
     
     if (textField.text.length > 0 && ![[self.formItem impliedAnswerFormat] isAnswerValidWithString:textField.text]) {
-        [self showValidityAlertWithMessage:[[self.formItem impliedAnswerFormat] localizedInvalidValueStringWithAnswerString:textField.text]];
-    } else if (self.delegate && wasDoneButtonPressed && ![self.delegate formItemCellShouldDismissKeyboard:self]) {
+        [self updateErrorLabelWithMessage:[[self.formItem impliedAnswerFormat] localizedInvalidValueStringWithAnswerString:@""]];
+        return YES;
+    } else {
+        self.errorLabel.attributedText = nil;
+        [self updateConstraints];
+        [self.delegate formItemCellShouldResizeCells];
+    }
+    
+    if (self.delegate && wasDoneButtonPressed && ![self.delegate formItemCellShouldDismissKeyboard:self]) {
         self.editingHighlight = NO;
         [self inputValueDidChange];
         
         return NO;
     }
-    
+
     return YES;
 }
 
@@ -644,8 +700,11 @@ static const CGFloat HorizontalSpacer = 16.0;
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (![[self.formItem impliedAnswerFormat] isAnswerValidWithString:textField.text]) {
-        [self showValidityAlertWithMessage:[[self.formItem impliedAnswerFormat] localizedInvalidValueStringWithAnswerString:textField.text]];
-        return NO;
+        [self updateErrorLabelWithMessage:[[self.formItem impliedAnswerFormat] localizedInvalidValueStringWithAnswerString:@""]];
+    } else {
+        self.errorLabel.attributedText = nil;
+        [self updateConstraints];
+        [self.delegate formItemCellShouldResizeCells];
     }
     
     [textField resignFirstResponder];
@@ -734,7 +793,7 @@ static const CGFloat HorizontalSpacer = 16.0;
         if (self.answer) {
             [self inputValueDidClear];
         }
-        [self showValidityAlertWithMessage:[self.formItem.answerFormat localizedInvalidValueStringWithAnswerString:textField.text]];
+        [self updateErrorLabelWithMessage:[[self.formItem impliedAnswerFormat] localizedInvalidValueStringWithAnswerString:@""]];
     }
     return YES;
 }
@@ -823,7 +882,7 @@ static const CGFloat HorizontalSpacer = 16.0;
         NSInteger maxLength = answerFormat.maximumLength;
         
         if (maxLength > 0 && text.length > maxLength) {
-            [self showValidityAlertWithMessage:[answerFormat localizedInvalidValueStringWithAnswerString:text]];
+            [self updateErrorLabelWithMessage:[[self.formItem impliedAnswerFormat] localizedInvalidValueStringWithAnswerString:@""]];
             return NO;
         }
     }
@@ -987,7 +1046,6 @@ static const CGFloat HorizontalSpacer = 16.0;
                                              options:NSLayoutFormatDirectionLeadingToTrailing
                                              metrics:metrics
                                                views:views]];
-    
     
     NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self.contentView
                                                                         attribute:NSLayoutAttributeHeight
