@@ -1297,7 +1297,7 @@ static const CGFloat HorizontalSpacer = 16.0;
 }
 
 - (void)setDefaultAnswer:(id)defaultAnswer {
-    ORK_Log_Debug(@"%@", defaultAnswer);
+    ORK_Log_Debug("%@", defaultAnswer);
     [super setDefaultAnswer:defaultAnswer];
 }
 

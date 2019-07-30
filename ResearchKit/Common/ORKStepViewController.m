@@ -270,7 +270,7 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
         @throw [NSException exceptionWithName:NSGenericException reason:@"Cannot set step after presenting step view controller" userInfo:nil];
     }
     if (step && step.identifier == nil) {
-        ORK_Log_Warning(@"Step identifier should not be nil.");
+        ORK_Log_Debug("Step identifier should not be nil.");
     }
     
     _step = step;
@@ -286,7 +286,7 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    ORK_Log_Debug(@"%@", self);
+    ORK_Log_Debug("%@", self);
     
     
     // Required here (instead of viewDidLoad) because any custom buttons are set once the delegate responds to the stepViewControllerWillAppear,
@@ -585,7 +585,7 @@ static NSString *const _ORKAddedResultsKey = @"addedResults";
     if (!self.step) {
         // Just logging to the console in this case, since this can happen during a taskVC restoration of a dynamic task.
         // The step VC will get restored, but then never added back to the hierarchy.
-        ORK_Log_Warning(@"%@",[NSString stringWithFormat:@"No step provided while restoring %@", NSStringFromClass([self class])]);
+        ORK_Log_Debug("%@",[NSString stringWithFormat:@"No step provided while restoring %@", NSStringFromClass([self class])]);
     }
     
     self.presentedDate = [coder decodeObjectOfClass:[NSDate class] forKey:_ORKPresentedDateRestoreKey];

@@ -382,7 +382,7 @@ static NSString *const _SignatureStepIdentifier = @"signatureStep";
     UIViewController *viewController = [self viewControllerForIndex:page];
     
     if (!viewController) {
-        ORK_Log_Debug(@"No view controller!");
+        ORK_Log_Debug("No view controller!");
         return;
     }
     

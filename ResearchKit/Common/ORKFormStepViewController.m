@@ -372,7 +372,7 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
             refreshDefaultsPending = YES;
             [_defaultSource.healthStore requestAuthorizationToShareTypes:nil readTypes:types completion:^(BOOL success, NSError *error) {
                 if (!success) {
-                    ORK_Log_Debug(@"Authorization: %@",error);
+                    ORK_Log_Debug("Authorization: %@",error);
                 }
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self refreshDefaults];
@@ -434,7 +434,7 @@ static const CGFloat TableViewYOffsetStandard = 30.0;
                 if (defaultValue != nil) {
                     defaults[formItem.identifier] = defaultValue;
                 } else if (error != nil) {
-                    ORK_Log_Warning(@"Error fetching default for %@: %@", formItem, error);
+                    ORK_Log_Error("Error fetching default for %@: %@", formItem, error);
                 }
                 dispatch_semaphore_signal(semaphore);
             }];

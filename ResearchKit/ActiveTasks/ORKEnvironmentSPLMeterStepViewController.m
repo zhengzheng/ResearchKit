@@ -189,22 +189,22 @@
     // Stop any existing audio
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategorySoloAmbient error:&error];
     if (error) {
-        ORK_Log_Error(@"Setting AVAudioSessionCategory failed with error message: \"%@\"", error.localizedDescription);
+        ORK_Log_Error("Setting AVAudioSessionCategory failed with error message: \"%@\"", error.localizedDescription);
     }
     [[AVAudioSession sharedInstance] setActive:YES error:&error];
     if (error) {
-        ORK_Log_Error(@"Activating AVAudioSession failed with error message: \"%@\"", error.localizedDescription);
+        ORK_Log_Error("Activating AVAudioSession failed with error message: \"%@\"", error.localizedDescription);
     }
     
     // Force input/output from iOS device
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord mode:AVAudioSessionModeMeasurement options:AVAudioSessionCategoryOptionMixWithOthers error:&error];
     [[AVAudioSession sharedInstance] overrideOutputAudioPort: AVAudioSessionPortOverrideSpeaker error:&error];
     if (error) {
-        ORK_Log_Error(@"Setting AVAudioSessionCategory failed with error message: \"%@\"", error.localizedDescription);
+        ORK_Log_Error("Setting AVAudioSessionCategory failed with error message: \"%@\"", error.localizedDescription);
     }
     [[AVAudioSession sharedInstance] setActive:YES error:&error];
     if (error) {
-        ORK_Log_Error(@"Activating AVAudioSession failed with error message: \"%@\"", error.localizedDescription);
+        ORK_Log_Error("Activating AVAudioSession failed with error message: \"%@\"", error.localizedDescription);
     }
 }
 
@@ -332,11 +332,11 @@
     NSError *error = nil;
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback mode:AVAudioSessionModeDefault options:AVAudioSessionCategoryOptionMixWithOthers error:&error];
     if (error) {
-        ORK_Log_Error(@"Setting AVAudioSessionCategory failed with error message: \"%@\"", error.localizedDescription);
+        ORK_Log_Error("Setting AVAudioSessionCategory failed with error message: \"%@\"", error.localizedDescription);
     }
     [[AVAudioSession sharedInstance] setActive:YES error:&error];
     if (error) {
-        ORK_Log_Error(@"Activating AVAudioSession failed with error message: \"%@\"", error.localizedDescription);
+        ORK_Log_Error("Activating AVAudioSession failed with error message: \"%@\"", error.localizedDescription);
     }
 }
 

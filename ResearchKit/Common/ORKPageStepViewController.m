@@ -256,7 +256,7 @@ typedef NS_ENUM(NSInteger, ORKPageNavigationDirection) {
     ORKStepViewController *stepViewController = [self stepViewControllerForStep:step];
     
     if (!stepViewController) {
-        ORK_Log_Debug(@"No view controller!");
+        ORK_Log_Debug("No view controller!");
         [self goForward];
         return;
     }

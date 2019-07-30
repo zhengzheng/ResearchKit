@@ -345,7 +345,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
             @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Expected a task" userInfo:nil];
         }
         if (task.identifier == nil) {
-            ORK_Log_Warning(@"Task identifier should not be nil.");
+            ORK_Log_Debug("Task identifier should not be nil.");
         }
         if ([task respondsToSelector:@selector(validateParameters)]) {
             [task validateParameters];
@@ -397,7 +397,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
     
     __block HKHealthStore *healthStore = [HKHealthStore new];
     [healthStore requestAuthorizationToShareTypes:writeTypes readTypes:readTypes completion:^(BOOL success, NSError *error) {
-        ORK_Log_Warning(@"Health access: error=%@", error);
+        ORK_Log_Error("Health access: error=%@", error);
         dispatch_async(dispatch_get_main_queue(), handler);
         
         // Clear self-ref.
@@ -416,7 +416,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
     [pedometer queryPedometerDataFromDate:[NSDate dateWithTimeIntervalSinceNow:-100]
                                    toDate:[NSDate date]
                               withHandler:^(CMPedometerData *pedometerData, NSError *error) {
-                                  ORK_Log_Warning(@"Pedometer access: error=%@", error);
+                                  ORK_Log_Error("Pedometer access: error=%@", error);
                                   
                                   BOOL success = YES;
                                   if ([[error domain] isEqualToString:CMErrorDomain]) {
@@ -504,7 +504,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         dispatch_async(dispatch_get_main_queue(), ^{
-            ORK_Log_Debug(@"Requesting health access");
+            ORK_Log_Debug("Requesting health access");
             [self requestHealthStoreAccessWithReadTypes:readTypes
                                              writeTypes:writeTypes
                                                 handler:^{
@@ -517,7 +517,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
         }
         if (permissions & ORKPermissionCoreMotionActivity) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                ORK_Log_Debug(@"Requesting pedometer access");
+                ORK_Log_Debug("Requesting pedometer access");
                 [self requestPedometerAccessWithHandler:^(BOOL success) {
                     if (success) {
                         _grantedPermissions |= ORKPermissionCoreMotionActivity;
@@ -532,7 +532,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
         }
         if (permissions & ORKPermissionAudioRecording) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                ORK_Log_Debug(@"Requesting audio access");
+                ORK_Log_Debug("Requesting audio access");
                 [self requestAudioRecordingAccessWithHandler:^(BOOL success) {
                     if (success) {
                         _grantedPermissions |= ORKPermissionAudioRecording;
@@ -547,7 +547,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
         }
         if (permissions & ORKPermissionCoreLocation) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                ORK_Log_Debug(@"Requesting location access");
+                ORK_Log_Debug("Requesting location access");
                 [self requestLocationAccessWithHandler:^(BOOL success) {
                     if (success) {
                         _grantedPermissions |= ORKPermissionCoreLocation;
@@ -562,7 +562,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
         }
         if (permissions & ORKPermissionCamera) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                ORK_Log_Debug(@"Requesting camera access");
+                ORK_Log_Debug("Requesting camera access");
                 [self requestCameraAccessWithHandler:^(BOOL success) {
                     if (success) {
                         _grantedPermissions |= ORKPermissionCamera;
@@ -591,7 +591,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
             NSError *error = nil;
             if (![self startAudioPromptSessionWithError:&error]) {
                 // User-visible console log message
-                ORK_Log_Warning(@"Failed to start audio prompt session: %@", error);
+                ORK_Log_Error("Failed to start audio prompt session: %@", error);
             }
         }
     }
@@ -607,14 +607,14 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
                   withOptions:0
                         error:&error]) {
         success = NO;
-        ORK_Log_Warning(@"Could not start audio session: %@", error);
+        ORK_Log_Error("Could not start audio session: %@", error);
     }
     
     // We are setting the session active so that we can stay live to play audio
     // in the background.
     if (success && ![session setActive:YES withOptions:0 error:&error]) {
         success = NO;
-        ORK_Log_Warning(@"Could not set audio session active: %@", error);
+        ORK_Log_Error("Could not set audio session active: %@", error);
     }
     
     if (errorOut != NULL) {
@@ -623,7 +623,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
     
     _hasAudioSession = _hasAudioSession || success;
     if (_hasAudioSession) {
-        ORK_Log_Debug(@"*** Started audio session");
+        ORK_Log_Debug("*** Started audio session");
     }
     return success;
 }
@@ -633,9 +633,9 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
         AVAudioSession *session = [AVAudioSession sharedInstance];
         NSError *error = nil;
         if (![session setActive:NO withOptions:0 error:&error]) {
-            ORK_Log_Warning(@"Could not deactivate audio session: %@", error);
+            ORK_Log_Error("Could not deactivate audio session: %@", error);
         } else {
-            ORK_Log_Debug(@"*** Finished audio session");
+            ORK_Log_Debug("*** Finished audio session");
         }
     }
 }
@@ -953,7 +953,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
     
     [viewController willNavigateDirection:stepDirection];
     
-    ORK_Log_Debug(@"%@ %@", self, viewController);
+    ORK_Log_Debug("%@ %@", self, viewController);
     
     self.registeredScrollView = nil;
     
@@ -976,13 +976,13 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
     [self.pageViewController setViewControllers:@[viewController] direction:direction animated:animated completion:^(BOOL finished) {
         
         if (weakSelf == nil) {
-            ORK_Log_Debug(@"Task VC has been dismissed, skipping block code");
+            ORK_Log_Debug("Task VC has been dismissed, skipping block code");
             return;
         }
         
         ORKStrongTypeOf(weakSelf) strongSelf = weakSelf;
         
-        ORK_Log_Debug(@"%@ %@", strongSelf, viewController);
+        ORK_Log_Debug("%@ %@", strongSelf, viewController);
         
         // Set the progress label only if non-nil or if it is nil having previously set a progress label.
         if (progressLabel || strongSelf->_hasSetProgressLabel) {
@@ -1525,7 +1525,7 @@ static NSString *const _ORKPresentedDate = @"presentedDate";
             
             _restoredStepIdentifier = [coder decodeObjectOfClass:[NSString class] forKey:_ORKStepIdentifierRestoreKey];
         } else {
-            ORK_Log_Warning(@"Not restoring current step of task %@ because it does not implement -stepWithIdentifier:", _task.identifier);
+            ORK_Log_Info("Not restoring current step of task %@ because it does not implement -stepWithIdentifier:", _task.identifier);
         }
     }
 }
