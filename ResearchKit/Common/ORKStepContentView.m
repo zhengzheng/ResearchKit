@@ -79,8 +79,6 @@ static const CGFloat ORKStepContentIconImageViewDimension = 80.0;
 static const CGFloat ORKStepContentIconImageViewToTitleLabelPadding = 20.0;
 static const CGFloat ORKStepContentIconToBodyTopPaddingStandard = 20.0;
 static const CGFloat ORKStepContentIconToBulletTopPaddingStandard = 20.0;
-static const CGFloat ORKStepContentIconImageViewCornerRadius = 15.0;
-static const CGFloat ORKStepContentIconImageViewBorderWidth = 1.0;
 
 
 typedef NS_CLOSED_ENUM(NSInteger, ORKUpdateConstraintSequence) {
@@ -273,10 +271,6 @@ typedef NS_CLOSED_ENUM(NSInteger, ORKUpdateConstraintSequence) {
         _iconImageView = [UIImageView new];
     }
     _iconImageView.contentMode = UIViewContentModeScaleAspectFit;
-    _iconImageView.layer.cornerRadius = ORKStepContentIconImageViewCornerRadius;
-    _iconImageView.layer.masksToBounds = YES;
-    _iconImageView.layer.borderColor = [UIColor groupTableViewBackgroundColor].CGColor;
-    _iconImageView.layer.borderWidth = ORKStepContentIconImageViewBorderWidth;
 
     [self addSubview:_iconImageView];
     [self setIconImageViewConstraints];
