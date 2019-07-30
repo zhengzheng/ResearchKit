@@ -40,6 +40,9 @@
 #import "ORKHelpers_Internal.h"
 #import "ORKSkin.h"
 
+static const CGFloat TextViewTopPadding = 8.0;
+static const CGFloat TextViewBottomPadding = 16.0;
+static const CGFloat TextViewMinimumHeight = 140.0;
 static const CGFloat ErrorLabelTopPadding = 4.0;
 static const CGFloat ErrorLabelBottomPadding = 10.0;
 
@@ -53,6 +56,9 @@ static const CGFloat ErrorLabelBottomPadding = 10.0;
 @implementation ORKSurveyAnswerCellForText {
     NSInteger _maxLength;
     NSString *_defaultTextAnswer;
+    UILabel *_textCountLabel;
+    UIButton *_clearTextViewButton;
+    UIView *_bottomSeperatorView;
 }
 
 - (void)applyAnswerFormat {
@@ -106,8 +112,6 @@ static const CGFloat ErrorLabelBottomPadding = 10.0;
         
         ORKEnableAutoLayoutForViews(@[_textView]);
         
-        [self setUpConstraints];
-        
         [self applyAnswerFormat];
         
         [self answerDidChange];
@@ -116,6 +120,47 @@ static const CGFloat ErrorLabelBottomPadding = 10.0;
         // See also ORKCustomStepView -accessibilityElements
         self.accessibilityElements = @[self.textView];
     }
+    
+    if (_bottomSeperatorView == nil) {
+        _bottomSeperatorView = [UIView new];
+        
+        if (@available(iOS 13.0, *)) {
+            [_bottomSeperatorView setBackgroundColor:[UIColor separatorColor]];
+        } else {
+            [_bottomSeperatorView setBackgroundColor:[UIColor lightGrayColor]];
+        }
+        _bottomSeperatorView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self addSubview:_bottomSeperatorView];
+    }
+    
+    if (_textCountLabel == nil) {
+        _textCountLabel = [UILabel new];
+        if (@available(iOS 13.0, *)) {
+            [_textCountLabel setTextColor:[UIColor labelColor]];
+        } else {
+            [_textCountLabel setTextColor:[UIColor grayColor]];
+        }
+        if (_maxLength > 0) {
+            [self updateTextCountLabel];
+        } else {
+            [_textCountLabel setHidden:YES];
+        }
+        
+        _textCountLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        [self addSubview: _textCountLabel];
+    }
+    
+    if (_clearTextViewButton == nil) {
+        _clearTextViewButton = [UIButton new];
+        [_clearTextViewButton setTitle:ORKLocalizedString(@"BUTTON_CLEAR", nil) forState:UIControlStateNormal];
+        [_clearTextViewButton setBackgroundColor:[UIColor clearColor]];
+        [_clearTextViewButton setTitleColor:self.tintColor forState:UIControlStateNormal];
+        [_clearTextViewButton addTarget:self action:@selector(clearTextView) forControlEvents:UIControlEventTouchUpInside];
+        _clearTextViewButton.translatesAutoresizingMaskIntoConstraints = NO;
+        [self addSubview: _clearTextViewButton];
+    }
+    
+    [self setUpConstraints];
     [super prepareView];
 }
 
@@ -136,17 +181,67 @@ static const CGFloat ErrorLabelBottomPadding = 10.0;
 
 - (void)setUpConstraints {
     NSMutableArray *constraints = [NSMutableArray array];
-
-    NSDictionary *views = NSDictionaryOfVariableBindings(_textView);
     
-    [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[_textView]-|"
+    NSDictionary *views = NSDictionaryOfVariableBindings(_textView,_bottomSeperatorView, _textCountLabel);
+    
+    [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-textViewTopPadding-[_textView(>=textViewMinimumHeight)]-textViewBottomPadding-[_bottomSeperatorView]-textViewBottomPadding-[_textCountLabel]-|"
                                                                              options:(NSLayoutFormatOptions)0
-                                                                             metrics:nil
+                                                                             metrics:@{@"textViewTopPadding": @(TextViewTopPadding), @"textViewBottomPadding": @(TextViewBottomPadding), @"textViewMinimumHeight": @(TextViewMinimumHeight)}
                                                                                views:views]];
+    
     [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[_textView]-|"
                                                                              options:(NSLayoutFormatOptions)0
                                                                              metrics:nil
                                                                                views:views]];
+    
+    [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_bottomSeperatorView]|"
+                                                                             options:(NSLayoutFormatOptions)0
+                                                                             metrics:nil
+                                                                               views:views]];
+    
+    CGFloat separatorHeight = 1.0 / [UIScreen mainScreen].scale;
+    
+    
+    [constraints addObject:[NSLayoutConstraint constraintWithItem:_bottomSeperatorView
+                                                        attribute:NSLayoutAttributeHeight
+                                                        relatedBy:NSLayoutRelationEqual
+                                                           toItem:nil
+                                                        attribute:NSLayoutAttributeNotAnAttribute
+                                                       multiplier:1.0
+                                                         constant:separatorHeight]];
+    
+    [constraints addObject:[NSLayoutConstraint constraintWithItem:_textCountLabel
+                                                        attribute:NSLayoutAttributeLeft
+                                                        relatedBy:NSLayoutRelationEqual
+                                                           toItem:_textView
+                                                        attribute:NSLayoutAttributeLeft
+                                                       multiplier:1.0
+                                                         constant:0.0]];
+    
+    [constraints addObject:[NSLayoutConstraint constraintWithItem:_textCountLabel
+                                                        attribute:NSLayoutAttributeHeight
+                                                        relatedBy:NSLayoutRelationEqual
+                                                           toItem:_clearTextViewButton
+                                                        attribute:NSLayoutAttributeHeight
+                                                       multiplier:1.0
+                                                         constant:0.0]];
+    
+    [constraints addObject:[NSLayoutConstraint constraintWithItem:_clearTextViewButton
+                                                        attribute:NSLayoutAttributeRight
+                                                        relatedBy:NSLayoutRelationEqual
+                                                           toItem:_textView
+                                                        attribute:NSLayoutAttributeRight
+                                                       multiplier:1.0
+                                                         constant:0.0]];
+    
+    [constraints addObject:[NSLayoutConstraint constraintWithItem:_clearTextViewButton
+                                                        attribute:NSLayoutAttributeCenterY
+                                                        relatedBy:NSLayoutRelationEqual
+                                                           toItem:_textCountLabel
+                                                        attribute:NSLayoutAttributeCenterY
+                                                       multiplier:1.0
+                                                         constant:0.0]];
+    
     // Get full width layout
     [constraints addObject:[self.class fullWidthLayoutConstraint:_textView]];
     
@@ -154,11 +249,25 @@ static const CGFloat ErrorLabelBottomPadding = 10.0;
 }
 
 + (BOOL)shouldDisplayWithSeparators {
-    return YES;
+    return NO;
 }
 
 - (void)textDidChange {
     [self ork_setAnswer:(self.textView.text.length > 0) ? self.textView.text : ORKNullAnswerValue()];
+}
+
+- (void)updateTextCountLabel {
+    if (_maxLength > 0) {
+        NSString *text = [[self.textView.text componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]] componentsJoinedByString:@""];
+        NSString *textCountLabelText = [[NSString alloc] initWithFormat:@"%lu/%li", (unsigned long)text.length, (long)_maxLength];
+        _textCountLabel.text = textCountLabelText;
+    }
+}
+
+- (void)clearTextView {
+    self.textView.text = @"";
+    [self textDidChange];
+    [self updateTextCountLabel];
 }
 
 - (BOOL)shouldContinue {
@@ -177,15 +286,15 @@ static const CGFloat ErrorLabelBottomPadding = 10.0;
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
-
+    
     NSString *string = [textView.text stringByReplacingCharactersInRange:range withString:text];
-
+    
     // Only need to validate the text if the user enters a character other than a backspace.
     // For example, if the `textView.text = researchki` and the `string = researchkit`.
     if (textView.text.length < string.length) {
-    
+        
         string = [[string componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]] componentsJoinedByString:@""];
-    
+        
         if (_maxLength > 0 && string.length > _maxLength) {
             [self showValidityAlertWithMessage:[[self.step impliedAnswerFormat] localizedInvalidValueStringWithAnswerString:string]];
             return NO;
@@ -197,6 +306,7 @@ static const CGFloat ErrorLabelBottomPadding = 10.0;
 
 - (void)textViewDidChange:(UITextView *)textView {
     [self textDidChange];
+    [self updateTextCountLabel];
 }
 
 + (CGFloat)suggestedCellHeightForView:(UIView *)view {
@@ -230,7 +340,7 @@ static const CGFloat ErrorLabelBottomPadding = 10.0;
     _textField.textAlignment = NSTextAlignmentNatural;
     _textField.delegate = self;
     _textField.keyboardType = UIKeyboardTypeDefault;
-
+    
     [_textField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     
     [self addSubview:_textField];
@@ -285,17 +395,17 @@ static const CGFloat ErrorLabelBottomPadding = 10.0;
                                                                                views:views]];
     
     [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[_textField]-|"
-                                                                                 options:NSLayoutFormatDirectionLeadingToTrailing
-                                                                                 metrics:nil
-                                                                                   views:views]];
+                                                                             options:NSLayoutFormatDirectionLeadingToTrailing
+                                                                             metrics:nil
+                                                                               views:views]];
     
     [constraints addObject:[NSLayoutConstraint constraintWithItem:_errorLabel
-                                                                   attribute:NSLayoutAttributeRight
-                                                                   relatedBy:NSLayoutRelationEqual
-                                                                      toItem:_textField
-                                                                   attribute:NSLayoutAttributeRight
-                                                                  multiplier:1.0
-                                                                    constant:0.0]];
+                                                        attribute:NSLayoutAttributeRight
+                                                        relatedBy:NSLayoutRelationEqual
+                                                           toItem:_textField
+                                                        attribute:NSLayoutAttributeRight
+                                                       multiplier:1.0
+                                                         constant:0.0]];
     
     // Get a full width layout
     [constraints addObject:[self.class fullWidthLayoutConstraint:_textField]];
@@ -396,11 +506,11 @@ static const CGFloat ErrorLabelBottomPadding = 10.0;
     // Only need to validate the text if the user enters a character other than a backspace.
     // For example, if the `textField.text = researchki` and the `text = researchkit`.
     if (textField.text.length < text.length) {
-    
+        
         text = [[text componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]] componentsJoinedByString:@""];
-    
+        
         NSInteger maxLength = [(ORKTextAnswerFormat *)impliedFormat maximumLength];
-    
+        
         if (maxLength > 0 && text.length > maxLength) {
             [self showValidityAlertWithMessage:[[self.step impliedAnswerFormat] localizedInvalidValueStringWithAnswerString:text]];
             return NO;
