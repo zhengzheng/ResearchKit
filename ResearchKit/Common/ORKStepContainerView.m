@@ -103,6 +103,7 @@ static const CGFloat ORKContentBottomPadding = 19.0;
     UIScrollView *_scrollView;
     UIView *_scrollContainerView;
     BOOL _topContentImageShouldScroll;
+    CGFloat _customContentTopPadding;
     
     UIImageView *_topContentImageView;
 
@@ -134,6 +135,7 @@ static const CGFloat ORKContentBottomPadding = 19.0;
         [self setupUpdatedConstraints];
         [self placeNavigationContainerView];
         _topContentImageShouldScroll = YES;
+        _customContentTopPadding = ORKStepContainerTopCustomContentPaddingStandard;
     }
     return self;
 }
@@ -504,7 +506,12 @@ static const CGFloat ORKContentBottomPadding = 19.0;
                                                                       toItem:topItem
                                                                    attribute:attribute
                                                                   multiplier:1.0
-                                                                    constant:ORKStepContainerTopCustomContentPaddingStandard];
+                                                                    constant:_customContentTopPadding];
+}
+
+- (void)setCustomContentView:(UIView *)customContentView withTopPadding:(CGFloat)topPadding {
+    _customContentTopPadding = topPadding;
+    [self setCustomContentView:customContentView];
 }
 
 - (void)updateCustomContentViewTopConstraint {

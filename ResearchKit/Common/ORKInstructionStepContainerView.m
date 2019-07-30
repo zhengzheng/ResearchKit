@@ -52,11 +52,20 @@
     self.bodyTextAlignment = _instructionStep.bodyItemTextAlignment;
     self.bodyItems = _instructionStep.bodyItems;
     self.buildInBodyItems = _instructionStep.buildInBodyItems;
-    
-    self.stepTopContentImage = _instructionStep.image;
-    self.stepTopContentImageContentMode = _instructionStep.imageContentMode;
+
     self.auxiliaryImage = _instructionStep.auxiliaryImage;
     self.titleIconImage = _instructionStep.iconImage;
+    if (_instructionStep.centerImageVertically) {
+        UIImageView *centeredImageView = [UIImageView new];
+        centeredImageView.image = _instructionStep.image;
+        centeredImageView.contentMode = UIViewContentModeScaleAspectFit;
+        [self setCustomContentView:centeredImageView withTopPadding:80.0];
+        [self customContentFillsAvailableSpace];
+    }
+    else {
+        self.stepTopContentImage = _instructionStep.image;
+        self.stepTopContentImageContentMode = _instructionStep.imageContentMode;
+    }
 }
 
 @end

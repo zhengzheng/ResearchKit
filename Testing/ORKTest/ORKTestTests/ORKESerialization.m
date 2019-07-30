@@ -815,6 +815,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                  (@{
                     PROPERTY(detailText, NSString, NSObject, YES, nil, nil),
                     PROPERTY(footnote, NSString, NSObject, YES, nil, nil),
+                    PROPERTY(centerImageVertically, NSNumber, NSObject, YES, nil, nil),
                     })),
            ENTRY(ORKLearnMoreInstructionStep,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
