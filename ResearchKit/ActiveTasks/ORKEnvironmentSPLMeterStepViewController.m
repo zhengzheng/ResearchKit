@@ -32,6 +32,7 @@
 #import "ORKEnvironmentSPLMeterStepViewController.h"
 
 #import "ORKActiveStepView.h"
+#import "ORKStepView.h"
 #import "ORKStepContainerView_Private.h"
 #import "ORKRoundTappingButton.h"
 #import "ORKEnvironmentSPLMeterContentView.h"
@@ -42,6 +43,7 @@
 #import "ORKCollectionResult_Private.h"
 #import "ORKEnvironmentSPLMeterResult.h"
 #import "ORKEnvironmentSPLMeterStep.h"
+#import "ORKNavigationContainerView_Internal.h"
 
 #import "ORKHelpers_Internal.h"
 #import <AVFoundation/AVFoundation.h>
@@ -65,6 +67,7 @@
     NSInteger _requiredContiguousSamples;
     int _counter;
     NSMutableArray *_recordedSamples;
+    ORKNavigationContainerView *_navigationFooterView;
 }
 
 @property (nonatomic, strong) ORKEnvironmentSPLMeterContentView *environmentSPLMeterContentView;
@@ -91,20 +94,12 @@
     return self;
 }
 
-- (void)initializeInternalButtonItems {
-    [super initializeInternalButtonItems];
-    
-    // Don't show next button
-    self.internalContinueButtonItem = nil;
-    self.internalDoneButtonItem = nil;
-}
-
 - (void)viewDidLoad {
     
     [super viewDidLoad];
     _sensitivityOffset = [self sensitivityOffsetForDevice];
     _environmentSPLMeterContentView = [ORKEnvironmentSPLMeterContentView new];
-    [_environmentSPLMeterContentView setProgress:0.01 animated:YES];
+    [self setNavigationFooterView];
     self.activeStepView.activeCustomView = _environmentSPLMeterContentView;
     self.activeStepView.customContentFillsAvailableSpace = YES;
     [self requestMicrophoneAuthorization];
@@ -122,6 +117,18 @@
     
 }
 
+- (void)setNavigationFooterView {
+    _navigationFooterView = self.activeStepView.navigationFooterView;
+    _navigationFooterView.continueButtonItem = self.continueButtonItem;
+    _navigationFooterView.continueEnabled = NO;
+    [_navigationFooterView updateContinueAndSkipEnabled];
+}
+
+- (void)setContinueButtonItem:(UIBarButtonItem *)continueButtonItem {
+    [super setContinueButtonItem:continueButtonItem];
+    _navigationFooterView.continueButtonItem = continueButtonItem;
+}
+
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
@@ -130,11 +137,9 @@
     _samplingInterval = [self environmentSPLMeterStep].samplingInterval;
     _requiredContiguousSamples = [self environmentSPLMeterStep].requiredContiguousSamples;
     _thresholdValue = [self environmentSPLMeterStep].thresholdValue;
-    [_environmentSPLMeterContentView setThreshold:_thresholdValue];
     [self splWorkBlock];
     
 }
-
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
@@ -282,7 +287,6 @@
                                            [_recordedSamples addObject:[NSNumber numberWithFloat:_spl]];
                                            dispatch_async(dispatch_get_main_queue(), ^{
                                                [self.environmentSPLMeterContentView setProgressCircle:(_spl/_thresholdValue)];
-                                               [self.environmentSPLMeterContentView setDBText:[NSString stringWithFormat:@"%.f", _spl]];
                                            });
                                            [self evaluateThreshold:_spl];
                                            [_rmsBuffer removeAllObjects];
@@ -292,7 +296,6 @@
                                    dispatch_semaphore_wait(_semaphoreRms, DISPATCH_TIME_FOREVER);
                                } else if ([AVAudioSession sharedInstance].recordPermission == AVAudioSessionRecordPermissionDenied) {
                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                       [self.environmentSPLMeterContentView setDBText:[NSString stringWithFormat:@"N/A"]];
                                        [_eqUnit removeTapOnBus:0];
                                        [_audioEngine stop];
                                        [_rmsBuffer removeAllObjects];
@@ -313,17 +316,16 @@
 - (void) evaluateThreshold: (float)spl {
     if (spl < _thresholdValue) {
         _counter += 1;
+        [self.environmentSPLMeterContentView setProgress:((float)_counter/_requiredContiguousSamples)];
         if (_counter >= _requiredContiguousSamples) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self finish];
+                [self reachedOptimumNoiseLevel];
             });
         }
     } else {
         _counter = 0;
+        [self.environmentSPLMeterContentView setProgress:0.0];
     }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.environmentSPLMeterContentView setProgress:((float)_counter/_requiredContiguousSamples) + 0.01 animated:YES];
-    });
 }
 
 - (void) resetAudioSession {
@@ -338,11 +340,17 @@
     }
 }
 
+- (void)reachedOptimumNoiseLevel {
+    [self.environmentSPLMeterContentView reachedOptimumNoiseLevel];
+    [self resetAudioSession];
+    [_audioEngine stop];
+    _navigationFooterView.continueEnabled = YES;
+}
+
 - (void)stepDidFinish {
     [super stepDidFinish];
-    
     [self.environmentSPLMeterContentView finishStep:self];
-    [self resetAudioSession];
+
     [self goForward];
 }
 

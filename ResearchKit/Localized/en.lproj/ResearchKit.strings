@@ -571,6 +571,8 @@
 "ENVIRONMENTSPL_UNIT" = "dBA";
 "ENVIRONMENTSPL_CALCULATING" = "Calculating";
 "ENVIRONMENTSPL_THRESHOLD" = "Threshold: %@ dBA";
+"ENVIRONMENTSPL_OK" = "OK";
+"ENVIRONMENTSPL_NOISE" = "Too Much Background Noise";
 
 /* Charts */
 "CHART_NO_DATA_TEXT" = "No Data";
