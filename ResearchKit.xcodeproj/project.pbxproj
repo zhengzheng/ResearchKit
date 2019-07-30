@@ -588,6 +588,8 @@
 		BA8078F4224AC8AA0013B554 /* ORKStepContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA8078F2224AC8AA0013B554 /* ORKStepContainerView.m */; };
 		BA87E26D20A79FA100B375A9 /* ORKRingView.h in Headers */ = {isa = PBXBuildFile; fileRef = BA87E26B20A79FA100B375A9 /* ORKRingView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BA87E26E20A79FA100B375A9 /* ORKRingView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA87E26C20A79FA100B375A9 /* ORKRingView.m */; };
+		BA8C067822EEB84B00ACDE6B /* ORKPlaybackButton.h in Headers */ = {isa = PBXBuildFile; fileRef = BA8C067622EEB84B00ACDE6B /* ORKPlaybackButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BA8C067922EEB84B00ACDE6B /* ORKPlaybackButton.m in Sources */ = {isa = PBXBuildFile; fileRef = BA8C067722EEB84B00ACDE6B /* ORKPlaybackButton.m */; };
 		BA8C5021226FFB04001896D0 /* ORKLearnMoreItem.h in Headers */ = {isa = PBXBuildFile; fileRef = BA8C501F226FFB04001896D0 /* ORKLearnMoreItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BA8C5022226FFB04001896D0 /* ORKLearnMoreItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BA8C5020226FFB04001896D0 /* ORKLearnMoreItem.m */; };
 		BA95AA9620ACD07A00E7FF8E /* ORKAmslerGridStep.h in Headers */ = {isa = PBXBuildFile; fileRef = BA95AA9420ACD07A00E7FF8E /* ORKAmslerGridStep.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1405,6 +1407,8 @@
 		BA8078F2224AC8AA0013B554 /* ORKStepContainerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKStepContainerView.m; sourceTree = "<group>"; };
 		BA87E26B20A79FA100B375A9 /* ORKRingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKRingView.h; sourceTree = "<group>"; };
 		BA87E26C20A79FA100B375A9 /* ORKRingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKRingView.m; sourceTree = "<group>"; };
+		BA8C067622EEB84B00ACDE6B /* ORKPlaybackButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKPlaybackButton.h; sourceTree = "<group>"; };
+		BA8C067722EEB84B00ACDE6B /* ORKPlaybackButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKPlaybackButton.m; sourceTree = "<group>"; };
 		BA8C501F226FFB04001896D0 /* ORKLearnMoreItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKLearnMoreItem.h; sourceTree = "<group>"; };
 		BA8C5020226FFB04001896D0 /* ORKLearnMoreItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKLearnMoreItem.m; sourceTree = "<group>"; };
 		BA95AA9420ACD07A00E7FF8E /* ORKAmslerGridStep.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKAmslerGridStep.h; sourceTree = "<group>"; };
@@ -2161,6 +2165,7 @@
 		86C40B511A8D7C5B00081FAC /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				BA8C067522EEB7FD00ACDE6B /* Playback Button */,
 				BA87E26A20A79F5F00B375A9 /* Ring View */,
 				B12EFF3B1AB211E000A80147 /* Answer Format */,
 				B12EFF3A1AB211CC00A80147 /* Container Views */,
@@ -3085,6 +3090,15 @@
 			name = "Ring View";
 			sourceTree = "<group>";
 		};
+		BA8C067522EEB7FD00ACDE6B /* Playback Button */ = {
+			isa = PBXGroup;
+			children = (
+				BA8C067622EEB84B00ACDE6B /* ORKPlaybackButton.h */,
+				BA8C067722EEB84B00ACDE6B /* ORKPlaybackButton.m */,
+			);
+			name = "Playback Button";
+			sourceTree = "<group>";
+		};
 		BA95AA9320ACD05100E7FF8E /* AmslerGrid */ = {
 			isa = PBXGroup;
 			children = (
@@ -3464,6 +3478,7 @@
 				86C40E2C1A8D7C5C00081FAC /* ORKVisualConsentStep.h in Headers */,
 				257FCE1F1B4D14E50001EF06 /* ORKTowerOfHanoiTowerView.h in Headers */,
 				24A4DA181B8D13FE009C797A /* ORKPasscodeStepViewController.h in Headers */,
+				BA8C067822EEB84B00ACDE6B /* ORKPlaybackButton.h in Headers */,
 				86C40CB81A8D7C5C00081FAC /* ORKVoiceEngine.h in Headers */,
 				24A4DA141B8D1115009C797A /* ORKPasscodeStep.h in Headers */,
 				BCB6E6521B7D533B000D5B34 /* ORKPieChartLegendCell.h in Headers */,
@@ -4029,6 +4044,7 @@
 				10864CA31B27146B000F4158 /* ORKPSATContentView.m in Sources */,
 				6146D0A41B84A91E0068491D /* ORKGraphChartAccessibilityElement.m in Sources */,
 				D42FEFB91AF7557000A124F8 /* ORKImageCaptureView.m in Sources */,
+				BA8C067922EEB84B00ACDE6B /* ORKPlaybackButton.m in Sources */,
 				86C40C401A8D7C5C00081FAC /* ORKSpatialSpanMemoryContentView.m in Sources */,
 				BAC6F1AA22AF535100E31C22 /* ORKTaskReviewViewController.m in Sources */,
 				BCB6E6671B7D535F000D5B34 /* ORKXAxisView.m in Sources */,

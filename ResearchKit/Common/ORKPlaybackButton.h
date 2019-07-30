@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2015, Apple Inc. All rights reserved.
+ Copyright (c) 2019, Apple Inc. All rights reserved.
  
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
@@ -28,40 +28,19 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#import <UIKit/UIKit.h>
 
-#import "ORKActiveStepView.h"
+NS_ASSUME_NONNULL_BEGIN
 
-#import "ORKCustomStepView_Internal.h"
-#import "ORKTintedImageView.h"
-#import "ORKStepContainerView_Private.h"
+@interface ORKPlaybackButton : UIButton
 
-#import "ORKActiveStep_Internal.h"
-#import "ORKStep_Private.h"
+- (instancetype)initWithText:(NSString *)text image:(UIImage *)image;
 
-
-@implementation  ORKActiveStepView {
-    ORKTintedImageView *_imageView;
-}
-
-- (void)setActiveStep:(ORKActiveStep *)step {
-    _activeStep = step;
-    self.stepTitle = step.title;
-    self.stepText = step.text;
-    self.stepDetailText = step.detailText;
-    self.stepTopContentImage = step.image;
-    self.stepTopContentImageContentMode = step.imageContentMode;
-}
-
-- (void)updateTitle:(NSString *)title text:(NSString *)text {
-    self.stepTitle = title;
-    self.stepText = text;
-}
-
-- (void)setActiveCustomView:(ORKActiveStepCustomView *)activeCustomView {
-    _activeCustomView = activeCustomView;
-    if (_activeCustomView) {
-        self.customContentView = activeCustomView;
-    }
-}
+@property (nonatomic) NSString *text;
+@property (nonatomic) UIImage *image;
+@property (nonatomic) UIColor *highlightTintColor;
+@property (nonatomic) UIColor *normalTintColor;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -82,6 +82,7 @@
 #import <ResearchKit/ORKTextButton.h>
 #import <ResearchKit/ORKBorderedButton.h>
 #import <ResearchKit/ORKContinueButton.h>
+#import <ResearchKit/ORKPlaybackButton.h>
 
 #import <ResearchKit/ORKStepViewController.h>
 #import <ResearchKit/ORKActiveStepViewController.h>

@@ -1106,6 +1106,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                      PROPERTY(filterFileNameWithExtension, NSString, NSObject, YES, nil, nil),
                      PROPERTY(gainAppliedToNoise, NSNumber, NSObject, YES, nil, nil),
                      PROPERTY(willAudioLoop, NSNumber, NSObject, YES, nil, nil),
+                     PROPERTY(hideGraphView, NSNumber, NSObject, YES, nil, nil),
                      }))),
            ENTRY(ORKSpeechRecognitionStep,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
