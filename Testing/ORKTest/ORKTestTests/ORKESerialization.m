@@ -732,6 +732,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     IMAGEPROPERTY(image, NSObject, YES),
                     PROPERTY(learnMoreItem, ORKLearnMoreItem, NSObject, YES, nil, nil),
                     PROPERTY(useCardStyle, NSNumber, NSObject, YES, nil, nil),
+                    PROPERTY(useSecondaryColor, NSNumber, NSObject, YES, nil, nil)
                     })),
            ENTRY(ORKLearnMoreItem,
                  ^id(__unused NSDictionary *dict, __unused ORKESerializationPropertyGetter getter) {

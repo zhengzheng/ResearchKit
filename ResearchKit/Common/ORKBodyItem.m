@@ -48,6 +48,7 @@
         self.bodyItemStyle = bodyItemStyle;
         self.image = image;
         self.useCardStyle = useCardStyle;
+        self.useSecondaryColor = NO;
     }
     [self validateParameters];
     return self;
@@ -81,6 +82,7 @@
         ORK_DECODE_INTEGER(aDecoder, bodyItemStyle);
         ORK_DECODE_IMAGE(aDecoder, image);
         ORK_DECODE_BOOL(aDecoder, useCardStyle);
+        ORK_DECODE_BOOL(aDecoder, useSecondaryColor);
     }
     return self;
 }
@@ -92,6 +94,7 @@
     ORK_ENCODE_INTEGER(aCoder, bodyItemStyle);
     ORK_ENCODE_IMAGE(aCoder, image);
     ORK_ENCODE_BOOL(aCoder, useCardStyle);
+    ORK_ENCODE_BOOL(aCoder, useSecondaryColor);
 }
 
 - (nonnull id)copyWithZone:(nullable NSZone *)zone {
@@ -102,6 +105,7 @@
     bodyItem->_bodyItemStyle = self.bodyItemStyle;
     bodyItem->_image = [self.image copy];
     bodyItem->_useCardStyle = self.useCardStyle;
+    bodyItem->_useSecondaryColor = self.useSecondaryColor;
     return bodyItem;
 }
 
@@ -120,7 +124,8 @@
             && ORKEqualObjects(self.learnMoreItem, castObject.learnMoreItem)
             && (self.bodyItemStyle == castObject.bodyItemStyle)
             && ORKEqualObjects(self.image, castObject.image)
-            && (self.useCardStyle == castObject.useCardStyle));
+            && (self.useCardStyle == castObject.useCardStyle)
+            && (self.useSecondaryColor == castObject.useSecondaryColor));
 }
 
 @end

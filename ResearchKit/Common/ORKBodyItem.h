@@ -79,6 +79,8 @@ ORK_CLASS_AVAILABLE
 
 @property (nonatomic) BOOL useCardStyle;
 
+@property (nonatomic) BOOL useSecondaryColor;
+
 @end
 
 NS_ASSUME_NONNULL_END

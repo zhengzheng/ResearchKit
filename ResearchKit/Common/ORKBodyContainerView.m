@@ -300,7 +300,9 @@ static NSString *ORKBulletUnicode = @"\u2981";
     UIImageView *imageView = [UIImageView new];
     imageView.image = self.bodyItem.image;
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
-    
+    if (self.bodyItem.useSecondaryColor) {
+        imageView.tintColor = UIColor.grayColor;
+    }
     if (@available(iOS 13.0, *)) {
         // To allow symbols to handle their own configuration
         if (imageView.image.configuration != nil) {
