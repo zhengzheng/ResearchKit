@@ -48,7 +48,6 @@ static const CGFloat ORKBorderedButtonCornerRadii = 14.0;
 }
 
 - (void)setLayerAndFadeDelay {
-    self.layer.borderWidth = 0.0f;
     self.layer.cornerRadius = ORKBorderedButtonCornerRadii;
     self.fadeDelay = 0.0;
 }

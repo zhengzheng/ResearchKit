@@ -38,6 +38,28 @@
 
 static const CGFloat TopToProgressViewMinPadding = 10.0;
 
+@implementation ORKDBHLToneAudiometryButton
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.layer.borderWidth = 20.0;
+        self.layer.borderColor = UIColor.whiteColor.CGColor;
+        self.layer.shadowRadius = 10.0;
+        self.layer.shadowOpacity = 0.2;
+        self.layer.masksToBounds = NO;
+    }
+    return self;
+}
+
+- (void)updateBackgroundColor {
+    [super updateBackgroundColor];
+    self.layer.borderColor = UIColor.whiteColor.CGColor;
+}
+
+@end
+
 @implementation ORKdBHLToneAudiometryContentView {
     NSLayoutConstraint *_topToProgressViewConstraint;
 }
@@ -51,8 +73,8 @@ static const CGFloat TopToProgressViewMinPadding = 10.0;
         _progressView.progressTintColor = [self tintColor];
         [_progressView setAlpha:0];
         [self addSubview:_progressView];
-        _tapButton = [[ORKRoundTappingButton alloc] init];
-        [_tapButton setDiameter:200];
+        _tapButton = [[ORKDBHLToneAudiometryButton alloc] init];
+        [_tapButton setDiameter:150];
         _tapButton.translatesAutoresizingMaskIntoConstraints = NO;
         [_tapButton setTitle:ORKLocalizedString(@"TAP_BUTTON_TITLE", nil) forState:UIControlStateNormal];
         _tapButton.accessibilityTraits = UIAccessibilityTraitButton | UIAccessibilityTraitAllowsDirectInteraction;
