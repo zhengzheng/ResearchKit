@@ -40,7 +40,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-FOUNDATION_EXPORT BOOL ORKLoggingEnabled;
+ORK_EXTERN BOOL ORKLoggingEnabled;
 
 #define ORK_Log(format, ...) __extension__({ \
      if (ORKLoggingEnabled) { \
