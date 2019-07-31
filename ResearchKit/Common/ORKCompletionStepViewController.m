@@ -184,7 +184,7 @@ static const CGFloat TickViewSize = 122;
                                                                            relatedBy:NSLayoutRelationEqual
                                                                               toItem:self
                                                                            attribute:NSLayoutAttributeCenterY
-                                                                          multiplier:1.0
+                                                                          multiplier:0.5
                                                                             constant:0.0]
                                               ]];
 }
