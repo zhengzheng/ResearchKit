@@ -38,6 +38,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) BOOL showThumb;
 
+@property (nonatomic, assign) BOOL hideValueMarkers;
+
+@property (nonatomic, assign) BOOL isWaitingForUserFeedback;
+
 @property (nonatomic, assign) NSUInteger numberOfSteps;
 
 @property (nonatomic, assign, getter=isVertical) BOOL vertical;
@@ -47,6 +51,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, nullable) NSArray<UIColor *> *gradientColors;
 
 @property (nonatomic, copy, nullable) NSArray<NSNumber *> *gradientLocations;
+
+- (void)setDefaultThumb;
+
+- (void)setBorderedThumb;
 
 @end
 

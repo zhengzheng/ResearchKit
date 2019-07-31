@@ -580,6 +580,9 @@
 /* Charts */
 "CHART_NO_DATA_TEXT" = "No Data";
 
+/* Slider */
+"SLIDER_MOVE_SLIDER_FOR_VALUE" = "Move slider to enter value";
+
 /* Accessibility */
 "AX_BUTTON_BACK" = "Back";
 "AX_BUTTON_SHOW_PDF_THUMBNAIL" = "Show PDF Thumbnail";

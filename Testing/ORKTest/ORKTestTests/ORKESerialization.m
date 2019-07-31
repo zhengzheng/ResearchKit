@@ -1491,6 +1491,9 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     PROPERTY(gradientColors, UIColor, NSArray, YES, nil, nil),
                     PROPERTY(gradientLocations, NSNumber, NSArray, YES, nil, nil),
                     PROPERTY(hideSelectedValue, NSNumber, NSObject, YES, nil, nil),
+                    PROPERTY(hideRanges, NSNumber, NSObject, YES, nil, nil),
+                    PROPERTY(hideLabels, NSNumber, NSObject, YES, nil, nil),
+                    PROPERTY(hideValueMarkers, NSNumber, NSObject, YES, nil, nil),
                     IMAGEPROPERTY(minimumImage, NSObject, YES),
                     IMAGEPROPERTY(maximumImage, NSObject, YES),
                     })),
@@ -1512,6 +1515,8 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     PROPERTY(gradientColors, UIColor, NSArray, YES, nil, nil),
                     PROPERTY(gradientLocations, NSNumber, NSArray, YES, nil, nil),
                     PROPERTY(hideSelectedValue, NSNumber, NSObject, YES, nil, nil),
+                    PROPERTY(hideRanges, NSNumber, NSObject, YES, nil, nil),
+                    PROPERTY(hideLabels, NSNumber, NSObject, YES, nil, nil),
                     IMAGEPROPERTY(minimumImage, NSObject, YES),
                     IMAGEPROPERTY(maximumImage, NSObject, YES),
                     })),
@@ -1525,7 +1530,10 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                     PROPERTY(vertical, NSNumber, NSObject, NO, nil, nil),
                     PROPERTY(gradientColors, UIColor, NSArray, YES, nil, nil),
                     PROPERTY(gradientLocations, NSNumber, NSArray, YES, nil, nil),
-                    PROPERTY(hideSelectedValue, NSNumber, NSObject, YES, nil, nil)
+                    PROPERTY(hideSelectedValue, NSNumber, NSObject, YES, nil, nil),
+                    PROPERTY(hideRanges, NSNumber, NSObject, YES, nil, nil),
+                    PROPERTY(hideLabels, NSNumber, NSObject, YES, nil, nil),
+                    PROPERTY(hideValueMarkers, NSNumber, NSObject, YES, nil, nil)
                     })),
            ENTRY(ORKTextAnswerFormat,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {

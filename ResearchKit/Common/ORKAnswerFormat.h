@@ -382,6 +382,27 @@ ORK_CLASS_AVAILABLE
  */
 @property (copy, nullable) NSArray<NSNumber *> *gradientLocations;
 
+/**
+ Determines if the minimum and maximum numbers are hidden on the slider.
+ 
+ Defults to false.
+ */
+@property (nonatomic, assign, getter=shouldHideRanges) BOOL hideRanges;
+
+/**
+ Determines if the bottom left and bottom right description labels are hidden
+ 
+ Defults to false.
+ */
+@property (nonatomic, assign, getter=shouldHideLabels) BOOL hideLabels;
+
+/**
+ Determines if the value markers on the slider are hidden
+ 
+ Defults to false.
+ */
+@property (nonatomic, assign, getter=shouldHideValueMarkers) BOOL hideValueMarkers;
+
 @end
 
 
@@ -548,6 +569,20 @@ ORK_CLASS_AVAILABLE
  */
 @property (copy, nullable) NSArray<NSNumber *> *gradientLocations;
 
+/**
+ Determines if the minimum and maximum numbers are hidden on the slider.
+ 
+ Defults to false.
+ */
+@property (nonatomic, assign, getter=shouldHideRanges) BOOL hideRanges;
+
+/**
+ Determines if the bottom left and bottom right description labels are hidden
+ 
+ Defults to false.
+ */
+@property (nonatomic, assign, getter=shouldHideLabels) BOOL hideLabels;
+
 @end
 
 
@@ -642,6 +677,27 @@ ORK_CLASS_AVAILABLE
  If nil, the stops are spread uniformly across the range. Defaults to nil.
  */
 @property (copy, nullable) NSArray<NSNumber *> *gradientLocations;
+
+/**
+ Determines if the minimum and maximum numbers are hidden on the slider.
+ 
+ Defults to false.
+ */
+@property (nonatomic, assign, getter=shouldHideRanges) BOOL hideRanges;
+
+/**
+ Determines if the bottom left and bottom right description labels are hidden
+ 
+ Defults to false.
+ */
+@property (nonatomic, assign, getter=shouldHideLabels) BOOL hideLabels;
+
+/**
+ Determines if the value markers on the slider are hidden
+ 
+ Defults to false.
+ */
+@property (nonatomic, assign, getter=shouldHideValueMarkers) BOOL hideValueMarkers;
 
 @end
 

@@ -130,6 +130,9 @@ ORK_DESIGNATE_CODING_AND_SERIALIZATION_INITIALIZERS(ORKWeightAnswerFormat)
 - (nullable NSNumber *)normalizedValueForNumber:(nullable NSNumber *)number;
 - (BOOL)isVertical;
 - (BOOL)shouldHideSelectedValueLabel;
+- (BOOL)shouldHideRanges;
+- (BOOL)shouldHideLabels;
+- (BOOL)shouldHideValueMarkers;
 - (NSString *)maximumValueDescription;
 - (NSString *)minimumValueDescription;
 - (nullable UIImage *)maximumImage;

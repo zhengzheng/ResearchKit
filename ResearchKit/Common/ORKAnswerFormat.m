@@ -1881,6 +1881,9 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
         _hideSelectedValue = NO;
         _maximumValueDescription = maximumValueDescription;
         _minimumValueDescription = minimumValueDescription;
+        _hideRanges = NO;
+        _hideLabels = NO;
+        _hideValueMarkers = NO;
 
         [self validateParameters];
     }
@@ -1921,7 +1924,8 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
     return @(_maximum);
 }
 - (NSNumber *)defaultAnswer {
-    if ( _defaultValue > _maximum || _defaultValue < _minimum) {
+    
+    if (_defaultValue > _maximum || _defaultValue < _minimum) {
         return nil;
     }
     
@@ -2009,6 +2013,9 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
         ORK_DECODE_INTEGER(aDecoder, defaultValue);
         ORK_DECODE_BOOL(aDecoder, vertical);
         ORK_DECODE_BOOL(aDecoder, hideSelectedValue);
+        ORK_DECODE_BOOL(aDecoder, hideRanges);
+        ORK_DECODE_BOOL(aDecoder, hideLabels);
+        ORK_DECODE_BOOL(aDecoder, hideValueMarkers);
         ORK_DECODE_OBJ(aDecoder, maximumValueDescription);
         ORK_DECODE_OBJ(aDecoder, minimumValueDescription);
         ORK_DECODE_IMAGE(aDecoder, maximumImage);
@@ -2027,6 +2034,9 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
     ORK_ENCODE_INTEGER(aCoder, defaultValue);
     ORK_ENCODE_BOOL(aCoder, vertical);
     ORK_ENCODE_BOOL(aCoder, hideSelectedValue);
+    ORK_ENCODE_BOOL(aCoder, hideRanges);
+    ORK_ENCODE_BOOL(aCoder, hideLabels);
+    ORK_ENCODE_BOOL(aCoder, hideValueMarkers);
     ORK_ENCODE_OBJ(aCoder, maximumValueDescription);
     ORK_ENCODE_OBJ(aCoder, minimumValueDescription);
     ORK_ENCODE_IMAGE(aCoder, maximumImage);
@@ -2048,6 +2058,10 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
             (_minimum == castObject.minimum) &&
             (_step == castObject.step) &&
             (_defaultValue == castObject.defaultValue) &&
+            (_hideLabels == castObject.hideLabels) &&
+            (_hideRanges == castObject.hideRanges) &&
+            (_hideValueMarkers == castObject.hideValueMarkers) &&
+            (_hideSelectedValue == castObject.hideSelectedValue) &&
             ORKEqualObjects(self.maximumValueDescription, castObject.maximumValueDescription) &&
             ORKEqualObjects(self.minimumValueDescription, castObject.minimumValueDescription) &&
             ORKEqualObjects(self.maximumImage, castObject.maximumImage) &&
@@ -2062,6 +2076,18 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
 
 - (NSString *)stringForAnswer:(id)answer {
     return [self localizedStringForNumber:answer];
+}
+
+- (BOOL)shouldHideRanges {
+    return _hideRanges;
+}
+
+- (BOOL)shouldHideLabels {
+    return _hideLabels;
+}
+
+- (BOOL)shouldHideValueMarkers {
+    return _hideValueMarkers;
 }
 
 @end
@@ -2102,6 +2128,8 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
         _hideSelectedValue = NO;
         _maximumValueDescription = maximumValueDescription;
         _minimumValueDescription = minimumValueDescription;
+        _hideRanges = NO;
+        _hideLabels = NO;
         
         [self validateParameters];
     }
@@ -2213,6 +2241,8 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
         ORK_DECODE_BOOL(aDecoder, vertical);
         ORK_DECODE_ENUM(aDecoder, numberStyle);
         ORK_DECODE_BOOL(aDecoder, hideSelectedValue);
+        ORK_DECODE_BOOL(aDecoder, hideLabels);
+        ORK_DECODE_BOOL(aDecoder, hideRanges);
         ORK_DECODE_OBJ(aDecoder, maximumValueDescription);
         ORK_DECODE_OBJ(aDecoder, minimumValueDescription);
         ORK_DECODE_IMAGE(aDecoder, maximumImage);
@@ -2231,6 +2261,8 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
     ORK_ENCODE_INTEGER(aCoder, maximumFractionDigits);
     ORK_ENCODE_BOOL(aCoder, vertical);
     ORK_ENCODE_BOOL(aCoder, hideSelectedValue);
+    ORK_ENCODE_BOOL(aCoder, hideLabels);
+    ORK_ENCODE_BOOL(aCoder, hideRanges);
     ORK_ENCODE_ENUM(aCoder, numberStyle);
     ORK_ENCODE_OBJ(aCoder, maximumValueDescription);
     ORK_ENCODE_OBJ(aCoder, minimumValueDescription);
@@ -2254,6 +2286,9 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
             (_defaultValue == castObject.defaultValue) &&
             (_maximumFractionDigits == castObject.maximumFractionDigits) &&
             (_numberStyle == castObject.numberStyle) &&
+            (_hideSelectedValue == castObject.hideSelectedValue) &&
+            (_hideLabels == castObject.hideLabels) &&
+            (_hideRanges == castObject.hideRanges) &&
             ORKEqualObjects(self.maximumValueDescription, castObject.maximumValueDescription) &&
             ORKEqualObjects(self.minimumValueDescription, castObject.minimumValueDescription) &&
             ORKEqualObjects(self.maximumImage, castObject.maximumImage) &&
@@ -2268,6 +2303,18 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
 
 - (NSString *)stringForAnswer:(id)answer {
     return [self localizedStringForNumber:answer];
+}
+
+- (BOOL)shouldHideRanges {
+    return _hideRanges;
+}
+
+- (BOOL)shouldHideLabels {
+    return _hideLabels;
+}
+
+- (BOOL)shouldHideValueMarkers {
+    return NO;
 }
 
 @end
@@ -2309,6 +2356,9 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
         _vertical = vertical;
         _hideSelectedValue = NO;
         _helper = [[ORKChoiceAnswerFormatHelper alloc] initWithAnswerFormat:self];
+        _hideRanges = NO;
+        _hideLabels = NO;
+        _hideValueMarkers = NO;
         
         [self validateParameters];
     }
@@ -2415,6 +2465,10 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
         ORK_DECODE_OBJ_ARRAY(aDecoder, gradientLocations, NSNumber);
         ORK_DECODE_INTEGER(aDecoder, defaultIndex);
         ORK_DECODE_BOOL(aDecoder, vertical);
+        ORK_DECODE_BOOL(aDecoder, hideSelectedValue);
+        ORK_DECODE_BOOL(aDecoder, hideValueMarkers);
+        ORK_DECODE_BOOL(aDecoder, hideLabels);
+        ORK_DECODE_BOOL(aDecoder, hideRanges);
     }
     return self;
 }
@@ -2426,6 +2480,10 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
     ORK_ENCODE_OBJ(aCoder, gradientLocations);
     ORK_ENCODE_INTEGER(aCoder, defaultIndex);
     ORK_ENCODE_BOOL(aCoder, vertical);
+    ORK_ENCODE_BOOL(aCoder, hideSelectedValue);
+    ORK_ENCODE_BOOL(aCoder, hideValueMarkers);
+    ORK_ENCODE_BOOL(aCoder, hideLabels);
+    ORK_ENCODE_BOOL(aCoder, hideRanges);
 }
 
 + (BOOL)supportsSecureCoding {
@@ -2440,6 +2498,10 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
             ORKEqualObjects(self.textChoices, castObject.textChoices) &&
             (_defaultIndex == castObject.defaultIndex) &&
             (_vertical == castObject.vertical) &&
+            (_hideSelectedValue == castObject.hideSelectedValue) &&
+            (_hideValueMarkers == castObject.hideValueMarkers) &&
+            (_hideLabels == castObject.hideLabels) &&
+            (_hideRanges == castObject.hideRanges) &&
             ORKEqualObjects(self.gradientColors, castObject.gradientColors) &&
             ORKEqualObjects(self.gradientLocations, castObject.gradientLocations));
 }
@@ -2450,6 +2512,18 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
 
 - (NSString *)stringForAnswer:(id)answer {
     return [_helper stringForChoiceAnswer:answer];
+}
+
+- (BOOL)shouldHideRanges {
+    return _hideRanges;
+}
+
+- (BOOL)shouldHideLabels {
+    return _hideLabels;
+}
+
+- (BOOL)shouldHideValueMarkers {
+    return _hideValueMarkers;
 }
 
 @end
