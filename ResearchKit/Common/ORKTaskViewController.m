@@ -311,6 +311,7 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
 
 - (instancetype)initWithTask:(id<ORKTask>)task
       startingStepIdentifier:(NSString *)startingStepIdentifier
+               ongoingResult:(nullable ORKTaskResult *)ongoingResult
          defaultResultSource:(nullable id<ORKTaskResultSource>)defaultResultSource
                     delegate:(id<ORKTaskViewControllerDelegate>)delegate {
     
@@ -319,6 +320,12 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
     if (self) {
         _delegate = delegate;
         _defaultResultSource = defaultResultSource;
+        if (ongoingResult != nil) {
+            for (ORKResult *stepResult in ongoingResult.results) {
+                [_managedStepIdentifiers addObject:stepResult.identifier];
+                _managedResults[stepResult.identifier] = stepResult;
+            }
+        }
         if (startingStepIdentifier != nil) {
             _restoredStepIdentifier = startingStepIdentifier;
             [self applicationFinishedRestoringState];

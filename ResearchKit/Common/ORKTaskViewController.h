@@ -379,6 +379,7 @@ ORK_CLASS_AVAILABLE
  */
 - (instancetype)initWithTask:(id<ORKTask>)task
       startingStepIdentifier:(nullable NSString *)startingStepIdentifier
+               ongoingResult:(nullable ORKTaskResult *)ongoingResult
          defaultResultSource:(nullable id<ORKTaskResultSource>)defaultResultSource
                     delegate:(id<ORKTaskViewControllerDelegate>)delegate;
 

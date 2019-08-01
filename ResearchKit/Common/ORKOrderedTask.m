@@ -144,19 +144,19 @@
     }
     
     ORKStep *currentStep = step;
-    ORKStep *nextStep = nil;
+    ORKStep *previousStep = nil;
     
     if (currentStep == nil) {
-        nextStep = nil;
+        previousStep = nil;
         
     } else {
         NSUInteger index = [self indexOfStep:step];
         
         if (NSNotFound != index && index != 0) {
-            nextStep = steps[index - 1];
+            previousStep = steps[index - 1];
         }
     }
-    return nextStep;
+    return previousStep;
 }
 
 - (ORKStep *)stepWithIdentifier:(NSString *)identifier {
