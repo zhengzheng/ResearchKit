@@ -372,6 +372,7 @@ ORK_CLASS_AVAILABLE
  
  @param task                    The task to be presented.
  @param startingStepIdentifier  The identifier of the step to start the task on.
+ @param ongoingResult           An optional task result from a previous run of the task. If you provide a startingStepIdentifier, it is recommended that you provide a partial task result including results of the steps preceeding the starting step. Not doing so will disable back navigtion on ORKNavigableOrderedTasks.
  @param defaultResultSource     A source that the task view controller can consult to obtain default answers for questions provided in question steps and form steps.
  @param delegate                The delegate for the task view controller.
  
