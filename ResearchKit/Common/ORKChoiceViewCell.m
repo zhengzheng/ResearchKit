@@ -40,14 +40,13 @@
 #import "ORKSkin.h"
 
 
-static const CGFloat LabelRightMargin = 44.0;
 static const CGFloat CardTopBottomMargin = 2.0;
 static const CGFloat LabelTopBottomMargin = 14.0;
 static const CGFloat TextViewTopMargin = 20.0;
 static const CGFloat TextViewHeight = 100.0;
 static const CGFloat CheckViewDimension = 25.0;
 static const CGFloat CheckViewBorderWidth = 2.0;
-static const CGFloat LabelLeadingPadding = 10.0;
+static const CGFloat LabelCheckViewPadding = 10.0;
 
 @interface ORKChoiceViewCell()
 
@@ -109,7 +108,7 @@ static const CGFloat LabelLeadingPadding = 10.0;
         foreLayer.zPosition = 0.0f;
         
         CAShapeLayer *lineLayer = [CAShapeLayer layer];
-
+        
         if (_isLastItem || _isFirstItemInSectionWithoutTitle) {
             NSUInteger rectCorners;
             if (_isLastItem && !_isFirstItemInSectionWithoutTitle) {
@@ -165,84 +164,84 @@ static const CGFloat LabelLeadingPadding = 10.0;
 
 - (void)addContainerViewToSelfConstraints {
     [_containerConstraints addObjectsFromArray:@[
-                                                 [NSLayoutConstraint constraintWithItem:_containerView
-                                                                              attribute:NSLayoutAttributeTop
-                                                                              relatedBy:NSLayoutRelationEqual
-                                                                                 toItem:self
-                                                                              attribute:NSLayoutAttributeTop
-                                                                             multiplier:1.0
-                                                                               constant:0],
-                                                 [NSLayoutConstraint constraintWithItem:_containerView
-                                                                              attribute:NSLayoutAttributeLeft
-                                                                              relatedBy:NSLayoutRelationEqual
-                                                                                 toItem:self
-                                                                              attribute:NSLayoutAttributeLeft
-                                                                             multiplier:1.0
-                                                                               constant:_leftRightMargin],
-                                                 [NSLayoutConstraint constraintWithItem:_containerView
-                                                                              attribute:NSLayoutAttributeRight
-                                                                              relatedBy:NSLayoutRelationEqual
-                                                                                 toItem:self
-                                                                              attribute:NSLayoutAttributeRight
-                                                                             multiplier:1.0
-                                                                               constant:-_leftRightMargin]
-                                                                ]];
+        [NSLayoutConstraint constraintWithItem:_containerView
+                                     attribute:NSLayoutAttributeTop
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self
+                                     attribute:NSLayoutAttributeTop
+                                    multiplier:1.0
+                                      constant:0],
+        [NSLayoutConstraint constraintWithItem:_containerView
+                                     attribute:NSLayoutAttributeLeft
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self
+                                     attribute:NSLayoutAttributeLeft
+                                    multiplier:1.0
+                                      constant:_leftRightMargin],
+        [NSLayoutConstraint constraintWithItem:_containerView
+                                     attribute:NSLayoutAttributeRight
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self
+                                     attribute:NSLayoutAttributeRight
+                                    multiplier:1.0
+                                      constant:-_leftRightMargin]
+    ]];
 }
 
 - (void)addPrimaryLabelToContainerViewConstraints {
     if (_primaryLabel) {
         
         [_containerConstraints addObjectsFromArray:@[
-                                                     [NSLayoutConstraint constraintWithItem:_primaryLabel
-                                                                                  attribute:NSLayoutAttributeTop
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:_containerView
-                                                                                  attribute:NSLayoutAttributeTop
-                                                                                 multiplier:1.0
-                                                                                   constant:LabelTopBottomMargin],
-                                                     [NSLayoutConstraint constraintWithItem:_primaryLabel
-                                                                                  attribute:NSLayoutAttributeLeading
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:_checkView
-                                                                                  attribute:NSLayoutAttributeTrailing
-                                                                                 multiplier:1.0
-                                                                                   constant:LabelLeadingPadding],
-                                                     [NSLayoutConstraint constraintWithItem:_primaryLabel
-                                                                                  attribute:NSLayoutAttributeTrailing
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:_containerView
-                                                                                  attribute:NSLayoutAttributeTrailing
-                                                                                 multiplier:1.0
-                                                                                   constant:-LabelRightMargin]
-                                                     ]];
+            [NSLayoutConstraint constraintWithItem:_primaryLabel
+                                         attribute:NSLayoutAttributeTop
+                                         relatedBy:NSLayoutRelationEqual
+                                            toItem:_containerView
+                                         attribute:NSLayoutAttributeTop
+                                        multiplier:1.0
+                                          constant:LabelTopBottomMargin],
+            [NSLayoutConstraint constraintWithItem:_primaryLabel
+                                         attribute:NSLayoutAttributeTrailing
+                                         relatedBy:NSLayoutRelationEqual
+                                            toItem:_checkView
+                                         attribute:NSLayoutAttributeLeading
+                                        multiplier:1.0
+                                          constant:-LabelCheckViewPadding],
+            [NSLayoutConstraint constraintWithItem:_primaryLabel
+                                         attribute:NSLayoutAttributeLeading
+                                         relatedBy:NSLayoutRelationEqual
+                                            toItem:_containerView
+                                         attribute:NSLayoutAttributeLeading
+                                        multiplier:1.0
+                                          constant:ORKSurveyItemMargin]
+        ]];
     }
 }
 
 - (void)addDetailLabelConstraints {
     if (_detailLabel) {
         [_containerConstraints addObjectsFromArray:@[
-                                                     [NSLayoutConstraint constraintWithItem:_detailLabel
-                                                                                  attribute:NSLayoutAttributeTop
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:_primaryLabel ? : _containerView
-                                                                                  attribute:_primaryLabel ? NSLayoutAttributeBottom : NSLayoutAttributeTop
-                                                                                 multiplier:1.0
-                                                                                   constant:_primaryLabel ? 0.0 : LabelTopBottomMargin],
-                                                     [NSLayoutConstraint constraintWithItem:_detailLabel
-                                                                                  attribute:NSLayoutAttributeLeading
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:_checkView
-                                                                                  attribute:NSLayoutAttributeTrailing
-                                                                                 multiplier:1.0
-                                                                                   constant:LabelLeadingPadding],
-                                                     [NSLayoutConstraint constraintWithItem:_detailLabel
-                                                                                  attribute:NSLayoutAttributeTrailing
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:_containerView
-                                                                                  attribute:NSLayoutAttributeTrailing
-                                                                                 multiplier:1.0
-                                                                                   constant:-LabelRightMargin]
-                                                     ]];
+            [NSLayoutConstraint constraintWithItem:_detailLabel
+                                         attribute:NSLayoutAttributeTop
+                                         relatedBy:NSLayoutRelationEqual
+                                            toItem:_primaryLabel ? : _containerView
+                                         attribute:_primaryLabel ? NSLayoutAttributeBottom : NSLayoutAttributeTop
+                                        multiplier:1.0
+                                          constant:_primaryLabel ? 0.0 : LabelTopBottomMargin],
+            [NSLayoutConstraint constraintWithItem:_detailLabel
+                                         attribute:NSLayoutAttributeTrailing
+                                         relatedBy:NSLayoutRelationEqual
+                                            toItem:_checkView
+                                         attribute:NSLayoutAttributeLeading
+                                        multiplier:1.0
+                                          constant:-LabelCheckViewPadding],
+            [NSLayoutConstraint constraintWithItem:_detailLabel
+                                         attribute:NSLayoutAttributeLeading
+                                         relatedBy:NSLayoutRelationEqual
+                                            toItem:_containerView
+                                         attribute:NSLayoutAttributeLeading
+                                        multiplier:1.0
+                                          constant:ORKSurveyItemMargin]
+        ]];
     }
 }
 
@@ -268,9 +267,9 @@ static const CGFloat LabelLeadingPadding = 10.0;
     _containerView.translatesAutoresizingMaskIntoConstraints = NO;
     _containerConstraints = [[NSMutableArray alloc] init];
     [self addContainerViewToSelfConstraints];
-    [self addCheckViewToContainerViewConstraints];
     [self addPrimaryLabelToContainerViewConstraints];
     [self addDetailLabelConstraints];
+    [self addCheckViewToContainerViewConstraints];
     [self addContainerViewBottomConstraint];
     [_containerConstraints addObject:[NSLayoutConstraint constraintWithItem:self
                                                                   attribute:NSLayoutAttributeBottom
@@ -385,35 +384,35 @@ static const CGFloat LabelLeadingPadding = 10.0;
     if (_checkView) {
         _checkView.translatesAutoresizingMaskIntoConstraints = NO;
         [_containerConstraints addObjectsFromArray:@[
-                                                     [NSLayoutConstraint constraintWithItem:_checkView
-                                                                                  attribute:NSLayoutAttributeCenterY
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:_containerView
-                                                                                  attribute:NSLayoutAttributeCenterY
-                                                                                 multiplier:1.0
-                                                                                   constant:0.0],
-                                                     [NSLayoutConstraint constraintWithItem:_checkView
-                                                                                  attribute:NSLayoutAttributeWidth
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:nil
-                                                                                  attribute:NSLayoutAttributeNotAnAttribute
-                                                                                 multiplier:1.0
-                                                                                   constant:CheckViewDimension],
-                                                     [NSLayoutConstraint constraintWithItem:_checkView
-                                                                                  attribute:NSLayoutAttributeHeight
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:nil
-                                                                                  attribute:NSLayoutAttributeNotAnAttribute
-                                                                                 multiplier:1.0
-                                                                                   constant:CheckViewDimension],
-                                                     [NSLayoutConstraint constraintWithItem:_checkView
-                                                                                  attribute:NSLayoutAttributeLeading
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:_containerView
-                                                                                  attribute:NSLayoutAttributeLeading
-                                                                                 multiplier:1.0
-                                                                                   constant:ORKSurveyItemMargin]
-                                                     ]];
+            [NSLayoutConstraint constraintWithItem:_checkView
+                                         attribute:NSLayoutAttributeCenterY
+                                         relatedBy:NSLayoutRelationEqual
+                                            toItem:_containerView
+                                         attribute:NSLayoutAttributeCenterY
+                                        multiplier:1.0
+                                          constant:0.0],
+            [NSLayoutConstraint constraintWithItem:_checkView
+                                         attribute:NSLayoutAttributeWidth
+                                         relatedBy:NSLayoutRelationEqual
+                                            toItem:nil
+                                         attribute:NSLayoutAttributeNotAnAttribute
+                                        multiplier:1.0
+                                          constant:CheckViewDimension],
+            [NSLayoutConstraint constraintWithItem:_checkView
+                                         attribute:NSLayoutAttributeHeight
+                                         relatedBy:NSLayoutRelationEqual
+                                            toItem:nil
+                                         attribute:NSLayoutAttributeNotAnAttribute
+                                        multiplier:1.0
+                                          constant:CheckViewDimension],
+            [NSLayoutConstraint constraintWithItem:_checkView
+                                         attribute:NSLayoutAttributeTrailing
+                                         relatedBy:NSLayoutRelationEqual
+                                            toItem:_containerView
+                                         attribute:NSLayoutAttributeTrailing
+                                        multiplier:1.0
+                                          constant:-ORKSurveyItemMargin]
+        ]];
     }
 }
 
@@ -526,36 +525,36 @@ static const CGFloat LabelLeadingPadding = 10.0;
     textViewHeightConstraint.priority = UILayoutPriorityDefaultLow;
     
     [self.containerConstraints addObjectsFromArray:@[
-                                                     [NSLayoutConstraint constraintWithItem:_textView
-                                                                                  attribute:NSLayoutAttributeTop
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:self.detailLabel ? : self.primaryLabel
-                                                                                  attribute:NSLayoutAttributeBottom
-                                                                                 multiplier:1.0
-                                                                                   constant:TextViewTopMargin],
-                                                     [NSLayoutConstraint constraintWithItem:_textView
-                                                                                  attribute:NSLayoutAttributeLeading
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:self.checkView
-                                                                                  attribute:NSLayoutAttributeTrailing
-                                                                                 multiplier:1.0
-                                                                                   constant:LabelLeadingPadding],
-                                                     [NSLayoutConstraint constraintWithItem:_textView
-                                                                                  attribute:NSLayoutAttributeTrailing
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:self.containerView
-                                                                                  attribute:NSLayoutAttributeTrailing
-                                                                                 multiplier:1.0
-                                                                                   constant:-LabelRightMargin],
-                                                     textViewHeightConstraint,
-                                                     [NSLayoutConstraint constraintWithItem:self.containerView
-                                                                                  attribute:NSLayoutAttributeBottom
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:_textView
-                                                                                  attribute:NSLayoutAttributeBottom
-                                                                                 multiplier:1.0
-                                                                                   constant:LabelTopBottomMargin]
-                                                     ]];
+        [NSLayoutConstraint constraintWithItem:_textView
+                                     attribute:NSLayoutAttributeTop
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.detailLabel ? : self.primaryLabel
+                                     attribute:NSLayoutAttributeBottom
+                                    multiplier:1.0
+                                      constant:TextViewTopMargin],
+        [NSLayoutConstraint constraintWithItem:_textView
+                                     attribute:NSLayoutAttributeTrailing
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.checkView
+                                     attribute:NSLayoutAttributeLeading
+                                    multiplier:1.0
+                                      constant:-LabelCheckViewPadding],
+        [NSLayoutConstraint constraintWithItem:_textView
+                                     attribute:NSLayoutAttributeLeading
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.containerView
+                                     attribute:NSLayoutAttributeLeading
+                                    multiplier:1.0
+                                      constant:ORKSurveyItemMargin],
+        textViewHeightConstraint,
+        [NSLayoutConstraint constraintWithItem:self.containerView
+                                     attribute:NSLayoutAttributeBottom
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:_textView
+                                     attribute:NSLayoutAttributeBottom
+                                    multiplier:1.0
+                                      constant:LabelTopBottomMargin]
+    ]];
 }
 
 // Overriding ContainerView Bottom Constraints
