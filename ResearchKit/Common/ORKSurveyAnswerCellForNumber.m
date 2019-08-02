@@ -39,11 +39,13 @@
 #import "ORKHelpers_Internal.h"
 #import "ORKSkin.h"
 
+static const CGFloat ErrorLabelTopPadding = 4.0;
+static const CGFloat ErrorLabelBottomPadding = 10.0;
 
 @interface ORKSurveyAnswerCellForNumber ()
 
-@property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) ORKTextFieldView *textFieldView;
+@property (nonatomic, strong) UILabel *errorLabel;
 
 @end
 
@@ -51,6 +53,7 @@
 @implementation ORKSurveyAnswerCellForNumber {
     NSNumberFormatter *_numberFormatter;
     NSNumber *_defaultNumericAnswer;
+    NSMutableArray *constraints;
 }
 
 - (ORKUnitTextField *)textField {
@@ -75,15 +78,17 @@
     }
     
     [textField addTarget:self action:@selector(valueFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    [self addSubview:_textFieldView];
     
-    _containerView = [[UIView alloc] init];
-    _containerView.backgroundColor = textField.backgroundColor;
-    [_containerView addSubview: _textFieldView];
-
-    [self addSubview:_containerView];
-    
+    _errorLabel = [UILabel new];
+    [_errorLabel setTextColor: [UIColor redColor]];
+    [self.errorLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleFootnote]];
+    _errorLabel.numberOfLines = 0;
+    _errorLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:_errorLabel];
+   
     self.layoutMargins = ORKStandardLayoutMarginsForTableViewCell(self);
-    ORKEnableAutoLayoutForViews(@[_containerView, _textFieldView]);
+    ORKEnableAutoLayoutForViews(@[_textFieldView]);
     [self setUpConstraints];
 }
 
@@ -102,29 +107,46 @@
 }
 
 - (void)setUpConstraints {
-    NSMutableArray *constraints = [NSMutableArray new];
-    NSDictionary *views = NSDictionaryOfVariableBindings(_containerView, _textFieldView);
+    if (constraints != nil) {
+        [NSLayoutConstraint deactivateConstraints:constraints];
+    }
     
-    // Get a full width layout
-    [constraints addObject:[self.class fullWidthLayoutConstraint:_containerView]];
+    constraints = [NSMutableArray new];
+    NSDictionary *metrics = @{@"errorLabelTopPadding":@(ErrorLabelTopPadding), @"errorLabelBottomPadding":@(ErrorLabelBottomPadding)};
+    NSDictionary *views = NSDictionaryOfVariableBindings(_textFieldView, _errorLabel);
     
-    [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[_containerView]-|"
-                                                                             options:(NSLayoutFormatOptions)0
-                                                                             metrics:nil
-                                                                               views:views]];
-    [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[_containerView(>=0)]-|"
+    if (self.errorLabel.attributedText == nil) {
+            [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[_textFieldView]-|"
+                                                                                     options:NSLayoutFormatDirectionLeadingToTrailing | NSLayoutFormatAlignAllLeading
+                                                                                     metrics:nil
+                                                                                       views:views]];
+            
+            [constraints addObjectsFromArray:
+             [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_errorLabel(==0)]"
+                                                     options:0
+                                                     metrics:nil
+                                                       views:views]];
+        } else {
+            [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[_textFieldView]-errorLabelTopPadding-[_errorLabel]-|"
+                                                                                     options:NSLayoutFormatDirectionLeadingToTrailing | NSLayoutFormatAlignAllLeading
+                                                                                     metrics:metrics
+                                                                                       views:views]];
+        }
+    
+   
+    [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[_textFieldView]-|"
                                                                              options:(NSLayoutFormatOptions)0
                                                                              metrics:nil
                                                                                views:views]];
     
-    [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_textFieldView]|"
-                                                                             options:(NSLayoutFormatOptions)0
-                                                                             metrics:nil
-                                                                               views:views]];
-    [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_textFieldView]|"
-                                                                             options:(NSLayoutFormatOptions)0
-                                                                             metrics:nil
-                                                                               views:views]];
+    [constraints addObject:[NSLayoutConstraint constraintWithItem:_errorLabel
+                                                            attribute:NSLayoutAttributeRight
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:_textFieldView
+                                                            attribute:NSLayoutAttributeRight
+                                                           multiplier:1.0
+                                                             constant:0.0]];
+    
     [NSLayoutConstraint activateConstraints:constraints];
 }
 
@@ -158,13 +180,13 @@
     BOOL isValid = [self isAnswerValid];
 
     if (!isValid) {
-        [self showValidityAlertWithMessage:[[self.step impliedAnswerFormat] localizedInvalidValueStringWithAnswerString:self.textField.text]];
+        [self updateErrorLabelWithMessage:ORKLocalizedString(@"RANGE_ALERT_TITLE", nil)];
     }
     
     return isValid;
 }
 
-- (void) assignDefaultAnswer {
+- (void)assignDefaultAnswer {
     if (_defaultNumericAnswer) {
         [self ork_setAnswer:_defaultNumericAnswer];
         if (self.textField) {
@@ -199,6 +221,35 @@
     }
 }
 
+- (void)updateErrorLabelWithMessage:(NSString *)message {
+    NSString *separatorString = @":";
+    NSString *parsedString = [message componentsSeparatedByString:separatorString].firstObject;
+    
+    if (@available(iOS 13.0, *)) {
+        
+        NSString *errorMessage = [NSString stringWithFormat:@" %@", parsedString];
+        NSMutableAttributedString *fullString = [[NSMutableAttributedString alloc] initWithString:errorMessage];
+        NSTextAttachment *imageAttachment = [NSTextAttachment new];
+        
+        UIImageSymbolConfiguration *imageConfig = [UIImageSymbolConfiguration configurationWithPointSize:12 weight:UIImageSymbolWeightRegular scale:UIImageSymbolScaleMedium];
+        UIImage *exclamationMarkImage = [UIImage systemImageNamed:@"exclamationmark.circle"];
+        UIImage *configuredImage = [exclamationMarkImage imageByApplyingSymbolConfiguration:imageConfig];
+        
+        imageAttachment.image = [configuredImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        
+        NSAttributedString *imageString = [NSAttributedString attributedStringWithAttachment:imageAttachment];
+        
+        [fullString insertAttributedString:imageString atIndex:0];
+        
+        self.errorLabel.attributedText = fullString;
+    } else {
+        NSMutableAttributedString *fullString = [[NSMutableAttributedString alloc] initWithString:parsedString];
+        self.errorLabel.attributedText = fullString;
+    }
+    
+    [self setUpConstraints];
+}
+
 #pragma mark - UITextFieldDelegate
 
 - (void)valueFieldDidChange:(UITextField *)textField {
@@ -206,6 +257,13 @@
     NSString *sanitizedText = [answerFormat sanitizedTextFieldText:[textField text] decimalSeparator:[_numberFormatter decimalSeparator]];
     textField.text = sanitizedText;
     [self setAnswerWithText:textField.text];
+    
+    BOOL isValid = [self isAnswerValid];
+        
+    if (isValid && _errorLabel.attributedText != nil) {
+        _errorLabel.attributedText = nil;
+        [self setUpConstraints];
+    }
 }
 
 - (BOOL)textFieldShouldClear:(UITextField *)textField {
@@ -233,21 +291,21 @@
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
     BOOL isValid = [self isAnswerValid];
     if (!isValid) {
-        [self showValidityAlertWithMessage:[[self.step impliedAnswerFormat] localizedInvalidValueStringWithAnswerString:textField.text]];
+        
     }
     
     return YES;
 }
 
 + (BOOL)shouldDisplayWithSeparators {
-    return YES;
+    return NO;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     BOOL isValid = [self isAnswerValid];
     
     if (!isValid) {
-        [self showValidityAlertWithMessage:[[self.step impliedAnswerFormat] localizedInvalidValueStringWithAnswerString:textField.text]];
+       [self updateErrorLabelWithMessage:ORKLocalizedString(@"RANGE_ALERT_TITLE", nil)];
         return NO;
     }
     

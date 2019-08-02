@@ -394,11 +394,6 @@ static const CGFloat ErrorLabelBottomPadding = 10.0;
                                                                              metrics:nil
                                                                                views:views]];
     
-    [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[_textField]-|"
-                                                                             options:NSLayoutFormatDirectionLeadingToTrailing
-                                                                             metrics:nil
-                                                                               views:views]];
-    
     [constraints addObject:[NSLayoutConstraint constraintWithItem:_errorLabel
                                                         attribute:NSLayoutAttributeRight
                                                         relatedBy:NSLayoutRelationEqual
@@ -413,7 +408,7 @@ static const CGFloat ErrorLabelBottomPadding = 10.0;
 }
 
 + (BOOL)shouldDisplayWithSeparators {
-    return YES;
+    return NO;
 }
 
 - (void)prepareView {
@@ -429,7 +424,7 @@ static const CGFloat ErrorLabelBottomPadding = 10.0;
 - (BOOL)shouldContinue {
     ORKTextAnswerFormat *answerFormat = (ORKTextAnswerFormat *)[self.step impliedAnswerFormat];
     if (![answerFormat isAnswerValidWithString:self.textField.text]) {
-        [self showValidityAlertWithMessage:[[self.step impliedAnswerFormat] localizedInvalidValueStringWithAnswerString:self.answer]];
+        [self updateErrorLabelWithMessage:[[self.step impliedAnswerFormat] localizedInvalidValueStringWithAnswerString:self.textField.text]];
         return NO;
     }
     
@@ -460,10 +455,6 @@ static const CGFloat ErrorLabelBottomPadding = 10.0;
 - (void)textFieldDidChange:(UITextField *)textField {
     NSString *text = self.textField.text;
     [self ork_setAnswer:text.length ? text : ORKNullAnswerValue()];
-}
-
-- (void)showValidityAlertWithMessage:(NSString *)text {
-    [self updateErrorLabelWithMessage:text];
 }
 
 - (void)updateErrorLabelWithMessage:(NSString *)message {
@@ -512,7 +503,7 @@ static const CGFloat ErrorLabelBottomPadding = 10.0;
         NSInteger maxLength = [(ORKTextAnswerFormat *)impliedFormat maximumLength];
         
         if (maxLength > 0 && text.length > maxLength) {
-            [self showValidityAlertWithMessage:[[self.step impliedAnswerFormat] localizedInvalidValueStringWithAnswerString:text]];
+            [self updateErrorLabelWithMessage:[[self.step impliedAnswerFormat] localizedInvalidValueStringWithAnswerString:text]];
             return NO;
         }
     }

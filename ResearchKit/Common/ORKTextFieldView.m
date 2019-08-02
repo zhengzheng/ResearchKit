@@ -185,7 +185,11 @@ static NSString *const FilledBulletString = @"\u25CF";
     if (suffix.length == 0) {
         return;
     }
-    _suffixLabel = [self ork_createTextLabelWithTextColor:(color ? : [UIColor ork_midGrayTintColor])];
+    if (@available(iOS 13.0, *)) {
+        _suffixLabel = [self ork_createTextLabelWithTextColor:(color ? : [UIColor tertiaryLabelColor])];
+    } else {
+        _suffixLabel = [self ork_createTextLabelWithTextColor:(color ? : [UIColor ork_midGrayTintColor])];
+    }
     _suffixLabel.text = suffix;
     _suffixLabel.font = self.font;
     _suffixLabel.textAlignment = NSTextAlignmentLeft;
@@ -241,8 +245,14 @@ static NSString *const FilledBulletString = @"\u25CF";
     
     if (_unit.length > 0) {
         _unitWithNumber = [NSString stringWithFormat:@" %@", unit];
-        _unitRegularColor = [UIColor blackColor];
-        _unitActiveColor = [UIColor ork_midGrayTintColor];
+
+        if (@available(iOS 13.0, *)) {
+            _unitRegularColor = [UIColor tertiaryLabelColor];
+            _unitActiveColor = [UIColor secondaryLabelColor];
+        } else {
+            _unitRegularColor = [UIColor blackColor];
+            _unitActiveColor = [UIColor ork_midGrayTintColor];
+        }
     } else {
         _unitWithNumber = nil;
     }
