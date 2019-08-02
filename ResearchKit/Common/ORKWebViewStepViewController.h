@@ -31,6 +31,7 @@
 @import UIKit;
 @import WebKit;
 #import "ORKStepViewController.h"
+#import "ORKSignatureView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -41,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
  You should not need to instantiate a web view step view controller directly. Instead, include
  a web view step in a task, and present a task view controller for that task.
  */
-@interface ORKWebViewStepViewController : ORKStepViewController<WKScriptMessageHandler, WKNavigationDelegate>
+@interface ORKWebViewStepViewController : ORKStepViewController<WKScriptMessageHandler, WKNavigationDelegate, ORKSignatureViewDelegate>
 
 @end
 

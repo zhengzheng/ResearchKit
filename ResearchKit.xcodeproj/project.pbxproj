@@ -505,7 +505,7 @@
 		86C40E201A8D7C5C00081FAC /* ORKConsentSignature.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C40C031A8D7C5C00081FAC /* ORKConsentSignature.m */; };
 		86C40E241A8D7C5C00081FAC /* ORKEAGLMoviePlayerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 86C40C051A8D7C5C00081FAC /* ORKEAGLMoviePlayerView.h */; };
 		86C40E261A8D7C5C00081FAC /* ORKEAGLMoviePlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C40C061A8D7C5C00081FAC /* ORKEAGLMoviePlayerView.m */; };
-		86C40E281A8D7C5C00081FAC /* ORKSignatureView.h in Headers */ = {isa = PBXBuildFile; fileRef = 86C40C071A8D7C5C00081FAC /* ORKSignatureView.h */; };
+		86C40E281A8D7C5C00081FAC /* ORKSignatureView.h in Headers */ = {isa = PBXBuildFile; fileRef = 86C40C071A8D7C5C00081FAC /* ORKSignatureView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		86C40E2A1A8D7C5C00081FAC /* ORKSignatureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C40C081A8D7C5C00081FAC /* ORKSignatureView.m */; };
 		86C40E2C1A8D7C5C00081FAC /* ORKVisualConsentStep.h in Headers */ = {isa = PBXBuildFile; fileRef = 86C40C091A8D7C5C00081FAC /* ORKVisualConsentStep.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		86C40E2E1A8D7C5C00081FAC /* ORKVisualConsentStep.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C40C0A1A8D7C5C00081FAC /* ORKVisualConsentStep.m */; };

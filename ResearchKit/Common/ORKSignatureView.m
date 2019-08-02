@@ -142,7 +142,11 @@ static const CGFloat LineWidthStepValue = 0.25f;
         _lineWidth = DefaultLineWidth;
         _lineWidthVariation = DefaultLineWidthVariation;
         
-        self.layer.borderColor = [[UIColor ork_midGrayTintColor] CGColor];
+        if (@available(iOS 13.0, *)) {
+            self.layer.borderColor = [[UIColor separatorColor] CGColor];
+        } else {
+            self.layer.borderColor = [[UIColor ork_midGrayTintColor] CGColor];
+        }
         self.layer.borderWidth = 1.0;
         self.layer.cornerRadius = 10.0;
         

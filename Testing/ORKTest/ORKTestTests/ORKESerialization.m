@@ -877,6 +877,7 @@ static NSMutableDictionary *ORKESerializationEncodingTable() {
                  (@{
                     PROPERTY(html, NSString, NSObject, YES, nil, nil),
                     PROPERTY(customCSS, NSString, NSObject, YES, nil, nil),
+                    PROPERTY(showSignatureAfterContent, NSNumber, NSObject, YES, nil, nil)
                     })),
            ENTRY(ORKWebViewStepResult,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {

@@ -60,6 +60,7 @@
     if (self) {
         ORK_DECODE_OBJ_CLASS(aDecoder, html, NSString);
         ORK_DECODE_OBJ_CLASS(aDecoder, customCSS, NSString);
+        ORK_DECODE_BOOL(aDecoder, showSignatureAfterContent);
     }
     return self;
 }
@@ -68,6 +69,7 @@
     [super encodeWithCoder:aCoder];
     ORK_ENCODE_OBJ(aCoder, html);
     ORK_ENCODE_OBJ(aCoder, customCSS);
+    ORK_ENCODE_BOOL(aCoder, showSignatureAfterContent);
 }
 
 + (BOOL)supportsSecureCoding {
@@ -78,6 +80,7 @@
     ORKWebViewStep *step = [super copyWithZone:zone];
     step.html = self.html;
     step.customCSS = self.customCSS;
+    step.showSignatureAfterContent = self.showSignatureAfterContent;
     return step;
 }
 
@@ -87,7 +90,8 @@
     __typeof(self) castObject = object;
     return (isParentSame &&
             [self.html isEqual:castObject.html] &&
-            [self.customCSS isEqual:castObject.customCSS]);
+            [self.customCSS isEqual:castObject.customCSS] &&
+            (self.showSignatureAfterContent == castObject.showSignatureAfterContent));
 }
 
 @end

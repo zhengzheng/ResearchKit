@@ -66,6 +66,8 @@ ORK_CLASS_AVAILABLE
 
 @property (nonatomic, copy, nullable) NSString *customCSS;
 
+@property (nonatomic) BOOL showSignatureAfterContent;
+
 @end
 
 NS_ASSUME_NONNULL_END

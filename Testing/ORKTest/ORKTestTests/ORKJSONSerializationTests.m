@@ -1228,7 +1228,8 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
                                                                              @"ORKTableStepViewController" : @"ORKTableStep",
                                                                              @"ORKdBHLToneAudiometryStepViewController" : @"ORKdBHLToneAudiometryStep",
 
-                                                                             @"ORKSecondaryTaskStepViewController" : @"ORKSecondaryTaskStep"
+                                                                             @"ORKSecondaryTaskStepViewController" : @"ORKSecondaryTaskStep",
+                                                                             @"ORKWebViewStepViewController": @"ORKWebViewStep",
                                                                              };
     
     NSDictionary <NSString *, NSDictionary *> *kvMapForStep = @{ // Steps that require modification to validate
@@ -1249,6 +1250,7 @@ ORK_MAKE_TEST_INIT(NSRegularExpression, (^{
                                                                 @"ORKTimedWalkStep" : @{@"distanceInMeters" : @30.0,
                                                                                         @"stepDuration" : @2.0},
                                                                 @"ORKWalkingTaskStep" : @{@"numberOfStepsPerLeg" : @2},
+                                                                @"ORKWebViewStep" : @{@"html": @""}
                                                                 };
     
     // Find all classes that subclass from ORKStepViewController

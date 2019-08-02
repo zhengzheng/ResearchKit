@@ -208,6 +208,7 @@
 "BUTTON_CANCEL" = "Cancel";
 "BUTTON_OK" = "OK";
 "BUTTON_CLEAR" = "Clear";
+"BUTTON_CLEAR_SIGNATURE" = "Clear Signature";
 "BUTTON_APPLY" = "Apply";
 "BUTTON_DISAGREE" = "Disagree";
 "BUTTON_DONE" = "Done";

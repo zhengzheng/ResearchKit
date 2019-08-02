@@ -37,12 +37,21 @@
 #import "ORKWebViewStepResult.h"
 #import "ORKNavigationContainerView_Internal.h"
 #import "ORKSkin.h"
+#import "ORKHelpers_Internal.h"
+#import "ORKSignatureResult_Private.h"
+
+static const CGFloat ORKSignatureTopPadding = 37.0;
+static const CGFloat ORKSignatureToClearPadding = 15.0;
 
 @implementation ORKWebViewStepViewController {
+    UIScrollView *_scrollView;
     WKWebView *_webView;
     NSString *_result;
     ORKNavigationContainerView *_navigationFooterView;
-    NSArray<NSLayoutConstraint *> *_constraints;
+    NSMutableArray<NSLayoutConstraint *> *_constraints;
+    
+    ORKSignatureView *_signatureView;
+    UIButton *_clearButton;
 }
 
 - (ORKWebViewStep *)webViewStep {
@@ -50,11 +59,30 @@
 }
 
 - (void)stepDidChange {
+    
     _result = nil;
     [_webView removeFromSuperview];
     _webView = nil;
     
+    [_scrollView removeFromSuperview];
+    _scrollView = nil;
+    
     if (self.step && [self isViewLoaded]) {
+        
+        _scrollView = [[UIScrollView alloc] init];
+        [self.view addSubview:_scrollView];
+        
+        if ([self webViewStep].showSignatureAfterContent) {
+            _signatureView = [[ORKSignatureView alloc] init];
+            _signatureView.delegate = self;
+            [_scrollView addSubview:_signatureView];
+            
+            _clearButton = [[ORKTextButton alloc] init];
+            [_clearButton.titleLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
+            [_clearButton setTitle:ORKLocalizedString(@"BUTTON_CLEAR_SIGNATURE", nil) forState:UIControlStateNormal];
+            [_clearButton addTarget:self action:@selector(clearSignature) forControlEvents:UIControlEventTouchUpInside];
+            [_scrollView addSubview:_clearButton];
+        }
         
         WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
         config.allowsInlineMediaPlayback = true;
@@ -66,12 +94,14 @@
         [controller addScriptMessageHandler:self name:@"ResearchKit"];
         config.userContentController = controller;
         
-        NSString *css = @"body { font-size: 42px; font-family: \"-apple-system\"; padding-left: 40px; padding-right: 40px; }";
+        CGFloat leftRightPadding = ORKStepContainerLeftRightPaddingForWindow(self.view.window);
+        NSString *css = [NSString stringWithFormat:@"body { font-size: 17px; font-family: \"-apple-system\"; padding-left: %fpx; padding-right: %fpx; }", leftRightPadding, leftRightPadding];
+        
         if ([self webViewStep].customCSS != nil) {
             css = [self webViewStep].customCSS;
         }
         
-        NSString *js = @"var style = document.createElement('style'); style.innerHTML = '%@'; document.head.appendChild(style)";
+        NSString *js = @"var style = document.createElement('style'); style.innerHTML = '%@'; document.head.appendChild(style);";
         NSString *formattedString = [NSString stringWithFormat:js, css];
         WKUserScript *userScript = [[WKUserScript alloc] initWithSource:formattedString injectionTime:WKUserScriptInjectionTimeAtDocumentEnd forMainFrameOnly:true];
         [controller addUserScript:userScript];
@@ -79,7 +109,9 @@
         _webView = [[WKWebView alloc] initWithFrame:self.view.bounds configuration:config];
         _webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         _webView.navigationDelegate = self;
-        [self.view addSubview:_webView];
+        _webView.scrollView.scrollEnabled = NO;
+        
+        [_scrollView addSubview:_webView];
         [self setupNavigationFooterView];
         [self setupConstraints];
         [_webView loadHTMLString:[self webViewStep].html baseURL:nil];
@@ -95,10 +127,19 @@
     _navigationFooterView.continueEnabled = YES;
     [_navigationFooterView updateContinueAndSkipEnabled];
     
-    [self.view addSubview:_navigationFooterView];
+    if ([self webViewStep].showSignatureAfterContent) {
+        _navigationFooterView.continueEnabled = NO;
+    }
+    
+    if ([self webViewStep].showSignatureAfterContent) {
+        [_scrollView addSubview:_navigationFooterView];
+    } else {
+        [self.view addSubview:_navigationFooterView];
+    }
 }
 
 - (void)setupConstraints {
+    
     if (_constraints) {
         [NSLayoutConstraint deactivateConstraints:_constraints];
     }
@@ -108,58 +149,156 @@
     _constraints = nil;
     _webView.translatesAutoresizingMaskIntoConstraints = NO;
     _navigationFooterView.translatesAutoresizingMaskIntoConstraints = NO;
+    _scrollView.translatesAutoresizingMaskIntoConstraints = NO;
+    _signatureView.translatesAutoresizingMaskIntoConstraints = NO;
+    _clearButton.translatesAutoresizingMaskIntoConstraints = NO;
     
-    _constraints = @[
-                    [NSLayoutConstraint constraintWithItem:_webView
-                                                 attribute:NSLayoutAttributeTop
-                                                 relatedBy:NSLayoutRelationEqual
-                                                    toItem:viewForiPad ? : self.view.safeAreaLayoutGuide
-                                                 attribute:NSLayoutAttributeTop
-                                                multiplier:1.0
-                                                  constant:0.0],
-                    [NSLayoutConstraint constraintWithItem:_webView
-                                                 attribute:NSLayoutAttributeLeft
-                                                 relatedBy:NSLayoutRelationEqual
-                                                    toItem:viewForiPad ? : self.view.safeAreaLayoutGuide
-                                                 attribute:NSLayoutAttributeLeft
-                                                multiplier:1.0
-                                                  constant:0.0],
-                    [NSLayoutConstraint constraintWithItem:_webView
-                                                 attribute:NSLayoutAttributeRight
-                                                 relatedBy:NSLayoutRelationEqual
-                                                    toItem:viewForiPad ? : self.view.safeAreaLayoutGuide
-                                                 attribute:NSLayoutAttributeRight
-                                                multiplier:1.0
-                                                  constant:0.0],
-                    [NSLayoutConstraint constraintWithItem:_webView
-                                                 attribute:NSLayoutAttributeBottom
-                                                 relatedBy:NSLayoutRelationEqual
-                                                    toItem:self.view
-                                                 attribute:NSLayoutAttributeBottom
-                                                multiplier:1.0
-                                                  constant:0.0],
-                    [NSLayoutConstraint constraintWithItem:_navigationFooterView
-                                                 attribute:NSLayoutAttributeBottom
-                                                 relatedBy:NSLayoutRelationEqual
-                                                    toItem:viewForiPad ? : self.view
-                                                 attribute:NSLayoutAttributeBottom
-                                                multiplier:1.0
-                                                  constant:0.0],
-                    [NSLayoutConstraint constraintWithItem:_navigationFooterView
-                                                 attribute:NSLayoutAttributeLeft
-                                                 relatedBy:NSLayoutRelationEqual
-                                                    toItem:viewForiPad ? : self.view
-                                                 attribute:NSLayoutAttributeLeft
-                                                multiplier:1.0
-                                                  constant:0],
-                    [NSLayoutConstraint constraintWithItem:_navigationFooterView
-                                                 attribute:NSLayoutAttributeRight
-                                                 relatedBy:NSLayoutRelationEqual
-                                                    toItem:viewForiPad ? : self.view
-                                                 attribute:NSLayoutAttributeRight
-                                                multiplier:1.0
-                                                  constant:0]
-    ];
+    CGFloat leftRightPadding = ORKStepContainerLeftRightPaddingForWindow(self.view.window);
+    
+    _constraints = [[NSMutableArray alloc] initWithArray:@[
+        [NSLayoutConstraint constraintWithItem:_scrollView
+                                     attribute:NSLayoutAttributeTop
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:viewForiPad ? : self.view.safeAreaLayoutGuide
+                                     attribute:NSLayoutAttributeTop
+                                    multiplier:1.0
+                                      constant:0.0],
+        [NSLayoutConstraint constraintWithItem:_scrollView
+                                     attribute:NSLayoutAttributeLeading
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:viewForiPad ? : self.view
+                                     attribute:NSLayoutAttributeLeading
+                                    multiplier:1.0
+                                      constant:0.0],
+        [NSLayoutConstraint constraintWithItem:_scrollView
+                                     attribute:NSLayoutAttributeTrailing
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:viewForiPad ? : self.view
+                                     attribute:NSLayoutAttributeTrailing
+                                    multiplier:1.0
+                                      constant:0.0],
+        [NSLayoutConstraint constraintWithItem:_scrollView
+                                     attribute:NSLayoutAttributeBottom
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:viewForiPad ? : self.view
+                                     attribute:NSLayoutAttributeBottom
+                                    multiplier:1.0
+                                      constant:0.0],
+        
+        [NSLayoutConstraint constraintWithItem:_webView
+                                     attribute:NSLayoutAttributeTop
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:_scrollView
+                                     attribute:NSLayoutAttributeTop
+                                    multiplier:1.0
+                                      constant:0.0],
+        [NSLayoutConstraint constraintWithItem:_webView
+                                     attribute:NSLayoutAttributeLeft
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.view
+                                     attribute:NSLayoutAttributeLeft
+                                    multiplier:1.0
+                                      constant:0.0],
+        [NSLayoutConstraint constraintWithItem:_webView
+                                     attribute:NSLayoutAttributeRight
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.view
+                                     attribute:NSLayoutAttributeRight
+                                    multiplier:1.0
+                                      constant:0.0],
+        [NSLayoutConstraint constraintWithItem:_navigationFooterView
+                                     attribute:NSLayoutAttributeLeft
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:viewForiPad ? : self.view
+                                     attribute:NSLayoutAttributeLeft
+                                    multiplier:1.0
+                                      constant:0],
+        [NSLayoutConstraint constraintWithItem:_navigationFooterView
+                                     attribute:NSLayoutAttributeRight
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:viewForiPad ? : self.view
+                                     attribute:NSLayoutAttributeRight
+                                    multiplier:1.0
+                                      constant:0]
+    ]];
+    
+    if ([self webViewStep].showSignatureAfterContent) {
+        [_constraints addObjectsFromArray:@[
+            [NSLayoutConstraint constraintWithItem:_signatureView
+                                         attribute:NSLayoutAttributeTop
+                                         relatedBy:NSLayoutRelationEqual
+                                            toItem:_webView
+                                         attribute:NSLayoutAttributeBottom
+                                        multiplier:1.0
+                                          constant:ORKSignatureTopPadding],
+            [NSLayoutConstraint constraintWithItem:_signatureView
+                                         attribute:NSLayoutAttributeLeading
+                                         relatedBy:NSLayoutRelationEqual
+                                            toItem:self.view
+                                         attribute:NSLayoutAttributeLeading
+                                        multiplier:1.0
+                                          constant:leftRightPadding],
+            [NSLayoutConstraint constraintWithItem:_signatureView
+                                         attribute:NSLayoutAttributeTrailing
+                                         relatedBy:NSLayoutRelationEqual
+                                            toItem:self.view
+                                         attribute:NSLayoutAttributeTrailing
+                                        multiplier:1.0
+                                          constant:-leftRightPadding],
+            [NSLayoutConstraint constraintWithItem:_clearButton
+                                         attribute:NSLayoutAttributeTop
+                                         relatedBy:NSLayoutRelationEqual
+                                            toItem:_signatureView
+                                         attribute:NSLayoutAttributeBottom
+                                        multiplier:1.0
+                                          constant:ORKSignatureToClearPadding],
+            [NSLayoutConstraint constraintWithItem:_clearButton
+                                         attribute:NSLayoutAttributeLeading
+                                         relatedBy:NSLayoutRelationEqual
+                                            toItem:self.view
+                                         attribute:NSLayoutAttributeLeading
+                                        multiplier:1.0
+                                          constant:leftRightPadding],
+            [NSLayoutConstraint constraintWithItem:_clearButton
+                                         attribute:NSLayoutAttributeTrailing
+                                         relatedBy:NSLayoutRelationEqual
+                                            toItem:self.view
+                                         attribute:NSLayoutAttributeTrailing
+                                        multiplier:1.0
+                                          constant:-leftRightPadding],
+            [NSLayoutConstraint constraintWithItem:_navigationFooterView
+                                         attribute:NSLayoutAttributeTop
+                                         relatedBy:NSLayoutRelationEqual
+                                            toItem:_clearButton
+                                         attribute:NSLayoutAttributeBottom
+                                        multiplier:1.0
+                                          constant:ORKSignatureTopPadding],
+            [NSLayoutConstraint constraintWithItem:_navigationFooterView
+                                         attribute:NSLayoutAttributeBottom
+                                         relatedBy:NSLayoutRelationEqual
+                                            toItem:_scrollView
+                                         attribute:NSLayoutAttributeBottom
+                                        multiplier:1.0
+                                          constant:0.0],
+        ]];
+    } else {
+        [_constraints addObjectsFromArray:@[
+            [NSLayoutConstraint constraintWithItem:_webView
+                                         attribute:NSLayoutAttributeBottom
+                                         relatedBy:NSLayoutRelationLessThanOrEqual
+                                            toItem:_scrollView
+                                         attribute:NSLayoutAttributeBottom
+                                        multiplier:1.0
+                                          constant:0.0],
+            [NSLayoutConstraint constraintWithItem:_navigationFooterView
+                                         attribute:NSLayoutAttributeBottom
+                                         relatedBy:NSLayoutRelationEqual
+                                            toItem:viewForiPad ? : self.view
+                                         attribute:NSLayoutAttributeBottom
+                                        multiplier:1.0
+                                          constant:0.0],
+        ]];
+    }
     
     [NSLayoutConstraint activateConstraints:_constraints];
 }
@@ -171,7 +310,10 @@
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
-    [_webView.scrollView setContentInset:UIEdgeInsetsMake(0, 0, _navigationFooterView.frame.size.height, 0)];
+    
+    if (![self webViewStep].showSignatureAfterContent) {
+        [_scrollView setContentInset:UIEdgeInsetsMake(0, 0, _navigationFooterView.frame.size.height, 0)];
+    }
 }
 
 - (void)setContinueButtonItem:(UIBarButtonItem *)continueButtonItem {
@@ -189,22 +331,53 @@
 
 - (ORKStepResult *)result {
     ORKStepResult *parentResult = [super result];
+    
     if (parentResult) {
         ORKWebViewStepResult *childResult = [[ORKWebViewStepResult alloc] initWithIdentifier:self.step.identifier];
         childResult.result = _result;
         childResult.endDate = parentResult.endDate;
         parentResult.results = [parentResult.results arrayByAddingObject:childResult] ? : @[childResult];
+        
+        if ([self webViewStep].showSignatureAfterContent && _signatureView.signatureExists) {
+            ORKSignatureResult *signatureResult = [[ORKSignatureResult alloc] initWithSignatureImage:_signatureView.signatureImage signaturePath:_signatureView.signaturePath];
+            parentResult.results = [parentResult.results arrayByAddingObject:signatureResult] ? : @[signatureResult];
+        }
     }
     return parentResult;
 }
+
+// MARK: WKWebViewDelegate
 
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(null_unspecified WKNavigation *)navigation {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = true;
 }
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation {
+    [webView evaluateJavaScript:@"document.readyState" completionHandler:^(id complete, NSError *readyError) {
+        if (complete != nil) {
+            [webView evaluateJavaScript:@"document.body.scrollHeight" completionHandler:^(id result, NSError *error) {
+                if (result != nil) {
+                    NSString *resultString = [NSString stringWithFormat:@"%@", result];
+                    CGFloat height = [resultString floatValue];
+                    [_webView.heightAnchor constraintEqualToConstant:height].active = YES;
+                }
+            }];
+        }
+    }];
+    
     [UIApplication sharedApplication].networkActivityIndicatorVisible = false;
 }
 
+// MARK: Signature
+
+- (void)clearSignature {
+    [_signatureView clear];
+    _navigationFooterView.continueEnabled = NO;
+}
+
+
+- (void)signatureViewDidEditImage:(nonnull ORKSignatureView *)signatureView {
+    _navigationFooterView.continueEnabled = YES;
+}
 
 @end
