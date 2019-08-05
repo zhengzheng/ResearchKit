@@ -225,7 +225,11 @@ static const CGFloat LineWidthStepValue = 0.25f;
 
 - (UIColor *)lineColor {
     if (_lineColor == nil) {
-        _lineColor = ORKColor(ORKSignatureColorKey);
+        if (@available(iOS 13.0, *)) {
+            _lineColor = [UIColor labelColor];
+        } else {
+           _lineColor = ORKColor(ORKSignatureColorKey);
+        }
     }
     return _lineColor;
 }
@@ -432,7 +436,14 @@ static CGPoint mmid_Point(CGPoint p1, CGPoint p2) {
 }
 
 - (void)drawRect:(CGRect)rect {
-    [[UIColor whiteColor] setFill];
+    UIColor *fillColor;
+    if (@available(iOS 13.0, *)) {
+        fillColor = [UIColor systemBackgroundColor];
+    } else {
+        fillColor = [UIColor whiteColor];
+    }
+    
+    [fillColor setFill];
     CGContextFillRect(UIGraphicsGetCurrentContext(), rect);
     
     for (UIBezierPath *path in self.pathArray) {
@@ -462,7 +473,7 @@ static CGPoint mmid_Point(CGPoint p1, CGPoint p2) {
     UIGraphicsBeginImageContext(imageContextSize);
 
     for (UIBezierPath *path in self.pathArray) {
-        [self.lineColor setStroke];
+        [[UIColor blackColor] setStroke];
         [path stroke];
     }
     

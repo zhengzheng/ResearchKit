@@ -95,7 +95,20 @@ static const CGFloat ORKSignatureToClearPadding = 15.0;
         config.userContentController = controller;
         
         CGFloat leftRightPadding = ORKStepContainerLeftRightPaddingForWindow(self.view.window);
-        NSString *css = [NSString stringWithFormat:@"body { font-size: 17px; font-family: \"-apple-system\"; padding-left: %fpx; padding-right: %fpx; }", leftRightPadding, leftRightPadding];
+        UIColor *backgroundColor;
+        UIColor *textColor;
+        if (@available(iOS 13.0, *)) {
+            backgroundColor = [UIColor systemBackgroundColor];
+            textColor = [UIColor labelColor];
+        } else {
+            backgroundColor = [UIColor whiteColor];
+            textColor = [UIColor blackColor];
+        }
+        
+        NSString *backgroundColorString = [self hexStringForColor:backgroundColor];
+        NSString *textColorString = [self hexStringForColor:textColor];
+        
+        NSString *css = [NSString stringWithFormat:@"body { font-size: 17px; font-family: \"-apple-system\"; padding-left: %fpx; padding-right: %fpx; background-color: %@; color: %@; }", leftRightPadding, leftRightPadding, backgroundColorString, textColorString];
         
         if ([self webViewStep].customCSS != nil) {
             css = [self webViewStep].customCSS;
@@ -121,6 +134,7 @@ static const CGFloat ORKSignatureToClearPadding = 15.0;
 - (void)setupNavigationFooterView {
     if (!_navigationFooterView) {
         _navigationFooterView = [ORKNavigationContainerView new];
+        [_navigationFooterView removeStyling];
     }
     
     _navigationFooterView.continueButtonItem = self.continueButtonItem;
@@ -313,6 +327,8 @@ static const CGFloat ORKSignatureToClearPadding = 15.0;
     
     if (![self webViewStep].showSignatureAfterContent) {
         [_scrollView setContentInset:UIEdgeInsetsMake(0, 0, _navigationFooterView.frame.size.height, 0)];
+    } else {
+        [_scrollView setContentInset:UIEdgeInsetsZero];
     }
 }
 
@@ -336,6 +352,7 @@ static const CGFloat ORKSignatureToClearPadding = 15.0;
         ORKWebViewStepResult *childResult = [[ORKWebViewStepResult alloc] initWithIdentifier:self.step.identifier];
         childResult.result = _result;
         childResult.endDate = parentResult.endDate;
+        childResult.userInfo = @{@"html": [self webViewStep].html};
         parentResult.results = [parentResult.results arrayByAddingObject:childResult] ? : @[childResult];
         
         if ([self webViewStep].showSignatureAfterContent && _signatureView.signatureExists) {
@@ -378,6 +395,24 @@ static const CGFloat ORKSignatureToClearPadding = 15.0;
 
 - (void)signatureViewDidEditImage:(nonnull ORKSignatureView *)signatureView {
     _navigationFooterView.continueEnabled = YES;
+}
+
+// MARK: Color
+
+- (NSString *)hexStringForColor:(UIColor *)color {
+    const CGFloat *components = CGColorGetComponents(color.CGColor);
+    size_t count = CGColorGetNumberOfComponents(color.CGColor);
+    
+    CGFloat r = components[0];
+    
+    if (count == 2) {
+        return [NSString stringWithFormat:@"#%02lX%02lX%02lX", lroundf(r * 255), lroundf(r * 255), lroundf(r * 255)];
+    }
+    
+    CGFloat g = components[1];
+    CGFloat b = components[2];
+    
+    return [NSString stringWithFormat:@"#%02lX%02lX%02lX", lroundf(r * 255), lroundf(g * 255), lroundf(b * 255)];
 }
 
 @end

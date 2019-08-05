@@ -118,7 +118,7 @@ static NSString *ORKBulletUnicode = @"\u2981";
         _cardView = [[UIView alloc] init];
         _cardView.translatesAutoresizingMaskIntoConstraints = NO;
         if (@available(iOS 13.0, *)) {
-            [_cardView setBackgroundColor:[UIColor secondarySystemBackgroundColor]];
+            [_cardView setBackgroundColor:[UIColor secondarySystemGroupedBackgroundColor]];
         } else {
             [_cardView setBackgroundColor:[UIColor groupTableViewBackgroundColor]];
         }
@@ -377,10 +377,13 @@ static NSString *ORKBulletUnicode = @"\u2981";
         if (_bodyItem.useCardStyle == YES) {
             textLabel.font = [ORKBodyItemView bulletBodyTextFontBold];
             
+            [_cardStyleAccessoryView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+            
             [_cardView addSubview:textLabel];
             [textLabel.leadingAnchor constraintEqualToAnchor: _cardStyleAccessoryView.trailingAnchor constant:ORKCardStyleMediumTextPadding].active = YES;
             [textLabel.topAnchor constraintEqualToAnchor:_cardStyleAccessoryView.topAnchor constant:0].active = YES;
             [textLabel.trailingAnchor constraintEqualToAnchor:_cardView.trailingAnchor constant:-ORKCardStylePadding].active = YES;
+            [textLabel setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
             
             if (_bodyItem.detailText == nil) {
                 [textLabel.bottomAnchor constraintEqualToAnchor:_cardView.bottomAnchor constant:-ORKCardStylePadding].active = YES;
