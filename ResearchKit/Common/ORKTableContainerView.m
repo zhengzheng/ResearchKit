@@ -144,7 +144,7 @@
         
         [_navigationContainerConstraints addObject:[NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                                                 attribute:NSLayoutAttributeTop
-                                                                                relatedBy:NSLayoutRelationEqual
+                                                                                relatedBy:NSLayoutRelationGreaterThanOrEqual
                                                                                    toItem:_footerView
                                                                                 attribute:NSLayoutAttributeTop
                                                                                multiplier:1.0
