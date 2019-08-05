@@ -128,7 +128,7 @@
     if (self.isNavigationContainerScrollable) {
         [_navigationContainerConstraints addObject:[NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                                                 attribute:NSLayoutAttributeLeft
-                                                                                relatedBy:NSLayoutRelationLessThanOrEqual
+                                                                                relatedBy:NSLayoutRelationEqual
                                                                                    toItem:_footerView
                                                                                 attribute:NSLayoutAttributeLeft
                                                                                multiplier:1.0
@@ -136,7 +136,7 @@
         
         [_navigationContainerConstraints addObject:[NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                                                 attribute:NSLayoutAttributeRight
-                                                                                relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                                                relatedBy:NSLayoutRelationEqual
                                                                                    toItem:_footerView
                                                                                 attribute:NSLayoutAttributeRight
                                                                                multiplier:1.0
@@ -144,7 +144,7 @@
         
         [_navigationContainerConstraints addObject:[NSLayoutConstraint constraintWithItem:self.navigationFooterView
                                                                                 attribute:NSLayoutAttributeTop
-                                                                                relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                                                relatedBy:NSLayoutRelationEqual
                                                                                    toItem:_footerView
                                                                                 attribute:NSLayoutAttributeTop
                                                                                multiplier:1.0
