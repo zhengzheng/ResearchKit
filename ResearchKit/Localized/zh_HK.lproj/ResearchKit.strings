@@ -617,6 +617,24 @@
 /* Review Step */
 "REVIEW_STEP_PAGE" = "頁面";
 
+/* Request Permission Step */
+"REQUEST_PERMISSION_BUTTON_STATE_DEFAULT" = "審查";
+"REQUEST_PERMISSION_BUTTON_STATE_CONNECTED" = "已審查";
+"REQUEST_PERMISSION_BUTTON_STATE_NOT_SUPPORTED" = "不支持";
+"REQUEST_PERMISSION_BUTTON_STATE_ERROR" = "錯誤";
+
+/* Request Health Data Step */
+"REQUEST_HEALTH_DATA_STEP_VIEW_TITLE" = "健康數據";
+"REQUEST_HEALTH_DATA_STEP_VIEW_DESCRIPTION" = "本應用需要請求您的部分健康數據。";
+
+/* Request Notification Permission Step */
+"REQUEST_NOTIFICATIONS_STEP_VIEW_TITLE" = "通知";
+"REQUEST_NOTIFICATIONS_STEP_VIEW_DESCRIPTION" = "本應用需要給您發送通知消息。";
+
+/* Request Device Motion Permission Step */
+"REQUEST_MOTION_ACTIVITY_STEP_VIEW_TITLE" = "Device Motion";
+"REQUEST_MOTION_ACTIVITY_STEP_VIEW_DESCRIPTION" = "The study is requesting access to motion data from your devices.";
+
 /* Accessibility */
 "AX_BUTTON_BACK" = "上一步";
 "AX_BUTTON_SHOW_PDF_THUMBNAIL" = "顯示PDF縮圖";
